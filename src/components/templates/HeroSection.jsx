@@ -19,8 +19,8 @@ function mulberry32(seed) {
 
 function generatePositions(count, w, h) {
   const rng = mulberry32(42);
-  const MIN = 55;
-  const MAX = 95;
+  const MIN = 40;
+  const MAX = 70;
   const GAP = 14;
   const KEEPOUT = 200;
   const cx = w / 2;
@@ -211,7 +211,7 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
             objectFit: 'cover',
             filter: 'blur(32px)',
             transform: 'scale(1.08)',
-            opacity: hoverIdx === i ? 0.55 : 0,
+            opacity: hoverIdx === i ? 0.35 : 0,
             transition: 'opacity 0.4s ease',
             zIndex: 0,
             pointerEvents: 'none',
