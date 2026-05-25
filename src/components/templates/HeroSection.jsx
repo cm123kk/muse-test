@@ -17,16 +17,12 @@ function mulberry32(seed) {
   };
 }
 
-/**
- * 겹침 없는 scatter 좌표 생성.
- * rejection sampling: 60회 시도 후 비겹침 위치 없으면 첫 번째 비-keepout 위치 사용.
- */
 function generatePositions(count, w, h) {
   const rng = mulberry32(42);
   const MIN = 80;
   const MAX = 150;
   const GAP = 14;
-  const KEEPOUT = 210;
+  const KEEPOUT = 200;
   const cx = w / 2;
   const cy = h / 2;
   const list = [];
@@ -39,8 +35,8 @@ function generatePositions(count, w, h) {
     let fallback = null;
 
     for (let a = 0; a < 60; a++) {
-      const x = rng() * (w - size);
-      const y = rng() * (h - size);
+      const x = rng() * Math.max(w - size, 1);
+      const y = rng() * Math.max(h - size, 1);
       const icx = x + size / 2;
       const icy = y + size / 2;
 
@@ -56,7 +52,7 @@ function generatePositions(count, w, h) {
       if (!overlaps) { chosen = { x, y, size, rotate, depth }; break; }
     }
 
-    list.push(chosen || fallback || { x: rng() * (w - size), y: rng() * (h - size), size, rotate, depth });
+    if (chosen || fallback) list.push(chosen ?? fallback);
   }
 
   return list;
@@ -64,46 +60,42 @@ function generatePositions(count, w, h) {
 
 /**
  * HeroSection 컴포넌트
- * 이미지 hover 시 해당 이미지 블러 배경 fade-in,
- * 마우스 이동 방향으로 depth parallax 적용.
  *
  * Props:
  * @param {function} onNavigateToSignUp - 시작하기 버튼 클릭 시 콜백 [Optional]
  * @param {function} onNavigateToLogin - 로그인 버튼 클릭 시 콜백 [Optional]
- *
- * Example usage:
- * <HeroSection
- *   onNavigateToSignUp={() => navigate('/signup')}
- *   onNavigateToLogin={() => navigate('/login')}
- * />
  */
 function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
-  const containerRef = useRef(null);
-  const [size, setSize] = useState({ w: 0, h: 0 });
+  /* size를 window로 즉시 초기화 → 첫 렌더에서 positions 비어있지 않음 */
+  const [size, setSize] = useState({
+    w: window.innerWidth,
+    h: window.innerHeight,
+  });
   const [hoverIdx, setHoverIdx] = useState(-1);
+
+  const containerRef = useRef(null);
   const itemRefs = useRef([]);
+  const positionsRef = useRef([]);
   const frameRef = useRef(null);
 
   useEffect(() => {
-    const el = containerRef.current;
-    if (!el) return;
-    const ro = new ResizeObserver(([entry]) => {
-      const { width, height } = entry.contentRect;
-      setSize({ w: width, h: height });
-    });
-    ro.observe(el);
-    return () => ro.disconnect();
+    const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight });
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  const positions = useMemo(() => {
-    if (!size.w || !size.h) return [];
-    return generatePositions(EXAMPLE_IMAGES.length, size.w, size.h);
-  }, [size.w, size.h]);
+  const positions = useMemo(
+    () => generatePositions(EXAMPLE_IMAGES.length, size.w, size.h),
+    [size.w, size.h],
+  );
 
-  /* depth parallax RAF */
+  /* 최신 positions를 ref로 유지 */
+  positionsRef.current = positions;
+
+  /* RAF — mount 시 한 번만 시작, positions는 positionsRef로 항상 최신 참조 */
   useEffect(() => {
     const el = containerRef.current;
-    if (!el || !positions.length) return;
+    if (!el) return;
 
     let targetX = 0.5;
     let targetY = 0.5;
@@ -128,17 +120,19 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
       const nx = curX - 0.5;
       const ny = curY - 0.5;
 
-      positions.forEach((pos, i) => {
-        const node = itemRefs.current[i];
+      itemRefs.current.forEach((node, i) => {
         if (!node) return;
+        const pos = positionsRef.current[i];
+        if (!pos) return;
         const strength = 0.3 + pos.depth * 0.7;
-        const dx = nx * 40 * strength;
-        const dy = ny * 40 * strength;
+        const dx = nx * 44 * strength;
+        const dy = ny * 44 * strength;
         node.style.transform = `translate(${dx}px, ${dy}px) rotate(${pos.rotate}deg)`;
       });
 
       frameRef.current = requestAnimationFrame(tick);
     };
+
     frameRef.current = requestAnimationFrame(tick);
 
     return () => {
@@ -147,14 +141,14 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
       el.removeEventListener('mousemove', onMove);
       el.removeEventListener('mouseleave', onLeave);
     };
-  }, [positions]);
+  }, []); // mount 시 한 번
 
   return (
     <Box
       ref={containerRef}
       sx={{ position: 'relative', height: '100vh', overflow: 'hidden' }}
     >
-      {/* Layer 1: hover된 이미지 블러 배경 */}
+      {/* Layer 1: 호버된 이미지 블러 배경 */}
       {EXAMPLE_IMAGES.map((src, i) => (
         <Box
           key={src}
@@ -189,17 +183,16 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
           alt=""
           sx={{
             position: 'absolute',
-            left: Math.round(pos.x),
-            top: Math.round(pos.y),
-            width: Math.round(pos.size),
-            height: Math.round(pos.size),
+            left: `${Math.round(pos.x)}px`,
+            top: `${Math.round(pos.y)}px`,
+            width: `${Math.round(pos.size)}px`,
+            height: `${Math.round(pos.size)}px`,
             objectFit: 'cover',
             borderRadius: 1,
             boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
             willChange: 'transform',
             zIndex: 2,
             userSelect: 'none',
-            pointerEvents: 'auto',
             cursor: 'pointer',
           }}
         />
