@@ -54,7 +54,9 @@ export function ScatterGallery({
   flowGap = 24,
   flowRows = 4,
   flowSpeeds = [-34, 42, -38, 46],
-  onHoverSrc,
+  onHoverIndex,
+  depthParallax = false,
+  noOverlap = false,
   children,
   sx,
 }) {
@@ -64,8 +66,8 @@ export function ScatterGallery({
   const [hoverIdx, setHoverIdx] = useState(-1);
   const [tooltipIdx, setTooltipIdx] = useState(-1);
   const tooltipTimerRef = useRef(0);
-  const onHoverSrcRef = useRef(onHoverSrc);
-  useEffect(() => { onHoverSrcRef.current = onHoverSrc; }, [onHoverSrc]);
+  const onHoverIndexRef = useRef(onHoverIndex);
+  useEffect(() => { onHoverIndexRef.current = onHoverIndex; }, [onHoverIndex]);
 
   /* container size 추적 */
   useEffect(() => {
@@ -98,14 +100,20 @@ export function ScatterGallery({
     for (let row = 0; row < gridRows && imgIdx < images.length; row += 1) {
       for (let col = 0; col < gridCols && imgIdx < images.length; col += 1) {
         const pad = 0.12;
-        const jx = pad + rng() * (1 - pad * 2);
-        const jy = pad + rng() * (1 - pad * 2);
+        const jxRaw = pad + rng() * (1 - pad * 2);
+        const jyRaw = pad + rng() * (1 - pad * 2);
+        const sz = thumbnailMin + rng() * (thumbnailMax - thumbnailMin);
+        /* noOverlap: 썸네일이 셀 밖으로 나가지 않도록 jitter 클램프 */
+        const mX = noOverlap ? Math.min((sz / 2 + 8) / cellW, 0.4) : pad;
+        const mY = noOverlap ? Math.min((sz / 2 + 8) / cellH, 0.4) : pad;
+        const jx = noOverlap ? Math.max(mX, Math.min(1 - mX, jxRaw)) : jxRaw;
+        const jy = noOverlap ? Math.max(mY, Math.min(1 - mY, jyRaw)) : jyRaw;
         const x = col * cellW + jx * cellW;
         const y = row * cellH + jy * cellH;
         if (centerKeepout > 0 && Math.hypot(x - cx, y - cy) < centerKeepout) continue;
-        const sz = thumbnailMin + rng() * (thumbnailMax - thumbnailMin);
         out.push({
           src: images[imgIdx],
+          imgIdx,
           x: x - sz / 2,
           y: y - sz / 2,
           size: sz,
@@ -132,7 +140,7 @@ export function ScatterGallery({
       });
     }
     return out;
-  }, [size.w, size.h, images, seed, gridCols, gridRows, thumbnailMin, thumbnailMax, centerKeepout, flowGap, flowRows]);
+  }, [size.w, size.h, images, seed, gridCols, gridRows, thumbnailMin, thumbnailMax, centerKeepout, flowGap, flowRows, noOverlap]);
 
   const hoverIdxRef = useRef(-1);
   useEffect(() => { hoverIdxRef.current = hoverIdx; }, [hoverIdx]);
@@ -184,21 +192,30 @@ export function ScatterGallery({
         const deltaX = (flowX - pl.x) * easedP;
         const deltaY = (flowY - pl.y) * easedP;
 
-        // cursor parallax — hover 와 무관하게 모든 썸네일이 거리에 따라 차등 반응. 최대 변위 = maxShift.
-        // falloff = cursorRadius / (cursorRadius + dist) → 모든 거리에서 0~1 의 가중치
         let tx = 0;
         let ty = 0;
         if (mx > -9000) {
-          const ccx = pl.x + deltaX + pl.size / 2;
-          const ccy = pl.y + deltaY + pl.size / 2;
-          const ddx = ccx - mx;
-          const ddy = ccy - my;
-          const dist = Math.hypot(ddx, ddy);
-          const fall = cursorRadius / (cursorRadius + dist);
-          const k = fall * maxShift * (1 - p);
-          const inv = dist === 0 ? 0 : 1 / dist;
-          tx = ddx * inv * k;
-          ty = ddy * inv * k;
+          if (depthParallax) {
+            /* depth parallax: 마우스 방향으로 이미지 이동, 클수록(가까울수록) 더 많이 이동 */
+            const normX = mx / size.w - 0.5;
+            const normY = my / size.h - 0.5;
+            const depth = (pl.size - thumbnailMin) / Math.max(thumbnailMax - thumbnailMin, 1);
+            const k = maxShift * (0.4 + depth * 0.6) * (1 - p);
+            tx = normX * k;
+            ty = normY * k;
+          } else {
+            /* repulsion parallax (기존) — 거리 기반 반발 */
+            const ccx = pl.x + deltaX + pl.size / 2;
+            const ccy = pl.y + deltaY + pl.size / 2;
+            const ddx = ccx - mx;
+            const ddy = ccy - my;
+            const dist = Math.hypot(ddx, ddy);
+            const fall = cursorRadius / (cursorRadius + dist);
+            const k = fall * maxShift * (1 - p);
+            const inv = dist === 0 ? 0 : 1 / dist;
+            tx = ddx * inv * k;
+            ty = ddy * inv * k;
+          }
         }
         cur[i].dx += (tx - cur[i].dx) * lerp;
         cur[i].dy += (ty - cur[i].dy) * lerp;
@@ -214,13 +231,13 @@ export function ScatterGallery({
       el.removeEventListener('mousemove', onMove);
       el.removeEventListener('mouseleave', onLeave);
     };
-  }, [placements, cursorRadius, maxShift, size.w, size.h, flowSpeeds, flowRows, progressRef]);
+  }, [placements, cursorRadius, maxShift, size.w, size.h, flowSpeeds, flowRows, progressRef, depthParallax, thumbnailMin, thumbnailMax]);
 
-  /* hoverIdx → 외부 onHoverSrc 콜백 */
+  /* hoverIdx → 외부 onHoverIndex 콜백 (placement의 imgIdx 전달, 없으면 -1) */
   useEffect(() => {
-    if (!onHoverSrcRef.current) return;
-    const src = hoverIdx >= 0 && placements[hoverIdx] ? placements[hoverIdx].src : null;
-    onHoverSrcRef.current(src);
+    if (!onHoverIndexRef.current) return;
+    const imgIdx = hoverIdx >= 0 && placements[hoverIdx] ? placements[hoverIdx].imgIdx : -1;
+    onHoverIndexRef.current(imgIdx);
   }, [hoverIdx, placements]);
 
   /* tooltip delay — flow 모드(p > 0.5) 에서는 비활성 */

@@ -12,6 +12,7 @@ const EXAMPLE_IMAGES = Object.values(imageModules).map((m) => m.default);
  * HeroSection 컴포넌트
  * Scattered layout 배경 위에 MUSE 브랜드 카피와 CTA를 표시하는 랜딩 히어로 섹션.
  * 개별 이미지 hover 시 해당 이미지의 블러 버전이 배경 전체에 fade-in된다.
+ * 마우스 이동 방향에 따라 이미지들이 depth parallax로 움직인다.
  *
  * Props:
  * @param {function} onNavigateToSignUp - 시작하기 버튼 클릭 시 콜백 [Optional]
@@ -25,17 +26,17 @@ const EXAMPLE_IMAGES = Object.values(imageModules).map((m) => m.default);
  * />
  */
 function HeroSection({ onNavigateToSignUp, onNavigateToLogin, centerKeepout = 240 }) {
-  const [hoveredSrc, setHoveredSrc] = useState(null);
+  const [hoverIndex, setHoverIndex] = useState(-1);
 
-  const handleHoverSrc = useCallback((src) => {
-    setHoveredSrc(src);
+  const handleHoverIndex = useCallback((idx) => {
+    setHoverIndex(idx);
   }, []);
 
   return (
     <Box sx={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
-      {/* Layer 1: 개별 hover 이미지 블러 배경 */}
+      {/* Layer 1: hover된 이미지의 블러 배경 — 인덱스로 정확히 매칭 */}
       <Box sx={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
-        {EXAMPLE_IMAGES.map((src) => (
+        {EXAMPLE_IMAGES.map((src, i) => (
           <Box
             key={src}
             component="img"
@@ -49,25 +50,26 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin, centerKeepout = 24
               objectFit: 'cover',
               filter: 'blur(32px)',
               transform: 'scale(1.08)',
-              opacity: hoveredSrc === src ? 0.5 : 0,
-              transition: 'opacity 0.4s ease',
+              opacity: hoverIndex === i ? 0.55 : 0,
+              transition: 'opacity 0.45s ease',
             }}
           />
         ))}
       </Box>
 
-      {/* Layer 2: Scattered 이미지 */}
+      {/* Layer 2: Scattered 이미지 — depth parallax + 겹침 방지 */}
       <Box sx={{ position: 'absolute', inset: 0, zIndex: 1 }}>
         <ScatterGallery
           images={EXAMPLE_IMAGES}
           centerKeepout={centerKeepout}
           thumbnailMin={80}
-          thumbnailMax={160}
-          cursorRadius={300}
-          maxShift={18}
-          gridCols={6}
-          gridRows={5}
-          onHoverSrc={handleHoverSrc}
+          thumbnailMax={140}
+          maxShift={28}
+          gridCols={5}
+          gridRows={4}
+          depthParallax
+          noOverlap
+          onHoverIndex={handleHoverIndex}
           sx={{ width: '100%', height: '100%' }}
         />
       </Box>
