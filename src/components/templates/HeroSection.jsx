@@ -22,39 +22,37 @@ function generatePositions(count, w, h) {
   const MIN = 50;
   const MAX = 80;
   const GAP = 10;
-  const KEEPOUT = 190;
+  const KEEPOUT = 170;   // 중심 제외 반경
+  const MAX_DIST = Math.min(w, h) * 0.44; // 원형 최대 반경
+  const PAD = 8;
   const cx = w / 2;
   const cy = h / 2;
+  const TAU = Math.PI * 2;
   const list = [];
-
-  /* 균등 섹터 배치: 각 이미지에 고유 각도 구간 할당 → 한쪽 쏠림 방지 */
-  const sectorAngle = (Math.PI * 2) / count;
 
   for (let i = 0; i < count; i++) {
     const size = MIN + rng() * (MAX - MIN);
     const rotate = (rng() - 0.5) * 22;
     const depth = (size - MIN) / (MAX - MIN);
 
-    /* 섹터 내 랜덤 각도 */
-    const angle = sectorAngle * i + rng() * sectorAngle * 0.8;
-
-    /* 화면 비율에 맞는 타원형 최대 반경 */
-    const cosA = Math.abs(Math.cos(angle));
-    const sinA = Math.abs(Math.sin(angle));
-    const maxRx = w * 0.46 - size;
-    const maxRy = h * 0.46 - size;
-    const maxDist = 1 / (cosA / maxRx + sinA / maxRy + 1e-9);
+    /* 섹터 중앙에서 시작해 jitter 적용 → 모든 이미지가 화면 전체 커버 */
+    const sectorMid = (TAU / count) * (i + 0.5);
+    const jitter = (rng() - 0.5) * (TAU / count) * 0.7;
+    const angle = sectorMid + jitter;
 
     let chosen = null;
+    let anyPos = null; // fallback용
 
-    for (let a = 0; a < 40; a++) {
-      const dist = KEEPOUT + rng() * Math.max(0, maxDist - KEEPOUT);
+    for (let a = 0; a < 50; a++) {
+      const dist = KEEPOUT + rng() * Math.max(0, MAX_DIST - KEEPOUT);
       const imgCx = cx + Math.cos(angle) * dist;
       const imgCy = cy + Math.sin(angle) * dist;
       const x = imgCx - size / 2;
       const y = imgCy - size / 2;
 
-      if (x < 0 || y < 0 || x + size > w || y + size > h) continue;
+      if (x < PAD || y < PAD || x + size > w - PAD || y + size > h - PAD) continue;
+
+      if (!anyPos) anyPos = { x, y, size, rotate, depth };
 
       const overlaps = list.some((p) => {
         const dx = imgCx - (p.x + p.size / 2);
@@ -65,7 +63,11 @@ function generatePositions(count, w, h) {
       if (!overlaps) { chosen = { x, y, size, rotate, depth }; break; }
     }
 
-    if (chosen) list.push(chosen);
+    list.push(chosen ?? anyPos ?? {
+      x: Math.max(PAD, Math.min(w - size - PAD, cx + Math.cos(angle) * KEEPOUT - size / 2)),
+      y: Math.max(PAD, Math.min(h - size - PAD, cy + Math.sin(angle) * KEEPOUT - size / 2)),
+      size, rotate, depth,
+    });
   }
 
   return list;
