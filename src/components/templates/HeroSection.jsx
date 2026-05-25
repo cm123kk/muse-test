@@ -19,8 +19,8 @@ function mulberry32(seed) {
 
 function generatePositions(count, w, h) {
   const rng = mulberry32(42);
-  const MIN = 80;
-  const MAX = 150;
+  const MIN = 55;
+  const MAX = 95;
   const GAP = 14;
   const KEEPOUT = 200;
   const cx = w / 2;
@@ -113,9 +113,9 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
 
     let active = true;
 
-    const RADIUS = 220;   // 영향 반경 (px)
-    const STRENGTH = 0.18; // 속도 → 오프셋 변환 강도
-    const DECAY = 0.86;   // 오프셋 감쇠율 (낮을수록 빨리 복귀)
+    const RADIUS = 130;   // 영향 반경 (px) — 마우스 주변 좁은 범위만
+    const STRENGTH = 0.22; // 속도 → 오프셋 변환 강도
+    const DECAY = 0.84;   // 오프셋 감쇠율
 
     const onMove = (e) => {
       const r = el.getBoundingClientRect();
@@ -149,25 +149,31 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
       prevMouseY = mouseY;
 
       const positions = positionsRef.current;
+      const speed = Math.hypot(velX, velY);
 
       itemRefs.current.forEach((node, i) => {
         if (!node || !positions[i]) return;
         const pos = positions[i];
 
-        /* 이미지 중심과 마우스 거리 */
-        const imgCx = pos.x + pos.size / 2;
-        const imgCy = pos.y + pos.size / 2;
-        const dist = Math.hypot(imgCx - mouseX, imgCy - mouseY);
-
-        /* 근접도 0~1, 2차 감쇠 */
-        const t = Math.max(0, 1 - dist / RADIUS);
-        const influence = t * t;
-
         if (!offsX[i]) { offsX[i] = 0; offsY[i] = 0; }
 
-        /* 속도 방향으로 오프셋 누적 후 감쇠 */
-        offsX[i] = (offsX[i] + velX * influence * STRENGTH) * DECAY;
-        offsY[i] = (offsY[i] + velY * influence * STRENGTH) * DECAY;
+        /* 마우스가 실제로 움직일 때만 근처 이미지에 영향 */
+        if (speed > 0.4 && mouseX > -9000) {
+          const imgCx = pos.x + pos.size / 2;
+          const imgCy = pos.y + pos.size / 2;
+          const dist = Math.hypot(imgCx - mouseX, imgCy - mouseY);
+
+          /* 2차 감쇠 — RADIUS 밖은 정확히 0 */
+          const t = Math.max(0, 1 - dist / RADIUS);
+          const influence = t * t;
+
+          offsX[i] += velX * influence * STRENGTH;
+          offsY[i] += velY * influence * STRENGTH;
+        }
+
+        /* 항상 감쇠해 원위치로 복귀 */
+        offsX[i] *= DECAY;
+        offsY[i] *= DECAY;
 
         node.style.transform = `translate(${offsX[i].toFixed(2)}px, ${offsY[i].toFixed(2)}px) rotate(${pos.rotate}deg)`;
       });
@@ -231,6 +237,7 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
             height: `${Math.round(pos.size)}px`,
             objectFit: 'cover',
             borderRadius: 1,
+            boxShadow: 'none',
             willChange: 'transform',
             zIndex: 2,
             userSelect: 'none',
