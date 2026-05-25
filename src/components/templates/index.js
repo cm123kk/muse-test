@@ -4,6 +4,7 @@
  * 여러 컴포넌트를 조합한 복합 템플릿. 페이지 단위보다는 작고, 단일 컴포넌트보다는 큰 단위.
  */
 
+export { default as HeroSection } from './HeroSection.jsx';
 export { FilterBar } from './FilterBar.jsx';
 export { FilterPanel } from './FilterPanel.jsx';
 export { SortMenu } from './SortMenu.jsx';

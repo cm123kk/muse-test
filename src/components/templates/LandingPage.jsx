@@ -1,8 +1,7 @@
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import Grid from '@mui/material/Grid';
+import HeroSection from './HeroSection';
 
 const FEATURES = [
   {
@@ -20,7 +19,7 @@ const FEATURES = [
 ];
 
 /**
- * 랜딩 페이지 템플릿
+ * LandingPage 템플릿
  *
  * Props:
  * @param {function} onNavigateToSignUp - 회원가입 버튼 클릭 시 콜백 [Optional]
@@ -35,85 +34,17 @@ const FEATURES = [
 function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
   return (
     <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-      {/* 상단 바 */}
-      <Box
-        component="header"
-        sx={{
-          px: { xs: 3, md: 6 },
-          py: 2.5,
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          borderBottom: '1px solid',
-          borderColor: 'divider',
-        }}
-      >
-        <Typography variant="h6" sx={{ fontWeight: 800, letterSpacing: '-0.02em' }}>
-          MUSE.
-        </Typography>
-        <Button variant="text" size="small" onClick={onNavigateToLogin}>
-          로그인
-        </Button>
-      </Box>
-
       {/* Hero */}
-      <Box
-        sx={{
-          px: { xs: 3, md: 8 },
-          pt: { xs: 10, md: 14 },
-          pb: { xs: 8, md: 12 },
-          maxWidth: 900,
-          mx: 'auto',
-        }}
-      >
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: { xs: '2.75rem', md: '4.5rem' },
-            fontWeight: 900,
-            letterSpacing: '-0.04em',
-            lineHeight: 1.05,
-            mb: 3,
-          }}
-        >
-          영감을 수집하고,<br />
-          AI가 디자인 토큰으로 만든다.
-        </Typography>
-
-        <Typography
-          variant="body1"
-          color="text.secondary"
-          sx={{ fontSize: { xs: '1rem', md: '1.125rem' }, mb: 5, maxWidth: 560 }}
-        >
-          레퍼런스 이미지를 올리면 Claude가 색상, 레이아웃, 타이포그래피를 분석해
-          바로 쓸 수 있는 MUI 테마를 만들어줍니다.
-        </Typography>
-
-        <Stack direction="row" spacing={2}>
-          <Button
-            variant="contained"
-            size="large"
-            onClick={onNavigateToSignUp}
-            sx={{ px: 4 }}
-          >
-            무료로 시작하기
-          </Button>
-          <Button
-            variant="outlined"
-            size="large"
-            onClick={onNavigateToLogin}
-            sx={{ px: 4 }}
-          >
-            로그인
-          </Button>
-        </Stack>
-      </Box>
+      <HeroSection
+        onNavigateToSignUp={onNavigateToSignUp}
+        onNavigateToLogin={onNavigateToLogin}
+      />
 
       {/* Features */}
       <Box
         sx={{
           px: { xs: 3, md: 8 },
-          pb: { xs: 10, md: 14 },
+          py: { xs: 10, md: 14 },
           maxWidth: 900,
           mx: 'auto',
         }}
