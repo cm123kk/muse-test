@@ -54,6 +54,7 @@ export function ScatterGallery({
   flowGap = 24,
   flowRows = 4,
   flowSpeeds = [-34, 42, -38, 46],
+  onHoverSrc,
   children,
   sx,
 }) {
@@ -63,6 +64,8 @@ export function ScatterGallery({
   const [hoverIdx, setHoverIdx] = useState(-1);
   const [tooltipIdx, setTooltipIdx] = useState(-1);
   const tooltipTimerRef = useRef(0);
+  const onHoverSrcRef = useRef(onHoverSrc);
+  useEffect(() => { onHoverSrcRef.current = onHoverSrc; }, [onHoverSrc]);
 
   /* container size 추적 */
   useEffect(() => {
@@ -212,6 +215,13 @@ export function ScatterGallery({
       el.removeEventListener('mouseleave', onLeave);
     };
   }, [placements, cursorRadius, maxShift, size.w, size.h, flowSpeeds, flowRows, progressRef]);
+
+  /* hoverIdx → 외부 onHoverSrc 콜백 */
+  useEffect(() => {
+    if (!onHoverSrcRef.current) return;
+    const src = hoverIdx >= 0 && placements[hoverIdx] ? placements[hoverIdx].src : null;
+    onHoverSrcRef.current(src);
+  }, [hoverIdx, placements]);
 
   /* tooltip delay — flow 모드(p > 0.5) 에서는 비활성 */
   useEffect(() => {

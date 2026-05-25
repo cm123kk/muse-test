@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
@@ -11,8 +11,7 @@ const EXAMPLE_IMAGES = Object.values(imageModules).map((m) => m.default);
 /**
  * HeroSection 컴포넌트
  * Scattered layout 배경 위에 MUSE 브랜드 카피와 CTA를 표시하는 랜딩 히어로 섹션.
- * hover 시 블러 처리된 이미지 모자이크가 배경 전체에 fade-in되고,
- * 선명한 scattered 이미지는 그 위에 유지된다.
+ * 개별 이미지 hover 시 해당 이미지의 블러 버전이 배경 전체에 fade-in된다.
  *
  * Props:
  * @param {function} onNavigateToSignUp - 시작하기 버튼 클릭 시 콜백 [Optional]
@@ -26,41 +25,38 @@ const EXAMPLE_IMAGES = Object.values(imageModules).map((m) => m.default);
  * />
  */
 function HeroSection({ onNavigateToSignUp, onNavigateToLogin, centerKeepout = 240 }) {
-  const [isHovered, setIsHovered] = useState(false);
+  const [hoveredSrc, setHoveredSrc] = useState(null);
+
+  const handleHoverSrc = useCallback((src) => {
+    setHoveredSrc(src);
+  }, []);
 
   return (
-    <Box
-      sx={{ position: 'relative', height: '100vh', overflow: 'hidden', bgcolor: 'background.default' }}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      {/* Layer 1: 블러 배경 모자이크 — hover 시 fade-in */}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          display: 'grid',
-          gridTemplateColumns: 'repeat(5, 1fr)',
-          gridTemplateRows: 'repeat(4, 1fr)',
-          filter: 'blur(24px)',
-          transform: 'scale(1.06)',
-          opacity: isHovered ? 0.7 : 0,
-          transition: 'opacity 0.5s ease',
-          zIndex: 0,
-        }}
-      >
-        {EXAMPLE_IMAGES.map((src, i) => (
+    <Box sx={{ position: 'relative', height: '100vh', overflow: 'hidden' }}>
+      {/* Layer 1: 개별 hover 이미지 블러 배경 */}
+      <Box sx={{ position: 'absolute', inset: 0, zIndex: 0, overflow: 'hidden' }}>
+        {EXAMPLE_IMAGES.map((src) => (
           <Box
-            key={i}
+            key={src}
             component="img"
             src={src}
             alt=""
-            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            sx={{
+              position: 'absolute',
+              inset: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              filter: 'blur(32px)',
+              transform: 'scale(1.08)',
+              opacity: hoveredSrc === src ? 0.5 : 0,
+              transition: 'opacity 0.4s ease',
+            }}
           />
         ))}
       </Box>
 
-      {/* Layer 2: Scattered 이미지 — 항상 선명하게 */}
+      {/* Layer 2: Scattered 이미지 */}
       <Box sx={{ position: 'absolute', inset: 0, zIndex: 1 }}>
         <ScatterGallery
           images={EXAMPLE_IMAGES}
@@ -71,11 +67,12 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin, centerKeepout = 24
           maxShift={18}
           gridCols={6}
           gridRows={5}
+          onHoverSrc={handleHoverSrc}
           sx={{ width: '100%', height: '100%' }}
         />
       </Box>
 
-      {/* Layer 3: Center content overlay */}
+      {/* Layer 3: Center content */}
       <Box
         sx={{
           position: 'absolute',

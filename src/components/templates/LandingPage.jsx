@@ -49,13 +49,7 @@ function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
           mx: 'auto',
         }}
       >
-        <Box
-          sx={{
-            borderTop: '1px solid',
-            borderColor: 'divider',
-            pt: 6,
-          }}
-        >
+        <Box>
           <Grid container spacing={4}>
             {FEATURES.map((feature, index) => (
               <Grid key={index} size={{ xs: 12, md: 4 }}>
