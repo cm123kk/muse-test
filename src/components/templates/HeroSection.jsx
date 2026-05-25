@@ -19,40 +19,53 @@ function mulberry32(seed) {
 
 function generatePositions(count, w, h) {
   const rng = mulberry32(42);
-  const MIN = 40;
-  const MAX = 70;
-  const GAP = 14;
-  const KEEPOUT = 200;
+  const MIN = 50;
+  const MAX = 80;
+  const GAP = 10;
+  const KEEPOUT = 190;
   const cx = w / 2;
   const cy = h / 2;
   const list = [];
+
+  /* 균등 섹터 배치: 각 이미지에 고유 각도 구간 할당 → 한쪽 쏠림 방지 */
+  const sectorAngle = (Math.PI * 2) / count;
 
   for (let i = 0; i < count; i++) {
     const size = MIN + rng() * (MAX - MIN);
     const rotate = (rng() - 0.5) * 22;
     const depth = (size - MIN) / (MAX - MIN);
+
+    /* 섹터 내 랜덤 각도 */
+    const angle = sectorAngle * i + rng() * sectorAngle * 0.8;
+
+    /* 화면 비율에 맞는 타원형 최대 반경 */
+    const cosA = Math.abs(Math.cos(angle));
+    const sinA = Math.abs(Math.sin(angle));
+    const maxRx = w * 0.46 - size;
+    const maxRy = h * 0.46 - size;
+    const maxDist = 1 / (cosA / maxRx + sinA / maxRy + 1e-9);
+
     let chosen = null;
-    let fallback = null;
 
-    for (let a = 0; a < 60; a++) {
-      const x = rng() * Math.max(w - size, 1);
-      const y = rng() * Math.max(h - size, 1);
-      const icx = x + size / 2;
-      const icy = y + size / 2;
+    for (let a = 0; a < 40; a++) {
+      const dist = KEEPOUT + rng() * Math.max(0, maxDist - KEEPOUT);
+      const imgCx = cx + Math.cos(angle) * dist;
+      const imgCy = cy + Math.sin(angle) * dist;
+      const x = imgCx - size / 2;
+      const y = imgCy - size / 2;
 
-      if (Math.hypot(icx - cx, icy - cy) < KEEPOUT) continue;
-      if (!fallback) fallback = { x, y, size, rotate, depth };
+      if (x < 0 || y < 0 || x + size > w || y + size > h) continue;
 
       const overlaps = list.some((p) => {
-        const dx = icx - (p.x + p.size / 2);
-        const dy = icy - (p.y + p.size / 2);
+        const dx = imgCx - (p.x + p.size / 2);
+        const dy = imgCy - (p.y + p.size / 2);
         return Math.hypot(dx, dy) < (size + p.size) / 2 + GAP;
       });
 
       if (!overlaps) { chosen = { x, y, size, rotate, depth }; break; }
     }
 
-    if (chosen || fallback) list.push(chosen ?? fallback);
+    if (chosen) list.push(chosen);
   }
 
   return list;
