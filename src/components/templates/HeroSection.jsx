@@ -11,7 +11,8 @@ const EXAMPLE_IMAGES = Object.values(imageModules).map((m) => m.default);
 /**
  * HeroSection 컴포넌트
  * Scattered layout 배경 위에 MUSE 브랜드 카피와 CTA를 표시하는 랜딩 히어로 섹션.
- * 마우스 진입 시 배경 이미지가 blur/fade 되어 텍스트를 부각시킨다.
+ * hover 시 블러 처리된 이미지 모자이크가 배경 전체에 fade-in되고,
+ * 선명한 scattered 이미지는 그 위에 유지된다.
  *
  * Props:
  * @param {function} onNavigateToSignUp - 시작하기 버튼 클릭 시 콜백 [Optional]
@@ -33,16 +34,34 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin, centerKeepout = 24
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Scattered background */}
+      {/* Layer 1: 블러 배경 모자이크 — hover 시 fade-in */}
       <Box
         sx={{
           position: 'absolute',
           inset: 0,
-          filter: isHovered ? 'blur(8px)' : 'none',
-          opacity: isHovered ? 0.3 : 1,
-          transition: 'filter 0.5s ease, opacity 0.5s ease',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(5, 1fr)',
+          gridTemplateRows: 'repeat(4, 1fr)',
+          filter: 'blur(24px)',
+          transform: 'scale(1.06)',
+          opacity: isHovered ? 0.7 : 0,
+          transition: 'opacity 0.5s ease',
+          zIndex: 0,
         }}
       >
+        {EXAMPLE_IMAGES.map((src, i) => (
+          <Box
+            key={i}
+            component="img"
+            src={src}
+            alt=""
+            sx={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+          />
+        ))}
+      </Box>
+
+      {/* Layer 2: Scattered 이미지 — 항상 선명하게 */}
+      <Box sx={{ position: 'absolute', inset: 0, zIndex: 1 }}>
         <ScatterGallery
           images={EXAMPLE_IMAGES}
           centerKeepout={centerKeepout}
@@ -56,7 +75,7 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin, centerKeepout = 24
         />
       </Box>
 
-      {/* Center content overlay */}
+      {/* Layer 3: Center content overlay */}
       <Box
         sx={{
           position: 'absolute',
