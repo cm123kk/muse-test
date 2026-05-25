@@ -97,37 +97,79 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
     const el = containerRef.current;
     if (!el) return;
 
-    let targetX = 0.5;
-    let targetY = 0.5;
-    let curX = 0.5;
-    let curY = 0.5;
+    /* 마우스 위치 (컨테이너 기준) */
+    let mouseX = -99999;
+    let mouseY = -99999;
+    let prevMouseX = -99999;
+    let prevMouseY = -99999;
+
+    /* 스무딩된 속도 */
+    let velX = 0;
+    let velY = 0;
+
+    /* 이미지별 누적 오프셋 */
+    const offsX = [];
+    const offsY = [];
+
     let active = true;
+
+    const RADIUS = 220;   // 영향 반경 (px)
+    const STRENGTH = 0.18; // 속도 → 오프셋 변환 강도
+    const DECAY = 0.86;   // 오프셋 감쇠율 (낮을수록 빨리 복귀)
 
     const onMove = (e) => {
       const r = el.getBoundingClientRect();
-      targetX = (e.clientX - r.left) / r.width;
-      targetY = (e.clientY - r.top) / r.height;
+      mouseX = e.clientX - r.left;
+      mouseY = e.clientY - r.top;
     };
-    const onLeave = () => { targetX = 0.5; targetY = 0.5; };
+    const onLeave = () => {
+      mouseX = -99999;
+      mouseY = -99999;
+      velX = 0;
+      velY = 0;
+    };
 
     el.addEventListener('mousemove', onMove, { passive: true });
     el.addEventListener('mouseleave', onLeave);
 
     const tick = () => {
       if (!active) return;
-      curX += (targetX - curX) * 0.07;
-      curY += (targetY - curY) * 0.07;
-      const nx = curX - 0.5;
-      const ny = curY - 0.5;
+
+      /* 프레임마다 마우스 델타로 속도 계산 (스무딩) */
+      if (prevMouseX > -9000 && mouseX > -9000) {
+        const dxRaw = mouseX - prevMouseX;
+        const dyRaw = mouseY - prevMouseY;
+        velX = velX * 0.55 + dxRaw * 0.45;
+        velY = velY * 0.55 + dyRaw * 0.45;
+      } else {
+        velX *= 0.8;
+        velY *= 0.8;
+      }
+      prevMouseX = mouseX;
+      prevMouseY = mouseY;
+
+      const positions = positionsRef.current;
 
       itemRefs.current.forEach((node, i) => {
-        if (!node) return;
-        const pos = positionsRef.current[i];
-        if (!pos) return;
-        const strength = 0.3 + pos.depth * 0.7;
-        const dx = nx * 44 * strength;
-        const dy = ny * 44 * strength;
-        node.style.transform = `translate(${dx}px, ${dy}px) rotate(${pos.rotate}deg)`;
+        if (!node || !positions[i]) return;
+        const pos = positions[i];
+
+        /* 이미지 중심과 마우스 거리 */
+        const imgCx = pos.x + pos.size / 2;
+        const imgCy = pos.y + pos.size / 2;
+        const dist = Math.hypot(imgCx - mouseX, imgCy - mouseY);
+
+        /* 근접도 0~1, 2차 감쇠 */
+        const t = Math.max(0, 1 - dist / RADIUS);
+        const influence = t * t;
+
+        if (!offsX[i]) { offsX[i] = 0; offsY[i] = 0; }
+
+        /* 속도 방향으로 오프셋 누적 후 감쇠 */
+        offsX[i] = (offsX[i] + velX * influence * STRENGTH) * DECAY;
+        offsY[i] = (offsY[i] + velY * influence * STRENGTH) * DECAY;
+
+        node.style.transform = `translate(${offsX[i].toFixed(2)}px, ${offsY[i].toFixed(2)}px) rotate(${pos.rotate}deg)`;
       });
 
       frameRef.current = requestAnimationFrame(tick);
@@ -189,7 +231,6 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
             height: `${Math.round(pos.size)}px`,
             objectFit: 'cover',
             borderRadius: 1,
-            boxShadow: '0 4px 24px rgba(0,0,0,0.18)',
             willChange: 'transform',
             zIndex: 2,
             userSelect: 'none',
