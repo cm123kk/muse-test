@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
-import Stack from '@mui/material/Stack';
 import Typography from '@mui/material/Typography';
 
 const imageModules = import.meta.glob('/src/assets/example/*.{jpg,jpeg}', { eager: true });
@@ -59,9 +58,9 @@ function generatePositions(count, w, h) {
     const rotate = (rng() - 0.5) * 22;
     const depth = (size - SIZE_MIN) / (SIZE_MAX - SIZE_MIN);
 
-    /* 셀 내부에서 랜덤 오프셋 */
-    const offX = (rng() - 0.5) * cellW * 0.55;
-    const offY = (rng() - 0.5) * cellH * 0.55;
+    /* 셀 내부에서 랜덤 오프셋 — Y를 크게 줘서 행 일직선 방지 */
+    const offX = (rng() - 0.5) * cellW * 0.6;
+    const offY = (rng() - 0.5) * cellH * 0.9;
     const x = Math.max(PAD, Math.min(w - PAD - size, cellCx - size / 2 + offX));
     const y = Math.max(PAD_TOP, Math.min(h - PAD - size, cellCy - size / 2 + offY));
 
@@ -78,7 +77,7 @@ function generatePositions(count, w, h) {
  * @param {function} onNavigateToSignUp - 시작하기 버튼 클릭 시 콜백 [Optional]
  * @param {function} onNavigateToLogin - 로그인 버튼 클릭 시 콜백 [Optional]
  */
-function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
+function HeroSection({ onNavigateToSignUp }) {
   /* size를 window로 즉시 초기화 → 첫 렌더에서 positions 비어있지 않음 */
   const [size, setSize] = useState({
     w: window.innerWidth,
@@ -294,14 +293,9 @@ function HeroSection({ onNavigateToSignUp, onNavigateToLogin }) {
             바이브 디자인을 위한 영감을 관리하세요.
           </Typography>
 
-          <Stack direction="row" spacing={2} justifyContent="center">
-            <Button variant="contained" size="large" onClick={onNavigateToSignUp} sx={{ px: 5 }}>
-              시작하기
-            </Button>
-            <Button variant="outlined" size="large" onClick={onNavigateToLogin} sx={{ px: 5 }}>
-              로그인
-            </Button>
-          </Stack>
+          <Button variant="contained" size="large" onClick={onNavigateToSignUp} sx={{ px: 5 }}>
+            시작하기
+          </Button>
         </Box>
       </Box>
     </Box>
