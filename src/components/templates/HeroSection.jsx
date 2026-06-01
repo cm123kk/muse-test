@@ -21,58 +21,51 @@ function generatePositions(count, w, h) {
   const rng = mulberry32(42);
   const SIZE_MIN = 50;
   const SIZE_MAX = 80;
-  const GAP = 12;
-  const PAD = 10;
-  const PAD_TOP = 80;   // 헤더 근처 상단 여백
-  const KEEPOUT = 170;
+  const PAD = 14;
+  const PAD_TOP = 72;
+  const KEEPOUT = 190;
+  const COLS = 6;
+  const ROWS = 4;
   const cx = w / 2;
   const cy = h / 2;
-  const TAU = Math.PI * 2;
-  const list = [];
 
-  for (let i = 0; i < count; i++) {
+  const cellW = (w - PAD * 2) / COLS;
+  const cellH = (h - PAD_TOP - PAD) / ROWS;
+
+  /* 중심 제외 구역 밖의 셀만 수집 */
+  const cells = [];
+  for (let row = 0; row < ROWS; row++) {
+    for (let col = 0; col < COLS; col++) {
+      const cellCx = PAD + col * cellW + cellW / 2;
+      const cellCy = PAD_TOP + row * cellH + cellH / 2;
+      if (Math.hypot(cellCx - cx, cellCy - cy) > KEEPOUT) {
+        cells.push({ cellCx, cellCy });
+      }
+    }
+  }
+
+  /* Fisher-Yates 셔플 — 셀을 무작위 순서로 배정 */
+  for (let i = cells.length - 1; i > 0; i--) {
+    const j = Math.floor(rng() * (i + 1));
+    const tmp = cells[i]; cells[i] = cells[j]; cells[j] = tmp;
+  }
+
+  const list = [];
+  const total = Math.min(count, cells.length);
+
+  for (let i = 0; i < total; i++) {
+    const { cellCx, cellCy } = cells[i];
     const size = SIZE_MIN + rng() * (SIZE_MAX - SIZE_MIN);
     const rotate = (rng() - 0.5) * 22;
     const depth = (size - SIZE_MIN) / (SIZE_MAX - SIZE_MIN);
-    const half = size / 2;
 
-    /* 섹터 전체를 균등 분할 후 섹터 내 완전 랜덤 각도 */
-    const angle = (TAU / count) * i + rng() * (TAU / count);
-    const cos = Math.cos(angle);
-    const sin = Math.sin(angle);
+    /* 셀 내부에서 랜덤 오프셋 */
+    const offX = (rng() - 0.5) * cellW * 0.55;
+    const offY = (rng() - 0.5) * cellH * 0.55;
+    const x = Math.max(PAD, Math.min(w - PAD - size, cellCx - size / 2 + offX));
+    const y = Math.max(PAD_TOP, Math.min(h - PAD - size, cellCy - size / 2 + offY));
 
-    /* 이 각도에서 화면 경계까지 실제 거리 */
-    let maxDist = Infinity;
-    if (cos > 1e-9)  maxDist = Math.min(maxDist, (w - PAD - half - cx) / cos);
-    if (cos < -1e-9) maxDist = Math.min(maxDist, (PAD + half - cx) / cos);
-    if (sin > 1e-9)  maxDist = Math.min(maxDist, (h - PAD - half - cy) / sin);
-    if (sin < -1e-9) maxDist = Math.min(maxDist, (PAD_TOP + half - cy) / sin);
-    maxDist = Math.max(KEEPOUT, maxDist);
-
-    let chosen = null;
-    let fallback = null;
-
-    for (let a = 0; a < 80; a++) {
-      /* KEEPOUT ~ maxDist 균등 분포 — 편향 없이 화면 전체에 퍼짐 */
-      const dist = KEEPOUT + rng() * (maxDist - KEEPOUT);
-      const imgCx = cx + cos * dist;
-      const imgCy = cy + sin * dist;
-      const x = imgCx - half;
-      const y = imgCy - half;
-
-      if (x < PAD || y < PAD_TOP || x + size > w - PAD || y + size > h - PAD) continue;
-      if (!fallback) fallback = { x, y, size, rotate, depth };
-
-      const overlaps = list.some((p) => {
-        const dx = imgCx - (p.x + p.size / 2);
-        const dy = imgCy - (p.y + p.size / 2);
-        return Math.hypot(dx, dy) < (size + p.size) / 2 + GAP;
-      });
-
-      if (!overlaps) { chosen = { x, y, size, rotate, depth }; break; }
-    }
-
-    if (chosen || fallback) list.push(chosen ?? fallback);
+    list.push({ x, y, size, rotate, depth });
   }
 
   return list;
