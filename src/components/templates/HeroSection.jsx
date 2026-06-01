@@ -17,54 +17,45 @@ function mulberry32(seed) {
   };
 }
 
-/* 해당 각도에서 중심 → 화면 경계까지의 최대 거리 */
-function edgeDist(angle, cx, cy, w, h, half, pad) {
-  const cos = Math.cos(angle);
-  const sin = Math.sin(angle);
-  let d = Infinity;
-  if (cos > 1e-9)  d = Math.min(d, (w - pad - half - cx) / cos);
-  if (cos < -1e-9) d = Math.min(d, (pad + half - cx) / cos);
-  if (sin > 1e-9)  d = Math.min(d, (h - pad - half - cy) / sin);
-  if (sin < -1e-9) d = Math.min(d, (pad + half - cy) / sin);
-  return Math.max(0, d);
-}
-
 function generatePositions(count, w, h) {
   const rng = mulberry32(42);
-  const MIN = 50;
-  const MAX = 80;
-  const GAP = 10;
-  const KEEPOUT = 160;
-  const PAD = 8;
+  const SIZE_MIN = 50;
+  const SIZE_MAX = 80;
+  const GAP = 12;
+  const PAD = 10;
+  const KEEPOUT = 170;
   const cx = w / 2;
   const cy = h / 2;
   const TAU = Math.PI * 2;
   const list = [];
 
   for (let i = 0; i < count; i++) {
-    const size = MIN + rng() * (MAX - MIN);
+    const size = SIZE_MIN + rng() * (SIZE_MAX - SIZE_MIN);
     const rotate = (rng() - 0.5) * 22;
-    const depth = (size - MIN) / (MAX - MIN);
+    const depth = (size - SIZE_MIN) / (SIZE_MAX - SIZE_MIN);
     const half = size / 2;
 
-    /* 섹터 중앙 + jitter */
-    const sectorMid = (TAU / count) * (i + 0.5);
-    const jitter = (rng() - 0.5) * (TAU / count) * 0.75;
-    const angle = sectorMid + jitter;
+    /* 섹터 전체를 균등 분할 후 섹터 내 완전 랜덤 각도 */
+    const angle = (TAU / count) * i + rng() * (TAU / count);
+    const cos = Math.cos(angle);
+    const sin = Math.sin(angle);
 
-    /* 이 각도에서 실제 화면 끝까지의 거리 */
-    const maxDist = edgeDist(angle, cx, cy, w, h, half, PAD);
-    const span = Math.max(0, maxDist - KEEPOUT);
+    /* 이 각도에서 화면 경계까지 실제 거리 */
+    let maxDist = Infinity;
+    if (cos > 1e-9)  maxDist = Math.min(maxDist, (w - PAD - half - cx) / cos);
+    if (cos < -1e-9) maxDist = Math.min(maxDist, (PAD + half - cx) / cos);
+    if (sin > 1e-9)  maxDist = Math.min(maxDist, (h - PAD - half - cy) / sin);
+    if (sin < -1e-9) maxDist = Math.min(maxDist, (PAD + half - cy) / sin);
+    maxDist = Math.max(KEEPOUT, maxDist);
 
     let chosen = null;
     let fallback = null;
 
-    for (let a = 0; a < 60; a++) {
-      /* 가장자리 쪽에 더 많이 배치되도록 제곱 분포 */
-      const t = rng() * rng();
-      const dist = KEEPOUT + t * span;
-      const imgCx = cx + Math.cos(angle) * dist;
-      const imgCy = cy + Math.sin(angle) * dist;
+    for (let a = 0; a < 80; a++) {
+      /* KEEPOUT ~ maxDist 균등 분포 — 편향 없이 화면 전체에 퍼짐 */
+      const dist = KEEPOUT + rng() * (maxDist - KEEPOUT);
+      const imgCx = cx + cos * dist;
+      const imgCy = cy + sin * dist;
       const x = imgCx - half;
       const y = imgCy - half;
 
@@ -80,7 +71,7 @@ function generatePositions(count, w, h) {
       if (!overlaps) { chosen = { x, y, size, rotate, depth }; break; }
     }
 
-    if (chosen ?? fallback) list.push(chosen ?? fallback);
+    if (chosen || fallback) list.push(chosen ?? fallback);
   }
 
   return list;
