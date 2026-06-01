@@ -17,13 +17,24 @@ function mulberry32(seed) {
   };
 }
 
+/* 해당 각도에서 중심 → 화면 경계까지의 최대 거리 */
+function edgeDist(angle, cx, cy, w, h, half, pad) {
+  const cos = Math.cos(angle);
+  const sin = Math.sin(angle);
+  let d = Infinity;
+  if (cos > 1e-9)  d = Math.min(d, (w - pad - half - cx) / cos);
+  if (cos < -1e-9) d = Math.min(d, (pad + half - cx) / cos);
+  if (sin > 1e-9)  d = Math.min(d, (h - pad - half - cy) / sin);
+  if (sin < -1e-9) d = Math.min(d, (pad + half - cy) / sin);
+  return Math.max(0, d);
+}
+
 function generatePositions(count, w, h) {
   const rng = mulberry32(42);
   const MIN = 50;
   const MAX = 80;
   const GAP = 10;
-  const KEEPOUT = 170;   // 중심 제외 반경
-  const MAX_DIST = Math.min(w, h) * 0.44; // 원형 최대 반경
+  const KEEPOUT = 160;
   const PAD = 8;
   const cx = w / 2;
   const cy = h / 2;
@@ -34,25 +45,31 @@ function generatePositions(count, w, h) {
     const size = MIN + rng() * (MAX - MIN);
     const rotate = (rng() - 0.5) * 22;
     const depth = (size - MIN) / (MAX - MIN);
+    const half = size / 2;
 
-    /* 섹터 중앙에서 시작해 jitter 적용 → 모든 이미지가 화면 전체 커버 */
+    /* 섹터 중앙 + jitter */
     const sectorMid = (TAU / count) * (i + 0.5);
-    const jitter = (rng() - 0.5) * (TAU / count) * 0.7;
+    const jitter = (rng() - 0.5) * (TAU / count) * 0.75;
     const angle = sectorMid + jitter;
 
-    let chosen = null;
-    let anyPos = null; // fallback용
+    /* 이 각도에서 실제 화면 끝까지의 거리 */
+    const maxDist = edgeDist(angle, cx, cy, w, h, half, PAD);
+    const span = Math.max(0, maxDist - KEEPOUT);
 
-    for (let a = 0; a < 50; a++) {
-      const dist = KEEPOUT + rng() * Math.max(0, MAX_DIST - KEEPOUT);
+    let chosen = null;
+    let fallback = null;
+
+    for (let a = 0; a < 60; a++) {
+      /* 가장자리 쪽에 더 많이 배치되도록 제곱 분포 */
+      const t = rng() * rng();
+      const dist = KEEPOUT + t * span;
       const imgCx = cx + Math.cos(angle) * dist;
       const imgCy = cy + Math.sin(angle) * dist;
-      const x = imgCx - size / 2;
-      const y = imgCy - size / 2;
+      const x = imgCx - half;
+      const y = imgCy - half;
 
       if (x < PAD || y < PAD || x + size > w - PAD || y + size > h - PAD) continue;
-
-      if (!anyPos) anyPos = { x, y, size, rotate, depth };
+      if (!fallback) fallback = { x, y, size, rotate, depth };
 
       const overlaps = list.some((p) => {
         const dx = imgCx - (p.x + p.size / 2);
@@ -63,11 +80,7 @@ function generatePositions(count, w, h) {
       if (!overlaps) { chosen = { x, y, size, rotate, depth }; break; }
     }
 
-    list.push(chosen ?? anyPos ?? {
-      x: Math.max(PAD, Math.min(w - size - PAD, cx + Math.cos(angle) * KEEPOUT - size / 2)),
-      y: Math.max(PAD, Math.min(h - size - PAD, cy + Math.sin(angle) * KEEPOUT - size / 2)),
-      size, rotate, depth,
-    });
+    if (chosen ?? fallback) list.push(chosen ?? fallback);
   }
 
   return list;
