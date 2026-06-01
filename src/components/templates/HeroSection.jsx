@@ -23,6 +23,7 @@ function generatePositions(count, w, h) {
   const SIZE_MAX = 80;
   const GAP = 12;
   const PAD = 10;
+  const PAD_TOP = 80;   // 헤더 근처 상단 여백
   const KEEPOUT = 170;
   const cx = w / 2;
   const cy = h / 2;
@@ -45,7 +46,7 @@ function generatePositions(count, w, h) {
     if (cos > 1e-9)  maxDist = Math.min(maxDist, (w - PAD - half - cx) / cos);
     if (cos < -1e-9) maxDist = Math.min(maxDist, (PAD + half - cx) / cos);
     if (sin > 1e-9)  maxDist = Math.min(maxDist, (h - PAD - half - cy) / sin);
-    if (sin < -1e-9) maxDist = Math.min(maxDist, (PAD + half - cy) / sin);
+    if (sin < -1e-9) maxDist = Math.min(maxDist, (PAD_TOP + half - cy) / sin);
     maxDist = Math.max(KEEPOUT, maxDist);
 
     let chosen = null;
@@ -59,7 +60,7 @@ function generatePositions(count, w, h) {
       const x = imgCx - half;
       const y = imgCy - half;
 
-      if (x < PAD || y < PAD || x + size > w - PAD || y + size > h - PAD) continue;
+      if (x < PAD || y < PAD_TOP || x + size > w - PAD || y + size > h - PAD) continue;
       if (!fallback) fallback = { x, y, size, rotate, depth };
 
       const overlaps = list.some((p) => {
