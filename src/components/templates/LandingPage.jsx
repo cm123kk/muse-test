@@ -1,40 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import Grid from '@mui/material/Grid';
+import Button from '@mui/material/Button';
+import { GNB } from '../navigation/GNB';
 import HeroSection from './HeroSection';
 import SolutionOneSection from './SolutionOneSection';
+import TagMarqueeSection from './TagMarqueeSection';
+import SolutionTwoSection from './SolutionTwoSection';
+import FooterCtaSection from './FooterCtaSection';
 import AuthModal from '../overlay-feedback/AuthModal';
-
-const FEATURES = [
-  {
-    label: '레퍼런스 수집',
-    description: '이미지를 드래그하거나 붙여넣어 영감 아카이브를 만든다.',
-  },
-  {
-    label: 'AI 자동 태깅',
-    description: 'Claude가 색상, 레이아웃, 타이포그래피 등 5개 레이어를 자동 분석한다.',
-  },
-  {
-    label: '디자인 토큰 추출',
-    description: '레퍼런스 묶음에서 바로 쓸 수 있는 MUI 테마 토큰을 생성한다.',
-  },
-];
 
 /**
  * LandingPage 템플릿
  *
  * Props:
- * @param {function} onNavigateToSignUp - 회원가입 버튼 클릭 시 콜백 [Optional]
- * @param {function} onNavigateToLogin - 로그인 버튼 클릭 시 콜백 [Optional]
+ * @param {function} onNavigateToSignUp - 회원가입/시작하기 성공 시 콜백 [Optional]
  *
  * Example usage:
- * <LandingPage
- *   onNavigateToSignUp={() => navigate('/signup')}
- *   onNavigateToLogin={() => navigate('/login')}
- * />
+ * <LandingPage onNavigateToSignUp={() => navigate('/signup')} />
  */
-function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
+function LandingPage({ onNavigateToSignUp }) {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [authModal, setAuthModal] = useState({ open: false, tab: 'signup' });
   const scrollRef = useRef(null);
@@ -55,6 +40,24 @@ function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
 
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
+      {/* 전역 GNB: 랜딩 전체 sticky. ghost 모드(배경/보더 제거) + 로고 + 시작하기 CTA */}
+      <GNB
+        isGhost
+        logo={
+          <Typography
+            variant="h6"
+            sx={{ fontWeight: 700, color: 'text.primary', letterSpacing: '-0.02em' }}
+          >
+            MUSE
+          </Typography>
+        }
+        persistent={
+          <Button variant="contained" onClick={openSignUp}>
+            시작하기
+          </Button>
+        }
+      />
+
       {/* 히어로 + 브릿지 전환 구간: 200vh 스크롤 공간, hero는 sticky */}
       <Box sx={{ height: '200vh', position: 'relative' }} ref={scrollRef}>
         <Box sx={{ position: 'sticky', top: 0, height: '100vh' }}>
@@ -68,35 +71,18 @@ function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
       {/* Solution 1 */}
       <SolutionOneSection />
 
-      {/* Features */}
-      <Box
-        sx={{
-          px: { xs: 3, md: 8 },
-          py: { xs: 10, md: 14 },
-          maxWidth: 900,
-          mx: 'auto',
-        }}
-      >
-        <Grid container spacing={4}>
-          {FEATURES.map((feature, index) => (
-            <Grid key={index} size={{ xs: 12, md: 4 }}>
-              <Typography
-                variant="overline"
-                color="text.disabled"
-                sx={{ letterSpacing: '0.08em' }}
-              >
-                0{index + 1}
-              </Typography>
-              <Typography variant="subtitle1" sx={{ fontWeight: 700, mt: 0.5, mb: 1 }}>
-                {feature.label}
-              </Typography>
-              <Typography variant="body2" color="text.secondary">
-                {feature.description}
-              </Typography>
-            </Grid>
-          ))}
-        </Grid>
-      </Box>
+      {/* T1 태그 마퀴 (3행 교차 방향) */}
+      <TagMarqueeSection />
+
+      {/* Solution 2 */}
+      <SolutionTwoSection />
+
+      {/* Footer CTA */}
+      <FooterCtaSection
+        onNavigateToSignUp={openSignUp}
+        onNavigateToLogin={openLogin}
+      />
+
       <AuthModal
         isOpen={authModal.open}
         initialTab={authModal.tab}

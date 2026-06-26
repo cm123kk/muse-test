@@ -50,12 +50,13 @@ function AuthModal({ isOpen, initialTab = 'signup', onClose, onSuccess }) {
         </IconButton>
 
         <Typography variant="h5" sx={{ fontWeight: 800, letterSpacing: '-0.02em', mb: 2 }}>
-          MUSE.
+          MUSE
         </Typography>
 
         <Tabs
           value={tab}
           onChange={handleTabChange}
+          centered
           sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
         >
           <Tab label="가입하기" value="signup" sx={{ fontWeight: 600 }} />

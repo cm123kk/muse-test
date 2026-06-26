@@ -180,7 +180,6 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
 
       const sp = scrollProgressRef.current;
       const w = window.innerWidth;
-      const h = window.innerHeight;
 
       /* sp 구간별 파생 값 */
       const lerpSp = Math.min(sp / 0.8, 1);          // 0→1 as sp 0→0.8 (위치 이동)
@@ -230,14 +229,13 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
         const trackW = w + MARQUEE_SIZE;
         const marqX = mPos.x + marqueeOffsets[mPos.row];
 
-        /* scatter → marquee 위치 lerp */
-        const staticTargetDx = mPos.x - sPos.x;
-        const staticTargetDy = mPos.y - sPos.y;
-        const movingTargetDx = marqX - sPos.x;
-        const movingTargetDy = mPos.y - sPos.y;
-
-        const finalDx = (staticTargetDx + (movingTargetDx - staticTargetDx) * marqueeSp) * lerpSp;
-        const finalDy = (staticTargetDy + (movingTargetDy - staticTargetDy) * marqueeSp) * lerpSp;
+        /* 위치 블렌드(lerpSp, 스크롤 연동)와 마퀴 흐름(marqueeOffsets, 시간 누적)을 분리.
+           흐름 오프셋을 marqueeSp 로 다시 곱하면 스크롤 속도가 그대로 화면 속도에 실려
+           (오프셋 × d(marqueeSp)/dt) 전환 중 이미지가 확 튄다.
+           대신 흐름은 lerpSp(거의 1, 느리게 변함)에만 싣고, 가속 램프업은
+           speed = MARQUEE_SPEED * marqueeSp(오프셋 누적 속도)에서만 처리한다. */
+        const finalDx = (marqX - sPos.x) * lerpSp;
+        const finalDy = (mPos.y - sPos.y) * lerpSp;
 
         /* 최종 left 좌표를 화면 밖 안전 범위 (-MARQUEE_SIZE, w] 로 랩.
            전환 중엔 좌표가 범위 안 → 무동작. 정상 흐름에선 화면 밖 한쪽으로 사라질 때

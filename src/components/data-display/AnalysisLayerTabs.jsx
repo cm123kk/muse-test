@@ -24,6 +24,7 @@ import { ANALYSIS_LAYERS_WITH_DESIGN_MD } from '../../data/muse/layers.js';
  * @param {function} onUpdateToken - (layerKey, tokenId, patch) => void 토큰 편집 콜백 [Optional]
  * @param {array} categories - 탭 카테고리 [{ id, label }] [Optional, 기본값: ANALYSIS_LAYERS_WITH_DESIGN_MD]
  * @param {string} defaultLayer - 초기 활성 레이어 키 [Optional, 기본값: 'color']
+ * @param {object} renderOverride - 레이어 키 → () => ReactNode. 있으면 기본 렌더러 대신 호출됨 [Optional]
  * @param {object} sx - 추가 스타일 [Optional]
  *
  * Example usage:
@@ -41,6 +42,7 @@ export function AnalysisLayerTabs({
   onUpdateToken,
   categories = ANALYSIS_LAYERS_WITH_DESIGN_MD,
   defaultLayer = 'color',
+  renderOverride,
   sx,
 }) {
   const [activeLayer, setActiveLayer] = useState(defaultLayer);
@@ -50,6 +52,9 @@ export function AnalysisLayerTabs({
   };
 
   const renderEditor = () => {
+    const override = renderOverride?.[activeLayer];
+    if (override) return override();
+
     switch (activeLayer) {
       case 'color':
         return (

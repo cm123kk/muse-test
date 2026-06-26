@@ -175,9 +175,7 @@ export function ImageCard({
               variant="body2"
               sx={ {
                 fontWeight: 600,
-                overflow: 'hidden',
-                textOverflow: 'ellipsis',
-                whiteSpace: 'nowrap',
+                wordBreak: 'break-word',
               } }
             >
               { title }
