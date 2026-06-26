@@ -37,12 +37,12 @@ function TagPill({ label }) {
         borderColor: 'divider',
         bgcolor: 'transparent',
         color: 'text.primary',
-        px: { xs: 1.5, md: 3 },
-        py: { xs: 1, md: 2 },
+        px: { xs: 0.75, sm: 1.5, md: 3 },
+        py: { xs: 0.5, sm: 1, md: 2 },
         '& .MuiChip-label': {
-          px: { xs: 1, md: 2 },
+          px: { xs: 0.5, sm: 1, md: 2 },
           fontWeight: 500,
-          fontSize: { xs: '1.8rem', sm: '2.6rem', md: '4rem' },
+          fontSize: { xs: '1rem', sm: '2rem', md: '4rem' },
           /* 큰 폰트에서 descender(g, p, y) 세로 잘림 방지: 넉넉한 lineHeight + overflow 해제 */
           lineHeight: 1.3,
           letterSpacing: '-0.02em',

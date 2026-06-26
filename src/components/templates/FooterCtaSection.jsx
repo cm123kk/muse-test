@@ -20,13 +20,14 @@ function mulberry32(seed) {
 
 function generatePositions(count, w, h) {
   const rng = mulberry32(99);
-  const SIZE_MIN = 60;
-  const SIZE_MAX = 95;
+  /* 이미지 크기: 모바일에서 화면 너비 비례로 축소 */
+  const SIZE_MIN = Math.min(60, Math.round(w * 0.1));
+  const SIZE_MAX = Math.min(95, Math.round(w * 0.14));
   const PAD = 14;
   const PAD_TOP = 72;
   /* 직사각형 keepout: 텍스트 블록 영역만 정확히 제외, 좌우에도 이미지 배치 가능 */
-  /* KEEPOUT_Y: 뷰포트 높이 비례로 계산해 어떤 화면에서도 위아래 행이 항상 표시됨 */
-  const KEEPOUT_X = 320;
+  /* KEEPOUT_X/Y: 뷰포트 비례로 계산해 어떤 화면 크기에서도 균등 배치 보장 */
+  const KEEPOUT_X = Math.min(Math.round(w * 0.22), 320);
   const KEEPOUT_Y = Math.min(Math.round(h * 0.25), 195);
   const COLS = 8;
   const ROWS = 5;

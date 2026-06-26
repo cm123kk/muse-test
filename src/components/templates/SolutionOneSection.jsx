@@ -107,7 +107,7 @@ function SolutionOneSection() {
           setCards(FIXTURES.map(() => ({ state: 0, layerDoneCount: 0 })));
         }
       },
-      { threshold: 0.35 },
+      { threshold: 0.15 },
     );
 
     observer.observe(el);
@@ -119,7 +119,6 @@ function SolutionOneSection() {
 
   return (
     <Box
-      ref={sectionRef}
       sx={{
         px: { xs: 3, md: 8 },
         py: { xs: 10, md: 14 },
@@ -139,7 +138,7 @@ function SolutionOneSection() {
         </Typography>
       </Box>
 
-      <Grid container spacing={3}>
+      <Grid ref={sectionRef} container spacing={3}>
         {FIXTURES.map((fixture, i) => {
           const card = cards[i];
           const isDone = card.state === 2;
