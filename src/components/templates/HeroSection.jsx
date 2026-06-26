@@ -211,33 +211,31 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
         offsX[i] *= DECAY;
         offsY[i] *= DECAY;
 
-        /* 마퀴 X: 오프셋 적용 후 out-of-screen 랩어라운드 */
+        /* 마퀴 X: 랩어라운드를 "최종 좌표"에 적용 → 점프가 항상 화면 밖 경계에서만 발생.
+           (마퀴 오프셋은 누적값 그대로 사용. 미리 랩하면 전환 중 marqueeSp 가중으로 화면 안에서 튐) */
         const trackW = w + MARQUEE_SIZE;
-        const dir = mPos.row === 1 ? 1 : -1;
-        let rawMarqX = mPos.x + marqueeOffsets[mPos.row];
-
-        if (dir < 0) {
-          /* 좌: 완전히 화면 밖 왼쪽 → 화면 밖 오른쪽에서 등장 */
-          while (rawMarqX < -MARQUEE_SIZE) rawMarqX += trackW;
-          while (rawMarqX > w) rawMarqX -= trackW;
-        } else {
-          /* 우: 완전히 화면 밖 오른쪽 → 화면 밖 왼쪽에서 등장 */
-          while (rawMarqX > w) rawMarqX -= trackW;
-          while (rawMarqX < -MARQUEE_SIZE) rawMarqX += trackW;
-        }
+        const marqX = mPos.x + marqueeOffsets[mPos.row];
 
         /* scatter → marquee 위치 lerp */
         const staticTargetDx = mPos.x - sPos.x;
         const staticTargetDy = mPos.y - sPos.y;
-        const movingTargetDx = rawMarqX - sPos.x;
+        const movingTargetDx = marqX - sPos.x;
         const movingTargetDy = mPos.y - sPos.y;
 
         const finalDx = (staticTargetDx + (movingTargetDx - staticTargetDx) * marqueeSp) * lerpSp;
         const finalDy = (staticTargetDy + (movingTargetDy - staticTargetDy) * marqueeSp) * lerpSp;
 
+        /* 최종 left 좌표를 화면 밖 안전 범위 (-MARQUEE_SIZE, w] 로 랩.
+           전환 중엔 좌표가 범위 안 → 무동작. 정상 흐름에선 화면 밖 한쪽으로 사라질 때
+           반대쪽 화면 밖에서 재등장하므로 "더해지는 이미지"도 화면 안에 노출되지 않음. */
+        let finalX = sPos.x + finalDx;
+        while (finalX < -MARQUEE_SIZE) finalX += trackW;
+        while (finalX > w) finalX -= trackW;
+        const wrappedDx = finalX - sPos.x;
+
         const rotate = sPos.rotate * (1 - lerpSp);
 
-        node.style.transform = `translate(${(finalDx + offsX[i]).toFixed(2)}px, ${(finalDy + offsY[i]).toFixed(2)}px) rotate(${rotate.toFixed(2)}deg)`;
+        node.style.transform = `translate(${(wrappedDx + offsX[i]).toFixed(2)}px, ${(finalDy + offsY[i]).toFixed(2)}px) rotate(${rotate.toFixed(2)}deg)`;
       });
 
       frameRef.current = requestAnimationFrame(tick);
@@ -253,8 +251,15 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
     };
   }, []);
 
-  const heroOpacity = Math.max(0, 1 - scrollProgress * 5);
-  const bridgeOpacity = Math.max(0, (scrollProgress - 0.45) / 0.35);
+  /* 히어로 텍스트: sp 0→0.4 구간에서 위로 슬라이드 아웃 */
+  const heroExit = Math.min(1, scrollProgress / 0.4);
+  const heroOpacity = 1 - heroExit;
+  const heroTranslateY = -heroExit * 120;
+
+  /* 브릿지 텍스트: sp 0.35→0.75 구간에서 아래→위 슬라이드 인 */
+  const bridgeEnter = Math.max(0, Math.min(1, (scrollProgress - 0.35) / 0.4));
+  const bridgeOpacity = bridgeEnter;
+  const bridgeTranslateY = (1 - bridgeEnter) * 80;
 
   return (
     <Box
@@ -321,6 +326,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
           justifyContent: 'center',
           zIndex: 10,
           opacity: heroOpacity,
+          transform: `translateY(${heroTranslateY.toFixed(2)}px)`,
           pointerEvents: heroOpacity > 0.05 ? 'auto' : 'none',
         }}
       >
@@ -361,6 +367,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
           justifyContent: 'center',
           zIndex: 10,
           opacity: bridgeOpacity,
+          transform: `translateY(${bridgeTranslateY.toFixed(2)}px)`,
           pointerEvents: 'none',
         }}
       >
