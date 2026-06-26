@@ -68,7 +68,7 @@ function generatePositions(count, w, h) {
   return list;
 }
 
-/* 마퀴 타겟 위치: 3행, 이미지를 화면 너비 전체에 균등 분배 */
+/* 마퀴 타겟 위치: 3행, 트랙 너비 = w + MARQUEE_SIZE (out-of-screen 랩어라운드 기준) */
 function generateMarqueePositions(count, w, h) {
   const ROW_Y = [h * 0.22, h * 0.5, h * 0.78];
   const rowCounts = [0, 0, 0];
@@ -79,7 +79,9 @@ function generateMarqueePositions(count, w, h) {
     const row = i % 3;
     const col = colIdx[row]++;
     const n = rowCounts[row];
-    const spacing = w / n;
+    /* 트랙 = w + MARQUEE_SIZE → 이미지가 완전히 화면 밖에서 랩어라운드 */
+    const trackW = w + MARQUEE_SIZE;
+    const spacing = trackW / n;
     const x = col * spacing + (spacing - MARQUEE_SIZE) / 2;
     const y = ROW_Y[row] - MARQUEE_SIZE / 2;
     return { x, y, row, n };
@@ -209,20 +211,29 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
         offsX[i] *= DECAY;
         offsY[i] *= DECAY;
 
-        /* 마퀴 X: 오프셋 적용 후 모듈러 랩어라운드 */
-        const rawMarqX = mPos.x + marqueeOffsets[mPos.row];
-        const wrappedMarqX = ((rawMarqX % w) + w) % w;
+        /* 마퀴 X: 오프셋 적용 후 out-of-screen 랩어라운드 */
+        const trackW = w + MARQUEE_SIZE;
+        const dir = mPos.row === 1 ? 1 : -1;
+        let rawMarqX = mPos.x + marqueeOffsets[mPos.row];
+
+        if (dir < 0) {
+          /* 좌: 완전히 화면 밖 왼쪽 → 화면 밖 오른쪽에서 등장 */
+          while (rawMarqX < -MARQUEE_SIZE) rawMarqX += trackW;
+          while (rawMarqX > w) rawMarqX -= trackW;
+        } else {
+          /* 우: 완전히 화면 밖 오른쪽 → 화면 밖 왼쪽에서 등장 */
+          while (rawMarqX > w) rawMarqX -= trackW;
+          while (rawMarqX < -MARQUEE_SIZE) rawMarqX += trackW;
+        }
 
         /* scatter → marquee 위치 lerp */
-        const targetDx = wrappedMarqX - sPos.x;
-        const targetDy = mPos.y - sPos.y;
-
-        /* marqueeSp가 0이면 static target 사용, 1이면 wrapped target 사용 */
         const staticTargetDx = mPos.x - sPos.x;
         const staticTargetDy = mPos.y - sPos.y;
+        const movingTargetDx = rawMarqX - sPos.x;
+        const movingTargetDy = mPos.y - sPos.y;
 
-        const finalDx = (staticTargetDx + (targetDx - staticTargetDx) * marqueeSp) * lerpSp;
-        const finalDy = (staticTargetDy + (targetDy - staticTargetDy) * marqueeSp) * lerpSp;
+        const finalDx = (staticTargetDx + (movingTargetDx - staticTargetDx) * marqueeSp) * lerpSp;
+        const finalDy = (staticTargetDy + (movingTargetDy - staticTargetDy) * marqueeSp) * lerpSp;
 
         const rotate = sPos.rotate * (1 - lerpSp);
 
