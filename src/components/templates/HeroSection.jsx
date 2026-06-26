@@ -101,8 +101,11 @@ function generateMarqueePositions(count, w, h) {
 function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [hoverIdx, setHoverIdx] = useState(-1);
+  /* 히어로 콘텐츠(타이틀+본문+CTA) 실제 높이 — exit 거리 계산용 */
+  const [heroContentH, setHeroContentH] = useState(0);
 
   const containerRef = useRef(null);
+  const heroContentRef = useRef(null);
   const itemRefs = useRef([]);
   const positionsRef = useRef([]);
   const marqueePositionsRef = useRef([]);
@@ -115,6 +118,17 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
     const onResize = () => setSize({ w: window.innerWidth, h: window.innerHeight });
     window.addEventListener('resize', onResize);
     return () => window.removeEventListener('resize', onResize);
+  }, []);
+
+  /* 히어로 콘텐츠 높이 측정 (폰트 반응형/리사이즈 대응) */
+  useEffect(() => {
+    const el = heroContentRef.current;
+    if (!el) return;
+    const measure = () => setHeroContentH(el.offsetHeight);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
   }, []);
 
   const positions = useMemo(
@@ -251,15 +265,19 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
     };
   }, []);
 
-  /* 히어로 텍스트: sp 0→0.4 구간에서 위로 슬라이드 아웃 */
-  const heroExit = Math.min(1, scrollProgress / 0.4);
-  const heroOpacity = 1 - heroExit;
-  const heroTranslateY = -heroExit * 120;
+  /* container(100vh) 중앙에서 화면 밖까지 밀어내기 위한 최소 거리 */
+  const halfVh = window.innerHeight / 2 + 60;
 
-  /* 브릿지 텍스트: sp 0.35→0.75 구간에서 아래→위 슬라이드 인 */
-  const bridgeEnter = Math.max(0, Math.min(1, (scrollProgress - 0.35) / 0.4));
-  const bridgeOpacity = bridgeEnter;
-  const bridgeTranslateY = (1 - bridgeEnter) * 80;
+  /* 히어로 텍스트 + CTA: sp 0→0.4 구간에서 위로 슬라이드 아웃 (화면 위 밖으로 완전 이탈).
+     블록은 세로 중앙 정렬이므로, 맨 아래 CTA까지 화면 위로 빼려면
+     (뷰포트 절반 + 블록 절반 + 여유)만큼 올려야 한다. */
+  const heroExit = Math.min(1, scrollProgress / 0.4);
+  const heroExitDist = window.innerHeight / 2 + heroContentH / 2 + 40;
+  const heroTranslateY = -heroExit * heroExitDist;
+
+  /* 브릿지 텍스트: sp 0.45→0.8 구간에서 아래→위 슬라이드 인 (화면 아래 밖에서 진입) */
+  const bridgeEnter = Math.max(0, Math.min(1, (scrollProgress - 0.45) / 0.35));
+  const bridgeTranslateY = (1 - bridgeEnter) * halfVh;
 
   return (
     <Box
@@ -325,12 +343,11 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 10,
-          opacity: heroOpacity,
           transform: `translateY(${heroTranslateY.toFixed(2)}px)`,
-          pointerEvents: heroOpacity > 0.05 ? 'auto' : 'none',
+          pointerEvents: 'none',
         }}
       >
-        <Box sx={{ textAlign: 'center', px: 3 }}>
+        <Box ref={heroContentRef} sx={{ textAlign: 'center', px: 3, pointerEvents: scrollProgress < 0.3 ? 'auto' : 'none' }}>
           <Typography
             variant="h1"
             sx={{
@@ -366,7 +383,6 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
           alignItems: 'center',
           justifyContent: 'center',
           zIndex: 10,
-          opacity: bridgeOpacity,
           transform: `translateY(${bridgeTranslateY.toFixed(2)}px)`,
           pointerEvents: 'none',
         }}

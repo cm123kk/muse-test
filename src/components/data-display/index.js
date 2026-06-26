@@ -17,5 +17,8 @@ export { GradientPreview } from './GradientPreview.jsx';
 // DESIGN.md (Google Labs alpha spec) preview. system 결과 화면 + components live render + scale 시각화
 export { DesignMdPreview } from './DesignMdPreview.jsx';
 
+// AnalysisLayerTabs — T3 system 분석 결과를 레이어 탭(CategoryTab + 프리뷰 5종)으로 묶은 합성 컴포넌트
+export { AnalysisLayerTabs } from './AnalysisLayerTabs.jsx';
+
 // LayerAnalysisStrip — T1 레이어별 진행 strip (overlay 아닌 stack 흐름)
 export { LayerAnalysisStrip } from './LayerAnalysisStrip.jsx';

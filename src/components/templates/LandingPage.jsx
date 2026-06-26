@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import HeroSection from './HeroSection';
+import SolutionOneSection from './SolutionOneSection';
 import AuthModal from '../overlay-feedback/AuthModal';
 
 const FEATURES = [
@@ -63,6 +64,9 @@ function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
           />
         </Box>
       </Box>
+
+      {/* Solution 1 */}
+      <SolutionOneSection />
 
       {/* Features */}
       <Box

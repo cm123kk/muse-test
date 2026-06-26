@@ -54,6 +54,7 @@ Vibe Dictionary 텍소노미 v0.4 기반 분류. 번호는 텍소노미 카테�
 - LayoutTokenPreview: 레이아웃 레이어(grid/spacing/container) mini-diagram 프리뷰 (`components/data-display/LayoutTokenPreview.jsx`)
 - GradientPreview: 그라디언트 레이어 토큰 목록. preview에 실제 gradient 스와치 (`components/data-display/GradientPreview.jsx`)
 - LayerAnalysisStrip: 레퍼런스 / 미디어 카드 하단에 부착되는 가벼운 5 layer 진행 strip. ANALYZING n/N + LinearProgress 2px + per-layer status 행. overlay 아닌 stack 흐름 (`components/data-display/LayerAnalysisStrip.jsx`)
+- AnalysisLayerTabs: T3 (system 모드) 분석 결과를 레이어 탭으로 보여주는 합성 컴포넌트. CategoryTab + activeLayer 상태 + 레이어별 프리뷰 5종(color/typography/layout/gradient/visualDirection + designMd) 전환을 캡슐화. ProjectDetailPage 에서 인라인이던 탭+renderEditor 로직을 추출 (`components/data-display/AnalysisLayerTabs.jsx`)
 - Table: MUI Table 컴포넌트 [MUI]
 
 ## 6. In-page Navigation — 페이지 내 탐색
@@ -148,6 +149,6 @@ Vibe Dictionary 텍소노미 v0.4 기반 분류. 번호는 텍소노미 카테�
 - SignUpPage: 회원가입 페이지 템플릿. AuthFormCard + SignUpForm 조합 (`components/templates/SignUpPage.jsx`)
 - ArchivePage: MUSE 아카이브 페이지 템플릿. AppShell + FileDropzone + FilterPanel + InfiniteMasonry 조립. 업로드/태깅/삭제 로직은 `useReferenceArchive` 훅으로 분리 (`components/templates/ArchivePage.jsx`)
 - useReferenceArchive: ArchivePage용 store-mode 업로드/T1 태깅/재시도/삭제 훅. store 미사용 시 외부 props로 폴백 (`components/templates/useReferenceArchive.js`)
-- ProjectDetailPage: MUSE 프로젝트 상세 페이지 템플릿. AppShell + CategoryTab(레이어) + SplitScreen(편집/프리뷰) + 레이어별 프리뷰 5종 + ThemeExportDialog 조립 (`components/templates/ProjectDetailPage.jsx`)
+- ProjectDetailPage: MUSE 프로젝트 상세 페이지 템플릿. AppShell + SplitScreen(편집/프리뷰) + AnalysisLayerTabs(레이어 탭 결과) + DesignMdPreview(showcase) + ThemeExportDialog 조립. concept 모드는 단일 prompt 뷰 분기 (`components/templates/ProjectDetailPage.jsx`)
 - ProjectListPage: MUSE 프로젝트 목록 페이지. MoodboardCard를 Grid에 배치, 유형 Chip 오버레이, 빈 상태 CTA (`components/templates/ProjectListPage.jsx`)
 - SettingsPage: MUSE 설정 페이지. AI 모델(Select) / 자동 태깅(Switch) / 스토리지(Radio) / 테마 모드(Radio) 4섹션 (`components/templates/SettingsPage.jsx`)
