@@ -1,7 +1,9 @@
+import { useEffect, useRef, useState } from 'react';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import HeroSection from './HeroSection';
+import AuthModal from '../overlay-feedback/AuthModal';
 
 const FEATURES = [
   {
@@ -32,13 +34,35 @@ const FEATURES = [
  * />
  */
 function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [authModal, setAuthModal] = useState({ open: false, tab: 'signup' });
+  const scrollRef = useRef(null);
+
+  const openSignUp = () => setAuthModal({ open: true, tab: 'signup' });
+  const openLogin = () => setAuthModal({ open: true, tab: 'login' });
+  const closeModal = () => setAuthModal((s) => ({ ...s, open: false }));
+
+  useEffect(() => {
+    const onScroll = () => {
+      /* scrollProgress: 0 = hero top, 1 = bridge fully transitioned */
+      const sp = Math.min(1, Math.max(0, window.scrollY / window.innerHeight));
+      setScrollProgress(sp);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
   return (
-    <Box sx={{ bgcolor: 'background.default', minHeight: '100vh' }}>
-      {/* Hero */}
-      <HeroSection
-        onNavigateToSignUp={onNavigateToSignUp}
-        onNavigateToLogin={onNavigateToLogin}
-      />
+    <Box sx={{ bgcolor: 'background.default' }}>
+      {/* 히어로 + 브릿지 전환 구간: 200vh 스크롤 공간, hero는 sticky */}
+      <Box sx={{ height: '200vh', position: 'relative' }} ref={scrollRef}>
+        <Box sx={{ position: 'sticky', top: 0, height: '100vh' }}>
+          <HeroSection
+            onNavigateToSignUp={openSignUp}
+            scrollProgress={scrollProgress}
+          />
+        </Box>
+      </Box>
 
       {/* Features */}
       <Box
@@ -49,28 +73,32 @@ function LandingPage({ onNavigateToSignUp, onNavigateToLogin }) {
           mx: 'auto',
         }}
       >
-        <Box>
-          <Grid container spacing={4}>
-            {FEATURES.map((feature, index) => (
-              <Grid key={index} size={{ xs: 12, md: 4 }}>
-                <Typography
-                  variant="overline"
-                  color="text.disabled"
-                  sx={{ letterSpacing: '0.08em' }}
-                >
-                  0{index + 1}
-                </Typography>
-                <Typography variant="subtitle1" sx={{ fontWeight: 700, mt: 0.5, mb: 1 }}>
-                  {feature.label}
-                </Typography>
-                <Typography variant="body2" color="text.secondary">
-                  {feature.description}
-                </Typography>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
+        <Grid container spacing={4}>
+          {FEATURES.map((feature, index) => (
+            <Grid key={index} size={{ xs: 12, md: 4 }}>
+              <Typography
+                variant="overline"
+                color="text.disabled"
+                sx={{ letterSpacing: '0.08em' }}
+              >
+                0{index + 1}
+              </Typography>
+              <Typography variant="subtitle1" sx={{ fontWeight: 700, mt: 0.5, mb: 1 }}>
+                {feature.label}
+              </Typography>
+              <Typography variant="body2" color="text.secondary">
+                {feature.description}
+              </Typography>
+            </Grid>
+          ))}
+        </Grid>
       </Box>
+      <AuthModal
+        isOpen={authModal.open}
+        initialTab={authModal.tab}
+        onClose={closeModal}
+        onSuccess={onNavigateToSignUp}
+      />
     </Box>
   );
 }
