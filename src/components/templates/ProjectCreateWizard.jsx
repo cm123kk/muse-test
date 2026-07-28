@@ -1,4 +1,4 @@
-import { useEffect, useReducer, useState } from 'react';
+import { useCallback, useEffect, useReducer, useRef, useState } from 'react';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 import Stepper from '@mui/material/Stepper';
@@ -150,6 +150,69 @@ export function ProjectCreateWizard({
   const [referenceLayerMap, setReferenceLayerMap] = useState({}); // Cache of T2 referenceLayer results
   const [suggestingRefIds, setSuggestingRefIds] = useState({}); // { [refId]: true }: Step 3 note auto-generation in progress
 
+  /**
+   * Presentational-only progress pacing.
+   *
+   * The real analysis resolves multiple layers per API call (Phase 1 returns
+   * color/typography/layout/gradient/visualDirection at once), so their progress
+   * would otherwise flip to "done" simultaneously. This wrapper reveals a batch of
+   * newly-done layers one at a time so the UI reads as sequential completion.
+   *
+   * It only paces ANALYSIS_UPDATE dispatches. It never touches the analysis data,
+   * the resolved result, or the onAnalyze/onComplete flow. The emitted arrays keep
+   * the exact same shape the analyzer passes in (only `status` is toggled), and the
+   * terminal ANALYSIS_DONE always snaps every layer to done, so completion is never
+   * delayed past the real finish.
+   */
+  const revealTimersRef = useRef([]);
+  const displayedLayersRef = useRef(null);
+
+  const clearRevealTimers = useCallback(() => {
+    revealTimersRef.current.forEach(clearTimeout);
+    revealTimersRef.current = [];
+  }, []);
+
+  const emitProgress = useCallback((target) => {
+    clearRevealTimers();
+    const prev = displayedLayersRef.current;
+    displayedLayersRef.current = target;
+    const prevDone = new Set((prev || []).filter((l) => l.status === 'done').map((l) => l.key));
+    const newlyDoneKeys = target
+      .filter((l) => l.status === 'done' && !prevDone.has(l.key))
+      .map((l) => l.key);
+
+    // Zero or one newly-done layer: nothing to stagger, pass through unchanged.
+    if (newlyDoneKeys.length <= 1) {
+      dispatch({ type: 'ANALYSIS_UPDATE', payload: target });
+      return;
+    }
+
+    const STEP_MS = 380;
+    const revealed = new Set();
+    const render = () => {
+      const payload = target.map((l) => (
+        newlyDoneKeys.includes(l.key) && !revealed.has(l.key)
+          ? { ...l, status: 'running' }
+          : l
+      ));
+      dispatch({ type: 'ANALYSIS_UPDATE', payload });
+    };
+    render();
+    newlyDoneKeys.forEach((key, idx) => {
+      const timer = setTimeout(() => {
+        revealed.add(key);
+        if (idx === newlyDoneKeys.length - 1) {
+          dispatch({ type: 'ANALYSIS_UPDATE', payload: target });
+        } else {
+          render();
+        }
+      }, (idx + 1) * STEP_MS);
+      revealTimersRef.current.push(timer);
+    });
+  }, [clearRevealTimers]);
+
+  useEffect(() => () => clearRevealTimers(), [clearRevealTimers]);
+
   const handleSuggestNote = async (ref, useLayers) => {
     if (!ref?.id || suggestingRefIds[ref.id]) return;
     setSuggestingRefIds((prev) => ({ ...prev, [ref.id]: true }));
@@ -228,9 +291,8 @@ export function ProjectCreateWizard({
     let analysisResult = null;
     try {
       if (onAnalyze) {
-        analysisResult = await onAnalyze(payload, (layers) =>
-          dispatch({ type: 'ANALYSIS_UPDATE', payload: layers }),
-        );
+        displayedLayersRef.current = null;
+        analysisResult = await onAnalyze(payload, emitProgress);
       } else {
         await new Promise((resolve) => {
           let i = 0;
@@ -249,6 +311,7 @@ export function ProjectCreateWizard({
           tick();
         });
       }
+      clearRevealTimers();
       dispatch({ type: 'ANALYSIS_DONE' });
       onComplete?.({
         form: state.form,
@@ -257,6 +320,7 @@ export function ProjectCreateWizard({
         analysis: analysisResult,
       });
     } catch {
+      clearRevealTimers();
       dispatch({ type: 'ANALYSIS_ERROR' });
     }
   };
