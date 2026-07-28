@@ -13,7 +13,7 @@ export default {
     ),
   ],
   argTypes: {
-    onSuccess: { action: 'success', description: '로그인 성공 시 콜백' },
+    onSuccess: { action: 'success', description: 'Callback fired on successful login' },
   },
 };
 

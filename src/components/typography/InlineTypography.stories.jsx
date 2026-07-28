@@ -31,12 +31,12 @@ export default {
         component: `
 ## InlineTypography
 
-텍스트 흐름 속에 이미지, 아이콘, 또는 다른 컴포넌트를 자연스럽게 삽입할 수 있는 컴포넌트.
+A component that naturally inserts images, icons, or other components within the text flow.
 
-### 용도
-- Editorial 스타일의 텍스트-이미지 조합
-- 아이콘과 텍스트의 인라인 배치
-- 브랜드 로고나 이모지 삽입
+### Use Cases
+- Editorial style text and image combinations
+- Inline placement of icons and text
+- Inserting brand logos or emoji
         `,
       },
     },
@@ -45,17 +45,17 @@ export default {
     variant: {
       control: 'select',
       options: ['body1', 'body2', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6'],
-      description: '타이포그래피 variant',
+      description: 'Typography variant',
     },
     align: {
       control: 'select',
       options: ['left', 'center', 'right', 'justify'],
-      description: '텍스트 정렬',
+      description: 'Text alignment',
     },
   },
 };
 
-// 샘플 이미지 URL (placeholderSvg 기반)
+// Sample image URLs (based on placeholderSvg)
 const sampleImages = {
   avatar1: placeholderSvg(100, 100),
   avatar2: placeholderSvg(100, 100),
@@ -63,7 +63,7 @@ const sampleImages = {
   landscape: placeholderSvg(200, 100),
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   render: () => (
     <InlineTypography variant="h4">
@@ -72,7 +72,7 @@ export const Default = {
   ),
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -89,11 +89,11 @@ export const Documentation = {
           InlineTypography
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          텍스트 흐름 속에 이미지, 아이콘, 또는 다른 컴포넌트를 자연스럽게 삽입할 수 있는 컴포넌트입니다.
-          Compound component 패턴으로 InlineObject, InlineIcon, InlineImage와 함께 사용합니다.
+          A component that naturally inserts images, icons, or other components within the text flow.
+          Used together with InlineObject, InlineIcon, and InlineImage in a compound component pattern.
         </Typography>
 
-        <SectionTitle title="Sub Components" description="InlineTypography와 함께 사용하는 하위 컴포넌트들입니다." />
+        <SectionTitle title="Sub Components" description="Sub components used together with InlineTypography." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -106,24 +106,24 @@ export const Documentation = {
             <TableBody>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>InlineObject</TableCell>
-                <TableCell>범용 인라인 요소 래퍼</TableCell>
-                <TableCell>커스텀 컴포넌트, 복잡한 요소</TableCell>
+                <TableCell>General purpose inline element wrapper</TableCell>
+                <TableCell>Custom components, complex elements</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>InlineIcon</TableCell>
-                <TableCell>MUI 아이콘 전용 래퍼</TableCell>
-                <TableCell>아이콘 삽입</TableCell>
+                <TableCell>Wrapper dedicated to MUI icons</TableCell>
+                <TableCell>Icon insertion</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>InlineImage</TableCell>
-                <TableCell>이미지 전용 래퍼</TableCell>
-                <TableCell>이미지, 아바타 삽입</TableCell>
+                <TableCell>Wrapper dedicated to images</TableCell>
+                <TableCell>Image and avatar insertion</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="With Icons" description="MUI 아이콘을 텍스트와 함께 배치합니다." />
+        <SectionTitle title="With Icons" description="Place MUI icons together with text." />
         <Stack spacing={ 3 }>
           <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
             <InlineTypography variant="h4">
@@ -149,7 +149,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="With Images" description="이미지를 텍스트와 함께 배치합니다." />
+        <SectionTitle title="With Images" description="Place images together with text." />
         <Stack spacing={ 3 }>
           <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
             <InlineTypography variant="h4">
@@ -169,7 +169,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="With Custom Objects" description="InlineObject로 커스텀 요소를 삽입합니다." />
+        <SectionTitle title="With Custom Objects" description="Insert custom elements with InlineObject." />
         <Stack spacing={ 3 }>
           <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
             <InlineTypography variant="h4">
@@ -213,11 +213,11 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Vertical Alignment" description="수직 정렬 옵션입니다." />
+        <SectionTitle title="Vertical Alignment" description="Vertical alignment options." />
         <Stack spacing={ 3 }>
           <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              align=&quot;middle&quot; (기본)
+              align=&quot;middle&quot; (default)
             </Typography>
             <InlineTypography variant="h4">
               Text with <InlineIcon icon={ <StarIcon /> } color="primary.main" align="middle" /> icon aligned to middle.
@@ -243,7 +243,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Hover Effects" description="hover 효과를 적용한 인라인 이미지입니다." />
+        <SectionTitle title="Hover Effects" description="Inline images with hover effects applied." />
         <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
           <InlineTypography variant="h3">
             Connect with
@@ -252,11 +252,11 @@ export const Documentation = {
             on our platform.
           </InlineTypography>
           <Typography variant="caption" color="text.secondary" sx={ { mt: 1, display: 'block' } }>
-            (이미지에 마우스를 올려보세요)
+            (Hover over the images)
           </Typography>
         </Box>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -268,18 +268,18 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          {`// 아이콘과 함께
+          {`// With icons
 <InlineTypography variant="h4">
   We <InlineIcon icon={<FavoriteIcon />} color="error.main" /> building products.
 </InlineTypography>
 
-// 이미지와 함께
+// With images
 <InlineTypography variant="h3">
   Meet our team:
   <InlineImage src="avatar.jpg" alt="Member" size={1.5} circle hover />
 </InlineTypography>
 
-// 커스텀 요소
+// Custom element
 <InlineTypography variant="h4">
   Powered by
   <InlineObject size={1.5}>

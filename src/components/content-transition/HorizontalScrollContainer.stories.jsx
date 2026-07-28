@@ -9,19 +9,19 @@ export default {
   argTypes: {
     gap: {
       control: 'text',
-      description: '슬라이드 간 간격 (CSS 단위)',
+      description: 'Spacing between slides (CSS units)',
     },
     padding: {
       control: 'text',
-      description: '좌우 패딩 (CSS 단위)',
+      description: 'Left and right padding (CSS units)',
     },
     backgroundColor: {
       control: 'color',
-      description: '배경색',
+      description: 'Background color',
     },
     onScrollProgress: {
       action: 'scrollProgress',
-      description: '스크롤 진행도 콜백 (0-1)',
+      description: 'Scroll progress callback (0-1)',
     },
   },
   parameters: {

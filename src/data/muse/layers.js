@@ -1,64 +1,64 @@
 /**
- * MUSE layer 정의 단일 진실 원천
+ * Single source of truth for MUSE layer definitions
  *
- * 5 개 파일에 흩어져있던 layer 라벨 / 키 정의 통합 (2026-04-30).
- *  - ProjectCreateWizard, ProjectDetailPage, LandingSolutionStage2, ReferenceNotesDialog,
- *    ReferenceLayerChipRow 가 각자 정의하던 LAYER_LABEL / LAYERS / LAYER_DEFS 를 흡수.
+ * Consolidates the layer label / key definitions that were scattered across 5 files (2026-04-30).
+ *  - Absorbs the LAYER_LABEL / LAYERS / LAYER_DEFS that ProjectCreateWizard, ProjectDetailPage,
+ *    LandingSolutionStage2, ReferenceNotesDialog, and ReferenceLayerChipRow each defined separately.
  */
 
-/** 짧은 한국어 라벨 (chip / 컴팩트 UI 용) */
+/** Short label (for chip / compact UI) */
 export const LAYER_LABEL = {
-  color: '색',
-  typography: '타이포',
-  layout: '레이아웃',
-  gradient: '그라디언트',
-  visualDirection: '무드',
-  components: '컴포넌트',
+  color: 'Color',
+  typography: 'Typography',
+  layout: 'Layout',
+  gradient: 'Gradient',
+  visualDirection: 'Mood',
+  components: 'Component',
 };
 
 /**
- * 분석 결과 4 layer + visualDirection (CategoryTab 용 카테고리 배열).
- *  ProjectDetailPage / LandingSolutionStage2 의 좌측 탭에서 사용.
- *  designMd 탭이 필요하면 LAYERS_WITH_DESIGN_MD 사용.
+ * The 4 analysis-result layers + visualDirection (category array for CategoryTab).
+ *  Used in the left tabs of ProjectDetailPage / LandingSolutionStage2.
+ *  Use LAYERS_WITH_DESIGN_MD when a designMd tab is needed.
  */
 export const ANALYSIS_LAYERS = [
-  { id: 'color', label: '컬러' },
-  { id: 'typography', label: '타이포' },
-  { id: 'layout', label: '레이아웃' },
-  { id: 'gradient', label: '그라디언트' },
-  { id: 'visualDirection', label: '비주얼 디렉션' },
+  { id: 'color', label: 'Color' },
+  { id: 'typography', label: 'Typography' },
+  { id: 'layout', label: 'Layout' },
+  { id: 'gradient', label: 'Gradient' },
+  { id: 'visualDirection', label: 'Visual Direction' },
 ];
 
-/** 위 + DESIGN.md 탭 (system mode 결과 화면 / 랜딩 stage 2) */
+/** The above + a DESIGN.md tab (system mode result screen / landing stage 2) */
 export const ANALYSIS_LAYERS_WITH_DESIGN_MD = [
   ...ANALYSIS_LAYERS,
   { id: 'designMd', label: 'DESIGN.md' },
 ];
 
 /**
- * ReferenceLayerChipRow 의 레이어 차용 chip 정의.
- *  label 은 짧은 1-2 자, short 는 동일 (현재 둘 다 동일하지만 분리 유지 — 추후 차등 라벨 가능)
+ * Layer-borrowing chip definitions for ReferenceLayerChipRow.
+ *  label is short (1-2 words), short is identical (both are the same for now but kept separate - differentiated labels possible later)
  */
 export const LAYER_CHIP_DEFS_BASE = [
-  { key: 'color', label: '색', short: '색' },
-  { key: 'typography', label: '타이포', short: '타이포' },
-  { key: 'layout', label: '레이아웃', short: '레이아웃' },
-  { key: 'gradient', label: '그라디언트', short: '그라디언트' },
-  { key: 'visualDirection', label: '무드', short: '무드' },
+  { key: 'color', label: 'Color', short: 'Color' },
+  { key: 'typography', label: 'Typography', short: 'Typography' },
+  { key: 'layout', label: 'Layout', short: 'Layout' },
+  { key: 'gradient', label: 'Gradient', short: 'Gradient' },
+  { key: 'visualDirection', label: 'Mood', short: 'Mood' },
 ];
 
-/** system 모드 한정 — 컴포넌트 결합 차용 chip (DESIGN.md components 축) */
+/** system mode only - component-combination borrowing chip (DESIGN.md components axis) */
 export const LAYER_CHIP_DEF_COMPONENTS = {
   key: 'components',
-  label: '컴포넌트',
-  short: '컴포넌트',
+  label: 'Component',
+  short: 'Component',
 };
 
-/** 토큰 편집 패널 카테고리 정의 (key + 한국어 label, MUSE_LAYERS 의 옛 명칭) */
+/** Token editing panel category definitions (key + label, the old name of MUSE_LAYERS) */
 export const TOKEN_LAYER_CATEGORIES = [
-  { key: 'color', label: '컬러' },
-  { key: 'typography', label: '타이포그래피' },
-  { key: 'layout', label: '레이아웃' },
-  { key: 'gradient', label: '그라디언트' },
-  { key: 'visualDirection', label: '비주얼 디렉션' },
+  { key: 'color', label: 'Color' },
+  { key: 'typography', label: 'Typography' },
+  { key: 'layout', label: 'Layout' },
+  { key: 'gradient', label: 'Gradient' },
+  { key: 'visualDirection', label: 'Visual Direction' },
 ];

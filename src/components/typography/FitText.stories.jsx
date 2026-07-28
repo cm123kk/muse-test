@@ -15,18 +15,18 @@ export default {
         component: `
 ## FitText
 
-컨테이너 너비에 맞춰 텍스트 크기를 자동으로 조절하는 반응형 타이포그래피 컴포넌트입니다.
+A responsive typography component that automatically adjusts text size to fit the container width.
 
-### 핵심 기능
-- **자동 크기 조절**: ResizeObserver로 컨테이너 크기 변화 감지
-- **Variant 지원**: body (Inter) / headline (Chillax) 폰트 자동 적용
-- **Min/Max 제한**: 최소/최대 폰트 크기 설정 가능
-- **간격 조절**: letterSpacing, wordSpacing 배율 조정
+### Key Features
+- **Auto sizing**: Detects container size changes with ResizeObserver
+- **Variant support**: Automatically applies body (Inter) / headline (Chillax) fonts
+- **Min/Max limits**: Configurable minimum/maximum font size
+- **Spacing control**: Adjusts letterSpacing, wordSpacing multipliers
 
-### 용도
-- 히어로 섹션 헤드라인
-- 반응형 배너 텍스트
-- 카드 타이틀
+### Use Cases
+- Hero section headlines
+- Responsive banner text
+- Card titles
         `,
       },
     },
@@ -34,7 +34,7 @@ export default {
   argTypes: {
     text: {
       control: 'text',
-      description: '표시할 텍스트',
+      description: 'Text to display',
       table: {
         type: { summary: 'string' },
       },
@@ -42,7 +42,7 @@ export default {
     variant: {
       control: 'radio',
       options: ['body', 'headline', 'h1'],
-      description: '타이포그래피 변형',
+      description: 'Typography variant',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'body' },
@@ -50,7 +50,7 @@ export default {
     },
     minFontSize: {
       control: { type: 'number', min: 0, max: 100 },
-      description: '최소 폰트 크기 (px)',
+      description: 'Minimum font size (px)',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '0' },
@@ -58,7 +58,7 @@ export default {
     },
     maxFontSize: {
       control: { type: 'number', min: 10, max: 500 },
-      description: '최대 폰트 크기 (px)',
+      description: 'Maximum font size (px)',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '9999' },
@@ -66,7 +66,7 @@ export default {
     },
     letterSpacing: {
       control: { type: 'number', min: 0, max: 5, step: 0.1 },
-      description: '자간 배율',
+      description: 'Letter spacing multiplier',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '1' },
@@ -74,7 +74,7 @@ export default {
     },
     wordSpacing: {
       control: { type: 'number', min: 0, max: 5, step: 0.1 },
-      description: '단어 간격 배율',
+      description: 'Word spacing multiplier',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '1' },
@@ -82,7 +82,7 @@ export default {
     },
     fontWeight: {
       control: { type: 'number', min: 100, max: 900, step: 100 },
-      description: '폰트 굵기',
+      description: 'Font weight',
       table: {
         type: { summary: 'number' },
       },
@@ -90,7 +90,7 @@ export default {
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     text: 'Hello World',
@@ -105,7 +105,7 @@ export const Default = {
   ),
 };
 
-/** Headline 변형 */
+/** Headline variant */
 export const Headline = {
   args: {
     text: 'HEADLINE',
@@ -120,7 +120,7 @@ export const Headline = {
   ),
 };
 
-/** 다양한 컨테이너 너비 */
+/** Various container widths */
 export const ResponsiveWidths = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 600 } }>
@@ -138,7 +138,7 @@ export const ResponsiveWidths = {
   ),
 };
 
-/** Variant 비교 */
+/** Variant comparison */
 export const VariantComparison = {
   render: () => (
     <Stack spacing={ 4 } sx={ { width: 500 } }>
@@ -162,7 +162,7 @@ export const VariantComparison = {
   ),
 };
 
-/** Min/Max 폰트 크기 제한 */
+/** Min/Max font size limits */
 export const FontSizeLimits = {
   render: () => (
     <Grid container spacing={ 3 } sx={ { width: 600 } }>
@@ -186,7 +186,7 @@ export const FontSizeLimits = {
   ),
 };
 
-/** 간격 조절 */
+/** Spacing adjustment */
 export const SpacingOptions = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 500 } }>
@@ -215,10 +215,10 @@ export const SpacingOptions = {
 };
 
 /**
- * 히어로 섹션 활용 예시
+ * Hero section usage example
  *
- * 극도로 미니멀한 풀스크린 타이포그래피.
- * 오직 텍스트만으로 강렬한 메시지를 전달.
+ * Extremely minimal full-screen typography.
+ * Delivers a powerful message with text alone.
  */
 export const HeroSectionUsage = {
   parameters: {

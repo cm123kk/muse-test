@@ -1,32 +1,32 @@
 # appendix. Auth Design (MUSE)
 
-> Phase 2 산출물. 트리거 SQL + Dashboard 체크리스트.
-> 인증 UI 컴포넌트 사양은 [`appendix-auth-ui-spec.md`](./appendix-auth-ui-spec.md).
-> 마이그레이션: `supabase/migrations/20260520120100_auth_profiles.sql`
+> Phase 2 deliverable. Trigger SQL and Dashboard checklist.
+> For the auth UI component spec, see [`appendix-auth-ui-spec.md`](./appendix-auth-ui-spec.md).
+> Migration: `supabase/migrations/20260520120100_auth_profiles.sql`
 
-## 인증 방식
+## Authentication Method
 
 - **Provider**: Email + Password
-- **이메일 인증**: 필수 (Confirm email ON)
-- **비밀번호 정책**: 8자 이상 (클라이언트 validation)
-- **역할 시스템**: 없음 (단일 사용자 개인 앱)
-- **세션**: Supabase 기본 (access token 1h, refresh token 자동 갱신)
+- **Email verification**: Required (Confirm email ON)
+- **Password policy**: 8 characters or more (client-side validation)
+- **Role system**: None (single-user personal app)
+- **Session**: Supabase defaults (access token 1h, refresh token auto-renewed)
 
-## 가입 시 자동 생성 (`handle_new_user`)
+## Automatic Creation on Sign Up (`handle_new_user`)
 
-`auth.users` insert 발생 순간 트리거가 `profiles` + `user_settings` row 를 동시에 생성한다.
+The moment an `auth.users` insert occurs, the trigger creates both a `profiles` and a `user_settings` row at the same time.
 
-### profiles 초기값
+### profiles Defaults
 
-| 컬럼 | 초기값 | 설명 |
+| Column | Default | Description |
 |---|---|---|
-| `id` | `auth.users.id` | 동일 |
-| `display_name` | 이메일 prefix (@ 앞) | 회원가입 시 `display_name` 메타데이터가 있으면 그 값 우선 |
-| `avatar_url` | NULL | 이후 Settings 에서 수정 |
+| `id` | `auth.users.id` | Same value |
+| `display_name` | Email prefix (before the @) | If `display_name` metadata is provided at sign up, that value takes precedence |
+| `avatar_url` | NULL | Edited later in Settings |
 
-### user_settings 초기값
+### user_settings Defaults
 
-| 컬럼 | 초기값 |
+| Column | Default |
 |---|---|
 | `id` | `auth.users.id` |
 | `ai_model` | `'claude-sonnet-4-6'` |
@@ -34,53 +34,53 @@
 | `theme_mode` | `'system'` |
 | `is_auto_tag_enabled` | `true` |
 
-## 클라이언트 플로우
+## Client Flow
 
 ```
-회원가입 (email + password)
-  → supabase.auth.signUp({ email, password, options: { data: { display_name } }})
-  → 인증 메일 발송
-  → 사용자 이메일 링크 클릭
-  → auth.users insert → handle_new_user → profiles + user_settings 자동 생성
-  → 로그인 가능
+Sign up (email + password)
+  -> supabase.auth.signUp({ email, password, options: { data: { display_name } }})
+  -> Verification email sent
+  -> User clicks the email link
+  -> auth.users insert -> handle_new_user -> profiles + user_settings created automatically
+  -> Ready to sign in
 
-로그인 (email + password)
-  → supabase.auth.signInWithPassword({ email, password })
-  → access_token 저장 (localStorage)
-  → onAuthStateChange SIGNED_IN 이벤트
+Sign in (email + password)
+  -> supabase.auth.signInWithPassword({ email, password })
+  -> access_token stored (localStorage)
+  -> onAuthStateChange SIGNED_IN event
 
-로그아웃
-  → supabase.auth.signOut()
-  → localStorage 토큰 삭제
-  → SIGNED_OUT 이벤트 → 앱 상태 초기화
+Sign out
+  -> supabase.auth.signOut()
+  -> localStorage token removed
+  -> SIGNED_OUT event -> app state reset
 
-새로고침
-  → supabase-js 자동 세션 복원 (getSession)
+Refresh
+  -> supabase-js restores the session automatically (getSession)
 ```
 
-## Supabase Dashboard 설정 체크리스트
+## Supabase Dashboard Configuration Checklist
 
-CLI 로 검증 불가한 Dashboard 설정. 직접 확인 필요.
+Dashboard settings that cannot be verified via the CLI. Confirm these manually.
 
-- [ ] Auth → Providers → **Email**: Enabled
-- [ ] Auth → Settings → **Confirm email**: ON
-- [ ] Auth → URL Configuration → **Site URL**: `http://localhost:5173`
-- [ ] Auth → URL Configuration → **Redirect URLs** 등록:
+- [ ] Auth -> Providers -> **Email**: Enabled
+- [ ] Auth -> Settings -> **Confirm email**: ON
+- [ ] Auth -> URL Configuration -> **Site URL**: `http://localhost:5173`
+- [ ] Auth -> URL Configuration -> register **Redirect URLs**:
   - `http://localhost:5173/*`
-  - 프로덕션 URL (배포 시 추가)
-- [ ] Auth → Email Templates → 한국어 커스터마이즈 (선택)
+  - Production URL (add when deploying)
+- [ ] Auth -> Email Templates -> Korean customization (optional)
 
-## 보안 체크리스트
+## Security Checklist
 
-- [ ] `.env.local` 에 `VITE_SUPABASE_ANON_KEY` 만 (service_role 절대 금지)
-- [ ] `.gitignore` 에 `.env.local` 포함 확인
-- [ ] `handle_new_user` 함수: `security definer` + `set search_path = public` 확인
+- [ ] Only `VITE_SUPABASE_ANON_KEY` in `.env.local` (never service_role)
+- [ ] Confirm `.env.local` is listed in `.gitignore`
+- [ ] `handle_new_user` function: confirm `security definer` + `set search_path = public`
 
-## 자주 발생하는 이슈
+## Common Issues
 
-| 증상 | 원인 / 해결 |
+| Symptom | Cause / Fix |
 |---|---|
-| 회원가입 후 "Email not confirmed" | 이메일 인증 필수. Inbox 확인 |
-| 이메일 링크 클릭 후 redirect 실패 | Dashboard Redirect URLs 미등록 |
-| 가입 후 profiles row 없음 | `handle_new_user` 트리거 미적용. 마이그레이션 재확인 |
-| 새로고침 시 로그아웃됨 | `onAuthStateChange` 미구독. `useAuth` 훅 적용 필요 |
+| "Email not confirmed" after sign up | Email verification is required. Check your inbox |
+| Redirect fails after clicking the email link | Redirect URLs not registered in the Dashboard |
+| No profiles row after sign up | `handle_new_user` trigger not applied. Re-check the migration |
+| Logged out on refresh | Not subscribed to `onAuthStateChange`. Apply the `useAuth` hook |

@@ -5,9 +5,9 @@ import Chip from '@mui/material/Chip';
 import { AnalysisLayerTabs } from '../data-display/AnalysisLayerTabs';
 
 /*
- * T3 디자인 시스템 분석 픽스처
+ * T3 design system analysis fixture
  * img1=Bold Red Manifesto / img2=Pixel Grid Blueprint / img3=Risograph Print Poster
- * 3장 합성 결과. AnalysisLayerTabs 가 받는 analysis 구조 그대로.
+ * The composite of 3 images, in the exact analysis shape that AnalysisLayerTabs receives.
  */
 const T3_ANALYSIS = {
   color: [
@@ -93,21 +93,21 @@ const T3_ANALYSIS = {
 
 const DEMO_PROJECT = {
   name: 'Brutalist Mix',
-  intent: 'Brutalist Red + Swiss Grid + Risograph 합성 디자인 시스템',
+  intent: 'A design system composited from Brutalist Red, Swiss Grid, and Risograph',
   mode: 'system',
 };
 
-/* 비주얼 디렉션 요약: 태그 그룹 + 핵심 방향성 bullets */
+/* Visual direction summary: tag groups + key direction bullets */
 function VisualDirectionSummary({ vd }) {
   const bullets = [
-    '흑-적 강대비 구조로 시각적 긴장감 형성',
-    '모노스페이스 격자와 세리프를 영역별로 분리',
-    '인쇄물 질감 위에 디지털 밀도 레이어링',
+    'High-contrast black and red structure builds visual tension',
+    'Monospace grid and serif type kept to separate zones',
+    'Digital density layered over a printed-paper texture',
   ];
 
   return (
     <Box sx={{ p: 3, display: 'flex', flexDirection: 'column', gap: 3 }}>
-      {/* 태그 그룹 */}
+      {/* Tag groups */}
       <Box sx={{ display: 'flex', flexDirection: 'column', gap: 1.5 }}>
         {Object.entries(vd.tags).map(([cat, list]) => list.length > 0 && (
           <Box key={cat} sx={{ display: 'flex', alignItems: 'center', gap: 1.5 }}>
@@ -126,7 +126,7 @@ function VisualDirectionSummary({ vd }) {
         ))}
       </Box>
 
-      {/* 방향성 요약 */}
+      {/* Direction summary */}
       <Box sx={{ borderTop: '1px solid', borderColor: 'divider', pt: 2.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
         <Typography variant="caption" sx={{ color: 'text.disabled', fontFamily: 'monospace', letterSpacing: '0.1em', mb: 0.5 }}>
           DIRECTION
@@ -142,7 +142,7 @@ function VisualDirectionSummary({ vd }) {
   );
 }
 
-/* DESIGN.md 요약: export 시 담기는 레이어별 토큰 수 + 대표값 */
+/* DESIGN.md summary: token count per layer + representative values included on export */
 function DesignMdSummary({ analysis }) {
   const rows = [
     {
@@ -191,7 +191,7 @@ function DesignMdSummary({ analysis }) {
         <Typography variant="caption" sx={{ fontFamily: 'monospace', fontSize: '0.7rem', color: 'text.secondary' }}>
           DESIGN.md.zip
         </Typography>
-        <Typography variant="caption" sx={{ color: 'text.disabled' }}>— AI 컨텍스트용 export 파일 구조</Typography>
+        <Typography variant="caption" sx={{ color: 'text.disabled' }}>Export file structure for AI context</Typography>
       </Box>
 
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
@@ -244,13 +244,13 @@ function DesignMdSummary({ analysis }) {
 }
 
 /**
- * SolutionTwoSection 컴포넌트
+ * SolutionTwoSection component
  *
- * 랜딩페이지 솔루션 2 섹션. S1 레퍼런스 3장 기반 T3 분석 결과를
- * AnalysisLayerTabs 로 시각화한다.
- * visualDirection / designMd 탭은 renderOverride 로 요약 뷰 주입.
+ * The Solution 2 section of the landing page. Visualizes the T3 analysis result
+ * (based on the 3 S1 references) with AnalysisLayerTabs.
+ * The visualDirection / designMd tabs inject a summary view via renderOverride.
  *
- * Props: 없음
+ * Props: none
  *
  * Example usage:
  * <SolutionTwoSection />
@@ -285,10 +285,10 @@ function SolutionTwoSection() {
           variant="h3"
           sx={{ fontWeight: 800, letterSpacing: '-0.02em', mb: 2, lineHeight: 1.2 }}
         >
-          의도에 맞게 분석된 레퍼런스를 AI에게 학습시키세요
+          Teach AI from references analyzed to match your intent
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-          추출된 토큰과 결정 추적을 DESIGN.md ZIP 으로 export. Claude, Gemini, ChatGPT 어디에 붙여넣어도 의도까지 이해한 코드를 받을 수 있습니다.
+          Export the extracted tokens and decision trail as a DESIGN.md ZIP. Paste it into Claude, Gemini, or ChatGPT and get code that understands your intent, not just your tokens.
         </Typography>
       </Box>
 

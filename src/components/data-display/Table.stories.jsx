@@ -24,17 +24,17 @@ export default {
         component: `
 ## Table [MUI]
 
-데이터를 행과 열로 구성하여 표시하는 테이블 컴포넌트입니다.
+A table Component that displays data organized into rows and columns.
 
-### 사용 패턴
+### Usage Patterns
 
-| 패턴 | 설명 | 예시 |
+| Pattern | Description | Example |
 |------|------|------|
-| Basic | 기본 테이블 | \`<Table><TableBody>...</TableBody></Table>\` |
-| Dense | 밀집 테이블 | \`size="small"\` |
-| Striped | 줄무늬 배경 | 홀수/짝수 행 배경색 |
-| Sortable | 정렬 가능 | \`TableSortLabel\` 사용 |
-| Selectable | 선택 가능 | \`Checkbox\` 포함 |
+| Basic | Basic table | \`<Table><TableBody>...</TableBody></Table>\` |
+| Dense | Dense table | \`size="small"\` |
+| Striped | Striped background | Odd/even row background color |
+| Sortable | Sortable | Uses \`TableSortLabel\` |
+| Selectable | Selectable | Includes \`Checkbox\` |
         `,
       },
     },
@@ -43,7 +43,7 @@ export default {
     size: {
       control: 'select',
       options: ['small', 'medium'],
-      description: '테이블 셀의 크기를 설정합니다.',
+      description: 'Sets the size of table cells.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'medium' },
@@ -51,7 +51,7 @@ export default {
     },
     stickyHeader: {
       control: 'boolean',
-      description: '테이블 헤더를 고정합니다.',
+      description: 'Fixes the table header in place.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -60,7 +60,7 @@ export default {
     padding: {
       control: 'select',
       options: ['normal', 'checkbox', 'none'],
-      description: '셀 패딩을 설정합니다.',
+      description: 'Sets the cell padding.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'normal' },
@@ -69,7 +69,7 @@ export default {
   },
 };
 
-/** 샘플 데이터 생성 */
+/** Create sample data */
 const createData = (id, name, calories, fat, carbs, protein) => ({
   id,
   name,
@@ -80,23 +80,23 @@ const createData = (id, name, calories, fat, carbs, protein) => ({
 });
 
 const rows = [
-  createData(1, '프로즌 요거트', 159, 6.0, 24, 4.0),
-  createData(2, '아이스크림 샌드위치', 237, 9.0, 37, 4.3),
-  createData(3, '에클레어', 262, 16.0, 24, 6.0),
-  createData(4, '컵케이크', 305, 3.7, 67, 4.3),
-  createData(5, '진저브레드', 356, 16.0, 49, 3.9),
+  createData(1, 'Frozen Yogurt', 159, 6.0, 24, 4.0),
+  createData(2, 'Ice Cream Sandwich', 237, 9.0, 37, 4.3),
+  createData(3, 'Eclair', 262, 16.0, 24, 6.0),
+  createData(4, 'Cupcake', 305, 3.7, 67, 4.3),
+  createData(5, 'Gingerbread', 356, 16.0, 49, 3.9),
 ];
 
-/** 사용자 데이터 */
+/** User data */
 const userRows = [
-  { id: 1, name: '김철수', email: 'kim@example.com', role: '관리자', status: '활성' },
-  { id: 2, name: '이영희', email: 'lee@example.com', role: '편집자', status: '활성' },
-  { id: 3, name: '박민수', email: 'park@example.com', role: '뷰어', status: '비활성' },
-  { id: 4, name: '최수진', email: 'choi@example.com', role: '편집자', status: '활성' },
-  { id: 5, name: '정대현', email: 'jung@example.com', role: '뷰어', status: '대기' },
+  { id: 1, name: 'James Kim', email: 'kim@example.com', role: 'Admin', status: 'Active' },
+  { id: 2, name: 'Emily Lee', email: 'lee@example.com', role: 'Editor', status: 'Active' },
+  { id: 3, name: 'Michael Park', email: 'park@example.com', role: 'Viewer', status: 'Inactive' },
+  { id: 4, name: 'Sujin Choi', email: 'choi@example.com', role: 'Editor', status: 'Active' },
+  { id: 5, name: 'Daniel Jung', email: 'jung@example.com', role: 'Viewer', status: 'Pending' },
 ];
 
-/** 기본 테이블 */
+/** Basic table */
 export const Default = {
   args: {
     size: 'medium',
@@ -108,11 +108,11 @@ export const Default = {
       <Table size={ args.size } stickyHeader={ args.stickyHeader } padding={ args.padding }>
         <TableHead>
           <TableRow>
-            <TableCell>디저트 (100g)</TableCell>
-            <TableCell align="right">칼로리</TableCell>
-            <TableCell align="right">지방 (g)</TableCell>
-            <TableCell align="right">탄수화물 (g)</TableCell>
-            <TableCell align="right">단백질 (g)</TableCell>
+            <TableCell>Dessert (100g)</TableCell>
+            <TableCell align="right">Calories</TableCell>
+            <TableCell align="right">Fat (g)</TableCell>
+            <TableCell align="right">Carbs (g)</TableCell>
+            <TableCell align="right">Protein (g)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -133,18 +133,18 @@ export const Default = {
   ),
 };
 
-/** 밀집 테이블 (Dense) */
+/** Dense table */
 export const Dense = {
   render: () => (
     <TableContainer component={ Paper }>
       <Table size="small">
         <TableHead>
           <TableRow>
-            <TableCell>디저트 (100g)</TableCell>
-            <TableCell align="right">칼로리</TableCell>
-            <TableCell align="right">지방 (g)</TableCell>
-            <TableCell align="right">탄수화물 (g)</TableCell>
-            <TableCell align="right">단백질 (g)</TableCell>
+            <TableCell>Dessert (100g)</TableCell>
+            <TableCell align="right">Calories</TableCell>
+            <TableCell align="right">Fat (g)</TableCell>
+            <TableCell align="right">Carbs (g)</TableCell>
+            <TableCell align="right">Protein (g)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -165,18 +165,18 @@ export const Dense = {
   ),
 };
 
-/** 줄무늬 테이블 (Striped) */
+/** Striped table */
 export const Striped = {
   render: () => (
     <TableContainer component={ Paper }>
       <Table>
         <TableHead>
           <TableRow sx={ { backgroundColor: 'primary.main' } }>
-            <TableCell sx={ { color: 'white', fontWeight: 700 } }>디저트 (100g)</TableCell>
-            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">칼로리</TableCell>
-            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">지방 (g)</TableCell>
-            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">탄수화물 (g)</TableCell>
-            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">단백질 (g)</TableCell>
+            <TableCell sx={ { color: 'white', fontWeight: 700 } }>Dessert (100g)</TableCell>
+            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">Calories</TableCell>
+            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">Fat (g)</TableCell>
+            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">Carbs (g)</TableCell>
+            <TableCell sx={ { color: 'white', fontWeight: 700 } } align="right">Protein (g)</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -200,7 +200,7 @@ export const Striped = {
   ),
 };
 
-/** 선택 가능한 테이블 */
+/** Selectable table */
 export const Selectable = {
   render: () => {
     const [selected, setSelected] = useState([]);
@@ -240,11 +240,11 @@ export const Selectable = {
                   onChange={ handleSelectAll }
                 />
               </TableCell>
-              <TableCell>디저트 (100g)</TableCell>
-              <TableCell align="right">칼로리</TableCell>
-              <TableCell align="right">지방 (g)</TableCell>
-              <TableCell align="right">탄수화물 (g)</TableCell>
-              <TableCell align="right">단백질 (g)</TableCell>
+              <TableCell>Dessert (100g)</TableCell>
+              <TableCell align="right">Calories</TableCell>
+              <TableCell align="right">Fat (g)</TableCell>
+              <TableCell align="right">Carbs (g)</TableCell>
+              <TableCell align="right">Protein (g)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -275,7 +275,7 @@ export const Selectable = {
         </Table>
         <Box sx={ { p: 2, borderTop: 1, borderColor: 'divider' } }>
           <Typography variant="body2" color="text.secondary">
-            { selected.length }개 선택됨
+            { selected.length } selected
           </Typography>
         </Box>
       </TableContainer>
@@ -283,7 +283,7 @@ export const Selectable = {
   },
 };
 
-/** 정렬 가능한 테이블 */
+/** Sortable table */
 export const Sortable = {
   render: () => {
     const [order, setOrder] = useState('asc');
@@ -303,11 +303,11 @@ export const Sortable = {
     });
 
     const headCells = [
-      { id: 'name', label: '디저트 (100g)', align: 'left' },
-      { id: 'calories', label: '칼로리', align: 'right' },
-      { id: 'fat', label: '지방 (g)', align: 'right' },
-      { id: 'carbs', label: '탄수화물 (g)', align: 'right' },
-      { id: 'protein', label: '단백질 (g)', align: 'right' },
+      { id: 'name', label: 'Dessert (100g)', align: 'left' },
+      { id: 'calories', label: 'Calories', align: 'right' },
+      { id: 'fat', label: 'Fat (g)', align: 'right' },
+      { id: 'carbs', label: 'Carbs (g)', align: 'right' },
+      { id: 'protein', label: 'Protein (g)', align: 'right' },
     ];
 
     return (
@@ -351,7 +351,7 @@ export const Sortable = {
   },
 };
 
-/** 페이지네이션 테이블 */
+/** Paginated table */
 export const WithPagination = {
   render: () => {
     const [page, setPage] = useState(0);
@@ -372,11 +372,11 @@ export const WithPagination = {
           <Table>
             <TableHead>
               <TableRow>
-                <TableCell>디저트 (100g)</TableCell>
-                <TableCell align="right">칼로리</TableCell>
-                <TableCell align="right">지방 (g)</TableCell>
-                <TableCell align="right">탄수화물 (g)</TableCell>
-                <TableCell align="right">단백질 (g)</TableCell>
+                <TableCell>Dessert (100g)</TableCell>
+                <TableCell align="right">Calories</TableCell>
+                <TableCell align="right">Fat (g)</TableCell>
+                <TableCell align="right">Carbs (g)</TableCell>
+                <TableCell align="right">Protein (g)</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -404,28 +404,28 @@ export const WithPagination = {
           page={ page }
           onPageChange={ handleChangePage }
           onRowsPerPageChange={ handleChangeRowsPerPage }
-          labelRowsPerPage="페이지당 행:"
+          labelRowsPerPage="Rows per page:"
         />
       </Paper>
     );
   },
 };
 
-/** 실제 사용 예시 - 사용자 목록 */
+/** Real world example: user list */
 export const UserList = {
   render: () => {
     const getStatusColor = (status) => {
       switch (status) {
-        case '활성': return 'success';
-        case '비활성': return 'error';
-        case '대기': return 'warning';
+        case 'Active': return 'success';
+        case 'Inactive': return 'error';
+        case 'Pending': return 'warning';
         default: return 'default';
       }
     };
 
     const getRoleVariant = (role) => {
       switch (role) {
-        case '관리자': return 'filled';
+        case 'Admin': return 'filled';
         default: return 'outlined';
       }
     };
@@ -435,10 +435,10 @@ export const UserList = {
         <Table>
           <TableHead>
             <TableRow sx={ { backgroundColor: 'grey.100' } }>
-              <TableCell sx={ { fontWeight: 700 } }>이름</TableCell>
-              <TableCell sx={ { fontWeight: 700 } }>이메일</TableCell>
-              <TableCell sx={ { fontWeight: 700 } }>역할</TableCell>
-              <TableCell sx={ { fontWeight: 700 } }>상태</TableCell>
+              <TableCell sx={ { fontWeight: 700 } }>Name</TableCell>
+              <TableCell sx={ { fontWeight: 700 } }>Email</TableCell>
+              <TableCell sx={ { fontWeight: 700 } }>Role</TableCell>
+              <TableCell sx={ { fontWeight: 700 } }>Status</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -459,7 +459,7 @@ export const UserList = {
                     label={ row.role }
                     size="small"
                     variant={ getRoleVariant(row.role) }
-                    color={ row.role === '관리자' ? 'primary' : 'default' }
+                    color={ row.role === 'Admin' ? 'primary' : 'default' }
                   />
                 </TableCell>
                 <TableCell>
@@ -478,7 +478,7 @@ export const UserList = {
   },
 };
 
-/** 고정 헤더 테이블 */
+/** Sticky header table */
 export const StickyHeader = {
   render: () => (
     <Paper sx={ { width: '100%', overflow: 'hidden' } }>
@@ -486,11 +486,11 @@ export const StickyHeader = {
         <Table stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell sx={ { fontWeight: 700 } }>디저트 (100g)</TableCell>
-              <TableCell sx={ { fontWeight: 700 } } align="right">칼로리</TableCell>
-              <TableCell sx={ { fontWeight: 700 } } align="right">지방 (g)</TableCell>
-              <TableCell sx={ { fontWeight: 700 } } align="right">탄수화물 (g)</TableCell>
-              <TableCell sx={ { fontWeight: 700 } } align="right">단백질 (g)</TableCell>
+              <TableCell sx={ { fontWeight: 700 } }>Dessert (100g)</TableCell>
+              <TableCell sx={ { fontWeight: 700 } } align="right">Calories</TableCell>
+              <TableCell sx={ { fontWeight: 700 } } align="right">Fat (g)</TableCell>
+              <TableCell sx={ { fontWeight: 700 } } align="right">Carbs (g)</TableCell>
+              <TableCell sx={ { fontWeight: 700 } } align="right">Protein (g)</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

@@ -8,26 +8,26 @@ import TableCell from '@mui/material/TableCell';
 import { RefImage } from '../media/RefImage.jsx';
 
 const LAYER_LABEL = {
-  color: '색',
-  typography: '타이포',
-  layout: '레이아웃',
-  gradient: '그라디언트',
-  visualDirection: '무드',
-  spacing: '간격',
-  rounded: '라운드',
-  elevation: '그림자',
-  components: '컴포넌트',
+  color: 'Color',
+  typography: 'Typography',
+  layout: 'Layout',
+  gradient: 'Gradient',
+  visualDirection: 'Mood',
+  spacing: 'Spacing',
+  rounded: 'Rounded',
+  elevation: 'Elevation',
+  components: 'Components',
 };
 
 /**
- * TokenDecisionTracePanel 컴포넌트 (TP6)
+ * TokenDecisionTracePanel component (TP6)
  *
- * 토큰 카드 클릭 시 펼쳐지는 출처 + 이유 + 대안 패널.
- * "AI가 정한 모든 결정의 이유를 추적할 수 있어야 한다" (T1 super-theme)
+ * A panel of sources + reasons + alternatives that expands when a token card is clicked.
+ * "You should be able to trace the reasoning behind every decision the AI made" (T1 super-theme)
  *
  * Props:
- * @param {{whichReferences, whichLayers?, whyChosen, alternativesConsidered?}} decisionRationale - T3 출력의 토큰 단위 결정 로그 [Required]
- * @param {Array} [references] - 풀 references 목록 (썸네일 inline 표시용) [Optional]
+ * @param {{whichReferences, whichLayers?, whyChosen, alternativesConsidered?}} decisionRationale - Per-token decision log from the T3 output [Required]
+ * @param {Array} [references] - Full references list (for inline thumbnail display) [Optional]
  * @param {object} sx
  *
  * Example usage:
@@ -55,7 +55,7 @@ export function TokenDecisionTracePanel({ decisionRationale, references = [], sx
   if (refsWithThumb.length > 0 || whichReferences.length > 0) {
     rows.push({
       key: 'sources',
-      label: '출처',
+      label: 'Sources',
       content: (
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 0.75 } }>
           { refsWithThumb.length > 0 ? (
@@ -101,7 +101,7 @@ export function TokenDecisionTracePanel({ decisionRationale, references = [], sx
   if (whyChosen) {
     rows.push({
       key: 'why',
-      label: '의도 매칭',
+      label: 'Intent match',
       content: (
         <Typography variant="body2" sx={ { fontSize: 13, lineHeight: 1.6 } }>
           { whyChosen }
@@ -113,7 +113,7 @@ export function TokenDecisionTracePanel({ decisionRationale, references = [], sx
   if (appliedUserNotes) {
     rows.push({
       key: 'notes',
-      label: '사용자 노트',
+      label: 'User notes',
       content: (
         <Typography
           variant="body2"
@@ -133,7 +133,7 @@ export function TokenDecisionTracePanel({ decisionRationale, references = [], sx
   if (alternativesConsidered.length > 0) {
     rows.push({
       key: 'alts',
-      label: '다른 후보',
+      label: 'Alternatives',
       content: (
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 0.5 } }>
           { alternativesConsidered.map((alt, i) => (

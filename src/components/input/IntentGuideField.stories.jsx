@@ -21,7 +21,7 @@ export const Empty = {
 
 export const Filled = {
   render: () => {
-    const [value, setValue] = useState('차분한 다크 무드의 핀테크 대시보드, 데이터 가독성 우선');
+    const [value, setValue] = useState('Calm dark mood fintech dashboard, data readability first');
     return (
       <Box sx={ { width: 560 } }>
         <IntentGuideField value={ value } onChange={ setValue } />
@@ -33,7 +33,7 @@ export const Filled = {
 export const NearLimit = {
   render: () => {
     const [value, setValue] = useState(
-      '신규 사용자 온보딩용 모바일 앱, 따뜻하고 친근한 톤, 일러스트 포인트 가능, 다크모드 지원, 접근성 AAA',
+      'Mobile app for new user onboarding, warm and friendly tone, illustration accents allowed, dark mode support, AAA accessibility',
     );
     return (
       <Box sx={ { width: 560 } }>
@@ -46,7 +46,7 @@ export const NearLimit = {
 export const Disabled = {
   render: () => (
     <Box sx={ { width: 560 } }>
-      <IntentGuideField value="차분한 다크 무드" onChange={ () => {} } disabled />
+      <IntentGuideField value="Calm dark mood" onChange={ () => {} } disabled />
     </Box>
   ),
 };

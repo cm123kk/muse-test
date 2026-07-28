@@ -9,29 +9,29 @@ import { CustomCard } from './CustomCard';
 import { ImageTransition } from '../media/ImageTransition';
 
 /**
- * MoodboardCard 컴포넌트
+ * MoodboardCard component
  *
- * 무드보드 컬렉션을 표시하는 카드. CustomCard를 확장하여 구현.
- * 2×2 썸네일 그리드로 컬렉션 미리보기를 제공하고,
- * 무드보드의 메타데이터(이름, 설명, 아이템 수, 생성일)를 표시.
+ * A card that displays a moodboard collection. Implemented by extending CustomCard.
+ * Provides a collection preview via a 2×2 thumbnail grid and
+ * displays the moodboard's metadata (name, description, item count, creation date).
  *
- * 동작 방식:
- * 1. 기본 상태: items 배열의 처음 4개 이미지를 2×2 그리드로 표시
- * 2. 이미지가 4개 미만일 경우: 빈 슬롯은 회색 배경으로 표시
- * 3. 이미지가 0개일 경우: 전체 placeholder 아이콘 표시
- * 4. Hover 시: 0.3초 간격으로 이미지가 하나씩 fade 트랜지션되며 순환
- * 5. Hover 해제 시: 2×2 그리드로 복귀
+ * How it works:
+ * 1. Default state: shows the first 4 images from the items array in a 2×2 grid
+ * 2. When there are fewer than 4 images: empty slots are shown with a grey background
+ * 3. When there are 0 images: shows a full placeholder icon
+ * 4. On hover: images fade-transition one at a time in a cycle at 0.3s intervals
+ * 5. On hover release: returns to the 2×2 grid
  *
  * Props:
- * @param {string} id - 무드보드 ID [Required]
- * @param {string} name - 무드보드 이름 [Required]
- * @param {string} description - 무드보드 설명 [Optional]
- * @param {Array} items - 무드보드 내 아이템 배열 [Required]
- * @param {string} createdAt - 생성 날짜 (YYYY-MM-DD) [Optional]
- * @param {function} onClick - 카드 클릭 핸들러 [Optional]
- * @param {function} onEdit - 편집 버튼 핸들러 [Optional]
- * @param {function} onDelete - 삭제 버튼 핸들러 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} id - Moodboard ID [Required]
+ * @param {string} name - Moodboard name [Required]
+ * @param {string} description - Moodboard description [Optional]
+ * @param {Array} items - Array of items in the moodboard [Required]
+ * @param {string} createdAt - Creation date (YYYY-MM-DD) [Optional]
+ * @param {function} onClick - Card click handler [Optional]
+ * @param {function} onEdit - Edit button handler [Optional]
+ * @param {function} onDelete - Delete button handler [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <MoodboardCard
@@ -57,20 +57,20 @@ export function MoodboardCard({
   ...props
 }) {
   // ============================================
-  // 상태 관리
+  // State management
   // ============================================
   const [isHovered, setIsHovered] = useState(false);
   const [activeIndex, setActiveIndex] = useState(0);
   const intervalRef = useRef(null);
 
-  // 썸네일에 표시할 이미지 (최대 4개)
+  // Images to show in the thumbnail (up to 4)
   const thumbnailImages = items.slice(0, 4);
   const itemCount = items.length;
 
   /**
-   * Hover 시 자동 이미지 순환
-   * - 마우스 진입: 0.3초 간격으로 이미지 인덱스 증가
-   * - 마우스 이탈: interval 정리 및 인덱스 초기화
+   * Auto image cycling on hover
+   * - Mouse enter: increments the image index at 0.3s intervals
+   * - Mouse leave: clears the interval and resets the index
    */
   useEffect(() => {
     if (isHovered && items.length > 1) {
@@ -88,7 +88,7 @@ export function MoodboardCard({
   }, [isHovered, items.length]);
 
   /**
-   * 마우스 이벤트 핸들러
+   * Mouse event handlers
    */
   const handleMouseEnter = () => {
     setIsHovered(true);
@@ -100,7 +100,7 @@ export function MoodboardCard({
   };
 
   /**
-   * ImageTransition용 이미지 배열 생성
+   * Build the image array for ImageTransition
    */
   const transitionImages = items.map((item) => ({
     src: item.thumbnail || item.src?.medium || item.src,
@@ -108,7 +108,7 @@ export function MoodboardCard({
   }));
 
   /**
-   * 날짜 포맷팅 (YYYY-MM-DD → MMM DD, YYYY)
+   * Date formatting (YYYY-MM-DD -> MMM DD, YYYY)
    */
   const formatDate = (dateString) => {
     if (!dateString) return '';
@@ -121,13 +121,13 @@ export function MoodboardCard({
   };
 
   /**
-   * 미디어 슬롯 렌더링
-   * - 기본 상태: 2×2 썸네일 그리드
-   * - Hover 상태: ImageTransition으로 단일 이미지 순환
-   * - 이미지 없음: placeholder 아이콘 표시
+   * Media slot rendering
+   * - Default state: 2×2 thumbnail grid
+   * - Hover state: cycles a single image via ImageTransition
+   * - No images: shows a placeholder icon
    */
   const renderMediaSlot = () => {
-    // 이미지가 없는 경우: placeholder
+    // When there are no images: placeholder
     if (items.length === 0) {
       return (
         <Box
@@ -150,7 +150,7 @@ export function MoodboardCard({
       );
     }
 
-    // Hover 상태: ImageTransition으로 이미지 순환
+    // Hover state: cycle images via ImageTransition
     if (isHovered && items.length > 1) {
       return (
         <ImageTransition
@@ -168,11 +168,11 @@ export function MoodboardCard({
       );
     }
 
-    // 기본 상태: 개수에 따라 적응형 레이아웃 — 빈 슬롯 노출 방지
-    //   1개 → 풀블리드
-    //   2개 → 좌/우 50:50
-    //   3개 → 좌 1개 풀 + 우 2개 스택
-    //   4+개 → 2×2 그리드 (처음 4장)
+    // Default state: adaptive layout based on count, preventing empty slots
+    //   1 image -> full bleed
+    //   2 images -> left/right 50:50
+    //   3 images -> 1 full on the left + 2 stacked on the right
+    //   4+ images -> 2×2 grid (first 4)
     const renderImage = (image, idx) => (
       <Box
         component="img"
@@ -239,7 +239,7 @@ export function MoodboardCard({
       );
     }
 
-    // 4+ 장: 2×2 그리드 (처음 4장)
+    // 4+ images: 2×2 grid (first 4)
     return (
       <Box
         className="thumbnail-grid"
@@ -259,13 +259,13 @@ export function MoodboardCard({
   };
 
   /**
-   * 오버레이 슬롯 (액션 버튼 + 아이템 수 배지)
-   * - 액션 버튼: Hover 시에만 표시
-   * - 아이템 수 배지: 항상 표시
+   * Overlay slot (action buttons + item count badge)
+   * - Action buttons: shown only on hover
+   * - Item count badge: always shown
    */
   const OverlayContent = (
     <>
-      {/* 액션 버튼 (Hover 시 표시) */}
+      {/* Action buttons (shown on hover) */}
       <Box
         className="moodboard-actions"
         sx={{
@@ -317,7 +317,7 @@ export function MoodboardCard({
         )}
       </Box>
 
-      {/* 아이템 수 배지 */}
+      {/* Item count badge */}
       <Box
         sx={{
           position: 'absolute',
@@ -366,7 +366,7 @@ export function MoodboardCard({
       }}
       {...props}
     >
-      {/* 타이틀 */}
+      {/* Title */}
       <Typography
         variant="subtitle1"
         sx={{
@@ -381,7 +381,7 @@ export function MoodboardCard({
         {name}
       </Typography>
 
-      {/* 설명 */}
+      {/* Description */}
       {description && (
         <Typography
           variant="body2"
@@ -399,7 +399,7 @@ export function MoodboardCard({
         </Typography>
       )}
 
-      {/* 메타데이터 */}
+      {/* Metadata */}
       {createdAt && (
         <Typography
           variant="caption"

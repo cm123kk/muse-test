@@ -3,8 +3,8 @@ import { Box, Typography } from '@mui/material';
 import { keyframes } from '@mui/material/styles';
 
 /**
- * Material Symbols 아이콘 컴포넌트
- * 프로젝트 디자인 시스템의 Icons.stories.jsx 패턴 사용
+ * Material Symbols icon component
+ * Uses the Icons.stories.jsx pattern from the project design system
  */
 function MaterialSymbol({ name, size = 24, fill = false, weight = 400, color = 'inherit', sx = {} }) {
   return (
@@ -28,7 +28,7 @@ function MaterialSymbol({ name, size = 24, fill = false, weight = 400, color = '
 }
 
 /**
- * 애니메이션 키프레임 정의
+ * Animation keyframe definitions
  */
 const fadeInScale = keyframes`
   from {
@@ -42,27 +42,27 @@ const fadeInScale = keyframes`
 `;
 
 /**
- * QuotedContainer 컴포넌트
+ * QuotedContainer component
  *
- * 인용 부호를 텍스트의 시작/끝 위치에 스마트하게 배치하는 컴포넌트.
- * 대형 장식적 인용 부호로 인용문을 시각적으로 강조한다.
+ * A component that smartly places quote marks at the start/end positions of text.
+ * Visually emphasizes a quotation with large decorative quote marks.
  *
- * 동작 방식:
- * 1. 텍스트 주변에 장식적인 인용 부호가 배치됨
- * 2. quoteStyle에 따라 다양한 인용 부호 문자 사용
- * 3. position에 따라 인용 부호의 위치가 조정됨
- * 4. animated가 true면 viewport 진입 시 애니메이션 실행
+ * How it works:
+ * 1. Decorative quote marks are placed around the text
+ * 2. Different quote mark characters are used depending on quoteStyle
+ * 3. The position of the quote marks is adjusted based on position
+ * 4. When animated is true, the animation runs upon entering the viewport
  *
  * Props:
- * @param {string} children - 인용할 텍스트 [Required]
- * @param {string} quoteSize - 인용 부호 크기 ('sm' | 'md' | 'lg' | 'xl') [Optional, 기본값: 'lg']
- * @param {string} quoteColor - 인용 부호 색상 [Optional, 기본값: 'text.disabled']
- * @param {string} position - 인용 부호 위치 ('outside' | 'inside' | 'overlay') [Optional, 기본값: 'outside']
- * @param {boolean} animated - 등장 애니메이션 [Optional, 기본값: false]
- * @param {string} author - 인용 출처/저자 [Optional]
- * @param {string} variant - 타이포그래피 variant [Optional, 기본값: 'h4']
- * @param {string} align - 텍스트 정렬 ('left' | 'center' | 'right') [Optional, 기본값: 'left']
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {string} children - Text to quote [Required]
+ * @param {string} quoteSize - Quote mark size ('sm' | 'md' | 'lg' | 'xl') [Optional, default: 'lg']
+ * @param {string} quoteColor - Quote mark color [Optional, default: 'text.disabled']
+ * @param {string} position - Quote mark position ('outside' | 'inside' | 'overlay') [Optional, default: 'outside']
+ * @param {boolean} animated - Entrance animation [Optional, default: false]
+ * @param {string} author - Quote source/author [Optional]
+ * @param {string} variant - Typography variant [Optional, default: 'h4']
+ * @param {string} align - Text alignment ('left' | 'center' | 'right') [Optional, default: 'left']
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
  * <QuotedContainer>Design is how it works.</QuotedContainer>
@@ -85,7 +85,7 @@ export function QuotedContainer({
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(!animated);
 
-  // Viewport 진입 감지
+  // Detect viewport entry
   useEffect(() => {
     if (!animated) return;
 
@@ -107,7 +107,7 @@ export function QuotedContainer({
     return () => observer.disconnect();
   }, [animated]);
 
-  // 아이콘 크기 매핑 (px)
+  // Icon size mapping (px)
   const iconSizes = {
     sm: 20,
     md: 28,
@@ -117,14 +117,14 @@ export function QuotedContainer({
 
   const iconSize = iconSizes[quoteSize];
 
-  // 공통 아이콘 스타일
+  // Common icon style
   const baseIconSx = {
     opacity: animated && !isVisible ? 0 : (position === 'overlay' ? 0.12 : 0.3),
     animation: animated && isVisible ? `${fadeInScale} 0.4s ease-out forwards` : 'none',
     flexShrink: 0,
   };
 
-  // Position: outside (기본 - 인라인 배치로 첫 글자 좌상단, 마지막 글자 우하단)
+  // Position: outside (default - inline placement, first character top-left, last character bottom-right)
   if (position === 'outside') {
     return (
       <Box
@@ -146,7 +146,7 @@ export function QuotedContainer({
             position: 'relative',
           }}
         >
-          {/* 여는 따옴표 - 첫 글자 좌상단 */}
+          {/* Opening quote mark - top-left of the first character */}
           <MaterialSymbol
             name="format_quote"
             size={iconSize}
@@ -161,7 +161,7 @@ export function QuotedContainer({
             }}
           />
           {children}
-          {/* 닫는 따옴표 - 마지막 글자 우하단 */}
+          {/* Closing quote mark - bottom-right of the last character */}
           <MaterialSymbol
             name="format_quote"
             size={iconSize}
@@ -189,7 +189,7 @@ export function QuotedContainer({
               color: 'text.secondary',
               textAlign: align,
               '&::before': {
-                content: '"— "',
+                content: '"- "',
               },
             }}
           >
@@ -200,7 +200,7 @@ export function QuotedContainer({
     );
   }
 
-  // Position: inside (더 작은 아이콘, 텍스트와 밀착)
+  // Position: inside (smaller icon, tight against the text)
   if (position === 'inside') {
     return (
       <Box
@@ -220,7 +220,7 @@ export function QuotedContainer({
             m: 0,
           }}
         >
-          {/* 여는 따옴표 - 첫 글자 좌상단 */}
+          {/* Opening quote mark - top-left of the first character */}
           <MaterialSymbol
             name="format_quote"
             size="0.8em"
@@ -234,7 +234,7 @@ export function QuotedContainer({
             }}
           />
           {children}
-          {/* 닫는 따옴표 - 마지막 글자 우하단 */}
+          {/* Closing quote mark - bottom-right of the last character */}
           <MaterialSymbol
             name="format_quote"
             size="0.8em"
@@ -259,7 +259,7 @@ export function QuotedContainer({
               fontStyle: 'normal',
               color: 'text.secondary',
               '&::before': {
-                content: '"— "',
+                content: '"- "',
               },
             }}
           >
@@ -270,7 +270,7 @@ export function QuotedContainer({
     );
   }
 
-  // Position: overlay (큰 fill 아이콘이 텍스트 뒤에 배경으로)
+  // Position: overlay (large fill icon behind the text as a background)
   if (position === 'overlay') {
     return (
       <Box
@@ -283,7 +283,7 @@ export function QuotedContainer({
         }}
         {...props}
       >
-        {/* 배경 인용 부호 아이콘 */}
+        {/* Background quote mark icon */}
         <MaterialSymbol
           name="format_quote"
           size={iconSize * 4}
@@ -302,7 +302,7 @@ export function QuotedContainer({
           }}
         />
 
-        {/* 텍스트 */}
+        {/* Text */}
         <Box sx={{ position: 'relative', zIndex: 1 }}>
           <Typography
             variant={variant}
@@ -325,7 +325,7 @@ export function QuotedContainer({
                 fontStyle: 'normal',
                 color: 'text.secondary',
                 '&::before': {
-                  content: '"— "',
+                  content: '"- "',
                 },
               }}
             >

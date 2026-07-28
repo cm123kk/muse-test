@@ -1,10 +1,10 @@
 /**
- * MUSE AI Tasks — 시스템 프롬프트 / 입출력 스키마 / 워크플로우 정의
+ * MUSE AI Tasks - system prompt / input-output schema / workflow definitions
  *
- * 2026-04-22 v2: muse_tags_preset.json 기반 5레이어 구조로 전환.
- *   - T1: 이제 레이어별 중첩 태그를 출력 (color/typography/layout/gradient/visualDirection{genre,style,subject})
- *   - T3: keyVisual 레이어 폐기, visualDirection(Markdown) 레이어 신설.
- *          단일 호출에서 2 tool(submit_tokens + submit_visual_direction)을 모두 호출.
+ * 2026-04-22 v2: Switched to a 5-layer structure based on muse_tags_preset.json.
+ *   - T1: now outputs per-layer nested tags (color/typography/layout/gradient/visualDirection{genre,style,subject})
+ *   - T3: keyVisual layer retired, visualDirection (Markdown) layer newly added.
+ *          Calls both tools (submit_tokens + submit_visual_direction) in a single call.
  */
 
 import {
@@ -15,34 +15,34 @@ import {
 } from './tag/index.js';
 
 const TOOL_AUTO_TAG_NAME = 'submit_tagging';
-// system 모드: 2 phase 분리 호출 (Haiku capacity 보호)
+// system mode: split into 2 phased calls (protects Haiku capacity)
 const TOOL_SUBMIT_DESIGN_SYSTEM_CORE = 'submit_design_system_core';
 const TOOL_SUBMIT_DESIGN_SYSTEM_DESIGNMD = 'submit_design_system_designmd';
 const TOOL_SUBMIT_CONCEPT_PROMPT = 'submit_concept_prompt';
 
 const COMMON_QUALITY = [
-  { id: 'schema', label: '스키마 준수', type: 'auto', description: '필수 필드 존재 + 타입 적합' },
-  { id: 'hex', label: 'HEX 형식', type: 'auto', description: '^#[0-9A-Fa-f]{6}$' },
+  { id: 'schema', label: 'Schema compliance', type: 'auto', description: 'Required fields present + correct types' },
+  { id: 'hex', label: 'HEX format', type: 'auto', description: '^#[0-9A-Fa-f]{6}$' },
 ];
 
 /* =========================================================
- * T1. 자동 태깅 (레이어별 중첩)
+ * T1. Auto-tagging (nested per layer)
  * ========================================================= */
 export const TASK_AUTO_TAG = {
   id: 't1',
-  name: '레퍼런스 추출 (T3 레벨)',
-  purpose: 'Reference 1장에서 관찰 가능한 디자인 값(palette/typography/layout/gradient)을 전부 추출. role 은 프로젝트 단계로 미룸',
+  name: 'Reference extraction (T3 level)',
+  purpose: 'Extract all observable design values (palette/typography/layout/gradient) from a single reference. Role is deferred to the project stage',
   stage: 'archive.upload',
   model: 'claude-haiku-4-5',
 
   input: {
     kind: 'image',
-    description: '단일 reference 이미지 (512px 리사이즈 권장)',
+    description: 'A single reference image (512px resize recommended)',
     shape: '{ imageBase64: string, mediaType: "image/jpeg" | "image/png" }',
   },
 
   output: {
-    description: '레이어 태그 + dominantColors + title + extracted (palette/typography/layout/gradient)',
+    description: 'Layer tags + dominantColors + title + extracted (palette/typography/layout/gradient)',
     shape: `{
   tags: { color[], typography[], layout[], gradient[], visualDirection: {genre, style, subject} },
   dominantColors: string[3..5],
@@ -59,8 +59,8 @@ export const TASK_AUTO_TAG = {
   systemPrompt: `You are MUSE's per-reference design extractor.
 
 Given a single reference image, extract both:
-  (1) CLASSIFICATION — preset tags per layer (from the vocabulary below)
-  (2) OBSERVED VALUES — concrete design values visible in the image (palette, typography, layout, gradient)
+  (1) CLASSIFICATION - preset tags per layer (from the vocabulary below)
+  (2) OBSERVED VALUES - concrete design values visible in the image (palette, typography, layout, gradient)
 
 ${renderVocabularyPrompt([...TOKEN_LAYERS, 'visual_direction'])}
 
@@ -75,18 +75,18 @@ ${renderVocabularyPrompt([...TOKEN_LAYERS, 'visual_direction'])}
 
 [extracted.palette] 3-6 items.
 - Each: { hex (#RRGGBB), label (1-2 word descriptor), group? ('Brand'|'Surface'|'Data'|'Neutral') }
-- group is a HINT only — role (primary/secondary/accent/neutral) is assigned at project time, NOT here
+- group is a HINT only - role (primary/secondary/accent/neutral) is assigned at project time, NOT here
 - palette should align with dominantColors but adds label + group hint
 
 [extracted.typography] 1-4 items.
-- Each observed typographic tier (display / heading / body / caption — use as 'hierarchy')
+- Each observed typographic tier (display / heading / body / caption - use as 'hierarchy')
 - fontFamily: best-guess CSS stack (e.g. 'Inter, sans-serif' or 'Playfair Display, serif')
 - fontWeight: 100-900 integer
 - fontSize: CSS value (e.g. '48px' or 'clamp(2rem, 5vw, 3.5rem)')
 - lineHeight: unitless number (e.g. 1.2)
 - letterSpacing: em value (e.g. '-0.02em')
 - sampleText: actual visible text snippet if readable (optional)
-- Do NOT assign variant (h1/h2/body1) — project step will
+- Do NOT assign variant (h1/h2/body1) - project step will
 
 [extracted.layout] 0-3 items.
 - Each: { kind: 'grid'|'spacing'|'container', columns?, gap?, px?, ratio?, maxWidth? }
@@ -219,13 +219,13 @@ ${renderVocabularyPrompt([...TOKEN_LAYERS, 'visual_direction'])}
 
   qualityCriteria: [
     ...COMMON_QUALITY,
-    { id: 'vocab', label: '어휘 준수', type: 'auto', description: '각 레이어 enum 위반 0건' },
-    { id: 'layer-purity', label: '레이어 분리', type: 'auto', description: '타 레이어 태그가 섞이지 않음' },
-    { id: 'title-style', label: '제목 스타일성', type: 'manual', description: '문자적 묘사 아닌 디자인 톤 서술' },
+    { id: 'vocab', label: 'Vocabulary compliance', type: 'auto', description: 'Zero enum violations per layer' },
+    { id: 'layer-purity', label: 'Layer separation', type: 'auto', description: 'No tags mixed in from other layers' },
+    { id: 'title-style', label: 'Title styling', type: 'manual', description: 'Describes design tone, not a literal description' },
   ],
 
   goldenExample: {
-    inputDescription: 'reference5.jpg (어두운 에디토리얼 초상)',
+    inputDescription: 'reference5.jpg (dark editorial portrait)',
     expectedOutput: {
       tags: {
         color: ['Deep', 'Muted'],
@@ -255,48 +255,48 @@ ${renderVocabularyPrompt([...TOKEN_LAYERS, 'visual_direction'])}
   },
 
   workflow: [
-    '유저가 드래그앤드롭/URL로 이미지 업로드 (512px 리사이즈)',
-    'Anthropic messages.create (Haiku, 확장 tool schema)',
-    'Response 의 tool_use 블록에서 tags + dominantColors + title + extracted 전부 추출',
-    '자동 검증 (schema + enum + hex)',
-    'Reference 에 병합 후 DB insert (reference_items.extracted jsonb)',
+    'User uploads an image via drag-and-drop / URL (512px resize)',
+    'Anthropic messages.create (Haiku, extended tool schema)',
+    'Extract all of tags + dominantColors + title + extracted from the response tool_use block',
+    'Automatic validation (schema + enum + hex)',
+    'Merge into the Reference, then insert into the DB (reference_items.extracted jsonb)',
   ],
 
   estCost: {
     model: 'Haiku 4.5',
-    tokensIn: '~5k (image 512px + preset vocab + 확장 tool schema)',
+    tokensIn: '~5k (512px image + preset vocab + extended tool schema)',
     tokensOut: '~500 (tags + extracted palette/typo/layout/gradient)',
-    note: 'T3 레벨 값 추출까지 포함. 확장 schema cache hit 로 Input cost 약 1.5배로 억제',
+    note: 'Includes T3-level value extraction. The extended schema cache hit holds input cost to about 1.5x',
   },
 };
 
 /* =========================================================
- * T2. 레퍼런스 추천
+ * T2. Reference recommendation
  * ========================================================= */
 export const TASK_RECOMMEND = {
   id: 't2',
-  name: '레퍼런스 추천',
-  purpose: '프로젝트 의도 문장 → 아카이브에서 어울리는 top-N 추천',
+  name: 'Reference recommendation',
+  purpose: 'Project intent sentence -> recommend the top-N best matches from the archive',
   stage: 'project.create.step2',
   model: 'claude-haiku-4-5',
 
   input: {
     kind: 'text',
-    description: '의도 + 모드 + 아카이브 메타 (이미지 없음, 레이어별 태그 포함)',
+    description: 'Intent + mode + archive metadata (no images, includes per-layer tags)',
     shape: `{
   intent: string,
-  mode: 'concept'|'system',  // TP2: 정렬 알고리즘 분기
+  mode: 'concept'|'system',  // TP2: sorting-algorithm branch
   archive: Array<{ id, tags: ReferenceLayeredTags, dominantColors[], title }>,
   n?: number
 }`,
   },
 
   output: {
-    description: '추천 id 목록 + 각 id별 한 줄 근거 + 어느 레이어가 강점인지',
+    description: 'List of recommended ids + a one-line rationale per id + which layer is the strength',
     shape: `{
   recommendedIds: string[5..10],
   reasons: Array<{ id, reason }>,
-  referenceLayer: Array<{ id, layers: TokenLayerKey[1..2] }>  // TP4 자동 추천
+  referenceLayer: Array<{ id, layers: TokenLayerKey[1..2] }>  // TP4 auto recommendation
 }`,
   },
 
@@ -317,10 +317,10 @@ Select the top N references (5 to 10) that best match the intent.
   (1) visualDirection tags overlap with intent,
   (2) color/typography/layout/gradient tag overlap,
   (3) dominantColors palette alignment with intent mood.
-- For each recommended id, a ONE-SENTENCE Korean reason (max 40 characters).
+- For each recommended id, a ONE-SENTENCE English reason (max 40 characters).
 - Rank best-first.
 
-=== referenceLayer (TP4) — REQUIRED ===
+=== referenceLayer (TP4) - REQUIRED ===
 For each recommendedId, emit referenceLayer with 1-2 most useful TokenLayerKey for this ref:
   TokenLayerKey: 'color' | 'typography' | 'layout' | 'gradient' | 'visualDirection'
 The user will see these as default chip selection in Step 2 and may toggle.
@@ -352,7 +352,7 @@ Select the best matches.`,
         },
         referenceLayer: {
           type: 'array',
-          description: 'TP4: 각 추천 ref가 어느 레이어에 가장 유용한지 1~2개',
+          description: 'TP4: 1-2 layers where each recommended ref is most useful',
           items: {
             type: 'object',
             properties: {
@@ -373,60 +373,60 @@ Select the best matches.`,
 
   qualityCriteria: [
     ...COMMON_QUALITY,
-    { id: 'id-validity', label: 'ID 유효성', type: 'auto', description: '모든 id가 입력 archive에 존재' },
-    { id: 'vd-overlap', label: 'visualDirection 매칭', type: 'auto', description: '상위 추천 과반수가 의도 키워드와 visualDirection 태그 겹침' },
-    { id: 'diversity', label: '다양성', type: 'auto', description: '중복 id 0건' },
-    { id: 'relevance', label: '의도 반영도', type: 'manual', description: 'pairwise A/B' },
+    { id: 'id-validity', label: 'ID validity', type: 'auto', description: 'Every id exists in the input archive' },
+    { id: 'vd-overlap', label: 'visualDirection match', type: 'auto', description: 'A majority of top recommendations overlap the intent keywords with visualDirection tags' },
+    { id: 'diversity', label: 'Diversity', type: 'auto', description: 'Zero duplicate ids' },
+    { id: 'relevance', label: 'Intent reflection', type: 'manual', description: 'pairwise A/B' },
   ],
 
   goldenExample: {
-    inputDescription: 'intent="흑백 대비 매거진 톤", type=landing',
+    inputDescription: 'intent="black and white contrast magazine tone", type=landing',
     expectedOutput: {
       recommendedIds: ['ref-002', 'ref-005', 'ref-008', 'ref-011', 'ref-017'],
       reasons: [
-        { id: 'ref-002', reason: 'Magazine+Swiss 스타일 매칭' },
+        { id: 'ref-002', reason: 'Magazine+Swiss style match' },
         { id: 'ref-005', reason: 'Editorial-Collage subject' },
       ],
     },
   },
 
   workflow: [
-    '위자드 Step 1 완료 시 intent/type 확보',
-    '아카이브 메타(레이어 태그 포함)를 JSON 직렬화',
-    'API 호출 (텍스트만)',
-    '결과 id로 archive에서 Reference 조회',
-    'Step 2 상단 "추천" 섹션에 표시',
+    'Capture intent/type when wizard Step 1 completes',
+    'Serialize the archive metadata (including layer tags) to JSON',
+    'API call (text only)',
+    'Look up References in the archive by the result ids',
+    'Display in the "Recommended" section at the top of Step 2',
   ],
 
   estCost: {
     model: 'Haiku 4.5',
-    tokensIn: '~700 (archive 27건, 레이어 태그 포함)',
+    tokensIn: '~700 (27 archive items, including layer tags)',
     tokensOut: '~200',
-    note: '가장 저렴. 이미지 없음',
+    note: 'The cheapest. No images',
   },
 };
 
 /* =========================================================
- * T3. 토큰 분석 + Visual Direction (이원 출력)
+ * T3. Token analysis + Visual Direction (dual output)
  * ========================================================= */
 export const TASK_ANALYZE_TOKENS = {
   id: 't3',
-  name: '의도 기반 조합 분석',
-  purpose: '사전 추출된 N 장의 디자인 값을 의도에 맞게 조합·선별하고 role 을 배정. 이미지 재분석 없음.',
+  name: 'Intent-driven composition analysis',
+  purpose: 'Combine and select the pre-extracted design values of N references according to intent and assign roles. No image re-analysis.',
   stage: 'project.create.step3',
   model: 'claude-haiku-4-5',
 
   input: {
     kind: 'text',
-    description: '선택된 N 장의 T1 pre-extracted 데이터 + 의도 + 모드 + 레이어 큐레이션 + 활용 노트',
+    description: 'T1 pre-extracted data for the N selected references + intent + mode + layer curation + usage notes',
     shape: `{
   intent: string,
-  mode: 'concept'|'system',  // TP2: 합성 톤 분기
+  mode: 'concept'|'system',  // TP2: synthesis-tone branch
   references: Array<{
     id, title, tags, dominantColors[], extracted,
-    useLayers?: TokenLayerKey[]  // TP4: 사용자가 이 ref에서 가져올 레이어
+    useLayers?: TokenLayerKey[]  // TP4: the layers the user wants to take from this ref
   }>,
-  userNotes?: string  // Step 3: 레퍼런스 본 후 명시 지시 (HIGHEST PRIORITY)
+  userNotes?: string  // Step 3: explicit instructions after seeing the references (HIGHEST PRIORITY)
 }`,
   },
 
@@ -440,7 +440,7 @@ export const TASK_ANALYZE_TOKENS = {
     gradient: GradientToken[1..3]
   },
   visualDirection: {
-    markdown: string,   // visual_direction_template.md 포맷 준수
+    markdown: string,   // follows the visual_direction_template.md format
     tags: { genre[], style[], subject[] }
   }
 }`,
@@ -452,8 +452,8 @@ You receive N pre-analyzed references AS TEXT ONLY (no images).
 Every reference has been processed by T1 at upload time, producing:
   - tags (preset classification: color/typography/layout/gradient/visualDirection)
   - dominantColors (HEX array)
-  - extracted: { palette[], typography[], layout[], gradient[] } — concrete observed values
-    (NO role — that is YOUR job)
+  - extracted: { palette[], typography[], layout[], gradient[] } - concrete observed values
+    (NO role - that is YOUR job)
 
 === YOUR JOB ===
 
@@ -475,12 +475,12 @@ Trust the pre-extracted data. Your value is composition, not observation.
 
 === Layer curation (TP4) ===
 For each reference, if \`useLayers\` is set and non-empty, ONLY consume those layers from this ref's extracted.
-Other layers from the same ref are user-rejected — IGNORE them even if extracted is rich.
+Other layers from the same ref are user-rejected - IGNORE them even if extracted is rich.
 This is the user's explicit curation. Respect it strictly.
 If useLayers is missing or empty, use the ref's full extracted (default behavior).
 
 === User Notes (Step 3, HIGHEST PRIORITY) ===
-If \`userNotes\` is provided (length >= 10 chars), it is the user's MOST REFINED intent —
+If \`userNotes\` is provided (length >= 10 chars), it is the user's MOST REFINED intent -
 formed AFTER seeing the actual references. Treat as USER REQUIREMENTS, not suggestions.
 
 Priority order: userNotes (L4) > useLayers (L3) > intent (L2) > mode (L1).
@@ -488,27 +488,27 @@ Priority order: userNotes (L4) > useLayers (L3) > intent (L2) > mode (L1).
 When userNotes conflicts with the initial intent (e.g. intent says "soft" but userNotes
 says "stronger contrast"), userNotes WINS.
 
-When userNotes explicitly mentions a ref-id (e.g. "ref-002 색을 primary로"), apply as a
+When userNotes explicitly mentions a ref-id (e.g. "make ref-002's color the primary"), apply as a
 direct mapping instruction.
 
 If userNotes is empty or under 10 chars, fall back to L3 → L2 → L1 (default behavior).
 
-=== Per-Reference Notes (사용자가 각 ref 별로 적은 자유 텍스트) ===
-프로젝트 단위 userNotes 와 별개로, 각 reference 마다 \`referenceNotes[refId]\` 가 있을 수 있다.
-이 노트는 그 ref 에 한정된 차용 의도이다 (예: "ref-002 의 hero 영역 색감만 차용").
+=== Per-Reference Notes (free text the user wrote for each ref) ===
+Separate from the project-level userNotes, each reference may have \`referenceNotes[refId]\`.
+This note is a borrowing intent limited to that ref (e.g. "borrow only the color of ref-002's hero area").
 
-규칙:
-- 해당 ref 출처 토큰의 decisionRationale.appliedReferenceNote 필드에 노트 verbatim 인용 (10-40자 fragment).
-- 노트가 명시한 부분 외 (예: layout 무시) 은 출력에서 제외.
-- 노트가 비어있는 ref 는 useLayers 와 intent 만 따르면 됨.
+Rules:
+- Quote the note verbatim in the decisionRationale.appliedReferenceNote field of tokens sourced from that ref (a 10-40 char fragment).
+- Exclude from the output anything outside what the note specifies (e.g. ignore layout).
+- For a ref with an empty note, just follow useLayers and intent.
 
-=== Reference Anchoring (산출물 안에서 ref 직접 명시) ===
-visualDirection.markdown / layerDetails 안에서 시각적 특징을 묘사할 때마다
-출처 ref id 를 명시하라. extractedPool 의 각 항목에 \`attachFile\` 필드가 있으니 그 값을 그대로 사용:
-  - 텍스트 인용: "잉크처럼 깊은 톤 (출처: ref-001 = 첨부 1번 \`01-ref-001.jpg\`)"
-  - 이미지 인용 (가능 시): "![ref-001](01-ref-001.jpg)" — attachFile 값 그대로 (폴더 path 붙이지 마라)
-폴더 경로 (references/) 는 본문에 박지 마라. 사용자가 ZIP 풀어 개별 파일로 첨부하므로
-파일명만 참조해야 외부 AI 가 매칭 가능.
+=== Reference Anchoring (name refs directly within the output) ===
+Whenever you describe a visual characteristic inside visualDirection.markdown / layerDetails,
+name the source ref id. Each item in extractedPool has an \`attachFile\` field, so use its value as-is:
+  - Text citation: "an ink-deep tone (source: ref-001 = attachment 1 \`01-ref-001.jpg\`)"
+  - Image citation (when possible): "![ref-001](01-ref-001.jpg)" - the attachFile value as-is (do not prepend a folder path)
+Do not embed the folder path (references/) in the body. Because the user unzips and attaches individual files,
+referencing only the filename lets an external AI match them.
 
 === Decision rationale (TP6, REQUIRED) ===
 For EVERY token in tokens.color / typography / layout / gradient, emit decisionRationale with:
@@ -519,7 +519,7 @@ For EVERY token in tokens.color / typography / layout / gradient, emit decisionR
     Quote the relevant fragment from userNotes (10-30 chars, verbatim).
     Do NOT echo generic userNotes across all tokens.
   - alternativesConsidered: optional, array of {value, reason} for top 1-2 rejected candidates
-This is shown to the user in the token detail panel. T1 super-theme: "AI가 정한 모든 결정의 이유를 추적할 수 있어야 한다."
+This is shown to the user in the token detail panel. T1 super-theme: "the reason behind every decision the AI makes must be traceable."
 
 === OUTPUT ===
 
@@ -540,8 +540,8 @@ that reference tokens via {path} syntax become the Components section of DESIGN.
 
 DO NOT split into multiple tool calls. DO NOT call the tool more than once.
 REQUIRED non-empty: color (4-6), typography (3-4), layout (2-4), gradient (1-3), visualDirection.markdown.
-STRONGLY ENCOURAGED (DESIGN.md export 품질 결정): spacing, rounded, components.
-OPTIONAL: elevation (빈 배열 허용).
+STRONGLY ENCOURAGED (determines DESIGN.md export quality): spacing, rounded, components.
+OPTIONAL: elevation (empty array allowed).
 
 Shared rules:
 - Reflect project intent strongly. Two projects with same refs but different intents
@@ -565,9 +565,9 @@ Shared rules:
 
 [layout] 2-4 tokens.
 - Source: extracted.layout entries
-- Fields: id, label, kind (grid|container ONLY — spacing is now its own axis below), columns?, gap?, ratio?, maxWidth?, isEnabled
+- Fields: id, label, kind (grid|container ONLY - spacing is now its own axis below), columns?, gap?, ratio?, maxWidth?, isEnabled
 - Intent can override (e.g. "dashboard" → columns: 12 regardless)
-- Do NOT emit kind="spacing" here — emit those values in the spacing axis instead.
+- Do NOT emit kind="spacing" here - emit those values in the spacing axis instead.
 
 [gradient] 1-3 tokens.
 - Source: extracted.gradient across refs (or synthesize from palette if needed)
@@ -576,7 +576,7 @@ Shared rules:
 === Spacing & Rounded scales (NEW, REQUIRED) ===
 
 [spacing] object map. 3-6 entries.
-- Keys are scale levels: pick from { xs, sm, md, lg, xl } — any 3-6 of these in ascending order.
+- Keys are scale levels: pick from { xs, sm, md, lg, xl } - any 3-6 of these in ascending order.
 - Values are CSS dimensions (string with unit) like "4px" / "8px" / "16px" / "24px" / "0.5rem".
 - Source: extracted.layout entries with kind="spacing" (if any) + intent.
 - Build a coherent scale (e.g. doubling, 1.5x, 4-base).
@@ -588,7 +588,7 @@ Shared rules:
 - Source: refs' visual rhythm. Soft brands → larger sm. Geometric brands → smaller / sharper.
 - Example: { sm: "4px", md: "8px", lg: "16px" }
 
-=== Elevation (NEW, OPTIONAL — empty array allowed) ===
+=== Elevation (NEW, OPTIONAL - empty array allowed) ===
 
 [elevation] 0-3 tokens (array).
 - Each: { id, label, shadow (CSS box-shadow string), level (0..3), isEnabled, decisionRationale }
@@ -599,7 +599,7 @@ Shared rules:
 
 [components] object map. 3-8 entries.
 - Each KEY is a semantic UI component name in kebab-case (suggested: button-primary, button-secondary, card, input, app-bar, surface, chip).
-- Each VALUE is an object whose property values MUST be TOKEN-REFERENCE STRINGS — never literal hex / em / px.
+- Each VALUE is an object whose property values MUST be TOKEN-REFERENCE STRINGS - never literal hex / em / px.
   Allowed property names: backgroundColor, textColor, borderColor, typography, rounded, padding, elevation, size, height, width.
 - Token reference syntax (STRICT):
     "{colors.<color-id>}"        → resolves to a colors entry id
@@ -623,37 +623,37 @@ Shared rules:
       decisionRationale: { whichReferences: ["ref-001"], whyChosen: "..." }
     }
 
-=== Token reference syntax — golden rule ===
+=== Token reference syntax - golden rule ===
 Any value inside [components] of the form \`{a.b}\` MUST resolve to an id you emitted
 in axis \`a\` (colors / typography / rounded / spacing / elevation).
 If you cannot find a clean reference, EITHER (a) add a token in that axis first, or
-(b) drop the property from the component — never inline a literal.
+(b) drop the property from the component - never inline a literal.
 
 === visualDirection constraints ===
 
 markdown: fill this template faithfully, substituting {{PLACEHOLDERS}} with concrete content that reflects the intent and references:
 
-# {{PROJECT_NAME}} — Visual Direction
+# {{PROJECT_NAME}} - Visual Direction
 
-## 1. 프로젝트 개요
-- 프로젝트명 / 유형 / 한 문장 의도 / 분석 레퍼런스 수
+## 1. Project Overview
+- Project name / type / one-line intent / number of references analyzed
 
-## 2. 전체 방향성
-(2-3 문장 요약)
+## 2. Overall Direction
+(2-3 sentence summary)
 
-## 3. Visual Direction 태그
-- 장르: ...
-- 스타일: ...
-- 비주얼 주인공: ...
+## 3. Visual Direction Tags
+- Genre: ...
+- Style: ...
+- Visual subject: ...
 
-## 4. 톤 & 무드 서술
-- bullet 4-6개
+## 4. Tone & Mood
+- 4-6 bullets
 
-## 5. 구현 가이드라인
-- bullet 3-5개
+## 5. Implementation Guidelines
+- 3-5 bullets
 
-## 6. 피해야 할 요소
-- bullet 3-5개
+## 6. Elements to Avoid
+- 3-5 bullets
 
 tags: the preset vocabulary tags used in section 3 (genre[], style[], subject[]).
 
@@ -670,7 +670,7 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
   toolSchemas: [
     {
       name: TOOL_SUBMIT_DESIGN_SYSTEM_CORE,
-      description: 'PHASE 1 OF 2 — Submit 4 CORE token axes (color/typography/layout/gradient) + visualDirection (markdown + tags). DO NOT include spacing/rounded/elevation/components in this call — those are emitted in phase 2.',
+      description: 'PHASE 1 OF 2 - Submit 4 CORE token axes (color/typography/layout/gradient) + visualDirection (markdown + tags). DO NOT include spacing/rounded/elevation/components in this call - those are emitted in phase 2.',
       input_schema: {
         type: 'object',
         properties: {
@@ -680,7 +680,7 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
             properties: {
               color: { type: 'array', minItems: 4, maxItems: 6 },
               typography: { type: 'array', minItems: 3, maxItems: 4 },
-              layout: { type: 'array', minItems: 2, maxItems: 4, description: 'kind: grid|container only — spacing is a separate axis (phase 2).' },
+              layout: { type: 'array', minItems: 2, maxItems: 4, description: 'kind: grid|container only - spacing is a separate axis (phase 2).' },
               gradient: { type: 'array', minItems: 1, maxItems: 3 },
             },
             required: ['color', 'typography', 'layout', 'gradient'],
@@ -708,7 +708,7 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
     },
     {
       name: TOOL_SUBMIT_DESIGN_SYSTEM_DESIGNMD,
-      description: 'PHASE 2 OF 2 — Submit DESIGN.md extra axes (spacing, rounded, elevation, components). Phase 1 results (4 core axes) are provided in the user message. Components values MUST use {path} references that EXACTLY match ids/keys you emit here OR ids emitted in phase 1.',
+      description: 'PHASE 2 OF 2 - Submit DESIGN.md extra axes (spacing, rounded, elevation, components). Phase 1 results (4 core axes) are provided in the user message. Components values MUST use {path} references that EXACTLY match ids/keys you emit here OR ids emitted in phase 1.',
       input_schema: {
         type: 'object',
         properties: {
@@ -724,79 +724,79 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
 
   qualityCriteria: [
     ...COMMON_QUALITY,
-    { id: 'primary-unique', label: 'Primary 유일', type: 'auto', description: 'color.role==="primary" 개수 = 1' },
-    { id: 'vd-template', label: 'MD 템플릿 준수', type: 'auto', description: '필수 섹션 1~6 모두 포함' },
-    { id: 'typo-hierarchy', label: '타이포 위계', type: 'auto', description: 'h1 > h2 > body1 순서' },
-    { id: 'tool-both', label: '두 tool 모두 호출', type: 'auto', description: 'submit_tokens + submit_visual_direction 각 1회' },
-    { id: 'intent-fit', label: '의도 반영도', type: 'manual', description: '토큰·MD가 의도와 일치' },
-    { id: 'export-success', label: 'Export 적합성', type: 'auto', description: 'ThemeExportDialog + MD 다운로드 모두 무결' },
-    { id: 'rationale-presence', label: '결정 근거 명시', type: 'auto', description: 'TP6: 모든 token 에 decisionRationale 존재 (whichReferences + whyChosen 필수)' },
-    { id: 'use-layers-respect', label: '사용자 큐레이션 존중', type: 'auto', description: 'TP4: useLayers 가 set 인 ref 의 다른 레이어가 출력에 사용되지 않음' },
-    { id: 'mode-divergence', label: '모드별 분기', type: 'manual', description: 'TP2: 같은 refs+intent 라도 mode 별로 결과가 명백히 다름' },
-    { id: 'token-ref-syntax', label: 'Component token-ref 문법', type: 'auto', description: 'components 의 모든 값은 {a.b} 형식이고 path 가 실제 토큰 id 와 매칭 (DESIGN.md 호환)' },
-    { id: 'components-min-3', label: 'Components 최소 3개', type: 'auto', description: 'tokens.components 키 ≥ 3, button-primary 류 CTA 1개 이상 포함' },
-    { id: 'spacing-rounded-scale', label: 'spacing/rounded scale 무결', type: 'auto', description: 'spacing 3-6 entry / rounded 2-5 entry, 모두 dimension 문자열 (px|rem) 또는 number, ascending 권장' },
+    { id: 'primary-unique', label: 'Primary unique', type: 'auto', description: 'color.role==="primary" count = 1' },
+    { id: 'vd-template', label: 'MD template compliance', type: 'auto', description: 'All required sections 1-6 included' },
+    { id: 'typo-hierarchy', label: 'Typography hierarchy', type: 'auto', description: 'h1 > h2 > body1 order' },
+    { id: 'tool-both', label: 'Both tools called', type: 'auto', description: 'submit_tokens + submit_visual_direction once each' },
+    { id: 'intent-fit', label: 'Intent reflection', type: 'manual', description: 'Tokens and MD match the intent' },
+    { id: 'export-success', label: 'Export suitability', type: 'auto', description: 'Both ThemeExportDialog + MD download are intact' },
+    { id: 'rationale-presence', label: 'Decision rationale present', type: 'auto', description: 'TP6: decisionRationale exists on every token (whichReferences + whyChosen required)' },
+    { id: 'use-layers-respect', label: 'Respect user curation', type: 'auto', description: 'TP4: other layers of a ref where useLayers is set are not used in the output' },
+    { id: 'mode-divergence', label: 'Divergence by mode', type: 'manual', description: 'TP2: even with the same refs+intent, results clearly differ by mode' },
+    { id: 'token-ref-syntax', label: 'Component token-ref syntax', type: 'auto', description: 'Every value in components is {a.b} form and the path matches a real token id (DESIGN.md compatible)' },
+    { id: 'components-min-3', label: 'At least 3 components', type: 'auto', description: 'tokens.components keys >= 3, including at least one button-primary-style CTA' },
+    { id: 'spacing-rounded-scale', label: 'spacing/rounded scale intact', type: 'auto', description: 'spacing 3-6 entries / rounded 2-5 entries, all dimension strings (px|rem) or numbers, ascending recommended' },
   ],
 
   goldenExample: {
-    inputDescription: '프로젝트 "Editorial Minimal", intent="흑백 대비 매거진", 6장',
+    inputDescription: 'project "Editorial Minimal", intent="black and white contrast magazine", 6 images',
     expectedOutput: {
       tokens: {
         color: [{ id: 'col-ink', label: 'Primary Ink', hex: '#14132B', role: 'primary', group: 'Brand', isEnabled: true, sourceReferenceIds: ['ref-001', 'ref-003'] }],
-        // typography/layout/gradient 생략
+        // typography/layout/gradient omitted
       },
       visualDirection: {
-        markdown: '# Editorial Minimal — Visual Direction\n\n## 1. 프로젝트 개요\n...',
+        markdown: '# Editorial Minimal - Visual Direction\n\n## 1. Project Overview\n...',
         tags: { genre: ['Retro'], style: ['Magazine', 'Swiss'], subject: ['Typography-Hero'] },
       },
     },
   },
 
   workflow: [
-    'Step 2에서 선택된 referenceIds 에 해당하는 레퍼런스 전체 데이터(tags + dominantColors + extracted) 확보',
-    '이미지 첨부 없음 — 전부 텍스트 payload',
+    'Obtain the full data (tags + dominantColors + extracted) for the referenceIds selected in Step 2',
+    'No image attachments - all a text payload',
     'Anthropic messages.create (Haiku 4.5, tools: [submit_tokens, submit_visual_direction])',
-    '응답에서 두 tool input 모두 추출, 한쪽 누락이면 재시도',
-    '자동 검증 (primary 유일, MD 섹션, enum)',
-    '검증 통과 시 ProjectDetailPage 에 렌더',
+    'Extract both tool inputs from the response, retry if either is missing',
+    'Automatic validation (primary unique, MD sections, enum)',
+    'Render on ProjectDetailPage once validation passes',
   ],
 
   estCost: {
     model: 'Haiku 4.5',
     tokensIn: '~6k (N=4 refs extracted JSON + system + tool schemas)',
     tokensOut: '~1.5k (tokens + VD markdown)',
-    note: '이미지 없음 → Haiku 로 충분. 이전 (Sonnet+이미지): ~$0.048 → 현재 ~$0.008 (6배 절감)',
+    note: 'No images -> Haiku is sufficient. Previously (Sonnet + images): ~$0.048 -> now ~$0.008 (6x savings)',
   },
 };
 
 /* =========================================================
- * T3 (concept 전용) — 웹 프롬프트 즉시 검증용 단일 prompt 생성
+ * T3 (concept only) - generate a single prompt for instant web-prompt validation
  *
- * 목적: 비디자이너가 Claude Desktop / Gemini / ChatGPT 웹채팅에
- *      그대로 붙여넣어 "이 분위기 디자인 나오나?" 즉시 시각화하기.
- * 산출물: 200-800자 한글 prompt 문자열 (토큰 ID, JSON, 코드블록 없음)
+ * Purpose: let a non-designer paste it directly into Claude Desktop / Gemini / ChatGPT web chat
+ *      to instantly visualize "does this mood produce the design?"
+ * Output: a 200-800 char English prompt string (no token IDs, JSON, or code blocks)
  * ========================================================= */
 export const TASK_ANALYZE_CONCEPT = {
   id: 't3-concept',
-  name: '컨셉 프롬프트 생성',
-  purpose: '레퍼런스 + 의도 → 웹 AI 챗에 즉시 붙여넣을 800자 디자인 프롬프트',
+  name: 'Concept prompt generation',
+  purpose: 'References + intent -> an 800-char design prompt to paste directly into a web AI chat',
   stage: 'project.create.step4 (mode=concept)',
   model: 'claude-haiku-4-5',
 
   input: {
     kind: 'text',
-    description: '의도 + selectedRefs(extracted) + userNotes',
+    description: 'Intent + selectedRefs(extracted) + userNotes',
     shape: '{ intent, selectedRefs[], userNotes? }',
   },
 
   output: {
-    description: '단일 prompt 문자열 (200-800자, 한글, 시각 묘사 중심)',
+    description: 'A single prompt string (200-800 chars, English, focused on visual description)',
     shape: '{ prompt: string }',
   },
 
   systemPrompt: `You are MUSE's concept prompt writer.
 
-GOAL: produce a single Korean prompt (200-800 chars) the user can paste directly
+GOAL: produce a single English prompt (200-800 chars) the user can paste directly
 into Claude Desktop / Gemini / ChatGPT web chat to immediately visualize the design.
 
 The output is NOT a design system spec. It is a vivid, dense prompt that an AI
@@ -808,83 +808,83 @@ image/UI generator can consume to render a concept screen.
 - userNotes (Step 3, HIGHEST PRIORITY): user's refined direction after seeing refs
 - mode: always 'concept' for this task
 
-=== OUTPUT prompt — content rules ===
+=== OUTPUT prompt - content rules ===
 
-The prompt MUST cover ALL FIVE bands in a natural flowing Korean paragraph (no bullets, no headers, no markdown):
-  1. 전체 무드/장르 (1 sentence) — Editorial Dashboard / Brutalist Hero / etc
-  2. 핵심 컬러 (HEX 3-5개 명시) — Primary, Surface, Accent 역할 짧게
-  3. 타이포그래피 (font-family + size hint) — Display + Body 최소 2tier
-  4. 레이아웃·구조 (grid columns, spacing, container hint)
-  5. 분위기·텍스처 (배경, 그라디언트, 표면 처리)
+The prompt MUST cover ALL FIVE bands in a natural flowing English paragraph (no bullets, no headers, no markdown):
+  1. Overall mood/genre (1 sentence) - Editorial Dashboard / Brutalist Hero / etc
+  2. Core colors (specify 3-5 HEX) - briefly note the Primary, Surface, Accent roles
+  3. Typography (font-family + size hint) - at least 2 tiers of Display + Body
+  4. Layout and structure (grid columns, spacing, container hint)
+  5. Mood and texture (background, gradient, surface treatment)
 
-userNotes 가 있으면 그 내용을 반드시 prompt 안에 자연스럽게 녹여라 (verbatim 인용 X, 의미 반영).
+If userNotes is present, you MUST weave its content naturally into the prompt (no verbatim quoting, reflect the meaning).
 
-=== OUTPUT prompt — FORMAT rules (포맷 금지) ===
-- 한글 자연스러운 문장. "~한 ~의 ~" 식 묘사.
-- 구체적: HEX 코드, 폰트명, 픽셀/rem 수치 직접 명시.
-- 200자 미만이면 너무 빈약, 800자 초과면 자르기.
-- 절대 포함 금지 (포맷): token id (col-ink, typo-h1 등), JSON, 코드블록(\`\`\`), 변수명, "primary:", "h1:" 같은 라벨.
-- 자연어로만. 사용자가 그대로 복사해 다른 AI 에 붙여넣음.
+=== OUTPUT prompt - FORMAT rules (formatting bans) ===
+- Natural English sentences. Descriptive "a ... that ..." phrasing.
+- Concrete: state HEX codes, font names, and pixel/rem values directly.
+- Under 200 chars is too thin, over 800 chars gets cut.
+- Absolutely forbidden (format): token ids (col-ink, typo-h1, etc.), JSON, code blocks (\`\`\`), variable names, labels like "primary:", "h1:".
+- Natural language only. The user copies it as-is and pastes into another AI.
 
-=== AI SLOPE — Visual Clichés to AVOID (시각 차단) ===
-포맷 금지와 별개로, 결과물이 "AI 가 만든 듯한 generic" 으로 회귀하지 않도록 다음을 묘사에서 배제:
+=== AI SLOP - Visual Clichés to AVOID (visual bans) ===
+Separate from the format bans, exclude the following from your descriptions so the result does not regress into "AI-made generic":
 
-**Product-conditional 차단** (intent 의 product type 에 따라 회귀 패턴 차단):
-- intent 가 "dashboard" / "metric" / "analytics" 류일 때: magazine cover layout / editorial article spread / weather almanac / daily journal cover / news bulletin 풍 묘사 금지. mood 가 "editorial" 이어도 본질은 functional dashboard 유지.
-- intent 가 "landing" / "marketing" 일 때: 평범한 blog post / app screen 풍 묘사 금지.
-- intent 가 "mobile" / "app" 일 때: 데스크톱 1440px 풀폭 레이아웃 묘사 금지.
+**Product-conditional bans** (block regression patterns based on the intent's product type):
+- When the intent is "dashboard" / "metric" / "analytics" style: no magazine cover layout / editorial article spread / weather almanac / daily journal cover / news bulletin style descriptions. Even if the mood is "editorial", keep the essence a functional dashboard.
+- When the intent is "landing" / "marketing": no plain blog post / app screen style descriptions.
+- When the intent is "mobile" / "app": no desktop 1440px full-width layout descriptions.
 
-**Generic AI 폰트 회피** (Anthropic Cookbook 명시):
-- Inter / Roboto / Open Sans / Lato / SF Pro / Helvetica 단독 사용 묘사 금지.
-- 대신 distinctive choice 권장: editorial(Playfair Display, Crimson Pro, Fraunces) / display(Clash Display, Bricolage, Newsreader) / technical(IBM Plex, Space Grotesk) / code(JetBrains Mono).
+**Avoid generic AI fonts** (stated in the Anthropic Cookbook):
+- No descriptions using Inter / Roboto / Open Sans / Lato / SF Pro / Helvetica alone.
+- Instead, recommend a distinctive choice: editorial (Playfair Display, Crimson Pro, Fraunces) / display (Clash Display, Bricolage, Newsreader) / technical (IBM Plex, Space Grotesk) / code (JetBrains Mono).
 
-**Cliché 배경**:
-- flat solid cream/white background without any texture/gradient (배경 = 단색만 절대 금지)
+**Cliché backgrounds**:
+- flat solid cream/white background without any texture/gradient (background = never a solid color only)
 - purple-on-white gradients (overused AI default)
 - generic glass morphism (uniform translucent cards)
 
-**AI-generated look 패턴**:
-- uniform spacing everywhere (모든 간격이 똑같음)
+**AI-generated look patterns**:
+- uniform spacing everywhere (all spacing identical)
 - generic Lucide/Heroicons style icons everywhere
-- soft drop shadows everywhere (그림자 남용)
-- 4-card 균등 metric grid 만 단조롭게 반복 (단 dashboard 의 metric card 자체는 본질로 보존 — 균등 4-카드 무한반복만 차단)
-- 컨테이너 / 카드 / 섹션의 좌측 line border (좌측 세로 강조선, blockquote 식 좌측 보더) — magazine·editorial 톤으로 끌리는 흔한 AI cliché
-- italic / 이탤릭체 사용 — 강조나 인용 위한 italic 남용 금지 (magazine cover / editorial article spread 회귀 신호. 강조는 weight·size·color 로만)
+- soft drop shadows everywhere (shadow overuse)
+- monotonously repeating only an even 4-card metric grid (but preserve the dashboard's metric card itself as essential - only block the infinite even 4-card repetition)
+- a left line border on containers / cards / sections (a left vertical accent line, blockquote-style left border) - a common AI cliché that drifts into a magazine/editorial tone
+- italic use - no overuse of italics for emphasis or quotation (a regression signal toward magazine cover / editorial article spread; emphasize only with weight, size, and color)
 
-이 차단 룰은 "explicit avoidance" — Claude / Gemini 가 받는 직접 신호. 자연어 안에 "~를 피하고", "단순한 ~ 와 다르게" 식으로 1-2회 녹이면 효과 ↑.
+These bans are "explicit avoidance" - direct signals that Claude / Gemini receive. Weaving them into the natural language once or twice as "avoiding ...", "unlike a simple ..." increases the effect.
 
-=== EXAMPLE (참고용, 절대 그대로 출력 X) ===
+=== EXAMPLE (for reference, never output as-is) ===
 
-(a) Landing — 매거진 톤 (refs 3장 각각 attachFile 인용):
-"01-ref-001.jpg 의 잉크처럼 깊은 #14132B 를 주조색으로, 흑백 대비가 강한 매거진 톤의 랜딩페이지. 크림빛 #FAF6E8 표면에 02-ref-002.jpg 의 차분한 머스타드 #D4A857 액센트가 포인트로 흩어진 구성. Display 는 03-ref-003.jpg 의 Playfair Display serif 4rem 굵직하게 좌측 정렬, 본문은 Crimson Pro 1rem 1.6 lineHeight 로 안정적. 12-col modular grid 24px gap, 컨테이너 max-width 1200px. 배경에는 retro paper-grain 텍스처를 fixed 로 깔아 종이 질감을 더하고, Hero 섹션은 oversized typography 로 시선을 끌며 우측에 작은 메타 정보 칼럼을 배치한다. 평범한 blog post 식 단조 카드 그리드와 다르게 비대칭 hierarchy 로 시선을 유도한다."
+(a) Landing - magazine tone (each of 3 refs cited by attachFile):
+"A magazine-tone landing page with strong black-and-white contrast, using the ink-deep #14132B from 01-ref-001.jpg as the base color. On a cream #FAF6E8 surface, the calm mustard #D4A857 accent from 02-ref-002.jpg is scattered as highlights. Display uses the Playfair Display serif from 03-ref-003.jpg, bold and left-aligned at 4rem, while the body is stable in Crimson Pro 1rem with 1.6 lineHeight. A 12-col modular grid with 24px gap, container max-width 1200px. A retro paper-grain texture is laid fixed over the background for a paper feel, and the Hero section draws the eye with oversized typography while a small meta-info column sits on the right. Unlike a plain blog-post-style monotonous card grid, an asymmetric hierarchy guides the eye."
 
-(b) Dashboard — functional + retro accent (intent: "functional dashboard with retro mood"):
-"기능 중심의 메트릭 대시보드에 1970s 에디토리얼 무드를 액센트로 입힌 구성. 잉크 #1F1F1F 텍스트, 크림 #E8E5DC 표면, 머스타드 #C8A574 액센트로 따뜻한 대비. Display 는 Fraunces serif 28px 메트릭 큰 숫자에, 본문은 IBM Plex Sans 13px 라벨에 적용. 12-col grid 16px gap, max 1280px. 배경은 retro paper-grain 텍스처를 fixed 로 깔되 metric card / line chart / data table 같은 dashboard 의 기능 컴포넌트는 그대로 유지. magazine cover / weather almanac 풍이 아닌 functional readability 가 우선이며 sticky header nav 에 fontWeight 강조 hierarchy 만 editorial 에서 차용한다."
+(b) Dashboard - functional + retro accent (intent: "functional dashboard with retro mood"):
+"A function-first metric dashboard accented with a 1970s editorial mood. Warm contrast from ink #1F1F1F text, cream #E8E5DC surface, and mustard #C8A574 accent. Display applies the Fraunces serif at 28px to large metric numbers, while the body uses IBM Plex Sans 13px on labels. A 12-col grid with 16px gap, max 1280px. A retro paper-grain texture is laid fixed over the background, but the dashboard's functional components like metric card / line chart / data table are kept intact. Rather than a magazine cover / weather almanac style, functional readability comes first, and only a fontWeight emphasis hierarchy is borrowed from editorial for the sticky header nav."
 
-(c) Mobile — Y2K 글리치 무드:
-"Y2K 글리치 감성의 모바일 앱. 메탈릭 #C0C7D1 표면에 형광 #B8FF3D 액센트, 깊은 보라 #2B1A4E 텍스트. Display 는 Bricolage Grotesque 32px 굵게, 본문은 Space Grotesk 14px. 4-col mobile grid 12px gap, viewport 390px. 배경에는 미세한 chromatic aberration 과 노이즈 텍스처가 흐르고, 카드는 1px sharp border 로 떠 있는 듯 배치. 데스크톱 풀폭 레이아웃 / 부드러운 drop shadow / 균일 간격 같은 generic AI 모바일 룩과 거리를 두고 글리치 디테일로 캐릭터를 만든다."
+(c) Mobile - Y2K glitch mood:
+"A mobile app with a Y2K glitch feel. A fluorescent #B8FF3D accent on a metallic #C0C7D1 surface, with deep purple #2B1A4E text. Display uses Bricolage Grotesque bold at 32px, the body Space Grotesk 14px. A 4-col mobile grid with 12px gap, viewport 390px. Faint chromatic aberration and a noise texture drift across the background, and cards are placed as if floating with a 1px sharp border. It distances itself from the generic AI mobile look of desktop full-width layouts / soft drop shadows / uniform spacing, building character through glitch detail."
 
-(예시 3개의 공통: 5 band 풀이 + 1-2회 "~ 와 다르게" 식 negative 명시 + ref 출처 0-2회 짧게 녹임)
+(what the 3 examples share: covering all 5 bands + stating a negative "unlike ..." once or twice + weaving in ref sources 0-2 times briefly)
 
-=== Per-Reference Notes (있을 시 HIGHEST PRIORITY per ref) ===
-사용자가 ref 별로 적은 차용 의도가 user message 끝에 있을 수 있다 (예: "ref-002: hero 색감만 차용").
-해당 노트가 명시한 부분만 그 ref 에서 가져오고, 나머지 layer 는 무시 (차집합).
-prompt 안에 노트 의도가 자연스럽게 녹아야 한다 (verbatim 인용 X — 800자 제약 때문에 의미 반영).
+=== Per-Reference Notes (HIGHEST PRIORITY per ref when present) ===
+A borrowing intent the user wrote per ref may appear at the end of the user message (e.g. "ref-002: borrow only the hero color").
+Take only the part the note specifies from that ref and ignore the rest of the layers (set difference).
+The note's intent must be woven naturally into the prompt (no verbatim quoting - reflect the meaning due to the 800-char limit).
 
 === Reference Anchoring (REQUIRED) ===
-prompt 안에 출처 레퍼런스 파일명을 직접 명시하라. extractedPool 의 각 항목에
-\`attachFile\` 필드 (예: \`01-ref-001.jpg\`, \`02-ref-002.jpg\`) 가 ZIP 안 정확한 파일명이며,
-사용자가 외부 AI 챗에 그 파일을 첨부할 때 매칭 단서가 된다.
+Name the source reference filename directly in the prompt. Each item in extractedPool has an
+\`attachFile\` field (e.g. \`01-ref-001.jpg\`, \`02-ref-002.jpg\`) which is the exact filename inside the ZIP,
+and it becomes the matching cue when the user attaches that file to an external AI chat.
 
-규칙:
-- prompt 안 *최소 ref 갯수만큼* attachFile 값을 직접 인용 (refs 가 3장이면 최소 3번).
-  각 ref 의 가장 두드러진 차용 포인트(색 / 타이포 / 레이아웃 / 무드 중) 를 묘사할 때 inline 으로.
-- 인용 형태 예시:
-  - "01-ref-001.jpg 의 잉크처럼 깊은 #14132B 를 주조색으로"
-  - "타이포는 02-ref-002.jpg 의 Playfair Display Serif 를 차용"
-  - "03-ref-003.jpg 의 retro paper-grain 텍스처를 fixed 로"
-- ref-XXX id 단독 사용 X. 항상 attachFile 파일명을 함께 또는 단독으로 명시.
-- 폴더 경로 (references/) 는 붙이지 마라. attachFile 값 그대로.
+Rules:
+- Cite attachFile values directly *at least as many times as the number of refs* in the prompt (if there are 3 refs, at least 3 times).
+  Inline them when describing each ref's most prominent borrowing point (among color / typography / layout / mood).
+- Citation examples:
+  - "using the ink-deep #14132B from 01-ref-001.jpg as the base color"
+  - "the typography borrows the Playfair Display Serif from 02-ref-002.jpg"
+  - "the retro paper-grain texture from 03-ref-003.jpg laid fixed"
+- Do not use a bare ref-XXX id. Always state the attachFile filename together with it or on its own.
+- Do not prepend the folder path (references/). Use the attachFile value as-is.
 
 === Global ===
 Respond via submit_concept_prompt ONLY. No prose outside the tool. Single call.`,
@@ -893,12 +893,12 @@ Respond via submit_concept_prompt ONLY. No prose outside the tool. Single call.`
 Reference count: {{count}} (ids = [{{ids}}])
 
 Pre-extracted reference data is provided above as JSON.
-Compose ONE Korean prompt 200-800 chars covering all 5 bands.`,
+Compose ONE English prompt 200-800 chars covering all 5 bands.`,
 
   toolSchemas: [
     {
       name: TOOL_SUBMIT_CONCEPT_PROMPT,
-      description: 'Submit a single Korean concept prompt (200-800 chars) for direct paste into web AI chats.',
+      description: 'Submit a single English concept prompt (200-800 chars) for direct paste into web AI chats.',
       input_schema: {
         type: 'object',
         properties: {
@@ -906,7 +906,7 @@ Compose ONE Korean prompt 200-800 chars covering all 5 bands.`,
             type: 'string',
             minLength: 200,
             maxLength: 800,
-            description: '한글 디자인 프롬프트. 5 band 모두 포함, HEX 3+ 명시, 자연어 문장.',
+            description: 'English design prompt. Covers all 5 bands, states 3+ HEX, natural-language sentences.',
           },
         },
         required: ['prompt'],
@@ -915,27 +915,27 @@ Compose ONE Korean prompt 200-800 chars covering all 5 bands.`,
   ],
 
   qualityCriteria: [
-    { id: 'length', label: '길이 200-800자', type: 'auto', description: 'minLength/maxLength' },
-    { id: 'hex-presence', label: 'HEX 3개+', type: 'auto', description: '/(#[0-9A-Fa-f]{6}.*){3,}/' },
-    { id: 'no-markdown', label: '마크다운 없음', type: 'auto', description: '##, **, ```, - bullets 금지' },
-    { id: 'no-token-ids', label: '토큰 ID 없음', type: 'auto', description: 'col-, typo-, primary: 등 금지' },
-    { id: 'paste-ready', label: '웹채팅 즉시 사용', type: 'manual', description: 'Gemini 에 붙여넣어 시각화 됨' },
+    { id: 'length', label: 'Length 200-800 chars', type: 'auto', description: 'minLength/maxLength' },
+    { id: 'hex-presence', label: '3+ HEX', type: 'auto', description: '/(#[0-9A-Fa-f]{6}.*){3,}/' },
+    { id: 'no-markdown', label: 'No markdown', type: 'auto', description: 'no ##, **, ```, - bullets' },
+    { id: 'no-token-ids', label: 'No token IDs', type: 'auto', description: 'no col-, typo-, primary:, etc.' },
+    { id: 'paste-ready', label: 'Instant web-chat use', type: 'manual', description: 'Pasting into Gemini produces a visualization' },
   ],
 
   workflow: [
-    'Step 4 시작 시 mode==="concept" 분기',
-    'pre-extracted selectedRefs + intent + userNotes 텍스트 payload',
+    'Branch on mode==="concept" at the start of Step 4',
+    'Text payload of pre-extracted selectedRefs + intent + userNotes',
     'Anthropic messages.create (Haiku, tools: [submit_concept_prompt])',
-    'tool_choice 단일 강제 → 정확히 1번 호출',
-    '자동 검증 (길이 / HEX / 마크다운 부재)',
-    '검증 통과 시 ProjectDetailPage 에 prompt 박스 + 복사 버튼 렌더',
+    'Force a single tool_choice -> exactly one call',
+    'Automatic validation (length / HEX / absence of markdown)',
+    'Render the prompt box + copy button on ProjectDetailPage once validation passes',
   ],
 
   estCost: {
     model: 'Haiku 4.5',
     tokensIn: '~3k (refs extracted + system)',
-    tokensOut: '~400 (한글 800자)',
-    note: '가장 저렴한 T3. 이미지 없음 + 짧은 출력.',
+    tokensOut: '~400 (800 chars)',
+    note: 'The cheapest T3. No images + short output.',
   },
 };
 
@@ -945,14 +945,14 @@ export const AI_TASKS = [TASK_AUTO_TAG, TASK_RECOMMEND, TASK_ANALYZE_TOKENS, TAS
 export const AI_TASKS_BY_ID = Object.fromEntries(AI_TASKS.map((t) => [t.id, t]));
 
 export const AI_WORKFLOW_DIAGRAM = `flowchart LR
-  Upload[이미지 업로드] --> T1["T1 · 레이어별 태깅<br/>(Haiku, 5 layers)"]
+  Upload[Image upload] --> T1["T1 · Per-layer tagging<br/>(Haiku, 5 layers)"]
   T1 --> Archive[(Archive)]
-  NewProj[프로젝트 생성 Step 1] -->|intent+type| T2["T2 · 추천<br/>(Haiku, 텍스트)"]
+  NewProj[Project creation Step 1] -->|intent+type| T2["T2 · Recommendation<br/>(Haiku, text)"]
   Archive --> T2
-  T2 --> Step2[Step 2 레퍼런스 선택]
+  T2 --> Step2[Step 2 reference selection]
   Step2 --> T3["T3 · Tokens + VD<br/>(Sonnet, 2 tools)"]
-  T3 --> Detail[프로젝트 상세]
+  T3 --> Detail[Project detail]
   Detail --> Export[tokens.js + visual-direction.md]
 `;
 
-/** 구버전 호환 제거된 flat 어휘 — preset helper의 getLayerTags()로 대체 */
+/** Legacy-compat flat vocabulary removed - replaced by the preset helper's getLayerTags() */

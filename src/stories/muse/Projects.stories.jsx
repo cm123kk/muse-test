@@ -21,10 +21,10 @@ export default {
 };
 
 const TYPE_LABEL = {
-  landing: '랜딩',
-  dashboard: '대시보드',
-  mobile: '모바일',
-  brand: '브랜드',
+  landing: 'Landing',
+  dashboard: 'Dashboard',
+  mobile: 'Mobile',
+  brand: 'Brand',
 };
 
 export const Docs = {
@@ -43,10 +43,10 @@ export const Docs = {
           Projects Dataset
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          MUSE 프로젝트 더미 { projects.length }건. 각 프로젝트는 References 풀에서 선택한 referenceIds를 가진다.
+          { projects.length } dummy MUSE projects. Each project holds referenceIds selected from the References pool.
         </Typography>
 
-        <SectionTitle title="스키마" description="docs/muse/02-ux-flow.md의 Project 모델" />
+        <SectionTitle title="Schema" description="Project model from docs/muse/02-ux-flow.md" />
         <TableContainer sx={ { mb: 4 } }>
           <Table size="small">
             <TableHead>
@@ -57,27 +57,27 @@ export const Docs = {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>id</TableCell><TableCell>string</TableCell><TableCell>고유 식별자 (proj-XXX)</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>name</TableCell><TableCell>string</TableCell><TableCell>프로젝트 이름</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>intent</TableCell><TableCell>string</TableCell><TableCell>한 문장 의도</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>type</TableCell><TableCell>landing | dashboard | mobile | brand</TableCell><TableCell>프로젝트 유형</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>referenceIds</TableCell><TableCell>string[]</TableCell><TableCell>연결된 Reference id 배열</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>id</TableCell><TableCell>string</TableCell><TableCell>Unique identifier (proj-XXX)</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>name</TableCell><TableCell>string</TableCell><TableCell>Project name</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>intent</TableCell><TableCell>string</TableCell><TableCell>One-sentence intent</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>type</TableCell><TableCell>landing | dashboard | mobile | brand</TableCell><TableCell>Project type</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>referenceIds</TableCell><TableCell>string[]</TableCell><TableCell>Array of linked Reference ids</TableCell></TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace', fontWeight: 600, color: 'primary.main' } }>mode?</TableCell>
                 <TableCell><code>'concept'|'system'</code></TableCell>
-                <TableCell>★ <strong>TP2</strong> — 모드 선택. T2 정렬 알고리즘 + T3 합성 톤 + Export default 모두 분기. default: 'system'</TableCell>
+                <TableCell>★ <strong>TP2</strong>: Mode selection. Branches the T2 sorting algorithm, T3 synthesis tone, and Export default. default: 'system'</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace', fontWeight: 600, color: 'primary.main' } }>selectedRefs?</TableCell>
                 <TableCell><code>{ '[{id, useLayers}]' }</code></TableCell>
-                <TableCell>★ <strong>TP4</strong> — 사용자 레이어 큐레이션. 빈 배열이면 자동(T2 referenceLayer). 명시되면 다른 레이어는 T3에서 무시</TableCell>
+                <TableCell>★ <strong>TP4</strong>: User layer curation. If empty, automatic (T2 referenceLayer). If specified, other layers are ignored in T3</TableCell>
               </TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>createdAt</TableCell><TableCell>string</TableCell><TableCell>생성일</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>createdAt</TableCell><TableCell>string</TableCell><TableCell>Creation date</TableCell></TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="목록" description="모든 프로젝트와 연결된 References" />
+        <SectionTitle title="List" description="All projects and their linked References" />
         <TableContainer sx={ { mb: 4 } }>
           <Table size="small">
             <TableHead>
@@ -107,7 +107,7 @@ export const Docs = {
           </Table>
         </TableContainer>
 
-        <SectionTitle title="썸네일 프리뷰" description="projectsWithThumbnails — 프로젝트 카드용 2x2 썸네일" />
+        <SectionTitle title="Thumbnail preview" description="projectsWithThumbnails: 2x2 thumbnails for project cards" />
         <Grid container spacing={ 3 }>
           { projectsWithThumbnails.map((p) => (
             <Grid key={ p.id } size={ { xs: 12, sm: 6, md: 3 } }>

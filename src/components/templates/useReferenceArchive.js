@@ -15,16 +15,16 @@ const EMPTY_TAGS = {
 };
 
 /**
- * useReferenceArchive 훅
+ * useReferenceArchive hook
  *
- * ArchivePage의 Supabase 기반 업로드 + T1 태깅 + 삭제 + 재시도 로직을 캡슐화한다.
- * store 모드가 꺼져 있으면 외부 주입된 references / onUploadFile 만 사용한다.
+ * Encapsulates ArchivePage's Supabase-based upload + T1 tagging + delete + retry logic.
+ * When store mode is off, it uses only the externally injected references / onUploadFile.
  *
  * @param {object}   params
- * @param {boolean}  params.useStoreMode - Supabase 직접 사용 여부
- * @param {array}    [params.externalReferences] - store 미사용 시 표시할 레퍼런스
- * @param {function} [params.onUploadFile] - store 미사용 시 호스트로 위임할 업로드 콜백
- * @param {object}   [params.client] - Supabase 클라이언트 (기본: 실제 클라이언트, Storybook: mock)
+ * @param {boolean}  params.useStoreMode - whether to use Supabase directly
+ * @param {array}    [params.externalReferences] - references to display when store is not used
+ * @param {function} [params.onUploadFile] - upload callback delegated to the host when store is not used
+ * @param {object}   [params.client] - Supabase client (default: the real client, Storybook: mock)
  */
 export function useReferenceArchive({
   useStoreMode,
@@ -35,10 +35,10 @@ export function useReferenceArchive({
   const effectiveClient = clientProp || supabase;
   const { user } = useAuthContext();
 
-  // Supabase에서 레퍼런스 목록 조회
+  // Fetch the reference list from Supabase
   const { data: supabaseRefs, refetch } = useReferences({ client: effectiveClient });
 
-  // 업로드/태깅 중인 임시 항목 (낙관적 UI)
+  // Temporary items being uploaded/tagged (optimistic UI)
   const [pendingRefs, setPendingRefs] = useState([]);
 
   const [uploadState, setUploadState] = useState({
@@ -58,7 +58,7 @@ export function useReferenceArchive({
     [references],
   );
 
-  /** DB 레코드 → UI reference 객체 변환 */
+  /** Convert a DB record -> UI reference object */
   function mapFromDb(row) {
     return {
       id: row.id,
@@ -73,12 +73,12 @@ export function useReferenceArchive({
     };
   }
 
-  /** 단일 파일 처리: Storage 업로드 → DB INSERT → T1 태깅 → DB UPDATE */
+  /** Handle a single file: Storage upload -> DB INSERT -> T1 tagging -> DB UPDATE */
   const uploadOne = async (file) => {
     const dataUrl = await fileToDataUrl(file);
     const resized = await resizeDataUrl(dataUrl, 512);
 
-    // 낙관적 UI: 즉시 pending 항목 표시
+    // Optimistic UI: show the pending item immediately
     const tempId = crypto.randomUUID();
     const pendingItem = {
       id: tempId,
@@ -93,7 +93,7 @@ export function useReferenceArchive({
     setPendingRefs((prev) => [...prev, pendingItem]);
 
     try {
-      // 1. Storage 업로드
+      // 1. Storage upload
       const { storagePath, publicUrl } = await uploadImageToStorage(file, user.id, effectiveClient);
 
       // 2. DB INSERT
@@ -116,7 +116,7 @@ export function useReferenceArchive({
 
       if (insertErr) throw insertErr;
 
-      // 3. T1 자동 태깅
+      // 3. T1 auto-tagging
       try {
         const result = await runAutoTag({ imageUrl: resized });
         await effectiveClient
@@ -129,11 +129,11 @@ export function useReferenceArchive({
           })
           .eq('id', inserted.id);
       } catch (tagError) {
-        console.warn('[T1 태깅 실패]', tagError?.message);
-        // 태깅 실패해도 레코드는 유지 — ReferenceCard에서 재시도 가능
+        console.warn('[T1 tagging failed]', tagError?.message);
+        // Keep the record even if tagging fails; it can be retried from ReferenceCard
       }
 
-      // 낙관적 항목 제거 후 Supabase 목록 새로고침
+      // Remove the optimistic item, then refresh the Supabase list
       setPendingRefs((prev) => prev.filter((r) => r.id !== tempId));
       refetch();
 
@@ -144,7 +144,7 @@ export function useReferenceArchive({
     }
   };
 
-  /** concurrency 제한 배치 실행 */
+  /** Batch execution with a concurrency limit */
   const runWithConcurrency = async (items, limit, fn) => {
     const results = new Array(items.length);
     let cursor = 0;
@@ -188,13 +188,13 @@ export function useReferenceArchive({
     let errorMsg = null;
     if (failed.length) {
       const names = failed.map((r) => r.item?.name || '?').slice(0, 3).join(', ');
-      const more = failed.length > 3 ? ` 외 ${failed.length - 3}장` : '';
-      errorMsg = `${failed.length}장 업로드 실패: ${names}${more}`;
+      const more = failed.length > 3 ? ` and ${failed.length - 3} more` : '';
+      errorMsg = `${failed.length} uploads failed: ${names}${more}`;
     }
     setUploadState({ isUploading: false, error: errorMsg, lastId: lastOk?.value?.id || null });
   };
 
-  /** _tagError 카드의 "다시 시도" — T1 재수행 후 DB UPDATE */
+  /** "Retry" for a _tagError card: re-run T1, then DB UPDATE */
   const retryTagging = async (ref) => {
     try {
       const dataUrl = await imageUrlToBase64DataUrl(ref.thumbnailUrl);
@@ -211,7 +211,7 @@ export function useReferenceArchive({
         .eq('id', ref.id);
       refetch();
     } catch (e) {
-      console.warn('[retryTagging 실패]', e?.message);
+      console.warn('[retryTagging failed]', e?.message);
     }
   };
 

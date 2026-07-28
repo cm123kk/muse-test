@@ -3,27 +3,27 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 /**
- * NavMenu 컴포넌트
+ * NavMenu component
  *
- * 헤더, 사이드바, 드로어에서 사용되는 네비게이션 메뉴 컴포넌트.
- * 아이콘과 텍스트 조합을 지원하며 다양한 레이아웃에 적응한다.
+ * Navigation menu component used in the header, sidebar, and drawer.
+ * Supports icon and text combinations and adapts to various layouts.
  *
- * 동작 방식:
- * 1. items 배열로 메뉴 아이템 정의
- * 2. orientation에 따라 가로/세로 배치
- * 3. activeId로 현재 활성 메뉴 표시
- * 4. onItemClick으로 메뉴 선택 처리
+ * How it works:
+ * 1. Define menu items with the items array
+ * 2. Lay them out horizontally or vertically based on orientation
+ * 3. Indicate the currently active menu with activeId
+ * 4. Handle menu selection with onItemClick
  *
  * Props:
- * @param {Array} items - 메뉴 아이템 배열 [{ id, label, icon, href, disabled }] [Required]
- * @param {string} activeId - 현재 활성 아이템 ID [Optional]
- * @param {string} orientation - 배치 방향 ('horizontal' | 'vertical') [Optional, 기본값: 'horizontal']
- * @param {string} variant - 스타일 변형 ('default' | 'pills' | 'underline') [Optional, 기본값: 'default']
- * @param {string} size - 크기 ('sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {boolean} isIconOnly - 아이콘만 표시 [Optional, 기본값: false]
- * @param {boolean} hasIconStart - 아이콘을 텍스트 앞에 배치 [Optional, 기본값: true]
- * @param {function} onItemClick - 아이템 클릭 핸들러 (item) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {Array} items - Array of menu items [{ id, label, icon, href, disabled }] [Required]
+ * @param {string} activeId - ID of the currently active item [Optional]
+ * @param {string} orientation - Layout direction ('horizontal' | 'vertical') [Optional, default: 'horizontal']
+ * @param {string} variant - Style variant ('default' | 'pills' | 'underline') [Optional, default: 'default']
+ * @param {string} size - Size ('sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {boolean} isIconOnly - Show icon only [Optional, default: false]
+ * @param {boolean} hasIconStart - Place the icon before the text [Optional, default: true]
+ * @param {function} onItemClick - Item click handler (item) => void [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <NavMenu
@@ -48,7 +48,7 @@ const NavMenu = forwardRef(function NavMenu({
   ...props
 }, ref) {
   /**
-   * 사이즈별 스타일 맵
+   * Style map by size
    */
   const sizeMap = {
     sm: {
@@ -75,7 +75,7 @@ const NavMenu = forwardRef(function NavMenu({
   const isVertical = orientation === 'vertical';
 
   /**
-   * 컨테이너 스타일
+   * Container styles
    */
   const getContainerStyles = () => ({
     display: 'flex',
@@ -85,7 +85,7 @@ const NavMenu = forwardRef(function NavMenu({
   });
 
   /**
-   * 아이템 기본 스타일
+   * Item base styles
    */
   const getItemBaseStyles = (isActive, isDisabled) => {
     const base = {
@@ -109,7 +109,7 @@ const NavMenu = forwardRef(function NavMenu({
   };
 
   /**
-   * variant별 스타일
+   * Styles by variant
    */
   const getVariantStyles = (isActive) => {
     switch (variant) {
@@ -148,7 +148,7 @@ const NavMenu = forwardRef(function NavMenu({
   };
 
   /**
-   * 아이템 클릭 핸들러
+   * Item click handler
    */
   const handleItemClick = (item) => {
     if (item.disabled) return;

@@ -16,7 +16,7 @@ const sampleRefs = references.slice(0, 4).map((r) => ({
 }));
 
 export const Empty_Concept = {
-  name: 'Empty (concept 모드 — 스킵 가능)',
+  name: 'Empty (concept mode, skippable)',
   render: () => {
     const [value, setValue] = useState('');
     return (
@@ -33,7 +33,7 @@ export const Empty_Concept = {
 };
 
 export const Empty_System = {
-  name: 'Empty (system 모드 — 30자 미충족)',
+  name: 'Empty (system mode, under 30 chars)',
   render: () => {
     const [value, setValue] = useState('');
     return (
@@ -50,9 +50,9 @@ export const Empty_System = {
 };
 
 export const Filled_System = {
-  name: 'Filled (system 30자 통과)',
+  name: 'Filled (system, passes 30 chars)',
   render: () => {
-    const [value, setValue] = useState('ref-002의 짙은 색을 primary로, ref-005 grid 레이아웃 강조');
+    const [value, setValue] = useState('Map ref-002 dark color to primary, emphasize ref-005 grid layout');
     return (
       <Box sx={ { maxWidth: 720 } }>
         <RefinementNotesField
@@ -67,10 +67,10 @@ export const Filled_System = {
 };
 
 export const Filled_System_Long = {
-  name: 'Filled (system 50자+ref-id)',
+  name: 'Filled (system, 50+ chars with ref-id)',
   render: () => {
     const [value, setValue] = useState(
-      'ref-002.dominantColors[0]를 brand-primary로 매핑, ref-005.layout.columns 12 적용, 타이포는 ref-002 보다 가볍게',
+      'Map ref-002.dominantColors[0] to brand-primary, apply ref-005.layout.columns 12, typography lighter than ref-002',
     );
     return (
       <Box sx={ { maxWidth: 720 } }>
@@ -86,7 +86,7 @@ export const Filled_System_Long = {
 };
 
 export const NoRefs = {
-  name: '레퍼런스 없음',
+  name: 'No references',
   render: () => {
     const [value, setValue] = useState('');
     return (
@@ -105,7 +105,7 @@ export const Disabled = {
   render: () => (
     <Box sx={ { maxWidth: 720 } }>
       <RefinementNotesField
-        value="ref-002 색을 primary로"
+        value="ref-002 color as primary"
         onChange={ () => {} }
         selectedRefs={ sampleRefs }
         mode="system"

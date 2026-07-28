@@ -1,14 +1,14 @@
 import { projects } from './projects.js';
 
 /**
- * MUSE — 프로젝트별 분석 결과 더미
+ * MUSE - per-project analysis result dummy data
  *
- * 2026-04-22 v2: keyVisual 레이어 제거, visualDirection(Markdown) 레이어 추가.
+ * 2026-04-22 v2: keyVisual layer removed, visualDirection(Markdown) layer added.
  *
  * @type {Record<string, import('./schemas.js').AnalysisResult>}
  */
 
-/** 공통 타이포 프리셋 */
+/** Shared typography preset */
 const TYPO_PRESETS = {
   editorial: [
     {
@@ -62,7 +62,7 @@ const TYPO_PRESETS = {
   ],
 };
 
-/** 모든 프로젝트 fixture 가 공유하는 단일 layout preset (type 폐기 후 통합) */
+/** A single layout preset shared by all project fixtures (consolidated after type was retired) */
 const DEFAULT_LAYOUT_PRESET = [
   { id: 'lay-grid-12', label: '12 Column Grid', kind: 'grid', columns: 12, gap: 24, isEnabled: true, emphasis: 2 },
   { id: 'lay-section-gap', label: 'Section Gap', kind: 'spacing', px: 96, isEnabled: true, emphasis: 2 },
@@ -84,10 +84,10 @@ const COLOR_PRESETS = {
       decisionRationale: {
         whichReferences: ['ref-001', 'ref-003'],
         whichLayers: ['color'],
-        whyChosen: '"흑백 대비 · 매거진 톤" 의도 매칭. 가장 짙고 채도 낮은 값',
+        whyChosen: 'Matches the "black and white contrast, magazine tone" intent. The darkest, least saturated value',
         alternativesConsidered: [
-          { value: '#000000', reason: '순흑은 매거진 톤보다 너무 강함' },
-          { value: '#1F1B3D', reason: 'ref-001 dominantColors 후보였으나 채도 약간 높아 탈락' },
+          { value: '#000000', reason: 'Pure black is too strong for a magazine tone' },
+          { value: '#1F1B3D', reason: 'A ref-001 dominantColors candidate, but dropped for being slightly too saturated' },
         ],
       },
     },
@@ -103,7 +103,7 @@ const COLOR_PRESETS = {
       decisionRationale: {
         whichReferences: ['ref-002'],
         whichLayers: ['color'],
-        whyChosen: 'ref-002 dominantColors[1]에서 추출. accent 역할에 충분한 채도',
+        whyChosen: 'Extracted from ref-002 dominantColors[1]. Saturated enough for an accent role',
       },
     },
     { id: 'col-secondary', label: 'Secondary Neutral', hex: '#5A586E', role: 'secondary', group: 'Brand', isEnabled: true, emphasis: 1, sourceReferenceIds: ['ref-001'] },
@@ -149,46 +149,46 @@ const GRADIENT_PRESETS = {
   ],
 };
 
-/** Visual Direction MD — visual_direction_template.md 형식으로 프로젝트별 채워둔 샘플 */
+/** Visual Direction MD - per-project samples filled in the visual_direction_template.md format */
 const VISUAL_DIRECTION_MD = {
   'proj-001': {
-    markdown: `# Editorial Minimal — Visual Direction
+    markdown: `# Editorial Minimal: Visual Direction
 
-> MUSE 레퍼런스 분석의 산출물 중 **맥락 기반 비주얼 디렉션**.
-> 토큰 수치는 별도 \`tokens.json\` 참조.
+> The **context-based visual direction** among the outputs of MUSE reference analysis.
+> See the separate \`tokens.json\` for token values.
 
 ---
 
-## 1. 프로젝트 개요
-- **프로젝트명**: Editorial Minimal
-- **프로젝트 유형**: landing
-- **한 문장 의도**: 흑백 대비 · 라지 타이포 · 넉넉한 여백의 매거진 톤
-- **분석 레퍼런스 수**: 6장
+## 1. Project Overview
+- **Project name**: Editorial Minimal
+- **Project type**: landing
+- **One-line intent**: Black and white contrast, large typography, and generous whitespace in a magazine tone
+- **References analyzed**: 6
 
-## 2. 전체 방향성
-Magazine과 Swiss 편집 전통을 기반으로, 절제된 무채 팔레트 위에 대형 세리프 헤드라인을 얹어 정적인 긴장감을 만든다.
+## 2. Overall Direction
+Built on the Magazine and Swiss editorial traditions, it places large serif headlines over a restrained achromatic palette to create a quiet, static tension.
 
-## 3. Visual Direction 태그
-- **장르**: Retro
-- **스타일**: Magazine, Swiss
-- **비주얼 주인공**: Typography-Hero, Editorial-Collage
+## 3. Visual Direction Tags
+- **Genre**: Retro
+- **Style**: Magazine, Swiss
+- **Visual subject**: Typography-Hero, Editorial-Collage
 
-## 4. 톤 & 무드 서술
-- 흑백을 기본으로 바이올렛 틴트를 아주 은은하게만 섞어 차가운 중립을 유지
-- 세리프 디스플레이로 대문자 헤드라인, 본문은 고밀도 Pretendard 조판
-- 섹션 간 여백은 과장되게, 내부는 촘촘하게 — 리듬 대비
-- 이미지는 grayscale + 입자감으로 인쇄물 감성 보강
+## 4. Tone & Mood
+- Keep a cool neutral base of black and white, with only the faintest violet tint mixed in
+- Uppercase headlines set in a serif display, body text in dense Pretendard
+- Exaggerate the whitespace between sections while keeping the interior tight, for a rhythmic contrast
+- Reinforce the printed feel with grayscale images and a grainy texture
 
-## 5. 구현 가이드라인
-- 버튼·카드 모서리는 최소 rounding (클리커블만 pill)
-- 그림자는 평평한 오프셋 블러만, 컬러는 near-black 틴트
-- 그리드는 12컬럼 고정, Gap은 24px
-- h1/h2는 \`clamp()\` 기반 fluid 타이포
+## 5. Implementation Guidelines
+- Minimal rounding on button and card corners (only clickables are pill-shaped)
+- Shadows use flat offset blur only, colored with a near-black tint
+- Fixed 12-column grid with a 24px gap
+- Fluid typography for h1/h2 based on \`clamp()\`
 
-## 6. 피해야 할 요소
-- 네온·비비드 컬러 전면 금지
-- 3D 렌더링 일러스트 배제
-- 글래스모피즘·뉴모피즘 스타일 배제
+## 6. Elements to Avoid
+- No neon or vivid colors anywhere
+- No 3D rendered illustrations
+- No glassmorphism or neumorphism styling
 `,
     tags: {
       genre: ['Retro'],
@@ -197,26 +197,26 @@ Magazine과 Swiss 편집 전통을 기반으로, 절제된 무채 팔레트 위�
     },
   },
   'proj-002': {
-    markdown: `# Fintech Dashboard — Visual Direction
+    markdown: `# Fintech Dashboard: Visual Direction
 
-## 1. 프로젝트 개요
-- **프로젝트명**: Fintech Dashboard
-- **프로젝트 유형**: dashboard
-- **한 문장 의도**: 데이터 밀도 높은 대시보드, 차분한 블루 기조
+## 1. Project Overview
+- **Project name**: Fintech Dashboard
+- **Project type**: dashboard
+- **One-line intent**: A data-dense dashboard with a calm blue foundation
 
-## 2. 전체 방향성
-Swiss 정보 밀도 전통을 따르되 다크 톤 위에 Signal Blue 한 점만 남겨 데이터 하이라이트에 집중.
+## 2. Overall Direction
+Follow the Swiss tradition of information density, but keep only a single point of Signal Blue over a dark tone to focus on data highlights.
 
-## 3. Visual Direction 태그
-- **장르**: (없음)
-- **스타일**: Swiss, Glassmorphic
-- **비주얼 주인공**: UI-Mockup, Dense-Dashboard-Visual
+## 3. Visual Direction Tags
+- **Genre**: (none)
+- **Style**: Swiss, Glassmorphic
+- **Visual subject**: UI-Mockup, Dense-Dashboard-Visual
 
-## 4. 톤 & 무드 서술
-- Deep Navy 바탕에 패널은 살짝 투명한 글래스 톤
-- Signal Blue는 핵심 지표에만, 보조 데이터는 저채도
-- 16컬럼 좁은 그리드, 패널 간 갭 16px로 밀도 극대화
-- 글로우·그림자 최소화, 정보 밀도가 장식을 대체
+## 4. Tone & Mood
+- Slightly translucent glass panels over a Deep Navy base
+- Signal Blue only on key metrics, secondary data kept low-saturation
+- A narrow 16-column grid with a 16px gap between panels to maximize density
+- Minimal glow and shadow, letting information density replace decoration
 `,
     tags: {
       genre: [],
@@ -225,26 +225,26 @@ Swiss 정보 밀도 전통을 따르되 다크 톤 위에 Signal Blue 한 점만
     },
   },
   'proj-003': {
-    markdown: `# Lifestyle App — Visual Direction
+    markdown: `# Lifestyle App: Visual Direction
 
-## 1. 프로젝트 개요
-- **프로젝트명**: Lifestyle App
-- **프로젝트 유형**: mobile
-- **한 문장 의도**: 따뜻한 톤 모바일 앱, 일상적인 질감
+## 1. Project Overview
+- **Project name**: Lifestyle App
+- **Project type**: mobile
+- **One-line intent**: A warm-toned mobile app with an everyday texture
 
-## 2. 전체 방향성
-Earth 팔레트와 Hand-Drawn 일러스트를 중심으로 일상의 따뜻한 공기감 전달.
+## 2. Overall Direction
+Center on an Earth palette and Hand-Drawn illustration to convey the warm, everyday atmosphere of daily life.
 
-## 3. Visual Direction 태그
-- **장르**: Retro
-- **스타일**: Claymorphic
-- **비주얼 주인공**: Hand-Drawn, Portrait-Photo
+## 3. Visual Direction Tags
+- **Genre**: Retro
+- **Style**: Claymorphic
+- **Visual subject**: Hand-Drawn, Portrait-Photo
 
-## 4. 톤 & 무드 서술
-- Warm Beige 바탕에 Terracotta로 포인트
-- 카드·버튼은 Claymorphic 느낌의 soft rounded, 매트한 그림자
-- 이미지는 Grainy-Visual 필터로 아날로그 감
-- 타이포는 Humanist Sans, 본문 line-height 1.7 이상
+## 4. Tone & Mood
+- Terracotta accents over a Warm Beige base
+- Cards and buttons are soft-rounded with a Claymorphic feel and matte shadows
+- Images use a Grainy-Visual filter for an analog feel
+- Typography is Humanist Sans, with body line-height of 1.7 or more
 `,
     tags: {
       genre: ['Retro'],
@@ -253,26 +253,26 @@ Earth 팔레트와 Hand-Drawn 일러스트를 중심으로 일상의 따뜻한 �
     },
   },
   'proj-004': {
-    markdown: `# Studio Brand — Visual Direction
+    markdown: `# Studio Brand: Visual Direction
 
-## 1. 프로젝트 개요
-- **프로젝트명**: Studio Brand
-- **프로젝트 유형**: brand
-- **한 문장 의도**: 브랜딩 · 대담한 컬러 · 한정된 타이포
+## 1. Project Overview
+- **Project name**: Studio Brand
+- **Project type**: brand
+- **One-line intent**: Branding with bold color and a limited typography set
 
-## 2. 전체 방향성
-Neubrutalism × Risograph 교차점. 강한 블록 컬러와 거친 인쇄 질감으로 기억에 남는 인상.
+## 2. Overall Direction
+The intersection of Neubrutalism and Risograph. Strong block colors and a rough print texture for a memorable impression.
 
-## 3. Visual Direction 태그
-- **장르**: Risograph
-- **스타일**: Neubrutalism
-- **비주얼 주인공**: Typography-Hero, Abstract-Shape
+## 3. Visual Direction Tags
+- **Genre**: Risograph
+- **Style**: Neubrutalism
+- **Visual subject**: Typography-Hero, Abstract-Shape
 
-## 4. 톤 & 무드 서술
-- Vivid Red × Mustard의 원색 면 분할
-- 두꺼운 검정 아웃라인, 평평한 오프셋 그림자
-- 단일 Display 세리프로 브랜드 워드마크 고정
-- 거친 종이 노이즈를 전역 배경에 얹음
+## 4. Tone & Mood
+- Primary-color surface splits of Vivid Red and Mustard
+- Thick black outlines and flat offset shadows
+- A single Display serif locks in the brand wordmark
+- A rough paper noise laid over the entire background
 `,
     tags: {
       genre: ['Risograph'],

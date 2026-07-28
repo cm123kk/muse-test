@@ -3,13 +3,13 @@ import Box from '@mui/material/Box';
 
 /**
  * VideoScrubbing Component
- * 스크롤 위치에 따라 비디오를 프레임 단위로 재생(스크러빙)하는 컴포넌트입니다.
+ * A component that plays (scrubs) a video frame by frame based on the scroll position.
  *
- * @param {string} src - 비디오 소스 경로 [Required]
- * @param {React.RefObject} containerRef - 스크롤 추적용 컨테이너 요소 [Optional]
- * @param {Object} sx - MUI sx 스타일 [Optional]
- * @param {Object} scrollRange - 스크롤 범위 매핑 { start: 0, end: 1 } [Optional]
- * @param {function} onProgressChange - 진행도 변경 콜백 (progress: 0-1) [Optional]
+ * @param {string} src - Video source path [Required]
+ * @param {React.RefObject} containerRef - Container element for scroll tracking [Optional]
+ * @param {Object} sx - MUI sx style [Optional]
+ * @param {Object} scrollRange - Scroll range mapping { start: 0, end: 1 } [Optional]
+ * @param {function} onProgressChange - Progress change callback (progress: 0-1) [Optional]
  */
 const VideoScrubbing = ({
   src,

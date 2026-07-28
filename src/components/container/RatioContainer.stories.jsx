@@ -23,12 +23,12 @@ export default {
         component: `
 ## RatioContainer
 
-고정된 종횡비를 유지하는 컨테이너 컴포넌트.
+A container component that maintains a fixed aspect ratio.
 
-### 용도
-- 16:9, 4:3 등 고정 비율 미디어 컨테이너
-- 황금비율 기반 레이아웃 영역
-- 일관된 카드/썸네일 비율 유지
+### Use cases
+- Fixed ratio media containers such as 16:9, 4:3
+- Golden ratio based layout areas
+- Consistent card and thumbnail ratios
         `,
       },
     },
@@ -37,26 +37,26 @@ export default {
     ratio: {
       control: 'select',
       options: ['16:9', '4:3', '1:1', '3:2', '21:9', 'phi', 'phi-vertical'],
-      description: '종횡비',
+      description: 'Aspect ratio',
     },
     isContained: {
       control: 'boolean',
-      description: 'overflow hidden 적용',
+      description: 'Apply overflow hidden',
     },
     align: {
       control: 'select',
       options: ['center', 'start', 'end', 'stretch'],
-      description: '수직 정렬',
+      description: 'Vertical align',
     },
     justify: {
       control: 'select',
       options: ['center', 'start', 'end', 'stretch'],
-      description: '수평 정렬',
+      description: 'Horizontal align',
     },
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     ratio: '16:9',
@@ -72,7 +72,7 @@ export const Default = {
   },
 };
 
-/** 문서 및 데모 */
+/** Documentation and demos */
 export const Documentation = {
   render: () => (
     <>
@@ -89,11 +89,11 @@ export const Documentation = {
           RatioContainer
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          CSS aspect-ratio를 활용하여 고정된 종횡비를 유지하는 컨테이너입니다.
-          16:9, 4:3, 황금비율 등 다양한 비율을 지원합니다.
+          A container that maintains a fixed aspect ratio using CSS aspect-ratio.
+          It supports various ratios including 16:9, 4:3, and the golden ratio.
         </Typography>
 
-        <SectionTitle title="Props" description="RatioContainer 컴포넌트의 Props 목록입니다." />
+        <SectionTitle title="Props" description="List of props for the RatioContainer component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -109,53 +109,53 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>ratio</TableCell>
                 <TableCell>string | number</TableCell>
                 <TableCell>&apos;16:9&apos;</TableCell>
-                <TableCell>종횡비 (예: &apos;16:9&apos;, &apos;phi&apos;, 1.5)</TableCell>
+                <TableCell>Aspect ratio (Example: &apos;16:9&apos;, &apos;phi&apos;, 1.5)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>maxWidth</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>최대 너비</TableCell>
+                <TableCell>Maximum width</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>minHeight</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>최소 높이</TableCell>
+                <TableCell>Minimum height</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isContained</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>true</TableCell>
-                <TableCell>overflow hidden 적용 여부</TableCell>
+                <TableCell>Whether overflow hidden is applied</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>align</TableCell>
                 <TableCell>&apos;center&apos; | &apos;start&apos; | &apos;end&apos; | &apos;stretch&apos;</TableCell>
                 <TableCell>&apos;center&apos;</TableCell>
-                <TableCell>수직 정렬</TableCell>
+                <TableCell>Vertical align</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>justify</TableCell>
                 <TableCell>&apos;center&apos; | &apos;start&apos; | &apos;end&apos; | &apos;stretch&apos;</TableCell>
                 <TableCell>&apos;center&apos;</TableCell>
-                <TableCell>수평 정렬</TableCell>
+                <TableCell>Horizontal align</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>background</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>배경색 또는 그라데이션</TableCell>
+                <TableCell>Background color or gradient</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Standard Ratios" description="자주 사용되는 표준 비율입니다." />
+        <SectionTitle title="Standard Ratios" description="Commonly used standard ratios." />
         <Grid container spacing={ 3 }>
           <Grid size={ { xs: 12, md: 6 } }>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              16:9 - 영상, 와이드스크린
+              16:9 - Video, widescreen
             </Typography>
             <RatioContainer ratio="16:9" background="#e0e0e0">
               <Typography sx={ { color: 'text.secondary' } }>16:9</Typography>
@@ -163,7 +163,7 @@ export const Documentation = {
           </Grid>
           <Grid size={ { xs: 12, md: 6 } }>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              4:3 - 클래식, 문서
+              4:3 - Classic, documents
             </Typography>
             <RatioContainer ratio="4:3" background="#eeeeee">
               <Typography sx={ { color: 'text.secondary' } }>4:3</Typography>
@@ -171,7 +171,7 @@ export const Documentation = {
           </Grid>
           <Grid size={ { xs: 12, md: 6 } }>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              1:1 - 정사각형, 프로필
+              1:1 - Square, profile
             </Typography>
             <RatioContainer ratio="1:1" background="#e0e0e0" maxWidth="300px">
               <Typography sx={ { color: 'text.secondary' } }>1:1</Typography>
@@ -179,7 +179,7 @@ export const Documentation = {
           </Grid>
           <Grid size={ { xs: 12, md: 6 } }>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              21:9 - 울트라와이드, 시네마
+              21:9 - Ultrawide, cinema
             </Typography>
             <RatioContainer ratio="21:9" background="#eeeeee">
               <Typography sx={ { color: 'text.secondary' } }>21:9</Typography>
@@ -187,11 +187,11 @@ export const Documentation = {
           </Grid>
         </Grid>
 
-        <SectionTitle title="Golden Ratio (황금비율)" description={ `PHI = ${PHI.toFixed(6)} (약 1.618:1)` } />
+        <SectionTitle title="Golden Ratio" description={ `PHI = ${PHI.toFixed(6)} (about 1.618:1)` } />
         <Stack spacing={ 4 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              phi - 가로로 긴 황금비율 (1.618:1)
+              phi - Horizontal golden ratio (1.618:1)
             </Typography>
             <RatioContainer
               ratio="phi"
@@ -204,7 +204,7 @@ export const Documentation = {
           </Box>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              phi-vertical - 세로로 긴 황금비율 (1:1.618)
+              phi-vertical - Vertical golden ratio (1:1.618)
             </Typography>
             <RatioContainer
               ratio="phi-vertical"
@@ -218,7 +218,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="With Images" description="이미지와 함께 사용하면 일관된 비율을 유지합니다." />
+        <SectionTitle title="With Images" description="Used with images to maintain a consistent ratio." />
         <Grid container spacing={ 3 }>
           <Grid size={ { xs: 12, md: 4 } }>
             <RatioContainer ratio="1:1">
@@ -237,7 +237,7 @@ export const Documentation = {
           </Grid>
         </Grid>
 
-        <SectionTitle title="Alignment Options" description="내부 콘텐츠의 정렬 옵션입니다." />
+        <SectionTitle title="Alignment Options" description="Alignment options for the inner content." />
         <Grid container spacing={ 3 }>
           <Grid size={ { xs: 12, md: 4 } }>
             <Typography variant="caption" sx={ { mb: 1, display: 'block', color: 'text.secondary' } }>
@@ -289,7 +289,7 @@ export const Documentation = {
           </Grid>
         </Grid>
 
-        <SectionTitle title="Custom Numeric Ratio" description="숫자로 직접 비율을 지정할 수 있습니다." />
+        <SectionTitle title="Custom Numeric Ratio" description="You can specify the ratio directly with a number." />
         <Box sx={ { maxWidth: 500 } }>
           <Typography variant="caption" sx={ { mb: 1, display: 'block', color: 'text.secondary' } }>
             ratio={ 2.35 } (Cinemascope 2.35:1)
@@ -302,7 +302,7 @@ export const Documentation = {
           </RatioContainer>
         </Box>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -314,17 +314,17 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          { `// 기본 16:9 비율
+          { `// Default 16:9 ratio
 <RatioContainer ratio="16:9">
   <img src="hero.jpg" alt="Hero" />
 </RatioContainer>
 
-// 황금비율 컨테이너
+// Golden ratio container
 <RatioContainer ratio="phi" background="#f0f0f0">
   <Typography>Golden Ratio Content</Typography>
 </RatioContainer>
 
-// 정렬과 최대 너비 지정
+// Alignment and max width
 <RatioContainer
   ratio="1:1"
   maxWidth="300px"
@@ -334,7 +334,7 @@ export const Documentation = {
   <Avatar src="profile.jpg" />
 </RatioContainer>
 
-// 숫자로 커스텀 비율
+// Custom numeric ratio
 <RatioContainer ratio={2.35}>
   <CinemaScopeContent />
 </RatioContainer>` }

@@ -23,12 +23,12 @@ export default {
         component: `
 ## ImageCarousel
 
-스와이프와 자동 재생을 지원하는 이미지 캐러셀 컴포넌트.
+Image carousel Component that supports swipe and autoplay.
 
-### 용도
-- 제품 이미지 갤러리
-- Hero 슬라이더
-- 프로모션 배너
+### Use cases
+- Product image galleries
+- Hero sliders
+- Promotion banners
         `,
       },
     },
@@ -37,34 +37,34 @@ export default {
     transition: {
       control: 'select',
       options: ['slide', 'fade'],
-      description: '트랜지션 타입',
+      description: 'Transition type',
     },
     isAutoPlay: {
       control: 'boolean',
-      description: '자동 재생',
+      description: 'Autoplay',
     },
     hasArrows: {
       control: 'boolean',
-      description: '화살표 버튼 표시',
+      description: 'Show arrow buttons',
     },
     hasIndicator: {
       control: 'boolean',
-      description: '인디케이터 표시',
+      description: 'Show indicator',
     },
     indicatorType: {
       control: 'select',
       options: ['dot', 'line', 'fraction', 'progress'],
-      description: '인디케이터 타입',
+      description: 'Indicator type',
     },
     indicatorPosition: {
       control: 'select',
       options: ['top', 'bottom', 'left', 'right'],
-      description: '인디케이터 위치',
+      description: 'Indicator position',
     },
   },
 };
 
-// 샘플 이미지
+// Sample images
 const sampleImages = [
   { src: placeholderSvg(1200, 800), alt: 'Mountains' },
   { src: placeholderSvg(1200, 800), alt: 'Forest' },
@@ -73,7 +73,7 @@ const sampleImages = [
   { src: placeholderSvg(1200, 800), alt: 'Forest Path' },
 ];
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     images: sampleImages,
@@ -93,7 +93,7 @@ export const Default = {
   ),
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -110,11 +110,11 @@ export const Documentation = {
           ImageCarousel
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          스와이프 제스처, 키보드 네비게이션, 자동 재생을 지원하는 이미지 캐러셀입니다.
-          내장된 CarouselIndicator로 현재 위치를 표시합니다.
+          Image carousel that supports swipe gestures, keyboard navigation, and autoplay.
+          The built-in CarouselIndicator shows the current position.
         </Typography>
 
-        <SectionTitle title="Props" description="ImageCarousel 컴포넌트의 Props입니다." />
+        <SectionTitle title="Props" description="Props for the ImageCarousel Component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -130,61 +130,61 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>images</TableCell>
                 <TableCell>Array</TableCell>
                 <TableCell>[]</TableCell>
-                <TableCell>이미지 배열</TableCell>
+                <TableCell>Array of images</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>transition</TableCell>
                 <TableCell>&apos;slide&apos; | &apos;fade&apos;</TableCell>
                 <TableCell>&apos;slide&apos;</TableCell>
-                <TableCell>트랜지션 타입</TableCell>
+                <TableCell>Transition type</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isAutoPlay</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>자동 재생</TableCell>
+                <TableCell>Autoplay</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>autoPlayInterval</TableCell>
                 <TableCell>number</TableCell>
                 <TableCell>5000</TableCell>
-                <TableCell>자동 재생 간격 (ms)</TableCell>
+                <TableCell>Autoplay interval (ms)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isLoop</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>true</TableCell>
-                <TableCell>무한 루프</TableCell>
+                <TableCell>Infinite loop</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>hasIndicator</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>true</TableCell>
-                <TableCell>인디케이터 표시</TableCell>
+                <TableCell>Show indicator</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>indicatorType</TableCell>
                 <TableCell>&apos;dot&apos; | &apos;line&apos; | &apos;fraction&apos; | &apos;progress&apos;</TableCell>
                 <TableCell>&apos;dot&apos;</TableCell>
-                <TableCell>인디케이터 타입</TableCell>
+                <TableCell>Indicator type</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>indicatorPosition</TableCell>
                 <TableCell>&apos;top&apos; | &apos;bottom&apos; | &apos;left&apos; | &apos;right&apos;</TableCell>
                 <TableCell>&apos;bottom&apos;</TableCell>
-                <TableCell>인디케이터 위치</TableCell>
+                <TableCell>Indicator position</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>hasArrows</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>true</TableCell>
-                <TableCell>화살표 버튼 표시</TableCell>
+                <TableCell>Show arrow buttons</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Slide Transition" description="기본 슬라이드 트랜지션입니다. 드래그하여 스와이프할 수 있습니다." />
+        <SectionTitle title="Slide Transition" description="Default slide Transition. You can drag to swipe." />
         <Box sx={ { maxWidth: 700 } }>
           <ImageCarousel
             images={ sampleImages }
@@ -194,7 +194,7 @@ export const Documentation = {
           />
         </Box>
 
-        <SectionTitle title="Fade Transition" description="페이드 트랜지션입니다." />
+        <SectionTitle title="Fade Transition" description="Fade Transition." />
         <Box sx={ { maxWidth: 700 } }>
           <ImageCarousel
             images={ sampleImages }
@@ -205,7 +205,7 @@ export const Documentation = {
           />
         </Box>
 
-        <SectionTitle title="Auto Play" description="자동 재생 캐러셀입니다. 호버 시 일시 정지됩니다." />
+        <SectionTitle title="Auto Play" description="Autoplay carousel. It pauses on hover." />
         <Box sx={ { maxWidth: 700 } }>
           <ImageCarousel
             images={ sampleImages }
@@ -216,11 +216,11 @@ export const Documentation = {
           />
         </Box>
 
-        <SectionTitle title="Indicator Types" description="다양한 인디케이터 타입입니다." />
+        <SectionTitle title="Indicator Types" description="Various indicator types." />
         <Stack spacing={ 4 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Dot (기본)
+              Dot (Default)
             </Typography>
             <Box sx={ { maxWidth: 500 } }>
               <ImageCarousel
@@ -259,7 +259,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Indicator Position" description="인디케이터 위치 옵션입니다." />
+        <SectionTitle title="Indicator Position" description="Indicator position options." />
         <Stack direction={ { xs: 'column', md: 'row' } } spacing={ 2 }>
           <Box sx={ { flex: 1 } }>
             <Typography variant="caption" sx={ { mb: 1, display: 'block' } }>Top</Typography>
@@ -281,7 +281,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="CarouselIndicator (Standalone)" description="인디케이터를 독립적으로 사용할 수 있습니다." />
+        <SectionTitle title="CarouselIndicator (Standalone)" description="The indicator can be used independently." />
         <Stack spacing={ 3 } sx={ { p: 3, backgroundColor: 'grey.100' } }>
           <Box>
             <Typography variant="caption" sx={ { mb: 1, display: 'block' } }>Dot</Typography>
@@ -301,7 +301,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Different Aspect Ratios" description="다양한 종횡비 설정입니다." />
+        <SectionTitle title="Different Aspect Ratios" description="Various aspect ratio settings." />
         <Stack direction={ { xs: 'column', md: 'row' } } spacing={ 2 }>
           <Box sx={ { flex: 1 } }>
             <Typography variant="caption" sx={ { mb: 1, display: 'block' } }>16/9</Typography>
@@ -313,7 +313,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -325,14 +325,14 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          { `// 기본 캐러셀
+          { `// Default carousel
 <ImageCarousel
   images={['img1.jpg', 'img2.jpg', 'img3.jpg']}
   hasIndicator
   hasArrows
 />
 
-// 자동 재생 + 페이드 트랜지션
+// Autoplay plus fade Transition
 <ImageCarousel
   images={productImages}
   transition="fade"
@@ -341,7 +341,7 @@ export const Documentation = {
   indicatorType="progress"
 />
 
-// 인디케이터만 사용
+// Indicator only
 <CarouselIndicator
   total={5}
   current={currentIndex}

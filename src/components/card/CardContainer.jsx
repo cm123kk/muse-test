@@ -2,25 +2,25 @@ import { forwardRef } from 'react';
 import Box from '@mui/material/Box';
 
 /**
- * CardContainer 컴포넌트
+ * CardContainer component
  *
- * 자주 사용되는 카드 스타일을 미리 정의한 래퍼 컴포넌트.
- * outlined, elevation, ghost 등 다양한 변형을 지원한다.
+ * A wrapper component with predefined, commonly used card styles.
+ * Supports a variety of variants such as outlined, elevation, and ghost.
  *
- * 동작 방식:
- * 1. variant에 따라 미리 정의된 스타일 적용
- * 2. hover 상태에서 시각적 피드백 제공
- * 3. sx prop으로 추가 커스터마이징 가능
+ * How it works:
+ * 1. Applies a predefined style based on variant
+ * 2. Provides visual feedback on hover
+ * 3. Allows additional customization via the sx prop
  *
  * Props:
- * @param {string} variant - 카드 스타일 ('outlined' | 'elevation' | 'ghost' | 'filled') [Optional, 기본값: 'outlined']
- * @param {string} padding - 내부 패딩 ('none' | 'sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {string} radius - 모서리 둥글기 ('none' | 'sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {boolean} isInteractive - 호버 효과 활성화 [Optional, 기본값: false]
- * @param {boolean} isSelected - 선택 상태 표시 [Optional, 기본값: false]
- * @param {function} onClick - 클릭 핸들러 [Optional]
- * @param {node} children - 카드 내용 [Required]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} variant - Card style ('outlined' | 'elevation' | 'ghost' | 'filled') [Optional, default: 'outlined']
+ * @param {string} padding - Inner padding ('none' | 'sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {string} radius - Corner radius ('none' | 'sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {boolean} isInteractive - Enable hover effect [Optional, default: false]
+ * @param {boolean} isSelected - Show selected state [Optional, default: false]
+ * @param {function} onClick - Click handler [Optional]
+ * @param {node} children - Card content [Required]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <CardContainer variant="elevation" padding="lg" isInteractive>
@@ -39,7 +39,7 @@ const CardContainer = forwardRef(function CardContainer({
   ...props
 }, ref) {
   /**
-   * 패딩 크기 맵
+   * Padding size map
    */
   const paddingMap = {
     none: 0,
@@ -49,7 +49,7 @@ const CardContainer = forwardRef(function CardContainer({
   };
 
   /**
-   * Border radius 맵
+   * Border radius map
    */
   const radiusMap = {
     none: 0,
@@ -59,7 +59,7 @@ const CardContainer = forwardRef(function CardContainer({
   };
 
   /**
-   * variant별 기본 스타일
+   * Base style per variant
    */
   const getVariantStyles = () => {
     const base = {
@@ -101,7 +101,7 @@ const CardContainer = forwardRef(function CardContainer({
   };
 
   /**
-   * 인터랙티브 스타일 (호버, 클릭)
+   * Interactive styles (hover, click)
    */
   const getInteractiveStyles = () => {
     if (!isInteractive && !onClick) return {};
@@ -121,7 +121,7 @@ const CardContainer = forwardRef(function CardContainer({
   };
 
   /**
-   * 선택 상태 스타일
+   * Selected state styles
    */
   const getSelectedStyles = () => {
     if (!isSelected) return {};

@@ -34,10 +34,10 @@ export const Docs = {
           UserSettings
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          MUSE 기본 설정 값 (singleton). `defaultUserSettings`로 import.
+          Default MUSE settings values (singleton). Import as `defaultUserSettings`.
         </Typography>
 
-        <SectionTitle title="스키마" />
+        <SectionTitle title="Schema" />
         <TableContainer sx={ { mb: 4 } }>
           <Table size="small">
             <TableHead>
@@ -53,31 +53,31 @@ export const Docs = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>aiModel</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell sx={ { fontFamily: 'monospace', fontSize: 12 } }>{ defaultUserSettings.aiModel }</TableCell>
-                <TableCell>태깅/분석에 사용할 AI 모델</TableCell>
+                <TableCell>AI model used for tagging/analysis</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>storageMode</TableCell>
                 <TableCell>local | cloud</TableCell>
                 <TableCell sx={ { fontFamily: 'monospace', fontSize: 12 } }>{ defaultUserSettings.storageMode }</TableCell>
-                <TableCell>데이터 저장 위치</TableCell>
+                <TableCell>Data storage location</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>themeMode</TableCell>
                 <TableCell>light | dark | system</TableCell>
                 <TableCell sx={ { fontFamily: 'monospace', fontSize: 12 } }>{ defaultUserSettings.themeMode }</TableCell>
-                <TableCell>MUSE UI 테마</TableCell>
+                <TableCell>MUSE UI theme</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isAutoTagEnabled</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell sx={ { fontFamily: 'monospace', fontSize: 12 } }>{ String(defaultUserSettings.isAutoTagEnabled) }</TableCell>
-                <TableCell>아카이빙 시 자동 태깅</TableCell>
+                <TableCell>Auto-tagging on archiving</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="현재 값" />
+        <SectionTitle title="Current values" />
         <Box
           component="pre"
           sx={ {

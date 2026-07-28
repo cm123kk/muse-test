@@ -32,10 +32,10 @@ export function ProjectDetailRoute() {
     return (
       <PageContainer>
         <Box sx={{ py: 10, textAlign: 'center' }}>
-          <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>프로젝트를 찾을 수 없습니다</Typography>
+          <Typography variant="h5" sx={{ fontWeight: 600, mb: 2 }}>Project not found</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 3 }}>id: {id}</Typography>
           <Button variant="contained" onClick={() => navigate('/projects')}>
-            프로젝트 목록으로
+            Back to projects
           </Button>
         </Box>
       </PageContainer>

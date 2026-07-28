@@ -1,16 +1,16 @@
 # appendix. DB Schema (MUSE)
 
-> 본문은 [`04-data-bridge.md`](./04-data-bridge.md). 컬럼 합의는 `§ 1.5 DB 스펙 미리보기` 참조.
-> 이 부록은 개발자 영역. DDL / 제약 / 트리거 / 인덱스 전체 포함.
+> The main document is [`04-data-bridge.md`](./04-data-bridge.md). For the agreed column set, see `§ 1.5 DB Spec Preview`.
+> This appendix is for the developer domain. It includes the full DDL, constraints, triggers, and indexes.
 
-## 개요
+## Overview
 
-- 프로젝트: MUSE
-- 총 테이블: 6 (`profiles`, `user_settings`, `reference_items`, `projects`, `project_references`, `analysis_results`)
-- `auth.users`: Supabase 내장 (직접 생성 불가)
-- 삭제 정책: Hard delete
-- 작성일: 2026-05-20
-- 마이그레이션: `supabase/migrations/20260520120000_init_schema.sql`
+- Project: MUSE
+- Total tables: 6 (`profiles`, `user_settings`, `reference_items`, `projects`, `project_references`, `analysis_results`)
+- `auth.users`: built into Supabase (cannot be created directly)
+- Deletion policy: Hard delete
+- Written on: 2026-05-20
+- Migration: `supabase/migrations/20260520120000_init_schema.sql`
 
 ## ERD
 
@@ -81,130 +81,130 @@ erDiagram
     }
 ```
 
-> `auth_users` = Supabase `auth.users` (mermaid 에서 점 표기 불가).
+> `auth_users` = Supabase `auth.users` (dot notation is not allowed in mermaid).
 
-## 테이블 상세
+## Table Details
 
 ### `profiles`
 
-> ux-flow `User.displayName` / `User.avatarUrl` 저장. `auth.users` 와 1:1.
-> ⚠️ ux-flow 사전 미등록. Phase 2 완료 후 `/project-planning` 으로 사전 추가 필요.
+> Stores ux-flow `User.displayName` / `User.avatarUrl`. 1:1 with `auth.users`.
+> ⚠️ Not yet registered in the ux-flow dictionary. After Phase 2 is complete, it must be added to the dictionary via `/project-planning`.
 
-| 컬럼 | 타입 | 제약 | 설명 |
+| Column | Type | Constraints | Description |
 |---|---|---|---|
-| `id` | uuid | PK, FK → auth.users.id ON DELETE CASCADE | 사용자 ID (동일) |
-| `display_name` | text | NULLABLE | GNB 표시 이름 |
-| `avatar_url` | text | NULLABLE | 프로필 이미지 URL |
-| `created_at` | timestamptz | NOT NULL DEFAULT now() | 생성 시각 |
-| `updated_at` | timestamptz | NOT NULL DEFAULT now() | 수정 시각 |
+| `id` | uuid | PK, FK -> auth.users.id ON DELETE CASCADE | User ID (same value) |
+| `display_name` | text | NULLABLE | Display name shown in the GNB |
+| `avatar_url` | text | NULLABLE | Profile image URL |
+| `created_at` | timestamptz | NOT NULL DEFAULT now() | Creation time |
+| `updated_at` | timestamptz | NOT NULL DEFAULT now() | Update time |
 
-**트리거**: `trg_profiles_set_updated_at` BEFORE UPDATE
+**Trigger**: `trg_profiles_set_updated_at` BEFORE UPDATE
 
 ---
 
 ### `user_settings`
 
-> 사용자 1:1. id = auth.users.id.
+> 1:1 with the user. id = auth.users.id.
 
-| 컬럼 | 타입 | 제약 | 설명 |
+| Column | Type | Constraints | Description |
 |---|---|---|---|
-| `id` | uuid | PK, FK → auth.users.id ON DELETE CASCADE | 사용자 ID (동일) |
-| `ai_model` | text | NOT NULL DEFAULT 'claude-sonnet-4-6' | T1/T2/T3 AI 모델명 |
+| `id` | uuid | PK, FK -> auth.users.id ON DELETE CASCADE | User ID (same value) |
+| `ai_model` | text | NOT NULL DEFAULT 'claude-sonnet-4-6' | T1/T2/T3 AI model name |
 | `storage_mode` | text | NOT NULL DEFAULT 'local' | local / cloud |
 | `theme_mode` | text | NOT NULL DEFAULT 'system' | light / dark / system |
-| `is_auto_tag_enabled` | boolean | NOT NULL DEFAULT true | 자동 태깅 여부 |
-| `created_at` | timestamptz | NOT NULL DEFAULT now() | 생성 시각 |
-| `updated_at` | timestamptz | NOT NULL DEFAULT now() | 수정 시각 |
+| `is_auto_tag_enabled` | boolean | NOT NULL DEFAULT true | Whether auto tagging is enabled |
+| `created_at` | timestamptz | NOT NULL DEFAULT now() | Creation time |
+| `updated_at` | timestamptz | NOT NULL DEFAULT now() | Update time |
 
-**트리거**: `trg_user_settings_set_updated_at` BEFORE UPDATE
+**Trigger**: `trg_user_settings_set_updated_at` BEFORE UPDATE
 
 ---
 
 ### `reference_items`
 
-> 사용자가 모은 영감 이미지. `updated_at` 없음 (자동 태깅 결과는 insert 후 update 로 채움).
+> Inspiration images collected by the user. No `updated_at` (auto tagging results are filled in with an update after the insert).
 
-| 컬럼 | 타입 | 제약 | 설명 |
+| Column | Type | Constraints | Description |
 |---|---|---|---|
 | `id` | uuid | PK DEFAULT gen_random_uuid() | |
-| `owner_id` | uuid | NOT NULL, FK → auth.users.id ON DELETE CASCADE | 소유자 |
+| `owner_id` | uuid | NOT NULL, FK -> auth.users.id ON DELETE CASCADE | Owner |
 | `source` | text | NOT NULL | file / url |
-| `thumbnail_url` | text | NOT NULL | 썸네일 URL 또는 data URI |
-| `title` | text | NULLABLE | 사용자 지정 제목 |
-| `tags` | jsonb | NULLABLE | 레이어별 태그 묶음 |
-| `dominant_colors` | text[] | NULLABLE | 대표 색 HEX |
-| `extracted` | jsonb | NULLABLE | T1 추출 관찰 값 |
-| `created_at` | timestamptz | NOT NULL DEFAULT now() | 생성 시각 |
+| `thumbnail_url` | text | NOT NULL | Thumbnail URL or data URI |
+| `title` | text | NULLABLE | User specified title |
+| `tags` | jsonb | NULLABLE | Tag groups per layer |
+| `dominant_colors` | text[] | NULLABLE | Representative colors as HEX |
+| `extracted` | jsonb | NULLABLE | Observed values extracted by T1 |
+| `created_at` | timestamptz | NOT NULL DEFAULT now() | Creation time |
 
-**인덱스**: `idx_reference_items_owner_id` ON (owner_id)
+**Index**: `idx_reference_items_owner_id` ON (owner_id)
 
 ---
 
 ### `projects`
 
-| 컬럼 | 타입 | 제약 | 설명 |
+| Column | Type | Constraints | Description |
 |---|---|---|---|
 | `id` | uuid | PK DEFAULT gen_random_uuid() | |
-| `owner_id` | uuid | NOT NULL, FK → auth.users.id ON DELETE CASCADE | 소유자 |
-| `name` | text | NOT NULL | 프로젝트 이름 |
+| `owner_id` | uuid | NOT NULL, FK -> auth.users.id ON DELETE CASCADE | Owner |
+| `name` | text | NOT NULL | Project name |
 | `mode` | text | NOT NULL | concept / system |
-| `intent` | text | NULLABLE | 한 줄 의도 |
-| `user_notes` | text | NULLABLE | Step 3 활용 노트 |
-| `reference_notes` | jsonb | NULLABLE | refId → 텍스트 |
-| `created_at` | timestamptz | NOT NULL DEFAULT now() | 생성 시각 |
-| `updated_at` | timestamptz | NOT NULL DEFAULT now() | 수정 시각 |
+| `intent` | text | NULLABLE | One line intent |
+| `user_notes` | text | NULLABLE | Step 3 usage notes |
+| `reference_notes` | jsonb | NULLABLE | refId -> text |
+| `created_at` | timestamptz | NOT NULL DEFAULT now() | Creation time |
+| `updated_at` | timestamptz | NOT NULL DEFAULT now() | Update time |
 
-**인덱스**: `idx_projects_owner_id` ON (owner_id)
-**트리거**: `trg_projects_set_updated_at` BEFORE UPDATE
+**Index**: `idx_projects_owner_id` ON (owner_id)
+**Trigger**: `trg_projects_set_updated_at` BEFORE UPDATE
 
 ---
 
 ### `project_references`
 
-> M:N 조인 테이블. `owner_id` 없음. RLS 는 `project_id → projects.owner_id` 경유.
+> M:N join table. No `owner_id`. RLS goes through `project_id -> projects.owner_id`.
 
-| 컬럼 | 타입 | 제약 | 설명 |
+| Column | Type | Constraints | Description |
 |---|---|---|---|
 | `id` | uuid | PK DEFAULT gen_random_uuid() | |
-| `project_id` | uuid | NOT NULL, FK → projects.id ON DELETE CASCADE | 소속 프로젝트 |
-| `reference_id` | uuid | NOT NULL, FK → reference_items.id ON DELETE CASCADE | 큐레이션된 레퍼런스 |
-| `use_layers` | text[] | NULLABLE | 활용할 레이어 목록 |
+| `project_id` | uuid | NOT NULL, FK -> projects.id ON DELETE CASCADE | Parent project |
+| `reference_id` | uuid | NOT NULL, FK -> reference_items.id ON DELETE CASCADE | Curated reference |
+| `use_layers` | text[] | NULLABLE | List of layers to use |
 
-**인덱스**: `idx_project_references_project_id` / `idx_project_references_reference_id`
-**유니크**: `(project_id, reference_id)` 중복 방지
+**Index**: `idx_project_references_project_id` / `idx_project_references_reference_id`
+**Unique**: `(project_id, reference_id)` to prevent duplicates
 
 ---
 
 ### `analysis_results`
 
-> `layers` jsonb 에 5 레이어 토큰 전체 저장. 토큰 편집 시 jsonb 부분 업데이트.
+> The `layers` jsonb stores all 5 layer tokens. Token edits perform a partial jsonb update.
 
-| 컬럼 | 타입 | 제약 | 설명 |
+| Column | Type | Constraints | Description |
 |---|---|---|---|
 | `id` | uuid | PK DEFAULT gen_random_uuid() | |
-| `project_id` | uuid | NOT NULL, FK → projects.id ON DELETE CASCADE | 소속 프로젝트 |
+| `project_id` | uuid | NOT NULL, FK -> projects.id ON DELETE CASCADE | Parent project |
 | `status` | text | NOT NULL DEFAULT 'pending' | pending / running / done / error |
-| `layers` | jsonb | NOT NULL DEFAULT '{}' | 5 레이어 토큰 전체 |
-| `updated_at` | timestamptz | NOT NULL DEFAULT now() | 수정 시각 |
+| `layers` | jsonb | NOT NULL DEFAULT '{}' | All 5 layer tokens |
+| `updated_at` | timestamptz | NOT NULL DEFAULT now() | Update time |
 
-**인덱스**: `idx_analysis_results_project_id` ON (project_id)
-**트리거**: `trg_analysis_results_set_updated_at` BEFORE UPDATE
+**Index**: `idx_analysis_results_project_id` ON (project_id)
+**Trigger**: `trg_analysis_results_set_updated_at` BEFORE UPDATE
 
 ---
 
-## 공통 규칙
+## Common Rules
 
-- 모든 PK: `uuid default gen_random_uuid()` (`profiles` / `user_settings` 는 `auth.users.id` 직접 참조)
-- `updated_at` 있는 테이블: `set_updated_at()` 트리거 반드시 부착
-- 삭제 정책: Hard delete. FK `ON DELETE CASCADE` 로 연쇄 삭제.
-- `varchar(n)` 금지. `text` 사용.
-- `timestamp` 금지. `timestamptz` 사용.
-- 스키마 명시: `public.` 항상 붙임.
+- All PKs: `uuid default gen_random_uuid()` (`profiles` / `user_settings` reference `auth.users.id` directly)
+- Tables with `updated_at`: the `set_updated_at()` trigger must be attached
+- Deletion policy: Hard delete. FK `ON DELETE CASCADE` performs cascading deletes.
+- No `varchar(n)`. Use `text`.
+- No `timestamp`. Use `timestamptz`.
+- Explicit schema: always prefix with `public.`.
 
-## 마이그레이션 경로
+## Migration Path
 
-| 파일 | Phase | 내용 |
+| File | Phase | Contents |
 |---|---|---|
-| `20260520120000_init_schema.sql` | 1 | 전체 테이블 + 트리거 함수 + 인덱스 |
-| `20260520120100_auth_profiles.sql` | 2 | `handle_new_user` 트리거 |
-| `20260520120200_rls_policies.sql` | 3 | RLS 정책 전체 |
+| `20260520120000_init_schema.sql` | 1 | All tables + trigger functions + indexes |
+| `20260520120100_auth_profiles.sql` | 2 | `handle_new_user` trigger |
+| `20260520120200_rls_policies.sql` | 3 | All RLS policies |

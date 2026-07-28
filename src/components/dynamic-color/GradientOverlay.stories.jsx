@@ -13,28 +13,28 @@ export default {
   argTypes: {
     colorLight: {
       control: 'color',
-      description: '밝은 영역 hex 색상',
+      description: 'Hex Color for the light area',
     },
     colorDark: {
       control: 'color',
-      description: '어두운 영역 hex 색상',
+      description: 'Hex Color for the dark area',
     },
     isGrain: {
       control: 'boolean',
-      description: '필름 그레인 효과 여부',
+      description: 'Whether the film grain effect is enabled',
     },
     grainIntensity: {
       control: { type: 'range', min: 0, max: 0.1, step: 0.005 },
-      description: '필름 그레인 강도',
+      description: 'Film grain intensity',
     },
     scrollOutRef: {
       control: false,
-      description: 'outro 구간 기준 요소의 React ref',
+      description: 'React ref of the element used as the outro section reference',
     },
   },
 };
 
-/** 섹션 플레이스홀더 */
+/** Section placeholder */
 const Section = ({ label, height = '100vh', sx = {} }) => (
   <Box
     sx={ {
@@ -75,7 +75,7 @@ export const Default = {
   ),
 };
 
-/** outro 스크롤 전환 데모 */
+/** Outro scroll transition demo */
 const WithOutroDemo = () => {
   const outroRef = useRef(null);
 

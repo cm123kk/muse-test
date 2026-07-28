@@ -1,10 +1,10 @@
 /**
- * Supabase 클라이언트 Mock
+ * Supabase client mock
  *
- * { client } 주입 패턴을 사용하는 훅에 이 mock 을 전달하면
- * 실제 DB 없이 Storybook / 테스트에서 동일한 컴포넌트가 동작한다.
+ * Passing this mock to hooks that use the { client } injection pattern lets the
+ * same components run in Storybook / tests without a real DB.
  *
- * 사용 예시 (Storybook decorator):
+ * Example usage (Storybook decorator):
  *   import { createMockClient } from '../../lib/supabaseMock';
  *   import { REFERENCES } from '../../data/muse';
  *
@@ -19,8 +19,8 @@
  */
 
 /**
- * @param {Record<string, object[]>} fixtures - 테이블명 → 행 배열
- * @returns {object} Supabase 클라이언트 인터페이스를 흉내낸 mock 객체
+ * @param {Record<string, object[]>} fixtures - table name -> array of rows
+ * @returns {object} a mock object that mimics the Supabase client interface
  */
 export function createMockClient(fixtures = {}) {
   function makeQuery(table) {

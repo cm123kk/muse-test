@@ -1,18 +1,18 @@
 /**
- * MUSE Store — Context + useReducer (in-memory only, start-point 버전)
+ * MUSE Store: Context + useReducer (in-memory only, start-point version)
  *
- * 이 시작 키트에는 백엔드 연동이 없다. 모든 CRUD 는 메모리 내 dispatch 만 수행한다.
- * 페이지 새로고침 시 상태가 초기화된다 (의도된 동작).
+ * This starter kit has no backend integration. All CRUD only performs in-memory dispatch.
+ * State resets on page refresh (intended behavior).
  *
- * 디폴트 시드: empty (실습은 빈 상태에서 직접 업로드 → T1 → 프로젝트 생성 → T2/T3 까지 검증).
- * Storybook 등 데모용 fixtures 가 필요하면 <MuseStoreProvider seed="fixtures"> 로 전환.
+ * Default seed: empty (practice runs verify the flow from an empty state: direct upload -> T1 -> project creation -> T2/T3).
+ * If you need demo fixtures for Storybook, etc., switch with <MuseStoreProvider seed="fixtures">.
  *
- * 학습 단계에서 Supabase 연동을 추가할 때 다음을 확장한다:
- *   - addReference: Supabase Storage 업로드 + reference_items insert
+ * When adding Supabase integration during the learning stage, extend the following:
+ *   - addReference: Supabase Storage upload + reference_items insert
  *   - addProject:   projects insert + project_references insert
  *   - setAnalysis:  analysis_results upsert
  *   - updateSettings: user_settings update
- *   - hydrate effect: 로그인 사용자의 데이터 fetch
+ *   - hydrate effect: fetch the signed-in user's data
  */
 
 import { createContext, useContext, useReducer } from 'react';
@@ -134,7 +134,7 @@ const genId = () => (typeof crypto !== 'undefined' && crypto.randomUUID
 
 /**
  * @param {object} props
- * @param {'empty'|'fixtures'} [props.seed='empty'] - empty: 빈 상태 (실습 디폴트) / fixtures: 데모 데이터 시드 (Storybook 용)
+ * @param {'empty'|'fixtures'} [props.seed='empty'] - empty: empty state (practice default) / fixtures: demo data seed (for Storybook)
  */
 export function MuseStoreProvider({ children, seed = 'empty' }) {
   const initial = seed === 'fixtures' ? FIXTURES_STATE : EMPTY_STATE;
@@ -176,7 +176,7 @@ export function useReferencesSlice() {
       createdAt: fields.createdAt || new Date().toISOString(),
     };
 
-    // 백엔드 연동 단계에서: Storage 업로드 → DB insert → 결과 dispatch 순으로 확장.
+    // During backend integration: extend to Storage upload -> DB insert -> dispatch result, in that order.
     dispatch({ type: 'ADD_REFERENCE', payload: reference });
     return reference;
   };

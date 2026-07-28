@@ -9,7 +9,7 @@ const NAV_ITEMS = [
 ];
 
 /**
- * MuseNav: GNB 좌측 영역 (로고 + 네비게이션)
+ * MuseNav: left side of the GNB (logo + navigation)
  */
 export function MuseNav() {
   return (

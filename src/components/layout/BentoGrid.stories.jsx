@@ -23,12 +23,12 @@ export default {
         component: `
 ## BentoGrid
 
-Apple 스타일의 벤토 박스 그리드 레이아웃.
+Apple-style bento box grid layout.
 
-### 용도
-- 대시보드 위젯 레이아웃
-- 포트폴리오/갤러리
-- Feature 소개 섹션
+### Use Cases
+- Dashboard widget layouts
+- Portfolio and gallery
+- Feature introduction sections
         `,
       },
     },
@@ -36,20 +36,20 @@ Apple 스타일의 벤토 박스 그리드 레이아웃.
   argTypes: {
     columns: {
       control: { type: 'range', min: 2, max: 6 },
-      description: '열 개수',
+      description: 'Number of columns',
     },
     gap: {
       control: { type: 'range', min: 0, max: 6 },
-      description: '셀 간 간격',
+      description: 'Spacing between cells',
     },
     rowHeight: {
       control: 'text',
-      description: '기본 행 높이',
+      description: 'Default row height',
     },
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     columns: 4,
@@ -74,7 +74,7 @@ export const Default = {
   ),
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -91,11 +91,11 @@ export const Documentation = {
           BentoGrid
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          CSS Grid를 활용한 Apple 스타일의 벤토 박스 레이아웃입니다.
-          다양한 크기의 셀을 유연하게 배치할 수 있습니다.
+          An Apple-style bento box layout built with CSS Grid.
+          Cells of various sizes can be flexibly arranged.
         </Typography>
 
-        <SectionTitle title="Props - BentoGrid" description="BentoGrid 컴포넌트의 Props입니다." />
+        <SectionTitle title="Props - BentoGrid" description="Props of the BentoGrid component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -111,31 +111,31 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>columns</TableCell>
                 <TableCell>number</TableCell>
                 <TableCell>4</TableCell>
-                <TableCell>기본 열 개수</TableCell>
+                <TableCell>Default number of columns</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>gap</TableCell>
                 <TableCell>number | string</TableCell>
                 <TableCell>2</TableCell>
-                <TableCell>셀 간 간격</TableCell>
+                <TableCell>Spacing between cells</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>rowHeight</TableCell>
                 <TableCell>number | string</TableCell>
                 <TableCell>&apos;200px&apos;</TableCell>
-                <TableCell>기본 행 높이</TableCell>
+                <TableCell>Default row height</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isAutoRows</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>자동 행 높이 여부</TableCell>
+                <TableCell>Whether to auto-size row heights</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Props - BentoItem" description="BentoItem 컴포넌트의 Props입니다." />
+        <SectionTitle title="Props - BentoItem" description="Props of the BentoItem component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -151,31 +151,31 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>colSpan</TableCell>
                 <TableCell>number | object</TableCell>
                 <TableCell>1</TableCell>
-                <TableCell>열 span (1-4)</TableCell>
+                <TableCell>Column span (1-4)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>rowSpan</TableCell>
                 <TableCell>number | object</TableCell>
                 <TableCell>1</TableCell>
-                <TableCell>행 span (1-3)</TableCell>
+                <TableCell>Row span (1-3)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>background</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>배경색</TableCell>
+                <TableCell>Background color</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isContained</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>true</TableCell>
-                <TableCell>overflow hidden 적용</TableCell>
+                <TableCell>Apply overflow hidden</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Featured Layout" description="대표 콘텐츠를 강조하는 레이아웃입니다." />
+        <SectionTitle title="Featured Layout" description="A layout that emphasizes featured content." />
         <BentoGrid columns={ 4 } gap={ 2 } rowHeight="150px">
           <BentoItem colSpan={ 2 } rowSpan={ 2 }>
             <Placeholder.Media index={ 0 } sx={ { height: '100%', width: '100%' } } />
@@ -194,7 +194,7 @@ export const Documentation = {
           </BentoItem>
         </BentoGrid>
 
-        <SectionTitle title="Dashboard Layout" description="대시보드 스타일 레이아웃입니다." />
+        <SectionTitle title="Dashboard Layout" description="A dashboard-style layout." />
         <BentoGrid columns={ 4 } gap={ 2 } rowHeight="120px">
           <BentoItem colSpan={ 3 }>
             <Placeholder.Box label="Header Banner" height="100%" />
@@ -213,7 +213,7 @@ export const Documentation = {
           </BentoItem>
         </BentoGrid>
 
-        <SectionTitle title="Gallery Layout" description="포트폴리오/갤러리 스타일입니다." />
+        <SectionTitle title="Gallery Layout" description="A portfolio and gallery style layout." />
         <BentoGrid columns={ 3 } gap={ 1 } rowHeight="180px">
           <BentoItem colSpan={ 2 } rowSpan={ 2 }>
             <Placeholder.Media index={ 0 } sx={ { height: '100%', width: '100%' } } />
@@ -232,7 +232,7 @@ export const Documentation = {
           </BentoItem>
         </BentoGrid>
 
-        <SectionTitle title="Preset Layouts" description="자주 사용되는 프리셋 레이아웃입니다." />
+        <SectionTitle title="Preset Layouts" description="Commonly used preset layouts." />
         <Stack spacing={ 4 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
@@ -261,7 +261,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -273,7 +273,7 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          { `// 기본 벤토 그리드
+          { `// Basic bento grid
 <BentoGrid columns={4} gap={2}>
   <BentoItem colSpan={2} rowSpan={2}>
     <FeaturedCard />
@@ -289,7 +289,7 @@ export const Documentation = {
   </BentoItem>
 </BentoGrid>
 
-// 프리셋 사용
+// Using presets
 import { BENTO_PRESETS } from './BentoGrid';
 
 <BentoGrid columns={3}>

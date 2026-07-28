@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { normalizeSupabaseError } from '../../utils/supabaseError';
 
 /**
- * 로그인 훅
+ * Sign-in hook
  *
  * @returns {{ signIn: (args: { email: string, password: string }) => Promise<{ ok: boolean }>, loading: boolean, error: { message: string, code: string|null }|null }}
  */

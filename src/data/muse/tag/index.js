@@ -1,43 +1,43 @@
 /**
- * MUSE — Tag Preset helper
+ * MUSE - Tag Preset helper
  *
- * `muse_tags_preset.json` 을 읽어 레이어/카테고리별 태그 목록·설명 접근을
- * 간단하게 제공. T1 prompt / tool schema / Reference tagging UI 모두 이 헬퍼에서 pull.
+ * Reads `muse_tags_preset.json` and provides simple access to the tag lists and
+ * descriptions per layer/category. The T1 prompt / tool schema / Reference tagging UI all pull from this helper.
  *
- * 레이어 구조:
- *  - output_target: 'token'     → color / typography / layout / gradient
- *  - output_target: 'markdown'  → visual_direction (genre / style / subject 서브카테고리)
+ * Layer structure:
+ *  - output_target: 'token'     -> color / typography / layout / gradient
+ *  - output_target: 'markdown'  -> visual_direction (genre / style / subject subcategories)
  */
 
 import preset from './muse_tags_preset.json';
 
-/** preset 원본 객체 */
+/** the raw preset object */
 export const MUSE_TAGS_PRESET = preset;
 
 export const TOKEN_LAYERS = ['color', 'typography', 'layout', 'gradient'];
 export const VISUAL_DIRECTION_CATEGORIES = ['genre', 'style', 'subject'];
 
-/** layer → tag 객체 배열 ({ tag, description }) */
+/** layer -> array of tag objects ({ tag, description }) */
 export function getLayerTagObjects(layer) {
   const data = preset.layers?.[layer];
   if (!data) return [];
   if (data.tags) return data.tags;
-  // visual_direction은 categories 하위
+  // visual_direction lives under categories
   if (data.categories) {
     return Object.values(data.categories).flatMap((c) => c.tags);
   }
   return [];
 }
 
-/** layer → tag 이름 배열 */
+/** layer -> array of tag names */
 export function getLayerTags(layer) {
   return getLayerTagObjects(layer).map((t) => t.tag);
 }
 
-/** tool schema용 enum 배열 (getLayerTags 동일) */
+/** enum array for the tool schema (same as getLayerTags) */
 export const getLayerEnum = getLayerTags;
 
-/** visual_direction.categories.{genre|style|subject} → 태그 객체 배열 */
+/** visual_direction.categories.{genre|style|subject} -> array of tag objects */
 export function getVisualDirectionTagObjects(category) {
   return preset.layers?.visual_direction?.categories?.[category]?.tags || [];
 }
@@ -46,12 +46,12 @@ export function getVisualDirectionTags(category) {
   return getVisualDirectionTagObjects(category).map((t) => t.tag);
 }
 
-/** layer+tag → description 한 줄 */
+/** layer+tag -> one-line description */
 export function getTagDescription(layer, tag) {
-  // token 레이어
+  // token layer
   const fromTokenLayer = preset.layers?.[layer]?.tags?.find((t) => t.tag === tag);
   if (fromTokenLayer) return fromTokenLayer.description;
-  // visual_direction — 어느 카테고리인지 모를 때 전체 탐색
+  // visual_direction - search everything when the category is unknown
   if (layer === 'visual_direction' || VISUAL_DIRECTION_CATEGORIES.includes(layer)) {
     for (const cat of VISUAL_DIRECTION_CATEGORIES) {
       const match = getVisualDirectionTagObjects(cat).find((t) => t.tag === tag);
@@ -62,8 +62,8 @@ export function getTagDescription(layer, tag) {
 }
 
 /**
- * Claude 시스템 프롬프트에 삽입할 레이어별 어휘 블록 생성.
- * @param {string[]} layers - 포함할 레이어 (기본: 전체)
+ * Build a per-layer vocabulary block to insert into the Claude system prompt.
+ * @param {string[]} layers - layers to include (default: all)
  * @returns {string}
  */
 export function renderVocabularyPrompt(layers = [...TOKEN_LAYERS, 'visual_direction']) {

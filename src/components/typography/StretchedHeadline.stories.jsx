@@ -21,12 +21,12 @@ export default {
         component: `
 ## StretchedHeadline
 
-단어 간격을 동적으로 늘려 컨테이너 전체 너비를 채우는 히어로 타이포그래피 컴포넌트.
+A hero typography component that dynamically stretches word spacing to fill the entire container width.
 
-### 용도
-- 히어로 섹션의 임팩트 있는 헤드라인
-- 풀 너비 타이포그래피 디자인
-- 스크롤 트리거 애니메이션
+### Use Cases
+- Impactful headlines for hero sections
+- Full width typography design
+- Scroll triggered animations
         `,
       },
     },
@@ -34,26 +34,26 @@ export default {
   argTypes: {
     text: {
       control: 'text',
-      description: '표시할 텍스트',
+      description: 'Text to display',
     },
     fillWidth: {
       control: 'boolean',
-      description: '전체 너비 채우기',
+      description: 'Fill the entire width',
     },
     variant: {
       control: 'select',
       options: ['static', 'animated'],
-      description: '애니메이션 variant',
+      description: 'Animation variant',
     },
     textTransform: {
       control: 'select',
       options: ['none', 'uppercase', 'lowercase'],
-      description: '텍스트 변환',
+      description: 'Text transform',
     },
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     text: 'DESIGN SYSTEM',
@@ -63,7 +63,7 @@ export const Default = {
   },
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -80,11 +80,11 @@ export const Documentation = {
           StretchedHeadline
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          단어 간격을 동적으로 늘려 컨테이너 전체 너비를 채우는 히어로 타이포그래피 컴포넌트입니다.
-          각 단어를 개별 span으로 분리하고 flexbox의 space-between으로 배치합니다.
+          A hero typography component that dynamically stretches word spacing to fill the entire container width.
+          Each word is split into an individual span and arranged with flexbox space-between.
         </Typography>
 
-        <SectionTitle title="Props" description="StretchedHeadline 컴포넌트의 Props 목록입니다." />
+        <SectionTitle title="Props" description="List of props for the StretchedHeadline component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -100,43 +100,43 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>text</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>표시할 텍스트 (필수)</TableCell>
+                <TableCell>Text to display (required)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>fillWidth</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>true</TableCell>
-                <TableCell>전체 너비 채우기 (space-between)</TableCell>
+                <TableCell>Fill the entire width (space-between)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>variant</TableCell>
                 <TableCell>&apos;static&apos; | &apos;animated&apos;</TableCell>
                 <TableCell>&apos;static&apos;</TableCell>
-                <TableCell>애니메이션 variant</TableCell>
+                <TableCell>Animation variant</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>fontSize</TableCell>
                 <TableCell>string | number</TableCell>
                 <TableCell>clamp(2rem, 8vw, 6rem)</TableCell>
-                <TableCell>폰트 크기</TableCell>
+                <TableCell>Font size</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>fontWeight</TableCell>
                 <TableCell>number</TableCell>
                 <TableCell>900</TableCell>
-                <TableCell>폰트 굵기</TableCell>
+                <TableCell>Font weight</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>textTransform</TableCell>
                 <TableCell>&apos;none&apos; | &apos;uppercase&apos; | &apos;lowercase&apos;</TableCell>
                 <TableCell>&apos;uppercase&apos;</TableCell>
-                <TableCell>텍스트 변환</TableCell>
+                <TableCell>Text transform</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Fill Width Mode" description="fillWidth={true}일 때 단어가 전체 너비에 균등 배치됩니다." />
+        <SectionTitle title="Fill Width Mode" description="When fillWidth={true}, words are evenly distributed across the entire width." />
         <Stack spacing={ 4 }>
           <Box sx={ { p: 4, backgroundColor: 'grey.50' } }>
             <StretchedHeadline text="DESIGN SYSTEM" />
@@ -149,7 +149,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Word Spacing Mode" description="fillWidth={false}일 때 word-spacing으로 간격을 조절합니다." />
+        <SectionTitle title="Word Spacing Mode" description="When fillWidth={false}, spacing is controlled with word-spacing." />
         <Stack spacing={ 4 }>
           <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
             <StretchedHeadline
@@ -169,7 +169,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Multiline Headlines" description="StretchedHeadlineMultiline으로 여러 줄을 배치합니다." />
+        <SectionTitle title="Multiline Headlines" description="Arrange multiple lines with StretchedHeadlineMultiline." />
         <Stack spacing={ 4 }>
           <Box sx={ { p: 4, backgroundColor: 'grey.50' } }>
             <StretchedHeadlineMultiline
@@ -186,7 +186,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Font Size Variations" description="다양한 폰트 크기 옵션입니다." />
+        <SectionTitle title="Font Size Variations" description="Various font size options." />
         <Stack spacing={ 3 }>
           <Box sx={ { p: 2, border: '1px solid', borderColor: 'divider' } }>
             <StretchedHeadline text="SMALL SIZE" fontSize="1.5rem" />
@@ -199,7 +199,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Animated Variant" description="스크롤하여 애니메이션을 확인하세요." />
+        <SectionTitle title="Animated Variant" description="Scroll to see the animation." />
         <Box sx={ { height: 100 } } />
         <Stack spacing={ 6 }>
           <Box sx={ { p: 6, backgroundColor: 'grey.900' } }>
@@ -221,7 +221,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -233,16 +233,16 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          {`// 기본 사용
+          {`// Basic usage
 <StretchedHeadline text="DESIGN SYSTEM" />
 
-// 여러 줄
+// Multiple lines
 <StretchedHeadlineMultiline
   lines={['WE CREATE', 'DIGITAL', 'EXPERIENCES']}
   gap={0}
 />
 
-// 애니메이션
+// Animation
 <StretchedHeadline
   text="SCROLL TRIGGERED"
   variant="animated"

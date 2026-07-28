@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import Placeholder from '../../common/ui/Placeholder';
 
 /**
- * 랜덤 높이 생성 (Masonry 효과 시연용)
+ * Random height generation (to demonstrate the Masonry effect)
  */
 const heights = [150, 90, 180, 120, 200, 100, 160, 130, 170, 110, 140, 190];
 
@@ -18,30 +18,30 @@ export default {
         component: `
 ## Masonry [MUI]
 
-\`@mui/lab\`의 Masonry 컴포넌트입니다. **Pinterest 스타일**의 가변 높이 그리드 레이아웃을 구현합니다.
+The Masonry component from \`@mui/lab\`. It implements a **Pinterest-style** variable height grid layout.
 
-### Grid와의 차이점
+### Differences from Grid
 
 | Grid | Masonry |
 |------|---------|
-| Flexbox 기반 | CSS columns 기반 |
-| 행 높이 균등 | 개별 아이템 높이 유지 |
-| 가로 → 세로 순서 | 세로 → 가로 순서 |
-| 일반 레이아웃 | 이미지 갤러리, 카드 목록 |
+| Flexbox based | CSS columns based |
+| Even row height | Preserves individual item height |
+| Left to right order | Top to bottom order |
+| General layout | Image gallery, card list |
 
-### 사용 시나리오
-- 이미지 갤러리 (다양한 비율)
-- 카드 목록 (다양한 콘텐츠 길이)
-- Pinterest/Behance 스타일 레이아웃
+### Use Scenarios
+- Image gallery (various ratios)
+- Card list (various content lengths)
+- Pinterest/Behance style layouts
 
-### 주요 Props
+### Key Props
 
-| Prop | 타입 | 설명 |
+| Prop | Type | Description |
 |------|------|------|
-| \`columns\` | number \\| object | 컬럼 수 (반응형 지원) |
-| \`spacing\` | number | 아이템 간 간격 (8px 단위) |
-| \`defaultColumns\` | number | SSR용 기본 컬럼 수 |
-| \`defaultSpacing\` | number | SSR용 기본 간격 |
+| \`columns\` | number \\| object | Number of columns (responsive support) |
+| \`spacing\` | number | Spacing between items (in units of 8px) |
+| \`defaultColumns\` | number | Default number of columns for SSR |
+| \`defaultSpacing\` | number | Default spacing for SSR |
         `,
       },
     },
@@ -50,7 +50,7 @@ export default {
     columns: {
       control: 'select',
       options: [1, 2, 3, 4, 5, 6],
-      description: '컬럼 수를 지정합니다.',
+      description: 'Sets the number of columns.',
       table: {
         type: { summary: 'number | object' },
         defaultValue: { summary: '4' },
@@ -59,7 +59,7 @@ export default {
     spacing: {
       control: 'select',
       options: [0, 1, 2, 3, 4],
-      description: '아이템 간 간격 (8px 단위)',
+      description: 'Spacing between items (in units of 8px)',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '1' },
@@ -68,7 +68,7 @@ export default {
   },
 };
 
-/** 기본 Masonry - 다양한 높이의 아이템 */
+/** Basic Masonry: items of various heights */
 export const Default = {
   args: {
     columns: 4,
@@ -85,7 +85,7 @@ export const Default = {
   ),
 };
 
-/** 반응형 컬럼 - 브레이크포인트별 컬럼 수 */
+/** Responsive columns: number of columns per breakpoint */
 export const Responsive = {
   render: () => (
     <Box sx={ { width: '100%' } }>
@@ -98,7 +98,7 @@ export const Responsive = {
   ),
 };
 
-/** 이미지 갤러리 - 실제 이미지로 Masonry 효과 */
+/** Image gallery: Masonry effect with real images */
 export const ImageGallery = {
   render: () => (
     <Box sx={ { width: '100%' } }>
@@ -111,7 +111,7 @@ export const ImageGallery = {
   ),
 };
 
-/** Spacing 비교 */
+/** Spacing comparison */
 export const SpacingComparison = {
   render: () => (
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4 } }>
@@ -129,7 +129,7 @@ export const SpacingComparison = {
   ),
 };
 
-/** 컬럼 수 비교 */
+/** Column count comparison */
 export const ColumnsComparison = {
   render: () => (
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4 } }>

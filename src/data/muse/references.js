@@ -1,13 +1,13 @@
 /**
- * MUSE — References 더미 데이터
+ * MUSE - References dummy data
  *
- * `dummyImage/reference{N}.jpg|jpeg` 27장을 정적 import해 thumbnailUrl로 연결.
- * tags는 preset(muse_tags_preset.json) 기반 레이어별 중첩 구조.
- * 결정적(deterministic) 패턴으로 태그 배분 — seed 없이도 일관 재현.
+ * Statically imports 27 `dummyImage/reference{N}.jpg|jpeg` files and links them via thumbnailUrl.
+ * tags use a per-layer nested structure based on the preset (muse_tags_preset.json).
+ * Tags are distributed with a deterministic pattern - consistently reproducible without a seed.
  *
- * 이미지 교체:
- *   - 같은 파일명으로 바꿔치기하면 코드 수정 불필요
- *   - 파일 추가 시 IMAGES 배열에 import 한 줄 추가
+ * Replacing images:
+ *   - Swapping in a file with the same name needs no code change
+ *   - When adding a file, add one import line to the IMAGES array
  *
  * @type {import('./schemas.js').Reference[]}
  */
@@ -17,7 +17,7 @@ import {
   getVisualDirectionTags,
 } from './tag/index.js';
 
-// reference1.jpg 제거됨 (sess 010), ref-001은 reference2.jpg로 매핑
+// reference1.jpg removed (sess 010), ref-001 is mapped to reference2.jpg
 import ref2 from './dummyImage/reference2.jpg';
 import ref3 from './dummyImage/reference3.jpg';
 import ref4 from './dummyImage/reference4.jpg';
@@ -70,7 +70,7 @@ const makeDate = (idx) => {
   return new Date(base + offset).toISOString().slice(0, 10);
 };
 
-/** 결정적 샘플링: pool에서 idx 기반으로 count개 뽑기 (중복 없음) */
+/** Deterministic sampling: pick count items from pool based on idx (no duplicates) */
 const pickDeterministic = (pool, idx, count, step = 1) => {
   if (!pool.length || count <= 0) return [];
   const out = [];
@@ -97,9 +97,9 @@ const GENRE_TAGS = getVisualDirectionTags('genre');
 const STYLE_TAGS = getVisualDirectionTags('style');
 const SUBJECT_TAGS = getVisualDirectionTags('subject');
 
-/** 이미지 인덱스로부터 각 레이어에 몇 개의 태그를 줄지 결정 */
+/** Determine how many tags to give each layer based on the image index */
 const tagCountForIndex = (i, base = 2, range = 2) =>
-  ((i % range) + base); // 2~3개
+  ((i % range) + base); // 2-3 items
 
 const FONT_FAMILY_POOL = [
   'Inter, sans-serif',
@@ -175,15 +175,15 @@ export const getReferenceThumbnails = (ids, maxCount = 4) =>
     .filter(Boolean);
 
 /**
- * 레이어별 중첩 tags를 flat string[] 로 변환.
- * 기존 코드(필터·검색)에서 `ref.tags`가 배열이라고 가정한 곳에 어댑터로 사용.
+ * Convert per-layer nested tags into a flat string[].
+ * Used as an adapter where existing code (filter/search) assumed `ref.tags` was an array.
  * @param {import('./schemas.js').Reference} ref
  * @returns {string[]}
  */
 export function flattenTags(ref) {
   const t = ref?.tags;
   if (!t) return [];
-  if (Array.isArray(t)) return t; // 구버전 호환
+  if (Array.isArray(t)) return t; // legacy compatibility
   return [
     ...(t.color || []),
     ...(t.typography || []),

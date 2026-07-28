@@ -21,12 +21,12 @@ export default {
         component: `
 ## HighlightedTypography
 
-텍스트 내 특정 단어나 구문을 다양한 스타일로 강조할 수 있는 컴포넌트.
+A component that emphasizes specific words or phrases within text using various styles.
 
-### 용도
-- 중요한 단어나 구문 강조
-- 밑줄, 배경, 형광펜, 원 효과 적용
-- 스크롤 트리거 애니메이션
+### Use Cases
+- Emphasize important words or phrases
+- Apply underline, background, marker, or circle effects
+- Scroll triggered animations
         `,
       },
     },
@@ -48,7 +48,7 @@ export default {
   },
 };
 
-/** 기본 사용 - HighlightedTypography props 조절 */
+/** Basic usage - adjust HighlightedTypography props */
 export const Default = {
   args: {
     variant: 'h4',
@@ -68,7 +68,7 @@ export const Default = {
   ),
 };
 
-/** Highlight 컴포넌트 props 조절 */
+/** Adjust Highlight component props */
 export const HighlightPlayground = {
   args: {
     type: 'background',
@@ -119,7 +119,7 @@ export const HighlightPlayground = {
   ),
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -136,11 +136,11 @@ export const Documentation = {
           HighlightedTypography
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          텍스트 내 특정 단어나 구문을 다양한 스타일로 강조합니다.
-          Compound component 패턴으로 Highlight 컴포넌트와 함께 사용합니다.
+          Emphasizes specific words or phrases within text using various styles.
+          Used together with the Highlight component in a compound component pattern.
         </Typography>
 
-        <SectionTitle title="Props" description="HighlightedTypography 컴포넌트의 Props 목록입니다." />
+        <SectionTitle title="Props" description="List of props for the HighlightedTypography component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -156,19 +156,19 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>children</TableCell>
                 <TableCell>ReactNode</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>텍스트와 Highlight 컴포넌트 조합</TableCell>
+                <TableCell>Combination of text and Highlight components</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>variant</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>&apos;body1&apos;</TableCell>
-                <TableCell>타이포그래피 variant</TableCell>
+                <TableCell>Typography variant</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>animated</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>viewport 진입 시 애니메이션 활성화</TableCell>
+                <TableCell>Enable animation when entering the viewport</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>threshold</TableCell>
@@ -180,7 +180,7 @@ export const Documentation = {
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Highlight Props" description="Highlight 하위 컴포넌트의 Props입니다." />
+        <SectionTitle title="Highlight Props" description="Props for the Highlight sub component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -196,47 +196,47 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>type</TableCell>
                 <TableCell>&apos;underline&apos; | &apos;background&apos; | &apos;marker&apos; | &apos;circle&apos;</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>강조 유형 (필수)</TableCell>
+                <TableCell>Highlight type (required)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>color</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>&apos;primary.main&apos;</TableCell>
-                <TableCell>강조 색상</TableCell>
+                <TableCell>Highlight color</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>animated</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>draw 애니메이션 활성화</TableCell>
+                <TableCell>Enable draw animation</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>delay</TableCell>
                 <TableCell>number</TableCell>
                 <TableCell>0</TableCell>
-                <TableCell>애니메이션 지연 (ms)</TableCell>
+                <TableCell>Animation delay (ms)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>duration</TableCell>
                 <TableCell>number</TableCell>
                 <TableCell>600</TableCell>
-                <TableCell>애니메이션 지속 시간 (ms)</TableCell>
+                <TableCell>Animation duration (ms)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>textColor</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>&apos;auto&apos;</TableCell>
-                <TableCell>텍스트 색상 (&apos;auto&apos;: 배경 밝기에 따라 자동 결정)</TableCell>
+                <TableCell>Text color (&apos;auto&apos;: determined automatically by background brightness)</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Highlight Types" description="네 가지 강조 스타일을 제공합니다." />
+        <SectionTitle title="Highlight Types" description="Provides four highlight styles." />
         <Stack spacing={ 4 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Underline - 밑줄 효과
+              Underline - underline effect
             </Typography>
             <HighlightedTypography variant="h5">
               We believe in <Highlight type="underline">innovation</Highlight> and <Highlight type="underline">creativity</Highlight>.
@@ -245,7 +245,7 @@ export const Documentation = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Background - 배경색 효과
+              Background - background color effect
             </Typography>
             <HighlightedTypography variant="h5">
               Our <Highlight type="background">mission</Highlight> is to build <Highlight type="background">better products</Highlight>.
@@ -254,7 +254,7 @@ export const Documentation = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Marker - 형광펜 효과
+              Marker - marker pen effect
             </Typography>
             <HighlightedTypography variant="h5">
               This feature is <Highlight type="marker">absolutely essential</Highlight> for our users.
@@ -263,7 +263,7 @@ export const Documentation = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Circle - 손으로 그린 원 효과
+              Circle - hand drawn circle effect
             </Typography>
             <HighlightedTypography variant="h5">
               The <Highlight type="circle">key insight</Highlight> changed everything.
@@ -271,7 +271,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Animated Examples" description="스크롤하여 애니메이션을 확인하세요." />
+        <SectionTitle title="Animated Examples" description="Scroll to see the animation." />
         <Box sx={ { height: 100 } } />
         <Stack spacing={ 6 }>
           <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
@@ -284,15 +284,15 @@ export const Documentation = {
 
           <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
             <HighlightedTypography variant="body1" animated>
-              디자인 시스템은 <Highlight type="background" animated>일관성</Highlight>을 유지하면서
-              <Highlight type="underline" animated delay={ 200 }>효율적인</Highlight> 개발을 가능하게 합니다.
-              이를 통해 <Highlight type="marker" animated delay={ 400 }>사용자 경험</Highlight>을 개선하고
-              <Highlight type="circle" animated delay={ 600 }>브랜드 아이덴티티</Highlight>를 강화할 수 있습니다.
+              A design system enables <Highlight type="underline" animated delay={ 200 }>efficient</Highlight> development
+              while maintaining <Highlight type="background" animated>consistency</Highlight>.
+              This improves the <Highlight type="marker" animated delay={ 400 }>user experience</Highlight> and
+              strengthens the <Highlight type="circle" animated delay={ 600 }>brand identity</Highlight>.
             </HighlightedTypography>
           </Box>
         </Stack>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {

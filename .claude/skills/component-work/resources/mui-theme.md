@@ -9,12 +9,11 @@ MUI 커스텀 테마 설정 규칙
 
 ## Typography
 
-### 본문
-- **Pretendard Variable** 버전을 웹폰트로 사용
-
-### Headline
-- **영어**: Google Font의 **Outfit**
-- **한글**: Pretendard의 가장 높은 weight
+### 폰트 패밀리 (System Font)
+- 별도 웹폰트를 로드하지 않고 **OS 시스템 폰트**를 사용한다 (`-apple-system, BlinkMacSystemFont, system-ui, ...`).
+- **본문과 헤딩 모두 동일한 시스템 폰트 스택**을 공유한다 (`typography.fontFamily === headingFontFamily`).
+- 이유: 앱이 웹폰트를 로드하지 않아 실제로 시스템 폰트로 렌더링되며, 이 네이티브한 룩을 디자인 시스템 기준으로 삼는다. (스토리북만 웹폰트를 로드하면 앱과 폰트가 달라 보임)
+- 웹폰트(Pretendard/Outfit 등)를 도입하려면 앱(index.html/CSS)과 스토리북(`.storybook/preview.jsx`) 양쪽에 동일하게 로드한 뒤 테마 스택을 함께 바꾼다.
 
 ## Color
 
@@ -70,10 +69,10 @@ const theme = createTheme({
     secondary: { main: '#263238' },  // blueGrey[900]
   },
   typography: {
-    fontFamily: 'Pretendard Variable, sans-serif',
+    // OS 시스템 폰트 스택 (본문/헤딩 공유)
+    fontFamily: '-apple-system, BlinkMacSystemFont, system-ui, Roboto, sans-serif',
     h1: {
-      fontFamily: 'Outfit, Pretendard Variable, sans-serif',
-      fontWeight: 900,
+      fontWeight: 700,
     },
     // ...
   },

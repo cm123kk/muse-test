@@ -28,12 +28,12 @@ export default {
         component: `
 ## SplitScreen
 
-화면을 두 영역으로 분할하는 레이아웃 컴포넌트.
+Layout component that splits the screen into two areas.
 
-### 용도
-- 로그인/회원가입 페이지
-- 비교 레이아웃
-- 이미지/콘텐츠 분할 섹션
+### Use cases
+- Login/sign-up pages
+- Comparison Layouts
+- Image/content split sections
         `,
       },
     },
@@ -42,26 +42,26 @@ export default {
     direction: {
       control: 'select',
       options: ['row', 'column'],
-      description: '분할 방향',
+      description: 'Split Direction',
     },
     ratio: {
       control: 'select',
       options: ['50:50', '60:40', '40:60', '70:30', '30:70'],
-      description: '분할 비율',
+      description: 'Split ratio',
     },
     stackAt: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'none'],
-      description: '스택 전환 브레이크포인트',
+      description: 'Stack Transition breakpoint',
     },
     isFullHeight: {
       control: 'boolean',
-      description: '100vh 높이 적용',
+      description: 'Apply 100vh height',
     },
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     direction: 'row',
@@ -79,7 +79,7 @@ export const Default = {
   ),
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   parameters: {
     layout: 'padded',
@@ -99,11 +99,11 @@ export const Documentation = {
           SplitScreen
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          화면을 두 영역으로 분할하는 레이아웃 컴포넌트입니다.
-          다양한 비율과 반응형 전환을 지원합니다.
+          Layout component that splits the screen into two areas.
+          It supports various ratios and responsive Transitions.
         </Typography>
 
-        <SectionTitle title="Props" description="SplitScreen 컴포넌트의 Props입니다." />
+        <SectionTitle title="Props" description="Props for the SplitScreen Component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -119,49 +119,49 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>left</TableCell>
                 <TableCell>ReactNode</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>왼쪽(상단) 영역 콘텐츠</TableCell>
+                <TableCell>Content for the left (top) area</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>right</TableCell>
                 <TableCell>ReactNode</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>오른쪽(하단) 영역 콘텐츠</TableCell>
+                <TableCell>Content for the right (bottom) area</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>ratio</TableCell>
                 <TableCell>string | number[]</TableCell>
                 <TableCell>&apos;50:50&apos;</TableCell>
-                <TableCell>분할 비율</TableCell>
+                <TableCell>Split ratio</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>direction</TableCell>
                 <TableCell>&apos;row&apos; | &apos;column&apos;</TableCell>
                 <TableCell>&apos;row&apos;</TableCell>
-                <TableCell>분할 방향</TableCell>
+                <TableCell>Split Direction</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>stackAt</TableCell>
                 <TableCell>&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;none&apos;</TableCell>
                 <TableCell>&apos;sm&apos;</TableCell>
-                <TableCell>스택 전환 브레이크포인트</TableCell>
+                <TableCell>Stack Transition breakpoint</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>stackOrder</TableCell>
                 <TableCell>&apos;normal&apos; | &apos;reverse&apos;</TableCell>
                 <TableCell>&apos;normal&apos;</TableCell>
-                <TableCell>스택 시 순서</TableCell>
+                <TableCell>Order when stacked</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isFullHeight</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>100vh 높이 적용</TableCell>
+                <TableCell>Apply 100vh height</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Ratio Presets" description="자주 사용되는 분할 비율입니다." />
+        <SectionTitle title="Ratio Presets" description="Commonly used split ratios." />
         <Stack spacing={ 3 }>
           { ['50:50', '60:40', '70:30'].map((r) => (
             <Box key={ r }>
@@ -178,7 +178,7 @@ export const Documentation = {
           )) }
         </Stack>
 
-        <SectionTitle title="Sub Components" description="함께 사용하는 컴포넌트들입니다." />
+        <SectionTitle title="Sub Components" description="Components used together." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -190,17 +190,17 @@ export const Documentation = {
             <TableBody>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>StickySection</TableCell>
-                <TableCell>스크롤 시 고정되는 섹션</TableCell>
+                <TableCell>Section that stays fixed while scrolling</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>SplitOverlay</TableCell>
-                <TableCell>배경 이미지 + 오버레이가 적용된 영역</TableCell>
+                <TableCell>Area with a background image plus overlay</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -212,20 +212,20 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          { `// 기본 50:50 분할
+          { `// Default 50:50 split
 <SplitScreen
   left={<ImageSection />}
   right={<ContentSection />}
 />
 
-// 60:40 비율
+// 60:40 ratio
 <SplitScreen
   ratio="60:40"
   left={<LargeSection />}
   right={<SmallSection />}
 />
 
-// 배경 이미지 + 폼
+// Background image plus form
 <SplitScreen
   isFullHeight
   ratio="60:40"
@@ -247,7 +247,7 @@ export const Documentation = {
   }
 />
 
-// Sticky 섹션
+// Sticky section
 <SplitScreen
   left={
     <StickySection>
@@ -262,7 +262,7 @@ export const Documentation = {
   ),
 };
 
-/** 로그인 페이지 예시 */
+/** Login page example */
 export const LoginPageExample = {
   render: () => (
     <SplitScreen
@@ -317,7 +317,7 @@ export const LoginPageExample = {
   ),
 };
 
-/** 비교 레이아웃 예시 */
+/** Comparison layout example */
 export const ComparisonExample = {
   parameters: {
     layout: 'padded',
@@ -370,7 +370,7 @@ export const ComparisonExample = {
   ),
 };
 
-/** Sticky 섹션 예시 */
+/** Sticky section example */
 export const StickySectionExample = {
   render: () => (
     <Box sx={ { height: '200vh' } }>

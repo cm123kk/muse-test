@@ -13,17 +13,17 @@ import { REPRESENTATIVE_COLORS, isSimilarColor } from '../../utils/colorSimilari
 const DESIGN_LAYER_KEYS = ['typography', 'layout', 'gradient'];
 const VISUAL_DIRECTION_KEYS = ['genre', 'style', 'subject'];
 const DESIGN_LAYER_LABELS = [
-  { key: 'typography', label: '타이포' },
-  { key: 'layout', label: '레이아웃' },
-  { key: 'gradient', label: '그라디언트' },
+  { key: 'typography', label: 'Typography' },
+  { key: 'layout', label: 'Layout' },
+  { key: 'gradient', label: 'Gradient' },
 ];
 const VISUAL_DIRECTION_LABELS = [
-  { key: 'genre', label: '장르' },
-  { key: 'style', label: '스타일' },
-  { key: 'subject', label: '주제' },
+  { key: 'genre', label: 'Genre' },
+  { key: 'style', label: 'Style' },
+  { key: 'subject', label: 'Subject' },
 ];
 
-/** 필터 카테고리 Accordion — 접기/펼치기 */
+/** Filter category Accordion: collapse/expand */
 function FilterAccordion({ label, count, defaultExpanded = false, children }) {
   return (
     <Accordion
@@ -61,7 +61,7 @@ function FilterAccordion({ label, count, defaultExpanded = false, children }) {
   );
 }
 
-/** 서브 행 (타이포 / 레이아웃 / 그라디언트 / 장르 / 스타일 / 주제 레벨) */
+/** Sub-row (typography / layout / gradient / genre / style / subject level) */
 function FilterSubRow({ label, children }) {
   return (
     <Box sx={ { display: 'flex', alignItems: 'flex-start', gap: 1.5 } }>
@@ -112,30 +112,30 @@ function buildRepresentativeCounts(references) {
 }
 
 /**
- * FilterPanel 컴포넌트
+ * FilterPanel component
  *
- * 레퍼런스 컬렉션에 대한 검색 + 색상 + 레이어별 태그 필터링 UI.
+ * A search + color + per-layer tag filtering UI for a reference collection.
  *
- * 동작 흐름:
- * 1. 상단 검색바에 키워드를 입력하면 상위 화면이 필터된 결과를 렌더링한다
- * 2. references로부터 자동으로 대표 색상환과 레이어별 태그 목록을 계산한다
- * 3. 사용자가 색상 스와치 또는 태그 칩을 클릭하면 activeColors / activeTags가 토글된다
- * 4. 활성 필터가 하나라도 있으면 "필터 초기화" 버튼이 하단에 나타난다
- * 5. 필터 상태는 상위에서 관리 (controlled) — 패널은 순수 표시 + 이벤트 전달만 담당
+ * Flow:
+ * 1. Typing a keyword into the top search bar makes the parent screen render the filtered results
+ * 2. Automatically computes the representative color wheel and per-layer tag lists from references
+ * 3. Clicking a color swatch or a tag chip toggles activeColors / activeTags
+ * 4. A "Reset filters" button appears at the bottom whenever any filter is active
+ * 5. Filter state is managed by the parent (controlled). The panel only handles pure display and event forwarding
  *
  * Props:
- * @param {array} references - 전체 레퍼런스 배열 (필터 소스) [Required]
- * @param {string} searchTerm - 현재 검색어 [Required]
+ * @param {array} references - Full array of references (filter source) [Required]
+ * @param {string} searchTerm - Current search term [Required]
  * @param {function} onSearchTermChange - (nextTerm) => void [Required]
- * @param {string[]} activeTags - 활성화된 태그 배열 [Required]
+ * @param {string[]} activeTags - Array of active tags [Required]
  * @param {function} onToggleTag - (tag) => void [Required]
- * @param {string[]} activeColors - 활성화된 색상 hex 배열 [Required]
+ * @param {string[]} activeColors - Array of active color hexes [Required]
  * @param {function} onToggleColor - (hex) => void [Required]
- * @param {function} onResetColors - () => void, "모두 보기" 클릭 시 색상 필터 해제 [Optional]
+ * @param {function} onResetColors - () => void, clears the color filter when "View all" is clicked [Optional]
  * @param {function} onResetFilters - () => void [Required]
- * @param {number} filteredCount - 현재 필터 결과 개수 [Required]
- * @param {number} totalCount - 전체 개수 [Required]
- * @param {object} sx - 컨테이너 추가 스타일 [Optional]
+ * @param {number} filteredCount - Current filtered result count [Required]
+ * @param {number} totalCount - Total count [Required]
+ * @param {object} sx - Additional container styles [Optional]
  *
  * Example usage:
  * <FilterPanel
@@ -187,21 +187,21 @@ export function FilterPanel({
     <Box sx={ sx }>
       <SearchBar
         value={ searchTerm }
-        placeholder="제목 또는 태그 검색"
+        placeholder="Search by title or tag"
         onChange={ onSearchTermChange }
         onClear={ () => onSearchTermChange('') }
         isFullWidth
       />
       { (hasAnyTag || representativeCounts.length > 0) && (
         <Box sx={ { mt: 2 } }>
-          { /* 색상 — 대표 색상환 기반, 선택 시 주변색 유사도 매칭 */ }
+          { /* Color: based on the representative color wheel; selecting one matches surrounding shades by similarity */ }
           { representativeCounts.length > 0 && (
-            <FilterAccordion label="색상" count={ activeColors.length }>
+            <FilterAccordion label="Color" count={ activeColors.length }>
               <Box sx={ { display: 'flex', flexWrap: 'wrap', gap: 1, alignItems: 'center' } }>
-                { /* "모두 보기" — 색상 필터가 비어있을 때 활성 표시, 클릭 시 색상 필터 해제 */ }
+                { /* "View all": shown as active when the color filter is empty; clicking clears the color filter */ }
                 <Box
                   onClick={ () => activeColors.length > 0 && onResetColors?.() }
-                  title="모두 보기 (색상 필터 해제)"
+                  title="View all (clear color filter)"
                   sx={ {
                     position: 'relative',
                     width: 32,
@@ -244,7 +244,7 @@ export function FilterPanel({
                     <Box
                       key={ hex }
                       onClick={ () => onToggleColor(hex) }
-                      title={ `${label} · ${count}장` }
+                      title={ `${label} · ${count}` }
                       sx={ {
                         position: 'relative',
                         width: 32,
@@ -289,13 +289,13 @@ export function FilterPanel({
                 }) }
               </Box>
               <Typography variant="caption" color="text.secondary">
-                대표 색 선택 시 유사 계열 레퍼런스가 함께 필터링됩니다
+                Selecting a representative color also filters references in similar shades
               </Typography>
             </FilterAccordion>
           ) }
 
           { hasDesignLayer && (
-            <FilterAccordion label="디자인 레이어" count={ countForKeys(DESIGN_LAYER_KEYS) }>
+            <FilterAccordion label="Design Layer" count={ countForKeys(DESIGN_LAYER_KEYS) }>
               { DESIGN_LAYER_LABELS
                 .filter(({ key }) => layeredTags[key]?.length > 0)
                 .map(({ key, label }) => (
@@ -317,7 +317,7 @@ export function FilterPanel({
           ) }
 
           { hasVisualDirection && (
-            <FilterAccordion label="비주얼 디렉션" count={ countForKeys(VISUAL_DIRECTION_KEYS) }>
+            <FilterAccordion label="Visual Direction" count={ countForKeys(VISUAL_DIRECTION_KEYS) }>
               { VISUAL_DIRECTION_LABELS
                 .filter(({ key }) => layeredTags[key]?.length > 0)
                 .map(({ key, label }) => (
@@ -340,13 +340,13 @@ export function FilterPanel({
 
           { totalActiveFilters > 0 && (
             <Button size="small" variant="text" onClick={ onResetFilters } sx={ { mt: 2 } }>
-              필터 초기화 ({ totalActiveFilters })
+              Reset filters ({ totalActiveFilters })
             </Button>
           ) }
         </Box>
       ) }
       <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mt: 1.5 } }>
-        { filteredCount } / { totalCount } 개 표시됨
+        { filteredCount } / { totalCount } shown
       </Typography>
     </Box>
   );

@@ -1,8 +1,8 @@
 /**
- * 색상 유사도 유틸
+ * Color similarity utilities
  *
- * hex → HSL 변환 후 (hue 거리 + saturation/lightness 허용 오차) 로 매칭.
- * 컬러 필터에서 "대표 색상 선택 시 주변색까지 필터링" 용도.
+ * Converts hex -> HSL, then matches by (hue distance + saturation/lightness tolerance).
+ * Used in the color filter to "also filter neighboring colors when a representative color is selected".
  */
 
 const clamp = (v, min, max) => Math.max(min, Math.min(max, v));
@@ -42,20 +42,20 @@ export function hexToHsl(hex) {
 }
 
 /**
- * 두 hex 값이 "유사" 한가 (hue 거리 + S/L 오차).
- * 저채도(neutral)는 hue 가 불안정하므로 L 만으로 판정.
+ * Whether two hex values are "similar" (hue distance + S/L tolerance).
+ * For low-saturation (neutral) colors, hue is unstable, so judge by L only.
  */
 export function isSimilarColor(a, b, { hueTolerance = 30, lightTolerance = 0.28, satTolerance = 0.35 } = {}) {
   const ah = hexToHsl(a); const bh = hexToHsl(b);
   if (!ah || !bh) return false;
 
-  // neutral (무채색) 취급 — 양쪽 다 저채도이면 lightness 로만 판정
+  // Treat as neutral (achromatic) - if both are low-saturation, judge by lightness only
   const neutralThreshold = 0.12;
   if (ah.s < neutralThreshold && bh.s < neutralThreshold) {
     return Math.abs(ah.l - bh.l) <= lightTolerance;
   }
 
-  // 한쪽만 무채색이면 mismatch
+  // If only one side is achromatic, mismatch
   if ((ah.s < neutralThreshold) !== (bh.s < neutralThreshold)) return false;
 
   const hueDist = Math.min(Math.abs(ah.h - bh.h), 360 - Math.abs(ah.h - bh.h));
@@ -65,7 +65,7 @@ export function isSimilarColor(a, b, { hueTolerance = 30, lightTolerance = 0.28,
   return true;
 }
 
-/** 대표 색상환 — 12 hue + 4 neutral */
+/** Representative color wheel - 12 hue + 4 neutral */
 export const REPRESENTATIVE_COLORS = [
   { hex: '#E53935', label: 'Red' },
   { hex: '#F4511E', label: 'Coral' },

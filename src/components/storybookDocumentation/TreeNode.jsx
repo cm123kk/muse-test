@@ -4,13 +4,13 @@ import Typography from '@mui/material/Typography';
 import Collapse from '@mui/material/Collapse';
 
 /**
- * TreeNode - MUI theme 구조를 트리 형태로 시각화하는 컴포넌트
+ * TreeNode - Component that visualizes the MUI theme structure as a tree
  *
  * Props:
- * @param {string} keyName - 표시할 키 이름 [Required]
- * @param {any} value - 키에 해당하는 값 (객체, 배열, 원시값) [Required]
- * @param {number} depth - 트리 깊이 (들여쓰기 계산용) [Optional, 기본값: 0]
- * @param {boolean} defaultOpen - 초기 펼침 상태 [Optional, 기본값: false]
+ * @param {string} keyName - Key name to display [Required]
+ * @param {any} value - Value for the key (object, array, or primitive) [Required]
+ * @param {number} depth - Tree depth (used to calculate indentation) [Optional, default: 0]
+ * @param {boolean} defaultOpen - Initial expanded state [Optional, default: false]
  *
  * Example usage:
  * <TreeNode keyName="palette" value={theme.palette} defaultOpen={true} />
@@ -22,14 +22,14 @@ export const TreeNode = ({ keyName, value, depth = 0, defaultOpen = false }) => 
   const isExpandable = isObject || isArray;
   const childCount = isExpandable ? Object.keys(value).length : 0;
 
-  // 색상값 감지
+  // Detect color values
   const isColor = typeof value === 'string' && (
     value.startsWith('#') ||
     value.startsWith('rgb') ||
     value.startsWith('rgba')
   );
 
-  // 값 포맷팅
+  // Format the value
   const formatValue = (val) => {
     if (typeof val === 'string') return `"${val}"`;
     if (typeof val === 'number') return val;
@@ -57,7 +57,7 @@ export const TreeNode = ({ keyName, value, depth = 0, defaultOpen = false }) => 
           borderColor: 'divider',
         } }
       >
-        {/* 펼침/접힘 아이콘 */}
+        {/* Expand/collapse icon */}
         { isExpandable ? (
           <Typography
             component="span"
@@ -75,7 +75,7 @@ export const TreeNode = ({ keyName, value, depth = 0, defaultOpen = false }) => 
           <Box sx={ { width: 16 } } />
         ) }
 
-        {/* 키 이름 */}
+        {/* Key name */}
         <Typography
           component="span"
           sx={ {
@@ -88,12 +88,12 @@ export const TreeNode = ({ keyName, value, depth = 0, defaultOpen = false }) => 
           { keyName }
         </Typography>
 
-        {/* 구분자 */}
+        {/* Separator */}
         <Typography component="span" sx={ { color: 'text.secondary', fontSize: '13px' } }>
           :
         </Typography>
 
-        {/* 값 또는 타입 정보 */}
+        {/* Value or type information */}
         { isExpandable ? (
           <Typography
             component="span"
@@ -135,7 +135,7 @@ export const TreeNode = ({ keyName, value, depth = 0, defaultOpen = false }) => 
         ) }
       </Box>
 
-      {/* 하위 노드 */}
+      {/* Child nodes */}
       { isExpandable && (
         <Collapse in={ isOpen }>
           <Box>

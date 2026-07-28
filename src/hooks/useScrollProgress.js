@@ -3,22 +3,22 @@ import { useEffect, useRef } from 'react';
 /**
  * useScrollProgress
  *
- * 대상 엘리먼트가 viewport 안에 머무는 동안의 진행도(0~1) 를
- * `--p` CSS variable + 반환된 ref(`.current`) 양쪽에 기록한다.
+ * Records the progress (0-1) while the target element stays within the viewport
+ * to both the `--p` CSS variable and the returned ref (`.current`).
  *
- * - CSS var: 자손이 `var(--p)` 로 직접 읽어 transform/opacity 계산 가능
- * - ref:     RAF 안에서 매 프레임 최신 값 읽기 (rerender 0)
+ * - CSS var: descendants can read `var(--p)` directly to compute transform/opacity
+ * - ref:     read the latest value every frame inside RAF (0 rerenders)
  *
- * IntersectionObserver gate 로 viewport 밖일 땐 scroll listener 자체를
- * detach → off-screen cost 0.
+ * An IntersectionObserver gate detaches the scroll listener itself when off-screen,
+ * so off-screen cost is 0.
  *
- * @param {React.RefObject<HTMLElement>} targetRef - 진행도를 측정할 wrapper
- * @returns {React.MutableRefObject<number>} 매 frame 갱신되는 progress(0~1) ref
+ * @param {React.RefObject<HTMLElement>} targetRef - wrapper whose progress is measured
+ * @returns {React.MutableRefObject<number>} progress (0-1) ref updated every frame
  *
  * Example usage:
  *   const wrapperRef = useRef(null);
  *   const progressRef = useScrollProgress(wrapperRef);
- *   // wrapperRef.current.style 의 --p / progressRef.current 둘 다 0~1 로 갱신됨
+ *   // both wrapperRef.current.style's --p and progressRef.current update to 0-1
  */
 export function useScrollProgress(targetRef) {
   const progressRef = useRef(0);

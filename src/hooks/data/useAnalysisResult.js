@@ -3,7 +3,7 @@ import { supabase as defaultClient } from '../../lib/supabase';
 import { normalizeSupabaseError } from '../../utils/supabaseError';
 
 /**
- * 특정 프로젝트의 analysis_results 조회
+ * Fetch analysis_results for a specific project
  *
  * @param {{ projectId: string, client?: object }} options
  * @returns {{ data: import('../../types/database').AnalysisResult|null, loading: boolean, error: object|null, refetch: () => void }}
@@ -40,7 +40,7 @@ export function useAnalysisResult({ projectId, client = defaultClient }) {
 }
 
 /**
- * analysis_results 생성 (AI 분석 완료 후 저장)
+ * Create analysis_results (save after AI analysis completes)
  *
  * @param {{ client?: object }} [options]
  * @returns {{ createAnalysisResult: (payload: { project_id: string, status: string, layers: object }) => Promise<{ ok: boolean, data?: object }>, loading: boolean, error: object|null }}
@@ -72,7 +72,7 @@ export function useCreateAnalysisResult({ client = defaultClient } = {}) {
 }
 
 /**
- * analysis_results 토큰 편집 (isEnabled / emphasis 업데이트)
+ * Edit analysis_results tokens (update isEnabled / emphasis)
  *
  * @param {{ client?: object }} [options]
  * @returns {{ updateAnalysisResult: (id: string, patch: Partial<import('../../types/database').AnalysisResult>) => Promise<{ ok: boolean, data?: object }>, loading: boolean, error: object|null }}

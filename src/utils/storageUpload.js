@@ -3,12 +3,12 @@ import { supabase } from '../lib/supabase';
 const BUCKET = 'references';
 
 /**
- * Supabase Storage에 이미지 파일을 업로드한다.
- * 경로: {userId}/{uuid}.{ext}
+ * Upload an image file to Supabase Storage.
+ * Path: {userId}/{uuid}.{ext}
  *
- * @param {File} file - 업로드할 파일
- * @param {string} userId - 현재 사용자 ID
- * @param {object} [client] - 주입 가능한 Supabase 클라이언트 (기본: 실제 클라이언트)
+ * @param {File} file - The file to upload
+ * @param {string} userId - The current user ID
+ * @param {object} [client] - An injectable Supabase client (default: the real client)
  * @returns {Promise<{ storagePath: string, publicUrl: string }>}
  */
 export async function uploadImageToStorage(file, userId, client = supabase) {
@@ -20,7 +20,7 @@ export async function uploadImageToStorage(file, userId, client = supabase) {
     .from(BUCKET)
     .upload(storagePath, file, { contentType: file.type, upsert: false });
 
-  if (error) throw new Error(`Storage 업로드 실패: ${error.message}`);
+  if (error) throw new Error(`Storage upload failed: ${error.message}`);
 
   const { data: { publicUrl } } = client.storage
     .from(BUCKET)
@@ -30,14 +30,14 @@ export async function uploadImageToStorage(file, userId, client = supabase) {
 }
 
 /**
- * Storage에서 이미지를 삭제한다.
- * 실패해도 DB 레코드 삭제는 진행되므로 throw하지 않는다.
+ * Delete an image from Storage.
+ * Does not throw on failure, since DB record deletion still proceeds.
  *
- * @param {string} storagePath - storage_path 컬럼 값
+ * @param {string} storagePath - The storage_path column value
  * @param {object} [client]
  */
 export async function deleteImageFromStorage(storagePath, client = supabase) {
   if (!storagePath) return;
   const { error } = await client.storage.from(BUCKET).remove([storagePath]);
-  if (error) console.warn('[Storage 삭제 실패]', storagePath, error.message);
+  if (error) console.warn('[Storage delete failed]', storagePath, error.message);
 }

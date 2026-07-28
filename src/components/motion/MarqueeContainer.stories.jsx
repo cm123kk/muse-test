@@ -11,35 +11,35 @@ export default {
   argTypes: {
     speed: {
       control: { type: 'number', min: 1, max: 60 },
-      description: '한 사이클 완료 시간 (초, 클수록 느림)',
+      description: 'Time to complete one cycle (seconds, larger is slower)',
     },
     direction: {
       control: 'select',
       options: ['left', 'right'],
-      description: '스크롤 방향',
+      description: 'Scroll direction',
     },
     isPauseOnHover: {
       control: 'boolean',
-      description: '호버 시 일시정지 여부',
+      description: 'Pause on hover',
     },
     gap: {
       control: { type: 'number', min: 0, max: 10 },
-      description: '아이템 간 간격 (theme.spacing 단위)',
+      description: 'Spacing between items (theme.spacing units)',
     },
     isScrollScrub: {
       control: 'boolean',
-      description: '스크롤 스크러빙 모드 (스크롤 위치에 따라 이동)',
+      description: 'Scroll scrubbing mode (moves based on scroll position)',
     },
   },
 };
 
-/** 키워드 태그 — 디자인 시스템 맥락 */
+/** Keyword tags (design system context) */
 const keywords = [
   'Typography', 'Layout', 'Motion', 'Color System',
   'Spacing', 'Elevation', 'Iconography', 'Grid',
 ];
 
-/** 파트너 로고 블록 — 클라이언트/협업사 로고 플레이스홀더 */
+/** Partner logo blocks (placeholders for client and collaborator logos) */
 const partners = [
   { name: 'STUDIO A', accent: 'primary.main' },
   { name: 'FORMA', accent: 'secondary.main' },
@@ -49,7 +49,7 @@ const partners = [
   { name: 'ARCHETYPE', accent: 'secondary.main' },
 ];
 
-/** 갤러리 이미지 인덱스 배열 */
+/** Array of gallery image indices */
 const galleryIndices = [0, 1, 2, 3, 4, 5];
 
 export const Default = {
@@ -71,7 +71,7 @@ export const Default = {
 export const Variants = {
   render: () => (
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 6 } }>
-      {/* 키워드 태그 흐름 */}
+      {/* Keyword tag flow */}
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
           Keyword Tags
@@ -83,7 +83,7 @@ export const Variants = {
         </MarqueeContainer>
       </Box>
 
-      {/* 반대 방향 + 채워진 태그 */}
+      {/* Reverse direction plus filled tags */}
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
           Reverse Direction
@@ -99,7 +99,7 @@ export const Variants = {
         </MarqueeContainer>
       </Box>
 
-      {/* 파트너 로고 블록 */}
+      {/* Partner logo blocks */}
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
           Partner Logos
@@ -134,7 +134,7 @@ export const Variants = {
         </MarqueeContainer>
       </Box>
 
-      {/* 이미지 갤러리 흐름 */}
+      {/* Image gallery flow */}
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
           Image Gallery
@@ -167,7 +167,7 @@ export const ScrollScrub = {
         Scroll to Scrub
       </Typography>
 
-      {/* 이미지 갤러리 — 스크롤에 연동 */}
+      {/* Image gallery linked to scroll */}
       <MarqueeContainer isScrollScrub gap={ 1 }>
         { galleryIndices.map((i) => (
           <Placeholder.Media
@@ -181,7 +181,7 @@ export const ScrollScrub = {
         )) }
       </MarqueeContainer>
 
-      {/* 반대 방향 파트너 로고 — 스크롤에 연동 */}
+      {/* Reverse direction partner logos linked to scroll */}
       <Box sx={ { mt: 3 } }>
         <MarqueeContainer isScrollScrub direction="right" gap={ 3 }>
           { partners.map((p) => (

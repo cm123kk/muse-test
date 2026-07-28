@@ -21,16 +21,16 @@ export default {
         component: `
 ## Checkbox [MUI]
 
-사용자가 하나 이상의 옵션을 선택할 수 있는 체크박스 컴포넌트입니다.
+A checkbox component that lets the user select one or more options.
 
-### 사용 패턴
+### Usage Patterns
 
-| 패턴 | 설명 | 예시 |
+| Pattern | Description | Example |
 |------|------|------|
-| Basic | 기본 체크박스 | \`<Checkbox />\` |
-| Labeled | 라벨이 있는 체크박스 | \`<FormControlLabel label="라벨" control={<Checkbox />} />\` |
-| Group | 체크박스 그룹 | \`<FormGroup>...</FormGroup>\` |
-| Indeterminate | 부분 선택 상태 | \`indeterminate\` prop |
+| Basic | Basic checkbox | \`<Checkbox />\` |
+| Labeled | Checkbox with a label | \`<FormControlLabel label="Label" control={<Checkbox />} />\` |
+| Group | Checkbox group | \`<FormGroup>...</FormGroup>\` |
+| Indeterminate | Partial selection state | \`indeterminate\` prop |
         `,
       },
     },
@@ -39,7 +39,7 @@ export default {
     color: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'error', 'info', 'warning', 'default'],
-      description: '체크박스 색상을 설정합니다.',
+      description: 'Sets the checkbox color.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
@@ -48,7 +48,7 @@ export default {
     size: {
       control: 'select',
       options: ['small', 'medium', 'large'],
-      description: '체크박스 크기를 설정합니다.',
+      description: 'Sets the checkbox size.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'medium' },
@@ -56,7 +56,7 @@ export default {
     },
     disabled: {
       control: 'boolean',
-      description: '체크박스를 비활성화합니다.',
+      description: 'Disables the checkbox.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -64,7 +64,7 @@ export default {
     },
     defaultChecked: {
       control: 'boolean',
-      description: '기본 체크 상태를 설정합니다.',
+      description: 'Sets the default checked state.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -72,7 +72,7 @@ export default {
     },
     indeterminate: {
       control: 'boolean',
-      description: '부분 선택(불확정) 상태를 설정합니다.',
+      description: 'Sets the partial (indeterminate) selection state.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -81,7 +81,7 @@ export default {
   },
 };
 
-/** 기본 체크박스 */
+/** Basic checkbox */
 export const Default = {
   args: {
     color: 'primary',
@@ -101,7 +101,7 @@ export const Default = {
   ),
 };
 
-/** 라벨이 있는 체크박스 */
+/** Checkbox with a label */
 export const WithLabel = {
   render: () => {
     const [checked, setChecked] = useState(false);
@@ -114,13 +114,13 @@ export const WithLabel = {
             onChange={ (e) => setChecked(e.target.checked) }
           />
         }
-        label="이용약관에 동의합니다"
+        label="I agree to the Terms of Service"
       />
     );
   },
 };
 
-/** 크기 비교 */
+/** Size comparison */
 export const Sizes = {
   render: () => (
     <Stack direction="row" spacing={ 2 } alignItems="center">
@@ -140,7 +140,7 @@ export const Sizes = {
   ),
 };
 
-/** 색상 변형 */
+/** Color variants */
 export const Colors = {
   render: () => (
     <Stack direction="row" spacing={ 1 } flexWrap="wrap" useFlexGap>
@@ -172,23 +172,23 @@ export const Colors = {
   ),
 };
 
-/** 비활성화 상태 */
+/** Disabled state */
 export const Disabled = {
   render: () => (
     <Stack spacing={ 1 }>
       <FormControlLabel
         control={ <Checkbox disabled /> }
-        label="비활성화 (미체크)"
+        label="Disabled (unchecked)"
       />
       <FormControlLabel
         control={ <Checkbox disabled checked /> }
-        label="비활성화 (체크됨)"
+        label="Disabled (checked)"
       />
     </Stack>
   ),
 };
 
-/** 체크박스 그룹 */
+/** Checkbox group */
 export const Group = {
   render: () => {
     const [selected, setSelected] = useState(['react']);
@@ -204,7 +204,7 @@ export const Group = {
 
     return (
       <FormControl component="fieldset">
-        <FormLabel component="legend">선호하는 프레임워크</FormLabel>
+        <FormLabel component="legend">Preferred framework</FormLabel>
         <FormGroup>
           <FormControlLabel
             control={
@@ -247,40 +247,40 @@ export const Group = {
             label="Svelte"
           />
         </FormGroup>
-        <FormHelperText>복수 선택 가능</FormHelperText>
+        <FormHelperText>Multiple selection allowed</FormHelperText>
       </FormControl>
     );
   },
 };
 
-/** 가로 배치 그룹 */
+/** Horizontal group layout */
 export const GroupRow = {
   render: () => (
     <FormControl component="fieldset">
-      <FormLabel component="legend">관심 분야</FormLabel>
+      <FormLabel component="legend">Areas of interest</FormLabel>
       <FormGroup row>
         <FormControlLabel
           control={ <Checkbox defaultChecked /> }
-          label="개발"
+          label="Development"
         />
         <FormControlLabel
           control={ <Checkbox /> }
-          label="디자인"
+          label="Design"
         />
         <FormControlLabel
           control={ <Checkbox /> }
-          label="기획"
+          label="Planning"
         />
         <FormControlLabel
           control={ <Checkbox /> }
-          label="마케팅"
+          label="Marketing"
         />
       </FormGroup>
     </FormControl>
   ),
 };
 
-/** Indeterminate (부분 선택) */
+/** Indeterminate (partial selection) */
 export const Indeterminate = {
   render: () => {
     const [checked, setChecked] = useState([true, false, false]);
@@ -308,20 +308,20 @@ export const Indeterminate = {
               onChange={ handleParent }
             />
           }
-          label="전체 선택"
+          label="Select all"
         />
         <Box sx={ { display: 'flex', flexDirection: 'column', ml: 3 } }>
           <FormControlLabel
             control={ <Checkbox checked={ checked[0] } onChange={ handleChild(0) } /> }
-            label="옵션 1"
+            label="Option 1"
           />
           <FormControlLabel
             control={ <Checkbox checked={ checked[1] } onChange={ handleChild(1) } /> }
-            label="옵션 2"
+            label="Option 2"
           />
           <FormControlLabel
             control={ <Checkbox checked={ checked[2] } onChange={ handleChild(2) } /> }
-            label="옵션 3"
+            label="Option 3"
           />
         </Box>
       </Box>
@@ -329,13 +329,13 @@ export const Indeterminate = {
   },
 };
 
-/** 라벨 위치 */
+/** Label placement */
 export const LabelPlacement = {
   render: () => (
     <Stack spacing={ 2 }>
       <FormControlLabel
         control={ <Checkbox /> }
-        label="End (기본)"
+        label="End (default)"
         labelPlacement="end"
       />
       <FormControlLabel
@@ -357,27 +357,27 @@ export const LabelPlacement = {
   ),
 };
 
-/** 에러 상태 */
+/** Error state */
 export const WithError = {
   render: () => (
     <FormControl error component="fieldset">
-      <FormLabel component="legend">이용약관</FormLabel>
+      <FormLabel component="legend">Terms of Service</FormLabel>
       <FormGroup>
         <FormControlLabel
           control={ <Checkbox color="error" /> }
-          label="이용약관에 동의합니다 (필수)"
+          label="I agree to the Terms of Service (required)"
         />
         <FormControlLabel
           control={ <Checkbox color="error" /> }
-          label="개인정보 수집에 동의합니다 (필수)"
+          label="I agree to the collection of personal information (required)"
         />
       </FormGroup>
-      <FormHelperText>필수 항목을 모두 선택해주세요</FormHelperText>
+      <FormHelperText>Please select all required items</FormHelperText>
     </FormControl>
   ),
 };
 
-/** 실제 사용 예시 - 알림 설정 */
+/** Real world example: notification settings */
 export const NotificationSettings = {
   render: () => {
     const [settings, setSettings] = useState({
@@ -394,7 +394,7 @@ export const NotificationSettings = {
     return (
       <Paper sx={ { p: 3, width: 320 } }>
         <Typography variant="h6" sx={ { mb: 2, fontWeight: 600 } }>
-          알림 설정
+          Notification settings
         </Typography>
         <FormGroup>
           <FormControlLabel
@@ -404,10 +404,10 @@ export const NotificationSettings = {
                 onChange={ handleChange('email') }
               />
             }
-            label="이메일 알림"
+            label="Email notifications"
           />
           <Typography variant="caption" color="text.secondary" sx={ { ml: 4, mb: 1 } }>
-            새로운 소식을 이메일로 받습니다
+            Receive news and updates by email
           </Typography>
 
           <FormControlLabel
@@ -417,10 +417,10 @@ export const NotificationSettings = {
                 onChange={ handleChange('push') }
               />
             }
-            label="푸시 알림"
+            label="Push notifications"
           />
           <Typography variant="caption" color="text.secondary" sx={ { ml: 4, mb: 1 } }>
-            앱 푸시 알림을 받습니다
+            Receive app push notifications
           </Typography>
 
           <FormControlLabel
@@ -430,10 +430,10 @@ export const NotificationSettings = {
                 onChange={ handleChange('sms') }
               />
             }
-            label="SMS 알림"
+            label="SMS notifications"
           />
           <Typography variant="caption" color="text.secondary" sx={ { ml: 4, mb: 1 } }>
-            중요 알림을 문자로 받습니다
+            Receive important alerts by text message
           </Typography>
 
           <FormControlLabel
@@ -443,10 +443,10 @@ export const NotificationSettings = {
                 onChange={ handleChange('marketing') }
               />
             }
-            label="마케팅 수신 동의"
+            label="Agree to marketing communications"
           />
           <Typography variant="caption" color="text.secondary" sx={ { ml: 4 } }>
-            프로모션 및 이벤트 정보를 받습니다
+            Receive promotions and event information
           </Typography>
         </FormGroup>
       </Paper>

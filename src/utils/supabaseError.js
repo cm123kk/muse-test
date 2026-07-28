@@ -1,9 +1,9 @@
 import { ERROR_MESSAGES } from './errorMessages';
 
 /**
- * Supabase 에러를 한국어 메시지로 정규화
+ * Normalize a Supabase error into an English message
  *
- * @param {unknown} error - Supabase 에러 객체
+ * @param {unknown} error - Supabase error object
  * @returns {{ message: string, code: string | null }}
  */
 export function normalizeSupabaseError(error) {
@@ -14,7 +14,7 @@ export function normalizeSupabaseError(error) {
     ERROR_MESSAGES[code] ||
     ERROR_MESSAGES[error.message] ||
     error.message ||
-    '알 수 없는 오류가 발생했습니다';
+    'An unknown error occurred';
 
   return { message, code };
 }

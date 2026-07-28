@@ -5,7 +5,7 @@ import Masonry from '@mui/lab/Masonry';
 import { ReferenceCard } from './ReferenceCard';
 import { URL_BY_BASENAME, getExampleByBasename } from '../../utils/exampleImageTokens.js';
 
-/* exampleTokens 의 모든 basename 을 demo entry 로 변환 (hero 와 동일 풀) */
+/* Convert every basename in exampleTokens into a demo entry (same pool as the hero) */
 const ALL_EXAMPLES = Object.keys(URL_BY_BASENAME)
   .map(getExampleByBasename)
   .filter(Boolean);
@@ -28,20 +28,20 @@ export default {
         component: `
 ## ReferenceCard
 
-\`ImageCard\` 합성 wrapper. \`state\` 머신(0|1|2) 에 따라 분기:
+An \`ImageCard\` composition wrapper. Branches based on the \`state\` machine (0|1|2):
 
-| state | 화면 |
+| state | Screen |
 |-------|------|
-| **0** | 방금 업로드 — 이미지만 (tags / colors / title 비움) |
-| **1** | 분석 중 — ImageCard + 하단 \`LayerAnalysisStrip\` |
-| **2** | 완료 — tags / dominantColors / title 채워진 ImageCard, strip 사라짐 |
+| **0** | Just uploaded: image only (tags / colors / title empty) |
+| **1** | Analyzing: ImageCard + \`LayerAnalysisStrip\` at the bottom |
+| **2** | Done: ImageCard filled with tags / dominantColors / title, strip removed |
 
-랜딩 Solution Stage 1, 아카이브 _tagInProgress 카드, T1 진행 표시 등 *분석 중인 레퍼런스*
-가 필요한 모든 자리에서 동일한 외형으로 사용.
+Used with the same appearance everywhere a *reference being analyzed* is needed:
+landing Solution Stage 1, the archive _tagInProgress card, T1 progress display, and more.
 
-### 시퀀스 사용 예
-\`useStaggeredSequence\` 훅과 함께 쓰면 여러 카드가 시간차로 0 → 1 → 2 진행하는
-분석 데모를 만들 수 있다 (Sequence 스토리 참고).
+### Sequence usage example
+When used with the \`useStaggeredSequence\` hook, you can build an analysis demo where
+multiple cards progress 0 → 1 → 2 with staggered timing (see the Sequence story).
         `,
       },
     },
@@ -54,7 +54,7 @@ export default {
     state: {
       control: { type: 'select' },
       options: [0, 1, 2],
-      description: '0=빈 카드 / 1=분석 중 / 2=완료',
+      description: '0=empty card / 1=analyzing / 2=done',
     },
     layerStatuses: { control: 'object' },
     layerLabels: { control: 'object' },
@@ -66,7 +66,7 @@ const CardSlot = ({ children }) => (
   <Box sx={ { width: 320, maxWidth: '100%' } }>{ children }</Box>
 );
 
-/** Docs — Storybook controls 에서 props 조작 */
+/** Docs: manipulate props from the Storybook controls */
 export const Docs = {
   args: {
     src: SAMPLE.src,
@@ -80,7 +80,7 @@ export const Docs = {
   render: (args) => <CardSlot><ReferenceCard { ...args } /></CardSlot>,
 };
 
-/** State 0 — 막 업로드 됨 */
+/** State 0: just uploaded */
 export const State0 = {
   args: {
     src: SAMPLE.src,
@@ -92,7 +92,7 @@ export const State0 = {
   render: (args) => <CardSlot><ReferenceCard { ...args } /></CardSlot>,
 };
 
-/** State 1 strip — 분석 중 (랜딩 데모용 strip variant) */
+/** State 1 strip: analyzing (strip variant for the landing demo) */
 export const State1Strip = {
   args: {
     src: SAMPLE.src,
@@ -104,7 +104,7 @@ export const State1Strip = {
   render: (args) => <CardSlot><ReferenceCard { ...args } /></CardSlot>,
 };
 
-/** State 1 chip — 분석 중 (production 컴팩트 chip variant) */
+/** State 1 chip: analyzing (compact production chip variant) */
 export const State1Chip = {
   args: {
     src: SAMPLE.src,
@@ -115,7 +115,7 @@ export const State1Chip = {
   render: (args) => <CardSlot><ReferenceCard { ...args } /></CardSlot>,
 };
 
-/** Error — 태깅 실패 + 재시도 chip */
+/** Error: tagging failed + retry chip */
 export const Error = {
   args: {
     src: SAMPLE.src,
@@ -127,7 +127,7 @@ export const Error = {
   render: (args) => <CardSlot><ReferenceCard { ...args } /></CardSlot>,
 };
 
-/** State 2 — 완료 (tags + colors 노출) */
+/** State 2: done (tags + colors shown) */
 export const State2 = {
   args: {
     src: SAMPLE.src,
@@ -139,7 +139,7 @@ export const State2 = {
   render: (args) => <CardSlot><ReferenceCard { ...args } /></CardSlot>,
 };
 
-/** Sequence — setInterval 로 0 → 1 → 2 자동 시연 */
+/** Sequence: auto demo of 0 -> 1 -> 2 via setInterval */
 function SequenceDemo({ src, title, tags, dominantColors }) {
   const LAYER_LABELS = ['Color', 'Typography', 'Layout', 'Gradient', 'Visual Direction'];
   const [tick, setTick] = useState(0);
@@ -149,7 +149,7 @@ function SequenceDemo({ src, title, tags, dominantColors }) {
   }, []);
 
   // 0..1: state 0
-  // 2..11: state 1, layerStatuses 점진 progression (5 layers × 2 ticks each)
+  // 2..11: state 1, gradual layerStatuses progression (5 layers × 2 ticks each)
   // 12..13: state 2
   let state = 0;
   let layerStatuses;
@@ -192,12 +192,12 @@ export const Sequence = {
   render: (args) => <SequenceDemo { ...args } />,
 };
 
-/** AllExamples — hero 에서 사용한 모든 example 이미지를 grid 로 노출 (state 2 = 완료된 카탈로그) */
+/** AllExamples: all example images used in the hero shown as a grid (state 2 = completed catalog) */
 export const AllExamples = {
   parameters: {
     docs: {
       description: {
-        story: `\`src/assets/example/*\` 풀 의 **모든 ${ ALL_EXAMPLES.length } 장** 의 레퍼런스를 \`state=2\` (완료) 로 카드로 마운트한다. \`exampleTokens.json\` 의 실제 T1 결과(tags / dominantColors / title) 가 그대로 노출되어, hero scatter / Stage 1 demo 와 동일한 데이터 풀의 분석 결과 카탈로그 역할.`,
+        story: `Mounts **all ${ ALL_EXAMPLES.length }** references from the \`src/assets/example/*\` pool as cards in \`state=2\` (done). The actual T1 results (tags / dominantColors / title) from \`exampleTokens.json\` are shown as-is, serving as an analysis result catalog for the same data pool as the hero scatter / Stage 1 demo.`,
       },
     },
   },
@@ -232,12 +232,12 @@ export const AllExamples = {
   ),
 };
 
-/** AllExamplesAnalyzing — 같은 풀을 state=1 (분석 중) 로 — 진행률 다양하게 stagger */
+/** AllExamplesAnalyzing: the same pool in state=1 (analyzing), with staggered progress */
 export const AllExamplesAnalyzing = {
   parameters: {
     docs: {
       description: {
-        story: '같은 example 풀을 \`state=1\` (분석 중) 로 마운트. 각 카드마다 다른 progress (1/5 ~ 5/5) 로 strip 노출.',
+        story: 'Mounts the same example pool in \`state=1\` (analyzing). Each card shows the strip with a different progress (1/5 to 5/5).',
       },
     },
   },

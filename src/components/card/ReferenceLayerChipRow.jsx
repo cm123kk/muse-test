@@ -7,24 +7,24 @@ import {
 } from '../../data/muse/layers.js';
 
 /**
- * ReferenceLayerChipRow 컴포넌트 (TP4)
+ * ReferenceLayerChipRow component (TP4)
  *
- * 프로젝트 생성 Step 2 추천 카드에 노출되는 "이 레퍼런스의 어느 레이어를 가져올지" chip row.
- * T2 가 추천한 referenceLayer 가 자동 활성화 — 사용자가 토글로 큐레이션 변경 가능.
+ * The "which layers of this reference to pull in" chip row shown on the Step 2 recommendation card during project creation.
+ * The referenceLayer recommended by T2 is auto-activated. The user can change the curation via toggling.
  *
- * 동작 흐름:
- * 1. autoLayers (T2 referenceLayer) 가 default active
- * 2. 사용자가 chip 토글 시 onChange(useLayers) 호출 → manual mode 진입
- * 3. "자동" 칩으로 다시 자동 모드 복귀
- * 4. 잠금 시 시각적으로 비활성 (분석 시작 후)
+ * How it works:
+ * 1. autoLayers (T2 referenceLayer) is active by default
+ * 2. When the user toggles a chip, onChange(useLayers) is called -> enters manual mode
+ * 3. The "Auto" chip returns to auto mode
+ * 4. Visually disabled when locked (after analysis starts)
  *
  * Props:
- * @param {string[]} autoLayers - T2 가 자동 추천한 layer 1~2개 [Required]
- * @param {string[]} value - 현재 선택된 useLayers (빈 배열 = 자동) [Optional, 기본값: []]
+ * @param {string[]} autoLayers - 1 to 2 layers auto-recommended by T2 [Required]
+ * @param {string[]} value - Currently selected useLayers (empty array = auto) [Optional, default: []]
  * @param {function} onChange - (nextLayers) => void [Required]
- * @param {boolean} locked - 분석 시작 후 잠김 [Optional, 기본값: false]
- * @param {'concept'|'system'} mode - 활성 chip 셋 결정. system 이면 'components' chip 추가 [Optional, 기본값: 'system']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {boolean} locked - Locked after analysis starts [Optional, default: false]
+ * @param {'concept'|'system'} mode - Determines the active chip set. If system, adds the 'components' chip [Optional, default: 'system']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <ReferenceLayerChipRow
@@ -75,7 +75,7 @@ export function ReferenceLayerChipRow({
             mr: 0.5,
           } }
         >
-          { isAuto ? '자동' : '수동' }
+          { isAuto ? 'Auto' : 'Manual' }
         </Typography>
         { LAYER_DEFS.map((l) => {
           const isActive = effective.includes(l.key);
@@ -99,7 +99,7 @@ export function ReferenceLayerChipRow({
       </Box>
       { !isAuto && !locked && (
         <Chip
-          label="자동으로 되돌리기"
+          label="Reset to auto"
           size="small"
           variant="outlined"
           onClick={ resetToAuto }

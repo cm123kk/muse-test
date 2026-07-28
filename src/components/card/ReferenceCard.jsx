@@ -7,43 +7,43 @@ import { ImageCard } from './ImageCard.jsx';
 import { LayerAnalysisStrip } from '../data-display/LayerAnalysisStrip.jsx';
 
 /**
- * ReferenceCard 컴포넌트
+ * ReferenceCard component
  *
- * MUSE 의 공식 데이터 모델 `Reference` (store.references 의 항목, `ref-XXX` id) 를
- * 표시하는 도메인 카드. 시각 베이스는 `ImageCard`. T1 분석 state 머신 + 에러 오버레이를
- * 내장해서 ArchivePage / ReferencePicker 등 *Reference 를 보여주는 모든 자리* 에서
- * 동일 외형 보장.
+ * A domain card that displays MUSE's official data model `Reference` (an item in store.references,
+ * with a `ref-XXX` id). The visual base is `ImageCard`. It has a built-in T1 analysis state machine +
+ * error overlay so that it guarantees a consistent appearance in *every place that shows a Reference*
+ * such as ArchivePage / ReferencePicker.
  *
  * State (state=0|1|2):
- *   0  업로드 직후 — 이미지만 (tags / colors / title 비움)
- *   1  분석 중 — analyzingVariant 에 따라 strip(하단) 또는 chip(우상단 작은 뱃지)
- *   2  완료 — tags / dominantColors / title 채워진 ImageCard
+ *   0  Just uploaded - image only (tags / colors / title empty)
+ *   1  Analyzing - strip (bottom) or chip (small badge in top-right), depending on analyzingVariant
+ *   2  Done - ImageCard filled with tags / dominantColors / title
  *
- * Error: errorMessage 가 truthy 이면 우상단 빨간 chip + onRetry 버튼 표시.
+ * Error: if errorMessage is truthy, shows a red chip in the top-right + an onRetry button.
  *
  * Props:
- * @param {string} src - 이미지 URL [Required]
- * @param {string} title - 분석 완료 시 노출될 제목 [Optional]
- * @param {string[]} tags - 분석 완료 시 노출될 태그 목록 [Optional, 기본값: []]
- * @param {string[]} dominantColors - 분석 완료 시 노출될 대표 색상 [Optional, 기본값: []]
- * @param {0|1|2} state - 카드 상태 [Optional, 기본값: 2]
- * @param {('pending'|'running'|'done')[]} layerStatuses - state=1 + analyzingVariant='strip' 시 strip 에 전달 [Optional]
- * @param {string[]} layerLabels - LayerAnalysisStrip 레이블 [Optional]
- * @param {'chip'|'strip'} analyzingVariant - 분석 중 표시 방식 [Optional, 기본값: 'chip']
- * @param {string} errorMessage - 분석 실패 메시지 (truthy → 에러 chip 표시) [Optional]
- * @param {function} onRetry - 에러 chip 의 재시도 클릭 [Optional]
- * @param {function} onClick - ImageCard 클릭 (상세 열기 등) [Optional]
- * @param {function} onLike - ImageCard 좋아요 [Optional]
- * @param {boolean} isSelectable - 선택 모드 [Optional]
- * @param {boolean} isSelected - 선택 상태 [Optional]
- * @param {function} onToggleSelect - 선택 토글 [Optional]
- * @param {boolean} hideActions - ImageCard 의 기본 액션 숨김 [Optional]
- * @param {node} customOverlay - ImageCard 의 hover overlay 슬롯 [Optional]
- * @param {string} mediaRatio - 미디어 비율. 'auto' 면 원본 비율 유지 [Optional, 기본값: 'auto']
- * @param {object} sx - 외곽 wrapper 스타일 [Optional]
+ * @param {string} src - Image URL [Required]
+ * @param {string} title - Title shown when analysis is complete [Optional]
+ * @param {string[]} tags - Tag list shown when analysis is complete [Optional, default: []]
+ * @param {string[]} dominantColors - Dominant colors shown when analysis is complete [Optional, default: []]
+ * @param {0|1|2} state - Card state [Optional, default: 2]
+ * @param {('pending'|'running'|'done')[]} layerStatuses - Passed to the strip when state=1 + analyzingVariant='strip' [Optional]
+ * @param {string[]} layerLabels - LayerAnalysisStrip labels [Optional]
+ * @param {'chip'|'strip'} analyzingVariant - Display mode while analyzing [Optional, default: 'chip']
+ * @param {string} errorMessage - Analysis failure message (truthy -> shows error chip) [Optional]
+ * @param {function} onRetry - Retry click on the error chip [Optional]
+ * @param {function} onClick - ImageCard click (open detail, etc.) [Optional]
+ * @param {function} onLike - ImageCard like [Optional]
+ * @param {boolean} isSelectable - Selection mode [Optional]
+ * @param {boolean} isSelected - Selection state [Optional]
+ * @param {function} onToggleSelect - Selection toggle [Optional]
+ * @param {boolean} hideActions - Hide ImageCard's default actions [Optional]
+ * @param {node} customOverlay - ImageCard's hover overlay slot [Optional]
+ * @param {string} mediaRatio - Media ratio. 'auto' preserves the original ratio [Optional, default: 'auto']
+ * @param {object} sx - Outer wrapper styles [Optional]
  *
  * Example usage:
- * // ArchivePage / 일반 표시
+ * // ArchivePage / general display
  * <ReferenceCard
  *   src={ ref.thumbnailUrl }
  *   title={ ref.title }
@@ -55,7 +55,7 @@ import { LayerAnalysisStrip } from '../data-display/LayerAnalysisStrip.jsx';
  *   onClick={ () => openDetail(ref.id) }
  * />
  *
- * // 랜딩 데모 / 상세 strip
+ * // Landing demo / detail strip
  * <ReferenceCard
  *   src={ ref.src }
  *   state={ 1 }
@@ -143,7 +143,7 @@ export function ReferenceCard({
         >
           <CircularProgress size={ 10 } thickness={ 5 } />
           <Typography variant="caption" sx={ { fontSize: 10, color: 'text.secondary' } }>
-            태깅 중
+            Tagging
           </Typography>
         </Box>
       ) }
@@ -167,7 +167,7 @@ export function ReferenceCard({
           } }
           title={ errorMessage }
         >
-          <span>태깅 실패</span>
+          <span>Tagging failed</span>
           { onRetry && (
             <IconButton
               size="small"
@@ -175,7 +175,7 @@ export function ReferenceCard({
                 e.stopPropagation();
                 onRetry();
               } }
-              aria-label="태깅 다시 시도"
+              aria-label="Retry tagging"
               sx={ {
                 p: 0.25,
                 color: 'common.white',

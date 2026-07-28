@@ -12,21 +12,21 @@ const DEFAULT_SORT_OPTIONS = [
 ];
 
 /**
- * SortMenu 컴포넌트
+ * SortMenu component
  *
- * 정렬 기준을 선택하는 드롭다운 버튼.
+ * A dropdown button for choosing the sort criteria.
  *
- * 동작 흐름:
- * 1. 사용자가 버튼을 클릭하면 선택 가능한 정렬 옵션 메뉴가 열린다
- * 2. 메뉴에서 옵션을 선택하면 onChange 콜백이 호출되고 메뉴가 닫힌다
- * 3. 버튼 라벨은 현재 선택된 옵션의 label로 표시 — 옵션이 없으면 'Sort'로 폴백
+ * Behavior:
+ * 1. When the user clicks the button, a menu of available sort options opens.
+ * 2. Selecting an option from the menu calls the onChange callback and closes the menu.
+ * 3. The button label shows the label of the currently selected option, falling back to 'Sort' when there is none.
  *
  * Props:
- * @param {string} value - 현재 선택된 옵션 id [Required]
- * @param {function} onChange - (id) => void, 옵션 선택 시 호출 [Required]
- * @param {Array<{id: string, label: string}>} options - 표시할 정렬 옵션 [Optional, 기본값: 최신/오래된/이름 A-Z/이름 Z-A]
- * @param {string} size - 버튼 크기 (MUI Button size) [Optional, 기본값: 'small']
- * @param {object} sx - 버튼 추가 스타일 [Optional]
+ * @param {string} value - currently selected option id [Required]
+ * @param {function} onChange - (id) => void, called when an option is selected [Required]
+ * @param {Array<{id: string, label: string}>} options - sort options to display [Optional, default: Newest/Oldest/Name A-Z/Name Z-A]
+ * @param {string} size - button size (MUI Button size) [Optional, default: 'small']
+ * @param {object} sx - additional button styles [Optional]
  *
  * Example usage:
  * <SortMenu value={ sortBy } onChange={ setSortBy } />

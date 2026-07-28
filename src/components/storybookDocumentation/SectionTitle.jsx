@@ -2,15 +2,15 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 /**
- * SectionTitle 컴포넌트
+ * SectionTitle component
  *
- * 스토리북 문서 내 섹션 제목과 설명을 표시
- * 제목 하단에 구분선 포함
+ * Displays a section title and description within a Storybook document.
+ * Includes a divider below the title.
  *
  * Props:
- * @param {string} title - 섹션 제목 [Required]
- * @param {string} description - 섹션 설명 (줄바꿈 지원) [Optional]
- * @param {ReactNode} children - 섹션 내용 [Optional]
+ * @param {string} title - Section title [Required]
+ * @param {string} description - Section description (supports line breaks) [Optional]
+ * @param {ReactNode} children - Section content [Optional]
  *
  * Example usage:
  * <SectionTitle

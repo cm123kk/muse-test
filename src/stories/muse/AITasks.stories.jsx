@@ -31,7 +31,7 @@ export default {
 };
 
 /* ============================================
- * 공통 렌더 헬퍼
+ * Common render helpers
  * ============================================ */
 
 const CodeBlock = ({ children, tone = 'light' }) => (
@@ -70,14 +70,14 @@ const MetaRow = ({ label, value, mono = false }) => (
 );
 
 /* ============================================
- * 새 구조: 인풋 → 프롬프트 → 아웃풋 요약 + UX + 데이터 모델
+ * New structure: Input → Prompt → Output summary + UX + data model
  * ============================================ */
 
-/** 1) 최상단 — Input → Prompt → Output 3-step 요약 (한눈에 본다) */
-/** 항목 / 설명 / 데이터 예시 3-열 — 각 컬럼 안에서 빠르게 스캔 */
+/** 1) Top: Input → Prompt → Output 3-step summary (see it at a glance) */
+/** Item / Description / Data example 3 columns: scan quickly within each column */
 const FieldRows = ({ rows }) => (
   <Box sx={ { display: 'flex', flexDirection: 'column' } }>
-    { /* 헤더 */ }
+    { /* Header */ }
     <Box
       sx={ {
         display: 'grid',
@@ -90,10 +90,10 @@ const FieldRows = ({ rows }) => (
       } }
     >
       <Typography variant="caption" sx={ { fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.06em' } }>
-        항목
+        Item
       </Typography>
       <Typography variant="caption" sx={ { fontWeight: 700, color: 'text.secondary', textTransform: 'uppercase', letterSpacing: '0.06em' } }>
-        설명
+        Description
       </Typography>
     </Box>
     { rows.map((r) => (
@@ -142,7 +142,7 @@ const FieldRows = ({ rows }) => (
 
 const IOPipelineSummary = ({ task, io }) => (
   <Box sx={ { mb: 5 } }>
-    <SectionTitle title="① 데이터 형식 요약" description="Input → Prompt → Output 한눈에" />
+    <SectionTitle title="① Data Format Summary" description="Input → Prompt → Output at a glance" />
     <Box
       sx={ {
         display: 'grid',
@@ -152,7 +152,7 @@ const IOPipelineSummary = ({ task, io }) => (
     >
       { [
         { label: 'INPUT', hint: `kind: ${task.input.kind}`, description: task.input.description, rows: io?.input },
-        { label: 'PROMPT', hint: `model: ${task.model}`, description: `system prompt + tool schema 로 구조화 출력 강제`, prompt: true },
+        { label: 'PROMPT', hint: `model: ${task.model}`, description: `structured output forced via system prompt + tool schema`, prompt: true },
         { label: 'OUTPUT', hint: `tokens out ~${task.estCost.tokensOut}`, description: task.output.description, rows: io?.output },
       ].map((col) => (
         <Box
@@ -196,14 +196,14 @@ const IOPipelineSummary = ({ task, io }) => (
   </Box>
 );
 
-/** 1.5) Input 출처별 분류 — 사용자 액션 / DB / 시스템 / 모델 파라미터 / 받지 않음 */
+/** 1.5) Input classification by source: user action / DB / system / model parameter / not received */
 const INPUT_CATEGORY_META = {
-  user: { label: '사용자 액션', color: 'primary' },
-  db: { label: 'DB 데이터', color: 'success' },
-  system: { label: '시스템 리소스', color: 'default' },
-  model: { label: '모델 파라미터', color: 'secondary' },
-  callback: { label: '콜백', color: 'info' },
-  none: { label: '받지 않음', color: 'error' },
+  user: { label: 'User action', color: 'primary' },
+  db: { label: 'DB data', color: 'success' },
+  system: { label: 'System resource', color: 'default' },
+  model: { label: 'Model parameter', color: 'secondary' },
+  callback: { label: 'Callback', color: 'info' },
+  none: { label: 'Not received', color: 'error' },
 };
 
 const InputBreakdown = ({ inputs }) => {
@@ -215,7 +215,7 @@ const InputBreakdown = ({ inputs }) => {
 
   return (
     <Box sx={ { mb: 5 } }>
-      <SectionTitle title="Input 출처별 분류" description="이 태스크가 한 번 호출될 때 무엇이 어디서 들어오는지" />
+      <SectionTitle title="Input Breakdown by Source" description="What comes in and from where when this task is called once" />
       <TableContainer
         sx={ {
           border: '1px solid',
@@ -226,10 +226,10 @@ const InputBreakdown = ({ inputs }) => {
         <Table size="small">
           <TableHead>
             <TableRow>
-              <TableCell sx={ { fontWeight: 600, width: 140 } }>분류</TableCell>
-              <TableCell sx={ { fontWeight: 600, width: 220 } }>항목</TableCell>
-              <TableCell sx={ { fontWeight: 600, width: 220 } }>출처</TableCell>
-              <TableCell sx={ { fontWeight: 600 } }>비고</TableCell>
+              <TableCell sx={ { fontWeight: 600, width: 140 } }>Category</TableCell>
+              <TableCell sx={ { fontWeight: 600, width: 220 } }>Item</TableCell>
+              <TableCell sx={ { fontWeight: 600, width: 220 } }>Source</TableCell>
+              <TableCell sx={ { fontWeight: 600 } }>Note</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -251,7 +251,7 @@ const InputBreakdown = ({ inputs }) => {
                     { row.item }
                   </TableCell>
                   <TableCell sx={ { fontSize: 13, color: 'text.secondary' } }>{ row.source }</TableCell>
-                  <TableCell sx={ { fontSize: 13, color: 'text.secondary' } }>{ row.note || '—' }</TableCell>
+                  <TableCell sx={ { fontSize: 13, color: 'text.secondary' } }>{ row.note || '-' }</TableCell>
                 </TableRow>
               ));
             }) }
@@ -262,10 +262,10 @@ const InputBreakdown = ({ inputs }) => {
   );
 };
 
-/** 2) 중단 — UX 설명 (사용자 관점 쉬운 요약) */
+/** 2) Middle: UX explanation (an easy summary from the user's perspective) */
 const UXExplanation = ({ task, uxFlow }) => (
   <Box sx={ { mb: 5 } }>
-    <SectionTitle title="② UX 흐름" description="사용자 입장에서 언제·어떻게 호출되는지" />
+    <SectionTitle title="② UX Flow" description="When and how it is called from the user's perspective" />
     <Box
       sx={ {
         p: 3,
@@ -288,7 +288,7 @@ const UXExplanation = ({ task, uxFlow }) => (
       { uxFlow.note && (
         <Box sx={ { mt: 2, p: 1.5, bgcolor: 'grey.100', borderRadius: 1.5 } }>
           <Typography variant="caption" sx={ { color: 'text.secondary' } }>
-            <strong>핵심:</strong> { uxFlow.note }
+            <strong>Key:</strong> { uxFlow.note }
           </Typography>
         </Box>
       ) }
@@ -301,15 +301,15 @@ const UXExplanation = ({ task, uxFlow }) => (
   </Box>
 );
 
-/** 3) 하단 — 관련 데이터 모델 (이 태스크가 읽고/쓰는 스키마) */
+/** 3) Bottom: related data model (the schema this task reads/writes) */
 const RelatedDataModel = ({ dataModel }) => (
   <Box sx={ { mb: 5 } }>
-    <SectionTitle title="③ 관련 데이터 모델" description="이 태스크가 읽거나 쓰는 스키마 / 어휘" />
+    <SectionTitle title="③ Related Data Model" description="The schema / vocabulary this task reads or writes" />
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 3 } }>
       { dataModel.fields && (
         <Box>
           <Typography variant="caption" sx={ { display: 'block', mb: 1, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, color: 'text.secondary' } }>
-            영향받는 스키마 필드
+            Affected schema fields
           </Typography>
           <TableContainer>
             <Table size="small">
@@ -346,7 +346,7 @@ const RelatedDataModel = ({ dataModel }) => (
       { dataModel.vocabulary && (
         <Box>
           <Typography variant="caption" sx={ { display: 'block', mb: 1, textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, color: 'text.secondary' } }>
-            { dataModel.vocabularyLabel || '관련 어휘' }
+            { dataModel.vocabularyLabel || 'Related vocabulary' }
           </Typography>
           <Box sx={ { display: 'flex', flexDirection: 'column', gap: 1.5 } }>
             { dataModel.vocabulary.map((v) => (
@@ -368,7 +368,7 @@ const RelatedDataModel = ({ dataModel }) => (
       { dataModel.persistence && (
         <Box sx={ { p: 2, bgcolor: 'grey.100', borderRadius: 1.5 } }>
           <Typography variant="caption" sx={ { display: 'block', mb: 0.5, fontWeight: 600 } }>
-            저장 위치
+            Storage location
           </Typography>
           <Typography variant="body2">{ dataModel.persistence }</Typography>
         </Box>
@@ -377,7 +377,7 @@ const RelatedDataModel = ({ dataModel }) => (
   </Box>
 );
 
-/** 새 구조 — IO 요약 → Input 분류 → UX → 데이터 모델 순으로 쌓아 보여줌 */
+/** New structure: stacks IO summary → Input classification → UX → data model in order */
 const StructuredTaskDetail = ({ task, uxFlow, dataModel, inputs, io }) => (
   <Box>
     <Box sx={ { display: 'flex', alignItems: 'baseline', gap: 1.5, mb: 1 } }>
@@ -409,182 +409,182 @@ const StructuredTaskDetail = ({ task, uxFlow, dataModel, inputs, io }) => (
 );
 
 /* ============================================
- * 태스크별 UX·데이터모델 카피 (스토리북 전용 큐레이션)
+ * Per-task UX / data-model copy (Storybook-only curation)
  * ============================================ */
 
 const T1_UX = {
-  summary: '아카이브에 이미지를 추가하면 한 번의 호출로 태그 + 대표 색상 + 디자인 토큰까지 전부 추출된다 (확장 schema).',
+  summary: 'When you add an image to the archive, a single call extracts everything: tags + dominant colors + design tokens (extended schema).',
   steps: [
-    '사용자가 ArchivePage에서 이미지를 드래그/파일/URL로 업로드 → store 가 placeholder reference 를 먼저 만들고 카드에 "태깅 중…" 뱃지 표시.',
-    '백그라운드에서 `runAutoTag` (Haiku 4.5 vision) 1회 호출 — 5 레이어 태그 + dominantColors + title + extracted (palette/typography/layout/gradient) 를 확장 tool schema 로 한 번에 받음.',
-    '결과를 `updateReference` 로 머지 — 태그 chip · dominantColors swatch · 디테일 모달 메타가 모두 채워짐.',
-    '재시도: `runAutoTag` 내부 자동 3회 (network/429/5xx/tool_use 누락) + store 레벨 `addReference` 자체도 1회 재시도. 두 단계 모두 실패 시 `_tagError` 로 카드에 "태깅 실패 + 다시 시도" UI 표시 (수동 무한).',
+    'The user uploads an image on ArchivePage via drag / file / URL. The store first creates a placeholder reference and shows a "Tagging…" badge on the card.',
+    'In the background, `runAutoTag` (Haiku 4.5 vision) is called once, receiving 5-layer tags + dominantColors + title + extracted (palette/typography/layout/gradient) all at once through the extended tool schema.',
+    'The result is merged via `updateReference`: tag chips, dominantColors swatches, and detail modal metadata are all filled in.',
+    'Retry: `runAutoTag` retries automatically up to 3 times internally (network/429/5xx/missing tool_use) plus the store-level `addReference` itself retries once. If both stages fail, `_tagError` shows a "Tagging failed + try again" UI on the card (manual, unlimited).',
   ],
-  note: '예전엔 T1(태깅) + T3(토큰 추출)이 두 번 호출이었으나 세션 023에서 통합 — 업로드 시점에 T1 한 번으로 끝. 카드의 dominantColors swatch도 T1 산출물이다.',
+  note: 'Previously T1 (tagging) + T3 (token extraction) were two calls, but they were merged in session 023: at upload time, T1 alone finishes it. The card dominantColors swatch is also a T1 output.',
 };
 
 const T1_DATA = {
   fields: [
-    { path: 'references[].tags.color[]', type: 'string[]', access: 'write', note: '`color` 레이어 enum (Muted/Vivid/Pastel…)' },
-    { path: 'references[].tags.typography[]', type: 'string[]', access: 'write', note: '`typography` 레이어 enum (Serif/Mono…)' },
-    { path: 'references[].tags.layout[]', type: 'string[]', access: 'write', note: 'Bento, Grid, Editorial 등' },
-    { path: 'references[].tags.gradient[]', type: 'string[]', access: 'write', note: 'Mesh, Linear 등 (없으면 빈 배열)' },
-    { path: 'references[].tags.visualDirection.{genre|style|subject}[]', type: 'string[]', access: 'write', note: 'Y2K, Brutalist 등' },
-    { path: 'references[].dominantColors[]', type: 'hex string[]', access: 'write', note: '대표 색상 3~5개 — 카드 swatch · 색상 필터 매칭 소스' },
-    { path: 'references[].title', type: 'string', access: 'write', note: '디자인 톤 서술 (예: "Editorial Layout")' },
-    { path: 'references[].extracted.{palette|typography|layout|gradient}', type: 'object[]', access: 'write', note: 'T3 합성 단계의 입력. 업로드 시점에 같이 추출 — 프로젝트 만들 때 vision 재호출 안 함' },
-    { path: 'references[]._pending / _tagError', type: 'flag', access: 'write', note: '태깅 중/실패 상태 — 카드 오버레이 표시용' },
+    { path: 'references[].tags.color[]', type: 'string[]', access: 'write', note: '`color` layer enum (Muted/Vivid/Pastel…)' },
+    { path: 'references[].tags.typography[]', type: 'string[]', access: 'write', note: '`typography` layer enum (Serif/Mono…)' },
+    { path: 'references[].tags.layout[]', type: 'string[]', access: 'write', note: 'Bento, Grid, Editorial, etc.' },
+    { path: 'references[].tags.gradient[]', type: 'string[]', access: 'write', note: 'Mesh, Linear, etc. (empty array if none)' },
+    { path: 'references[].tags.visualDirection.{genre|style|subject}[]', type: 'string[]', access: 'write', note: 'Y2K, Brutalist, etc.' },
+    { path: 'references[].dominantColors[]', type: 'hex string[]', access: 'write', note: '3 to 5 dominant colors: source for card swatch and color filter matching' },
+    { path: 'references[].title', type: 'string', access: 'write', note: 'Describes the design tone (e.g. "Editorial Layout")' },
+    { path: 'references[].extracted.{palette|typography|layout|gradient}', type: 'object[]', access: 'write', note: 'Input for the T3 synthesis stage. Extracted together at upload time, so vision is not re-called when creating a project' },
+    { path: 'references[]._pending / _tagError', type: 'flag', access: 'write', note: 'Tagging in-progress/failed state: for the card overlay' },
   ],
-  vocabularyLabel: '태그 어휘 (preset enum, preset 외 금지)',
+  vocabularyLabel: 'Tag vocabulary (preset enum, nothing outside the preset)',
   vocabulary: [
     ...TOKEN_LAYERS.map((l) => ({ label: l, tags: getLayerTags(l) })),
     ...VISUAL_DIRECTION_CATEGORIES.map((c) => ({ label: `visualDirection · ${c}`, tags: getVisualDirectionTags(c) })),
   ],
-  persistence: 'Supabase `references` 테이블 — `tags` (jsonb) + `dominant_colors` (text[]) + `extracted` (jsonb) + `title` (text).',
+  persistence: 'Supabase `references` table: `tags` (jsonb) + `dominant_colors` (text[]) + `extracted` (jsonb) + `title` (text).',
 };
 
 const T2_UX = {
-  summary: '프로젝트 의도 텍스트를 주면, 아카이브에서 어울릴 만한 레퍼런스 Top-N을 추천해 준다 (text-only).',
+  summary: 'Given the project intent text, it recommends the Top-N references from the archive that would fit (text-only).',
   steps: [
-    '프로젝트 생성 위자드 Step 1에서 사용자가 form 입력 — `intent`(자유 텍스트, "Y2K 풍 다크 포스터" 등) + `type`(landing/poster 등).',
-    'Step 2 진입 시 `recommendedLoader` 가 `runRecommend({intent, type, archive: references, n: 6})` 호출 — Haiku 4.5 text-only, 이미지 재호출 없음.',
-    '아카이브를 `{id, title, tags, dominantColors}` 만 남긴 압축 JSON 으로 system 에 직렬화해 전달 → tool 로 `recommendedIds` (5~10개) + `reasons` (id 별 40자 이내 사유) 반환.',
-    '받은 `recommendedIds` 로 references 를 필터해 ReferencePicker 에 노출. 사용자가 카드를 add/remove → 최종 셋 확정 후 Step 3.',
+    'In Step 1 of the project creation wizard, the user fills in the form: `intent` (free text, e.g. "Y2K-style dark poster") + `type` (landing/poster, etc.).',
+    'On entering Step 2, `recommendedLoader` calls `runRecommend({intent, type, archive: references, n: 6})`: Haiku 4.5 text-only, no image re-call.',
+    'The archive is serialized into the system as compressed JSON keeping only `{id, title, tags, dominantColors}`, and the tool returns `recommendedIds` (5 to 10) + `reasons` (per-id reason under 40 chars).',
+    'The received `recommendedIds` filter the references and surface them in the ReferencePicker. The user adds/removes cards, then confirms the final set before Step 3.',
   ],
-  note: '이미지 안 봄 → 비용 가장 저렴. T1 이 붙여둔 태그/색상 품질이 곧 T2 추천 품질이다. 결과는 DB 미저장 — 위자드 state 만.',
+  note: 'No images viewed, so cheapest cost. The quality of the tags/colors T1 attached is exactly the T2 recommendation quality. The result is not stored in the DB, only in wizard state.',
 };
 
 const T2_DATA = {
   fields: [
-    { path: 'input.intent', type: 'string', access: 'read', note: '사용자가 입력한 자연어 의도' },
-    { path: 'input.type', type: 'string', access: 'read', note: '프로젝트 카테고리 (landing/poster/app 등)' },
-    { path: 'input.archive[]', type: '{id, title, tags, dominantColors}[]', access: 'read', note: '아카이브 전체의 메타만 압축 (이미지 URL 없음)' },
-    { path: 'output.recommendedIds[]', type: 'string[]', access: 'write', note: '추천된 reference id (5~10개, 랭크 순)' },
-    { path: 'output.reasons[]', type: '{id, reason}[]', access: 'write', note: 'id 별 40자 이내 추천 사유 (UI 칩 라벨)' },
+    { path: 'input.intent', type: 'string', access: 'read', note: 'Natural-language intent entered by the user' },
+    { path: 'input.type', type: 'string', access: 'read', note: 'Project category (landing/poster/app, etc.)' },
+    { path: 'input.archive[]', type: '{id, title, tags, dominantColors}[]', access: 'read', note: 'Only compressed metadata of the whole archive (no image URLs)' },
+    { path: 'output.recommendedIds[]', type: 'string[]', access: 'write', note: 'Recommended reference ids (5 to 10, in rank order)' },
+    { path: 'output.reasons[]', type: '{id, reason}[]', access: 'write', note: 'Per-id recommendation reason under 40 chars (UI chip label)' },
   ],
-  persistence: 'DB 미저장. 위자드 클라이언트 state(`projectDraft`)만 보관. 사용자가 확정한 `referenceIds[]` 만 `projects.reference_ids` 로 영속화.',
+  persistence: 'Not stored in the DB. Kept only in wizard client state (`projectDraft`). Only the `referenceIds[]` the user confirms are persisted to `projects.reference_ids`.',
 };
 
 const T3_UX = {
-  summary: '선택된 레퍼런스들의 미리 추출된 토큰을 의도와 합쳐 프로젝트용 4-레이어 토큰 + visualDirection 마크다운을 합성한다 (text-only · 이미지 없음).',
+  summary: 'It combines the pre-extracted tokens of the selected references with the intent to synthesize the project 4-layer tokens + visualDirection markdown (text-only, no images).',
   steps: [
-    '위자드 Step 3 "분석 시작" 클릭 → `onAnalyze` 가 `runAnalyzeTokens({intent, type, selectedRefs, onProgress})` 호출.',
-    '선택된 레퍼런스들에서 `{id, title, tags, dominantColors, extracted}` 만 뽑아 JSON 으로 직렬화해 user message 로 전달 — 이미지 재호출 없음.',
-    'Haiku 4.5 가 두 개 tool 을 호출: `submit_tokens` (color/typography/layout/gradient 4 레이어 합성) + `submit_visual_direction` (genre/style/subject 태그 + Markdown 본문).',
-    '`onProgress` 콜백으로 5 레이어 상태(running → done) 를 AnalysisProgress 컴포넌트에 실시간 반영.',
-    '완료 시 `setAnalysis` 로 store/DB 에 저장 → 프로젝트 상세 페이지에서 ThemeExportDialog (MUI theme) + ZIP (JSON 토큰 + VD MD + 레퍼런스 이미지) export 가능.',
+    'Clicking "Start Analysis" in wizard Step 3 makes `onAnalyze` call `runAnalyzeTokens({intent, type, selectedRefs, onProgress})`.',
+    'Only `{id, title, tags, dominantColors, extracted}` are pulled from the selected references, serialized to JSON, and passed as the user message: no image re-call.',
+    'Haiku 4.5 calls two tools: `submit_tokens` (synthesizing the 4 layers color/typography/layout/gradient) + `submit_visual_direction` (genre/style/subject tags + Markdown body).',
+    'The `onProgress` callback reflects the 5-layer status (running → done) into the AnalysisProgress component in real time.',
+    'On completion, `setAnalysis` saves to store/DB, so the project detail page can export via ThemeExportDialog (MUI theme) + ZIP (JSON tokens + VD MD + reference images).',
   ],
-  note: '비용 절감 (세션 023) — 이전엔 Sonnet + 이미지 N장으로 호출($~0.048) → 현재 Haiku + text-only ($~0.008, ~6배 절감). T1 이 업로드 시점에 이미 `extracted` 를 만들어둔 덕분.',
+  note: 'Cost reduction (session 023): previously called with Sonnet + N images (~$0.048), now Haiku + text-only (~$0.008, about 6x cheaper). Thanks to T1 already building `extracted` at upload time.',
 };
 
 const T3_DATA = {
   fields: [
-    { path: 'input.intent / type', type: 'string', access: 'read', note: '위자드 Step 1 form 값' },
-    { path: 'input.selectedRefs[].extracted', type: 'object', access: 'read', note: 'T1 이 업로드 시 미리 추출해둔 토큰 (palette/typography/layout/gradient)' },
-    { path: 'input.selectedRefs[].tags / dominantColors', type: 'object / hex[]', access: 'read', note: 'T1 산출물 — 합성 컨텍스트' },
-    { path: 'output.tokens.color[]', type: '{id, label, hex, role, group, ...}[]', access: 'write', note: 'role==="primary" 정확히 1개' },
-    { path: 'output.tokens.typography[]', type: '{hierarchy, fontFamily, ...}[]', access: 'write', note: 'h1>h2>body1 위계 강제' },
-    { path: 'output.tokens.layout[]', type: 'object[]', access: 'write', note: 'grid 컬럼·간격 합성값' },
-    { path: 'output.tokens.gradient[]', type: 'object[]', access: 'write', note: 'gradient stops (있을 때만)' },
-    { path: 'output.visualDirection.markdown', type: 'string', access: 'write', note: '필수 섹션 1~6 포함 템플릿' },
-    { path: 'output.visualDirection.tags.{genre|style|subject}[]', type: 'string[]', access: 'write', note: '집계 태그' },
-    { path: 'projects[].tokens', type: 'jsonb', access: 'write', note: '합성 결과 영속화 — Export 의 JSON 부분' },
+    { path: 'input.intent / type', type: 'string', access: 'read', note: 'Wizard Step 1 form values' },
+    { path: 'input.selectedRefs[].extracted', type: 'object', access: 'read', note: 'Tokens T1 pre-extracted at upload time (palette/typography/layout/gradient)' },
+    { path: 'input.selectedRefs[].tags / dominantColors', type: 'object / hex[]', access: 'read', note: 'T1 output: synthesis context' },
+    { path: 'output.tokens.color[]', type: '{id, label, hex, role, group, ...}[]', access: 'write', note: 'exactly 1 with role==="primary"' },
+    { path: 'output.tokens.typography[]', type: '{hierarchy, fontFamily, ...}[]', access: 'write', note: 'h1>h2>body1 hierarchy enforced' },
+    { path: 'output.tokens.layout[]', type: 'object[]', access: 'write', note: 'Synthesized grid columns/spacing values' },
+    { path: 'output.tokens.gradient[]', type: 'object[]', access: 'write', note: 'gradient stops (only when present)' },
+    { path: 'output.visualDirection.markdown', type: 'string', access: 'write', note: 'Template including required sections 1 to 6' },
+    { path: 'output.visualDirection.tags.{genre|style|subject}[]', type: 'string[]', access: 'write', note: 'Aggregated tags' },
+    { path: 'projects[].tokens', type: 'jsonb', access: 'write', note: 'Persisting the synthesis result: the JSON part of Export' },
   ],
-  persistence: 'Supabase `projects.tokens` (jsonb) + analysis 레코드. ZIP export 에 `tokens.json` + `visual-direction.md` + 레퍼런스 이미지 번들로 포함.',
+  persistence: 'Supabase `projects.tokens` (jsonb) + analysis record. The ZIP export bundles `tokens.json` + `visual-direction.md` + reference images.',
 };
 
 const T1_INPUTS = [
-  { category: 'user', item: '이미지 파일 / URL', source: 'ArchivePage 드래그·드롭 또는 URL', note: '1장씩 호출' },
-  { category: 'user', item: 'base64 dataURL (1024px 리사이즈)', source: 'imageUrlToBase64DataUrl + resizeDataUrl', note: 'vision 입력' },
-  { category: 'system', item: 'TASK_AUTO_TAG.systemPrompt', source: 'data/muse/aiTasks.js', note: 'prompt cache 히트 대상' },
-  { category: 'system', item: 'TASK_AUTO_TAG.toolSchema', source: 'data/muse/aiTasks.js', note: '5-레이어 enum + extracted 통합' },
-  { category: 'system', item: 'preset 어휘 (TOKEN_LAYERS + VISUAL_DIRECTION_CATEGORIES)', source: 'muse_tags_preset.json', note: 'tool schema enum 으로 강제' },
-  { category: 'model', item: 'model: claude-haiku-4-5', source: 'hardcoded', note: 'vision 가능' },
-  { category: 'model', item: 'max_tokens: 512, tool_choice: forced', source: 'runAutoTag', note: '구조화 출력 강제' },
-  { category: 'none', item: 'intent / type / 다른 레퍼런스 / 프로젝트 컨텍스트', source: '—', note: '이미지 한 장만 본다 (descriptive)' },
+  { category: 'user', item: 'Image file / URL', source: 'ArchivePage drag-and-drop or URL', note: 'Called one image at a time' },
+  { category: 'user', item: 'base64 dataURL (1024px resize)', source: 'imageUrlToBase64DataUrl + resizeDataUrl', note: 'vision input' },
+  { category: 'system', item: 'TASK_AUTO_TAG.systemPrompt', source: 'data/muse/aiTasks.js', note: 'prompt cache hit target' },
+  { category: 'system', item: 'TASK_AUTO_TAG.toolSchema', source: 'data/muse/aiTasks.js', note: '5-layer enum + extracted merged' },
+  { category: 'system', item: 'preset vocabulary (TOKEN_LAYERS + VISUAL_DIRECTION_CATEGORIES)', source: 'muse_tags_preset.json', note: 'enforced via tool schema enum' },
+  { category: 'model', item: 'model: claude-haiku-4-5', source: 'hardcoded', note: 'vision capable' },
+  { category: 'model', item: 'max_tokens: 512, tool_choice: forced', source: 'runAutoTag', note: 'forces structured output' },
+  { category: 'none', item: 'intent / type / other references / project context', source: '-', note: 'Sees only one image (descriptive)' },
 ];
 
 const T2_INPUTS = [
-  { category: 'user', item: 'intent (자유 텍스트)', source: 'Wizard Step 1 form', note: '예: "Y2K 풍 다크 포스터"' },
-  { category: 'user', item: 'type (카테고리)', source: 'Wizard Step 1 form', note: 'landing / poster / app 등' },
-  { category: 'user', item: 'n (추천 개수)', source: '호출부 hardcoded', note: '기본 6' },
-  { category: 'db', item: 'archive[] 전체', source: 'store references', note: '아카이브의 모든 레퍼런스' },
-  { category: 'db', item: '{id, title, tags, dominantColors} 만 압축', source: 'compactArchive 변환', note: '이미지 URL 없음 (text-only)' },
-  { category: 'system', item: 'TASK_RECOMMEND.systemPrompt', source: 'data/muse/aiTasks.js', note: '—' },
-  { category: 'system', item: 'TASK_RECOMMEND.userMessageTemplate', source: 'data/muse/aiTasks.js', note: '{{intent}}/{{type}}/{{n}}/{{archiveCount}}/{{archiveJson}} 치환' },
+  { category: 'user', item: 'intent (free text)', source: 'Wizard Step 1 form', note: 'e.g. "Y2K-style dark poster"' },
+  { category: 'user', item: 'type (category)', source: 'Wizard Step 1 form', note: 'landing / poster / app, etc.' },
+  { category: 'user', item: 'n (recommendation count)', source: 'hardcoded at call site', note: 'default 6' },
+  { category: 'db', item: 'entire archive[]', source: 'store references', note: 'All references in the archive' },
+  { category: 'db', item: 'compressed to only {id, title, tags, dominantColors}', source: 'compactArchive transform', note: 'No image URLs (text-only)' },
+  { category: 'system', item: 'TASK_RECOMMEND.systemPrompt', source: 'data/muse/aiTasks.js', note: '-' },
+  { category: 'system', item: 'TASK_RECOMMEND.userMessageTemplate', source: 'data/muse/aiTasks.js', note: '{{intent}}/{{type}}/{{n}}/{{archiveCount}}/{{archiveJson}} substitution' },
   { category: 'system', item: 'TASK_RECOMMEND.toolSchema', source: 'data/muse/aiTasks.js', note: 'submit_recommendations' },
-  { category: 'model', item: 'model: claude-haiku-4-5, max_tokens: 1024, text-only', source: 'hardcoded', note: '—' },
-  { category: 'none', item: '이미지 / extracted 토큰 / 사용자 이전 프로젝트 이력', source: '—', note: '태그+색상 메타만으로 추천' },
+  { category: 'model', item: 'model: claude-haiku-4-5, max_tokens: 1024, text-only', source: 'hardcoded', note: '-' },
+  { category: 'none', item: 'images / extracted tokens / user prior project history', source: '-', note: 'Recommends from tag+color metadata only' },
 ];
 
 const T3_INPUTS = [
-  { category: 'user', item: 'intent', source: 'Wizard Step 1 form', note: 'T2 와 동일값 재사용' },
-  { category: 'user', item: 'type', source: 'Wizard Step 1 form', note: 'T2 와 동일값 재사용' },
-  { category: 'user', item: 'selectedRefs[]', source: 'T2 추천 + 사용자 add/remove', note: '최대 4장 권장' },
-  { category: 'user', item: '"분석 시작" 버튼 클릭', source: 'Wizard Step 3', note: '명시적 트리거' },
-  { category: 'db', item: 'selectedRefs[].tags', source: 'T1 산출 (references 테이블)', note: '레이어 태그' },
-  { category: 'db', item: 'selectedRefs[].dominantColors', source: 'T1 산출', note: '대표 색 hex' },
-  { category: 'db', item: 'selectedRefs[].extracted', source: 'T1 산출', note: '★ 합성의 핵심 입력 (palette/typo/layout/gradient)' },
-  { category: 'db', item: 'selectedRefs[].id, title', source: 'references 메타', note: '추적용' },
-  { category: 'system', item: 'TASK_ANALYZE_TOKENS.systemPrompt', source: 'data/muse/aiTasks.js', note: '—' },
-  { category: 'system', item: 'TASK_ANALYZE_TOKENS.userMessageTemplate', source: 'data/muse/aiTasks.js', note: '{{intent}}/{{type}}/{{count}}/{{ids}} 치환' },
-  { category: 'system', item: '두 개 toolSchema', source: 'submit_tokens + submit_visual_direction', note: '둘 다 호출 강제' },
-  { category: 'model', item: 'model: claude-haiku-4-5, text-only', source: 'hardcoded', note: '이미지 없음 → Haiku 충분' },
-  { category: 'callback', item: 'onProgress(layers)', source: 'ProjectCreateRoute 주입', note: 'AnalysisProgress UI 갱신용' },
-  { category: 'none', item: '원본 이미지 / 아카이브 전체 (선택된 N장만)', source: '—', note: 'T1 의 미리 추출된 토큰만으로 합성' },
+  { category: 'user', item: 'intent', source: 'Wizard Step 1 form', note: 'Reuses the same value as T2' },
+  { category: 'user', item: 'type', source: 'Wizard Step 1 form', note: 'Reuses the same value as T2' },
+  { category: 'user', item: 'selectedRefs[]', source: 'T2 recommendation + user add/remove', note: 'Up to 4 images recommended' },
+  { category: 'user', item: '"Start Analysis" button click', source: 'Wizard Step 3', note: 'Explicit trigger' },
+  { category: 'db', item: 'selectedRefs[].tags', source: 'T1 output (references table)', note: 'Layer tags' },
+  { category: 'db', item: 'selectedRefs[].dominantColors', source: 'T1 output', note: 'Dominant color hex' },
+  { category: 'db', item: 'selectedRefs[].extracted', source: 'T1 output', note: '★ Core synthesis input (palette/typo/layout/gradient)' },
+  { category: 'db', item: 'selectedRefs[].id, title', source: 'references metadata', note: 'For tracking' },
+  { category: 'system', item: 'TASK_ANALYZE_TOKENS.systemPrompt', source: 'data/muse/aiTasks.js', note: '-' },
+  { category: 'system', item: 'TASK_ANALYZE_TOKENS.userMessageTemplate', source: 'data/muse/aiTasks.js', note: '{{intent}}/{{type}}/{{count}}/{{ids}} substitution' },
+  { category: 'system', item: 'two toolSchemas', source: 'submit_tokens + submit_visual_direction', note: 'Both forced to be called' },
+  { category: 'model', item: 'model: claude-haiku-4-5, text-only', source: 'hardcoded', note: 'No images, so Haiku is enough' },
+  { category: 'callback', item: 'onProgress(layers)', source: 'Injected by ProjectCreateRoute', note: 'For updating the AnalysisProgress UI' },
+  { category: 'none', item: 'original images / entire archive (only the selected N)', source: '-', note: 'Synthesizes from only T1 pre-extracted tokens' },
 ];
 
 const T1_IO = {
   input: [
-    { name: '분석할 이미지', desc: '1024px로 리사이즈된 dataURL', example: '"data:image/jpeg;base64,/9j/4AAQ…"' },
-    { name: 'mediaType', desc: '이미지 MIME 타입', example: '"image/jpeg" | "image/png"' },
+    { name: 'Image to analyze', desc: 'dataURL resized to 1024px', example: '"data:image/jpeg;base64,/9j/4AAQ…"' },
+    { name: 'mediaType', desc: 'Image MIME type', example: '"image/jpeg" | "image/png"' },
   ],
   output: [
-    { name: 'tags', desc: '5 레이어 태그 그룹 (preset enum 강제)', example: '{ color: ["Muted"], typography: ["Serif"], layout: ["Bento"], gradient: [], visualDirection: { genre, style, subject } }' },
-    { name: 'dominantColors', desc: '대표 색 hex 배열 (3~5개)', example: '["#14132B", "#4F46E5", "#FCFCFF"]' },
-    { name: 'title', desc: '디자인 톤을 묘사하는 짧은 제목', example: '"Editorial Layout"' },
-    { name: 'extracted', desc: 'T3 합성용 사전 추출 토큰 4종 (palette/typo/layout/gradient)', example: '{ palette: [...], typography: [...], layout: [...], gradient: [...] }' },
+    { name: 'tags', desc: '5-layer tag groups (preset enum enforced)', example: '{ color: ["Muted"], typography: ["Serif"], layout: ["Bento"], gradient: [], visualDirection: { genre, style, subject } }' },
+    { name: 'dominantColors', desc: 'Dominant color hex array (3 to 5)', example: '["#14132B", "#4F46E5", "#FCFCFF"]' },
+    { name: 'title', desc: 'Short title describing the design tone', example: '"Editorial Layout"' },
+    { name: 'extracted', desc: '4 pre-extracted token types for T3 synthesis (palette/typo/layout/gradient)', example: '{ palette: [...], typography: [...], layout: [...], gradient: [...] }' },
   ],
 };
 
 const T2_IO = {
   input: [
-    { name: 'intent', desc: '사용자가 입력한 자연어 의도', example: '"Y2K 풍 다크 포스터"' },
-    { name: 'type', desc: '프로젝트 카테고리', example: "'landing' | 'dashboard' | 'mobile' | 'brand'" },
-    { name: 'archive', desc: '아카이브 압축 메타 (이미지 URL 없음)', example: '[{ id, title, tags, dominantColors }]' },
-    { name: 'n?', desc: '추천 개수 (기본 6)', example: '6' },
+    { name: 'intent', desc: 'Natural-language intent entered by the user', example: '"Y2K-style dark poster"' },
+    { name: 'type', desc: 'Project category', example: "'landing' | 'dashboard' | 'mobile' | 'brand'" },
+    { name: 'archive', desc: 'Compressed archive metadata (no image URLs)', example: '[{ id, title, tags, dominantColors }]' },
+    { name: 'n?', desc: 'Recommendation count (default 6)', example: '6' },
   ],
   output: [
-    { name: 'recommendedIds', desc: '추천된 reference id (5~10개, 랭크 순)', example: '["ref-002", "ref-005", "ref-013"]' },
-    { name: 'reasons', desc: 'id별 40자 이내 추천 사유', example: '[{ id: "ref-002", reason: "Magazine+Swiss 매칭" }]' },
+    { name: 'recommendedIds', desc: 'Recommended reference ids (5 to 10, in rank order)', example: '["ref-002", "ref-005", "ref-013"]' },
+    { name: 'reasons', desc: 'Per-id recommendation reason under 40 chars', example: '[{ id: "ref-002", reason: "Magazine+Swiss match" }]' },
   ],
 };
 
 const T3_IO = {
   input: [
-    { name: 'intent', desc: '사용자 의도 (T2와 동일값)', example: '"차분한 다크 무드"' },
+    { name: 'intent', desc: 'User intent (same value as T2)', example: '"Calm dark mood"' },
     { name: 'mode', desc: 'concept | system (TP2)', example: "'system'" },
-    { name: 'selectedRefs', desc: '선택된 레퍼런스 (≤4)의 메타데이터만 — 이미지는 보내지 않고 T1이 추출해둔 텍스트 토큰만 전달', example: '[{ id, title, tags, dominantColors, extracted, useLayers? }]  // thumbnailUrl 없음' },
-    { name: 'userNotes (Step 3)', desc: '레퍼런스 본 후 보강 노트 (HIGHEST PRIORITY). system=30+ (concept=0)', example: '"엣지 라인 강하게, 첨자만 매그놀리아"' },
-    { name: 'referenceNotes[refId]', desc: 'ref 별 차용 노트 (선택). 명시한 layer 외 무시', example: '{ "ref-002": "hero 영역 색감만 차용" }' },
+    { name: 'selectedRefs', desc: 'Only the metadata of the selected references (≤4): images are not sent, only the text tokens T1 extracted are passed', example: '[{ id, title, tags, dominantColors, extracted, useLayers? }]  // no thumbnailUrl' },
+    { name: 'userNotes (Step 3)', desc: 'Refinement notes after viewing references (HIGHEST PRIORITY). system=30+ (concept=0)', example: '"strong edge lines, magnolia only on superscript"' },
+    { name: 'referenceNotes[refId]', desc: 'Per-ref borrowing note (optional). Ignore layers other than the specified', example: '{ "ref-002": "borrow only the hero area color" }' },
   ],
   output: [
-    { name: 'tokens.color', desc: 'role 부여된 색 토큰 (primary 정확히 1개)', example: '[{ id, hex, role: "primary", group: "Brand", decisionRationale }]' },
-    { name: 'tokens.typography', desc: 'h1>h2>body 위계 강제', example: '[{ variant: "h1", fontFamily, fontWeight, decisionRationale }]' },
-    { name: 'tokens.layout', desc: 'grid|container 만 (spacing 분리)', example: '[{ kind: "grid", columns: 12, gap: 16 }]' },
-    { name: 'tokens.gradient', desc: '그라디언트 stops', example: '[{ gradient, stops }]' },
-    { name: '★ tokens.spacing', desc: 'NEW — scale map (DESIGN.md 호환)', example: '{ xs: "4px", sm: "8px", md: "16px", lg: "24px" }' },
-    { name: '★ tokens.rounded', desc: 'NEW — radius scale map', example: '{ sm: "4px", md: "8px", lg: "16px" }' },
-    { name: '★ tokens.elevation', desc: 'NEW — shadow tokens (optional, 빈 배열 허용)', example: '[{ id: "elev-1", shadow: "0 1px 2px rgba(0,0,0,0.08)", level: 1 }]' },
-    { name: '★ tokens.components', desc: 'NEW — UI components, 모든 값은 {a.b} token-ref (DESIGN.md 핵심)', example: '{ "button-primary": { backgroundColor: "{colors.primary-ink}", padding: "{spacing.md}", rounded: "{rounded.sm}", decisionRationale } }' },
-    { name: 'visualDirection.markdown', desc: '디자인 디렉션 본문 (필수 섹션 1~6)', example: '"# Visual Direction\\n## 1. Mood…"' },
-    { name: 'visualDirection.tags', desc: '집계 태그 3종', example: '{ genre: [...], style: [...], subject: [...] }' },
-    { name: '(deprecated) layerDetails', desc: '구 handoff 모드 전용 8 키 한글 상세. handoff 폐기로 함께 제거됨. system 의 visualDirection.markdown 으로 의도 흡수.', example: '(없음)' },
+    { name: 'tokens.color', desc: 'Role-assigned color tokens (exactly 1 primary)', example: '[{ id, hex, role: "primary", group: "Brand", decisionRationale }]' },
+    { name: 'tokens.typography', desc: 'h1>h2>body hierarchy enforced', example: '[{ variant: "h1", fontFamily, fontWeight, decisionRationale }]' },
+    { name: 'tokens.layout', desc: 'grid|container only (spacing separated)', example: '[{ kind: "grid", columns: 12, gap: 16 }]' },
+    { name: 'tokens.gradient', desc: 'Gradient stops', example: '[{ gradient, stops }]' },
+    { name: '★ tokens.spacing', desc: 'NEW: scale map (DESIGN.md compatible)', example: '{ xs: "4px", sm: "8px", md: "16px", lg: "24px" }' },
+    { name: '★ tokens.rounded', desc: 'NEW: radius scale map', example: '{ sm: "4px", md: "8px", lg: "16px" }' },
+    { name: '★ tokens.elevation', desc: 'NEW: shadow tokens (optional, empty array allowed)', example: '[{ id: "elev-1", shadow: "0 1px 2px rgba(0,0,0,0.08)", level: 1 }]' },
+    { name: '★ tokens.components', desc: 'NEW: UI components, every value is a {a.b} token-ref (core of DESIGN.md)', example: '{ "button-primary": { backgroundColor: "{colors.primary-ink}", padding: "{spacing.md}", rounded: "{rounded.sm}", decisionRationale } }' },
+    { name: 'visualDirection.markdown', desc: 'Design direction body (required sections 1 to 6)', example: '"# Visual Direction\\n## 1. Mood…"' },
+    { name: 'visualDirection.tags', desc: '3 types of aggregated tags', example: '{ genre: [...], style: [...], subject: [...] }' },
+    { name: '(deprecated) layerDetails', desc: 'Old handoff-mode-only 8-key Korean detail. Removed along with the handoff deprecation. Its intent is absorbed into the system visualDirection.markdown.', example: '(none)' },
   ],
   notes: [
-    'concept 모드는 별도 함수 (runAnalyzeConcept) — 위 출력 shape 무관, conceptPrompt(string) 단일 산출.',
-    'system 모드: token-ref dangling 시 1회 retry → fallback (components 빈 객체).',
-    'Export: system → DESIGN.md ZIP (DESIGN.md + DTCG + decision-trace + refs). 구 handoff 모드는 폐기, system 이 흡수.',
+    'concept mode is a separate function (runAnalyzeConcept): unrelated to the output shape above, produces a single conceptPrompt(string).',
+    'system mode: on token-ref dangling, retry once, then fallback (components empty object).',
+    'Export: system → DESIGN.md ZIP (DESIGN.md + DTCG + decision-trace + refs). The old handoff mode is deprecated and absorbed by system.',
   ],
 };
 
@@ -595,10 +595,10 @@ const TASK_COPY = {
 };
 
 /* ============================================
- * 기존 단일 태스크 상세 — Overview 합본에서 유지
+ * Existing single-task detail: kept in the combined Overview
  * ============================================ */
 
-/** 단일 태스크 상세 뷰 — Overview 합본 페이지 전용 (full schema dump) */
+/** Single-task detail view: for the combined Overview page only (full schema dump) */
 const TaskDetail = ({ task }) => (
   <Box sx={ { mb: 8 } }>
     <Box sx={ { display: 'flex', alignItems: 'baseline', gap: 1.5, mb: 1 } }>
@@ -615,7 +615,7 @@ const TaskDetail = ({ task }) => (
       { task.purpose }
     </Typography>
 
-    {/* 메타 */}
+    {/* Meta */}
     <Box sx={ { mb: 3, p: 2, bgcolor: 'background.paper', borderRadius: 2, border: '1px solid', borderColor: 'divider' } }>
       <MetaRow label="stage" value={ task.stage } mono />
       <MetaRow label="model" value={ task.model } mono />
@@ -625,7 +625,7 @@ const TaskDetail = ({ task }) => (
     </Box>
 
     {/* Input / Output Schema */}
-    <SectionTitle title="Input / Output Schema" description="API 호출 시 주고받는 구조" />
+    <SectionTitle title="Input / Output Schema" description="The structure exchanged in the API call" />
     <Box sx={ { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 3 } }>
       <Box>
         <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mb: 1, textTransform: 'uppercase', letterSpacing: '0.08em' } }>
@@ -644,22 +644,22 @@ const TaskDetail = ({ task }) => (
     </Box>
 
     {/* System Prompt */}
-    <SectionTitle title="System Prompt" description="Anthropic messages.create의 system 필드" />
+    <SectionTitle title="System Prompt" description="The system field of Anthropic messages.create" />
     <CodeBlock tone="dark">{ task.systemPrompt }</CodeBlock>
 
     {/* User message template */}
     <Box sx={ { mt: 3, mb: 3 } }>
-      <SectionTitle title="User Message Template" description="변수는 {{...}} 로 표기" />
+      <SectionTitle title="User Message Template" description="Variables are marked as {{...}}" />
       <CodeBlock>{ task.userMessageTemplate }</CodeBlock>
     </Box>
 
     {/* Tool Schema */}
-    <SectionTitle title="Tool Schema" description="Tool use로 구조화 출력 강제" />
+    <SectionTitle title="Tool Schema" description="Forces structured output via tool use" />
     <CodeBlock>{ task.toolSchema }</CodeBlock>
 
     {/* Quality criteria */}
     <Box sx={ { mt: 3, mb: 3 } }>
-      <SectionTitle title="Quality Criteria" description="출력 품질 평가 축" />
+      <SectionTitle title="Quality Criteria" description="Axes for evaluating output quality" />
       <TableContainer>
         <Table size="small">
           <TableHead>
@@ -692,7 +692,7 @@ const TaskDetail = ({ task }) => (
     </Box>
 
     {/* Golden example */}
-    <SectionTitle title="Golden Example" description="기대 출력 샘플" />
+    <SectionTitle title="Golden Example" description="Expected output sample" />
     <Typography variant="body2" color="text.secondary" sx={ { mb: 1 } }>
       <strong>Input:</strong> { task.goldenExample.inputDescription }
     </Typography>
@@ -700,7 +700,7 @@ const TaskDetail = ({ task }) => (
 
     {/* Workflow */}
     <Box sx={ { mt: 3 } }>
-      <SectionTitle title="Workflow" description="태스크 실행 단계" />
+      <SectionTitle title="Workflow" description="Task execution steps" />
       <Box component="ol" sx={ { m: 0, pl: 3 } }>
         { task.workflow.map((step, i) => (
           <Box component="li" key={ i } sx={ { mb: 0.5 } }>
@@ -713,7 +713,7 @@ const TaskDetail = ({ task }) => (
 );
 
 /* ============================================
- * Story: Overview — 3 태스크 한눈에
+ * Story: Overview: all 3 tasks at a glance
  * ============================================ */
 
 export const Overview = {
@@ -732,11 +732,11 @@ export const Overview = {
           AI Tasks
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          MUSE가 Claude API에 위임하는 3개 태스크의 시스템 프롬프트와 워크플로우.
-          실제 호출 코드는 별도 레이어(`scripts/muse-ai/*`)에서 이 데이터를 import해 사용한다.
+          The system prompts and workflows of the 3 tasks MUSE delegates to the Claude API.
+          The actual call code imports and uses this data from a separate layer (`scripts/muse-ai/*`).
         </Typography>
 
-        <SectionTitle title="Task Map" description="아카이빙 → 추천 → 분석의 3단계" />
+        <SectionTitle title="Task Map" description="3 stages: Archiving → Recommendation → Analysis" />
         <TableContainer sx={ { mb: 4 } }>
           <Table size="small">
             <TableHead>
@@ -766,7 +766,7 @@ export const Overview = {
           </Table>
         </TableContainer>
 
-        <SectionTitle title="레이어별 태그 어휘 (Preset)" description="T1 자동 태깅에서 각 레이어 enum으로 강제됨. preset 외 단어 금지" />
+        <SectionTitle title="Tag Vocabulary by Layer (Preset)" description="Enforced as each layer enum in T1 auto-tagging. No words outside the preset" />
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 2, mb: 4 } }>
           { TOKEN_LAYERS.map((layer) => (
             <Box key={ layer }>
@@ -796,7 +796,7 @@ export const Overview = {
 
         <Divider sx={ { my: 4 } } />
 
-        {/* 3 태스크 상세 */}
+        {/* 3-task detail */}
         { AI_TASKS.map((t) => <TaskDetail key={ t.id } task={ t } />) }
       </PageContainer>
     </>
@@ -804,7 +804,7 @@ export const Overview = {
 };
 
 /* ============================================
- * Story: T1 · T2 · T3 개별 상세
+ * Story: T1 · T2 · T3 individual details
  * ============================================ */
 
 export const T1AutoTag = {
@@ -853,7 +853,7 @@ export const T3AnalyzeTokens = {
 };
 
 /* ============================================
- * Story: Workflow — 전체 플로우 + 비용/모델 요약
+ * Story: Workflow: full flow + cost/model summary
  * ============================================ */
 
 export const Workflow = {
@@ -872,14 +872,14 @@ export const Workflow = {
           AI Workflow
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          유저 입력부터 Export까지의 전체 AI 파이프라인
+          The full AI pipeline from user input to Export
         </Typography>
 
-        <SectionTitle title="Flow Diagram" description="Mermaid 소스" />
+        <SectionTitle title="Flow Diagram" description="Mermaid source" />
         <CodeBlock>{ AI_WORKFLOW_DIAGRAM }</CodeBlock>
 
         <Box sx={ { mt: 3 } }>
-          <SectionTitle title="Stage 별 진입점" />
+          <SectionTitle title="Entry Point per Stage" />
           <TableContainer>
             <Table size="small">
               <TableHead>
@@ -892,18 +892,18 @@ export const Workflow = {
               <TableBody>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace', fontSize: 12 } }>archive.upload</TableCell>
-                  <TableCell>T1 자동 태깅</TableCell>
-                  <TableCell>아카이브에서 드래그앤드롭/URL 입력 완료 시</TableCell>
+                  <TableCell>T1 auto-tagging</TableCell>
+                  <TableCell>On completing drag-and-drop/URL input in the archive</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace', fontSize: 12 } }>project.create.step2</TableCell>
-                  <TableCell>T2 레퍼런스 추천</TableCell>
-                  <TableCell>위자드 Step 1 완료 후 Step 2 진입 시</TableCell>
+                  <TableCell>T2 reference recommendation</TableCell>
+                  <TableCell>On entering Step 2 after completing wizard Step 1</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace', fontSize: 12 } }>project.create.step3</TableCell>
-                  <TableCell>T3 토큰 분석</TableCell>
-                  <TableCell>Step 2에서 "분석 시작" 클릭 시</TableCell>
+                  <TableCell>T3 token analysis</TableCell>
+                  <TableCell>On clicking "Start Analysis" in Step 2</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
@@ -911,31 +911,31 @@ export const Workflow = {
         </Box>
 
         <Box sx={ { mt: 4 } }>
-          <SectionTitle title="공통 운영 원칙" />
+          <SectionTitle title="Common Operating Principles" />
           <Box component="ul" sx={ { m: 0, pl: 3 } }>
             <Box component="li" sx={ { mb: 1 } }>
               <Typography variant="body2">
-                <strong>Tool use 강제</strong> — 3개 태스크 모두 프롬프트로만 JSON을 유도하지 않고 tool use 스키마로 구조화 출력.
+                <strong>Tool use enforced</strong>: all 3 tasks produce structured output via a tool use schema rather than coaxing JSON from the prompt alone.
               </Typography>
             </Box>
             <Box component="li" sx={ { mb: 1 } }>
               <Typography variant="body2">
-                <strong>Prompt caching</strong> — 시스템 프롬프트는 캐시 히트 대상. T1의 경우 배치 27장 태깅 시 큰 비용 절감.
+                <strong>Prompt caching</strong>: system prompts are cache hit targets. For T1, batch tagging of 27 images yields large cost savings.
               </Typography>
             </Box>
             <Box component="li" sx={ { mb: 1 } }>
               <Typography variant="body2">
-                <strong>자동 검증 후 1회 재시도</strong> — schema/vocab/hex 검증 실패 시 자동으로 한 번 더 호출. 두 번 실패하면 폴백.
+                <strong>Auto-validate then retry once</strong>: on schema/vocab/hex validation failure, automatically call once more. On a second failure, fall back.
               </Typography>
             </Box>
             <Box component="li" sx={ { mb: 1 } }>
               <Typography variant="body2">
-                <strong>API 키는 로컬 env</strong> — 브라우저에서 직접 호출 금지. Node CLI 또는 Vite dev proxy 경유.
+                <strong>API key in local env</strong>: no direct calls from the browser. Go through the Node CLI or the Vite dev proxy.
               </Typography>
             </Box>
             <Box component="li" sx={ { mb: 1 } }>
               <Typography variant="body2">
-                <strong>비용 가드</strong> — T3는 이미지 N장 기반 Sonnet 호출로 가장 비쌈. 초기엔 N ≤ 4 제한.
+                <strong>Cost guard</strong>: T3 is the most expensive as a Sonnet call based on N images. Initially limited to N ≤ 4.
               </Typography>
             </Box>
           </Box>

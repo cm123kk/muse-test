@@ -16,16 +16,16 @@ export default {
         component: `
 ## TextField [MUI]
 
-사용자 텍스트 입력을 받는 폼 컴포넌트입니다.
+Form component for capturing user text input.
 
-### 사용 패턴
+### Usage Patterns
 
-| 패턴 | 설명 | 예시 |
+| Pattern | Description | Example |
 |------|------|------|
-| Outlined | 테두리 스타일 (기본) | \`variant="outlined"\` |
-| Filled | 배경색 스타일 | \`variant="filled"\` |
-| Standard | 언더라인 스타일 | \`variant="standard"\` |
-| Multiline | 여러 줄 입력 | \`multiline rows={4}\` |
+| Outlined | Bordered style (default) | \`variant="outlined"\` |
+| Filled | Background fill style | \`variant="filled"\` |
+| Standard | Underline style | \`variant="standard"\` |
+| Multiline | Multi line input | \`multiline rows={4}\` |
         `,
       },
     },
@@ -34,7 +34,7 @@ export default {
     variant: {
       control: 'select',
       options: ['outlined', 'filled', 'standard'],
-      description: '입력 필드의 시각적 스타일을 설정합니다.',
+      description: 'Sets the visual style of the input field.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'outlined' },
@@ -43,7 +43,7 @@ export default {
     size: {
       control: 'select',
       options: ['small', 'medium'],
-      description: '입력 필드의 크기를 설정합니다.',
+      description: 'Sets the size of the input field.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'medium' },
@@ -52,7 +52,7 @@ export default {
     color: {
       control: 'select',
       options: ['primary', 'secondary', 'error', 'info', 'success', 'warning'],
-      description: '포커스 시 색상을 설정합니다.',
+      description: 'Sets the color shown on focus.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
@@ -60,7 +60,7 @@ export default {
     },
     disabled: {
       control: 'boolean',
-      description: '입력 필드를 비활성화합니다.',
+      description: 'Disables the input field.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -68,7 +68,7 @@ export default {
     },
     required: {
       control: 'boolean',
-      description: '필수 입력 필드로 표시합니다.',
+      description: 'Marks the field as required.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -76,7 +76,7 @@ export default {
     },
     error: {
       control: 'boolean',
-      description: '에러 상태를 표시합니다.',
+      description: 'Displays the error state.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -84,7 +84,7 @@ export default {
     },
     fullWidth: {
       control: 'boolean',
-      description: '전체 너비로 확장합니다.',
+      description: 'Expands to full width.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -92,21 +92,21 @@ export default {
     },
     label: {
       control: 'text',
-      description: '입력 필드의 라벨입니다.',
+      description: 'The label of the input field.',
       table: {
         type: { summary: 'string' },
       },
     },
     placeholder: {
       control: 'text',
-      description: '플레이스홀더 텍스트입니다.',
+      description: 'The placeholder text.',
       table: {
         type: { summary: 'string' },
       },
     },
     helperText: {
       control: 'text',
-      description: '입력 필드 아래 도움말 텍스트입니다.',
+      description: 'Helper text shown below the input field.',
       table: {
         type: { summary: 'string' },
       },
@@ -114,15 +114,15 @@ export default {
   },
 };
 
-/** 기본 텍스트 필드 */
+/** Basic text field */
 export const Default = {
   args: {
-    label: '라벨',
-    placeholder: '텍스트를 입력하세요',
+    label: 'Label',
+    placeholder: 'Enter text',
   },
 };
 
-/** Variant 비교 */
+/** Variant comparison */
 export const AllVariants = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 300 } }>
@@ -133,7 +133,7 @@ export const AllVariants = {
   ),
 };
 
-/** 크기 비교 */
+/** Size comparison */
 export const Sizes = {
   render: () => (
     <Stack spacing={ 3 } direction="row" alignItems="center">
@@ -143,47 +143,47 @@ export const Sizes = {
   ),
 };
 
-/** 필수 입력 */
+/** Required input */
 export const Required = {
   args: {
-    label: '이름',
+    label: 'Name',
     required: true,
-    helperText: '필수 입력 항목입니다',
+    helperText: 'This field is required',
   },
 };
 
-/** 에러 상태 */
+/** Error state */
 export const Error = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 300 } }>
       <TextField
-        label="이메일"
+        label="Email"
         error
-        helperText="올바른 이메일 형식이 아닙니다"
+        helperText="Not a valid email format"
         defaultValue="invalid-email"
       />
       <TextField
-        label="비밀번호"
+        label="Password"
         type="password"
         error
-        helperText="비밀번호는 8자 이상이어야 합니다"
+        helperText="Password must be at least 8 characters"
       />
     </Stack>
   ),
 };
 
-/** 비활성화 & 읽기 전용 */
+/** Disabled and read only */
 export const DisabledAndReadOnly = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 300 } }>
       <TextField
         label="Disabled"
-        defaultValue="비활성화된 입력"
+        defaultValue="Disabled input"
         disabled
       />
       <TextField
         label="Read Only"
-        defaultValue="읽기 전용 입력"
+        defaultValue="Read only input"
         slotProps={ {
           input: {
             readOnly: true,
@@ -194,47 +194,47 @@ export const DisabledAndReadOnly = {
   ),
 };
 
-/** 여러 줄 입력 (Multiline) */
+/** Multiline input */
 export const Multiline = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 400 } }>
       <TextField
-        label="기본 멀티라인"
+        label="Basic Multiline"
         multiline
         rows={ 4 }
-        placeholder="여러 줄의 텍스트를 입력하세요"
+        placeholder="Enter multiple lines of text"
       />
       <TextField
-        label="자동 높이 조절"
+        label="Auto Height"
         multiline
         minRows={ 2 }
         maxRows={ 6 }
-        placeholder="내용에 따라 높이가 자동으로 조절됩니다"
+        placeholder="Height adjusts automatically based on content"
       />
     </Stack>
   ),
 };
 
-/** 입력 타입 */
+/** Input types */
 export const InputTypes = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 300 } }>
-      <TextField label="텍스트" type="text" />
-      <TextField label="비밀번호" type="password" />
-      <TextField label="이메일" type="email" />
-      <TextField label="숫자" type="number" />
-      <TextField label="날짜" type="date" slotProps={ { inputLabel: { shrink: true } } } />
-      <TextField label="시간" type="time" slotProps={ { inputLabel: { shrink: true } } } />
+      <TextField label="Text" type="text" />
+      <TextField label="Password" type="password" />
+      <TextField label="Email" type="email" />
+      <TextField label="Number" type="number" />
+      <TextField label="Date" type="date" slotProps={ { inputLabel: { shrink: true } } } />
+      <TextField label="Time" type="time" slotProps={ { inputLabel: { shrink: true } } } />
     </Stack>
   ),
 };
 
-/** Adornment (접두/접미 요소) */
+/** Adornment (prefix/suffix elements) */
 export const WithAdornments = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 300 } }>
       <TextField
-        label="금액"
+        label="Amount"
         slotProps={ {
           input: {
             startAdornment: <InputAdornment position="start">₩</InputAdornment>,
@@ -242,7 +242,7 @@ export const WithAdornments = {
         } }
       />
       <TextField
-        label="무게"
+        label="Weight"
         slotProps={ {
           input: {
             endAdornment: <InputAdornment position="end">kg</InputAdornment>,
@@ -250,7 +250,7 @@ export const WithAdornments = {
         } }
       />
       <TextField
-        label="비밀번호"
+        label="Password"
         type="password"
         slotProps={ {
           input: {
@@ -268,7 +268,7 @@ export const WithAdornments = {
   ),
 };
 
-/** 색상 변형 */
+/** Color variants */
 export const Colors = {
   render: () => (
     <Stack spacing={ 3 } sx={ { width: 300 } }>
@@ -280,20 +280,20 @@ export const Colors = {
   ),
 };
 
-/** 전체 너비 */
+/** Full width */
 export const FullWidth = {
   render: () => (
     <Box sx={ { width: 400 } }>
       <TextField
-        label="전체 너비"
+        label="Full Width"
         fullWidth
-        helperText="부모 요소의 전체 너비를 차지합니다"
+        helperText="Takes up the full width of the parent element"
       />
     </Box>
   ),
 };
 
-/** 폼 예시 - 로그인 */
+/** Form example: login */
 export const LoginForm = {
   render: () => (
     <Box
@@ -309,30 +309,30 @@ export const LoginForm = {
       } }
     >
       <Typography variant="h5" sx={ { fontWeight: 700, mb: 1 } }>
-        로그인
+        Log In
       </Typography>
       <TextField
-        label="이메일"
+        label="Email"
         type="email"
         required
         fullWidth
         placeholder="example@email.com"
       />
       <TextField
-        label="비밀번호"
+        label="Password"
         type="password"
         required
         fullWidth
-        placeholder="비밀번호를 입력하세요"
+        placeholder="Enter your password"
       />
       <Typography variant="caption" color="text.secondary">
-        * 필수 입력 항목
+        * Required fields
       </Typography>
     </Box>
   ),
 };
 
-/** 폼 예시 - 회원가입 */
+/** Form example: sign up */
 export const SignupForm = {
   render: () => (
     <Box
@@ -348,40 +348,40 @@ export const SignupForm = {
       } }
     >
       <Typography variant="h5" sx={ { fontWeight: 700, mb: 1 } }>
-        회원가입
+        Sign Up
       </Typography>
       <TextField
-        label="이름"
+        label="Name"
         required
         fullWidth
-        helperText="실명을 입력해주세요"
+        helperText="Please enter your real name"
       />
       <TextField
-        label="이메일"
+        label="Email"
         type="email"
         required
         fullWidth
-        helperText="인증 메일이 발송됩니다"
+        helperText="A verification email will be sent"
       />
       <TextField
-        label="비밀번호"
+        label="Password"
         type="password"
         required
         fullWidth
-        helperText="8자 이상, 영문/숫자/특수문자 포함"
+        helperText="At least 8 characters, including letters, numbers, and symbols"
       />
       <TextField
-        label="비밀번호 확인"
+        label="Confirm Password"
         type="password"
         required
         fullWidth
       />
       <TextField
-        label="자기소개"
+        label="Bio"
         multiline
         rows={ 3 }
         fullWidth
-        placeholder="간단한 자기소개를 작성해주세요 (선택)"
+        placeholder="Write a short bio (optional)"
       />
     </Box>
   ),

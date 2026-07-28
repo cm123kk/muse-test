@@ -3,7 +3,7 @@ import { supabase } from '../../lib/supabase';
 import { normalizeSupabaseError } from '../../utils/supabaseError';
 
 /**
- * 회원가입 훅. 성공 시 인증 메일 발송.
+ * Sign-up hook. Sends a verification email on success.
  *
  * @returns {{ signUp: (args: { email: string, password: string, displayName?: string }) => Promise<{ ok: boolean }>, loading: boolean, error: { message: string, code: string|null }|null }}
  */

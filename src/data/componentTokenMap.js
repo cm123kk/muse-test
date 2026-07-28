@@ -1,17 +1,17 @@
 /**
- * MUI 컴포넌트별 토큰 사용 매핑 데이터
+ * Per-component MUI token usage mapping data
  *
- * 이 파일은 MUI 컴포넌트가 디자인될 때 어떤 테마 토큰을 참조하는지 정의합니다.
- * 디자이너가 각 컴포넌트의 스타일링 구조를 이해하는 데 도움을 줍니다.
+ * This file defines which theme tokens each MUI component references when styled.
+ * It helps designers understand the styling structure of each component.
  *
- * 토큰 카테고리:
- * - palette: 색상 (primary, secondary, error, text 등)
- * - typography: 타이포그래피 (fontFamily, fontSize, fontWeight 등)
- * - spacing: 간격 (padding, margin)
- * - shape: 모양 (borderRadius)
- * - shadows: 그림자 (elevation)
- * - transitions: 전환 효과 (duration, easing)
- * - zIndex: 레이어 순서
+ * Token categories:
+ * - palette: colors (primary, secondary, error, text, etc.)
+ * - typography: typography (fontFamily, fontSize, fontWeight, etc.)
+ * - spacing: spacing (padding, margin)
+ * - shape: shape (borderRadius)
+ * - shadows: shadows (elevation)
+ * - transitions: transition effects (duration, easing)
+ * - zIndex: layer order
  */
 
 const componentTokenMap = {
@@ -20,68 +20,68 @@ const componentTokenMap = {
   // ============================================================
   Button: {
     name: 'Button',
-    description: '클릭 가능한 인터랙션 요소. 주요 액션을 유도하는 데 사용됩니다.',
+    description: 'A clickable interaction element. Used to drive primary actions.',
     variants: ['contained', 'outlined', 'text'],
     sizes: ['small', 'medium', 'large'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'primary', role: '기본 버튼 색상' },
-          { token: 'secondary', role: '보조 버튼 색상' },
-          { token: 'error', role: '삭제/위험 액션' },
-          { token: 'warning', role: '주의 필요 액션' },
-          { token: 'success', role: '완료/확인 액션' },
-          { token: 'info', role: '정보성 액션' },
+          { token: 'primary', role: 'Default button color' },
+          { token: 'secondary', role: 'Secondary button color' },
+          { token: 'error', role: 'Delete / dangerous action' },
+          { token: 'warning', role: 'Action requiring caution' },
+          { token: 'success', role: 'Complete / confirm action' },
+          { token: 'info', role: 'Informational action' },
         ],
-        affects: '배경색 (contained), 테두리색 (outlined), 텍스트색',
-        howToUse: 'color prop으로 지정 (예: color="primary")',
+        affects: 'Background (contained), border (outlined), text color',
+        howToUse: 'Set via the color prop (e.g. color="primary")',
       },
       typography: {
         items: [
-          { token: 'button', role: '버튼 텍스트 스타일' },
+          { token: 'button', role: 'Button text style' },
         ],
-        affects: '폰트 크기 (14px), 굵기 (600), 자간 (0.02em)',
-        howToUse: '자동 적용 (theme.typography.button)',
+        affects: 'Font size (14px), weight (600), letter spacing (0.02em)',
+        howToUse: 'Applied automatically (theme.typography.button)',
       },
       spacing: {
         items: [
-          { token: 'spacing(1)', role: 'small 버튼 padding' },
-          { token: 'spacing(2)', role: 'medium 버튼 padding' },
-          { token: 'spacing(3)', role: 'large 버튼 padding' },
+          { token: 'spacing(1)', role: 'small button padding' },
+          { token: 'spacing(2)', role: 'medium button padding' },
+          { token: 'spacing(3)', role: 'large button padding' },
         ],
-        affects: '버튼 내부 여백',
-        howToUse: 'size prop으로 간접 조절',
+        affects: 'Button inner padding',
+        howToUse: 'Adjusted indirectly via the size prop',
       },
       shape: {
         items: [
-          { token: 'borderRadius', role: '버튼 모서리 곡률' },
+          { token: 'borderRadius', role: 'Button corner radius' },
         ],
-        affects: '버튼 외곽선 모서리',
-        howToUse: 'theme.shape.borderRadius (현재: 0px)',
+        affects: 'Button outline corners',
+        howToUse: 'theme.shape.borderRadius (currently: 0px)',
       },
       shadows: {
         items: [
-          { token: 'elevation1', role: '기본 그림자' },
-          { token: 'elevation2', role: 'hover 시 그림자' },
+          { token: 'elevation1', role: 'Default shadow' },
+          { token: 'elevation2', role: 'Shadow on hover' },
         ],
-        affects: 'contained 버튼의 그림자',
-        howToUse: 'disableElevation prop으로 제거 가능',
+        affects: 'Shadow on contained buttons',
+        howToUse: 'Can be removed via the disableElevation prop',
       },
       transitions: {
         items: [
-          { token: 'duration.short', role: '상태 변화 속도' },
-          { token: 'easing.easeInOut', role: '애니메이션 곡선' },
+          { token: 'duration.short', role: 'State change speed' },
+          { token: 'easing.easeInOut', role: 'Animation curve' },
         ],
-        affects: 'hover, focus, active 전환 효과',
-        howToUse: '자동 적용',
+        affects: 'hover, focus, active transitions',
+        howToUse: 'Applied automatically',
       },
     },
 
     stateTokens: {
-      hover: 'palette.action.hover (배경 오버레이)',
-      focus: 'palette.action.focus + focusVisible 링',
-      active: 'palette.[color].dark (어두운 색상)',
+      hover: 'palette.action.hover (background overlay)',
+      focus: 'palette.action.focus + focusVisible ring',
+      active: 'palette.[color].dark (darker color)',
       disabled: 'palette.action.disabled, disabledBackground',
     },
   },
@@ -91,38 +91,38 @@ const componentTokenMap = {
   // ============================================================
   Typography: {
     name: 'Typography',
-    description: '텍스트를 표시하는 컴포넌트. 제목부터 본문까지 다양한 텍스트 스타일을 제공합니다.',
+    description: 'A component for displaying text. Provides a range of text styles from headings to body copy.',
     variants: ['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'subtitle1', 'subtitle2', 'body1', 'body2', 'caption', 'overline'],
 
     tokens: {
       typography: {
         items: [
-          { token: 'h1', role: '가장 큰 제목 (40px, 900)' },
-          { token: 'h2', role: '섹션 제목 (32px, 900)' },
-          { token: 'h3', role: '하위 섹션 제목 (28px, 800)' },
-          { token: 'h4', role: '카드 제목 (24px, 700)' },
-          { token: 'h5', role: '작은 제목 (20px, 700)' },
-          { token: 'h6', role: '가장 작은 제목 (18px, 600)' },
-          { token: 'subtitle1', role: '부제목 (16px, 500)' },
-          { token: 'subtitle2', role: '작은 부제목 (14px, 500)' },
-          { token: 'body1', role: '기본 본문 (16px)' },
-          { token: 'body2', role: '보조 본문 (14px)' },
-          { token: 'caption', role: '캡션/주석 (12px)' },
-          { token: 'overline', role: '라벨/분류 (12px, 대문자)' },
+          { token: 'h1', role: 'Largest heading (40px, 900)' },
+          { token: 'h2', role: 'Section heading (32px, 900)' },
+          { token: 'h3', role: 'Sub-section heading (28px, 800)' },
+          { token: 'h4', role: 'Card heading (24px, 700)' },
+          { token: 'h5', role: 'Small heading (20px, 700)' },
+          { token: 'h6', role: 'Smallest heading (18px, 600)' },
+          { token: 'subtitle1', role: 'Subtitle (16px, 500)' },
+          { token: 'subtitle2', role: 'Small subtitle (14px, 500)' },
+          { token: 'body1', role: 'Default body (16px)' },
+          { token: 'body2', role: 'Secondary body (14px)' },
+          { token: 'caption', role: 'Caption / note (12px)' },
+          { token: 'overline', role: 'Label / category (12px, uppercase)' },
         ],
         affects: 'fontFamily, fontSize, fontWeight, lineHeight, letterSpacing',
-        howToUse: 'variant prop으로 지정',
+        howToUse: 'Set via the variant prop',
       },
       palette: {
         items: [
-          { token: 'text.primary', role: '주요 텍스트 색상' },
-          { token: 'text.secondary', role: '보조 텍스트 색상' },
-          { token: 'text.disabled', role: '비활성 텍스트 색상' },
-          { token: 'primary.main', role: '강조 텍스트' },
-          { token: 'error.main', role: '오류 텍스트' },
+          { token: 'text.primary', role: 'Primary text color' },
+          { token: 'text.secondary', role: 'Secondary text color' },
+          { token: 'text.disabled', role: 'Disabled text color' },
+          { token: 'primary.main', role: 'Emphasized text' },
+          { token: 'error.main', role: 'Error text' },
         ],
-        affects: '텍스트 색상',
-        howToUse: 'color prop으로 지정 (예: color="textSecondary")',
+        affects: 'Text color',
+        howToUse: 'Set via the color prop (e.g. color="textSecondary")',
       },
     },
   },
@@ -132,60 +132,60 @@ const componentTokenMap = {
   // ============================================================
   TextField: {
     name: 'TextField',
-    description: '텍스트 입력 필드. 사용자로부터 텍스트 데이터를 입력받습니다.',
+    description: 'A text input field. Collects text data from the user.',
     variants: ['outlined', 'filled', 'standard'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'primary.main', role: 'focus 시 테두리/라벨 색상' },
-          { token: 'error.main', role: '오류 상태 색상' },
-          { token: 'text.primary', role: '입력 텍스트 색상' },
-          { token: 'text.secondary', role: '라벨/플레이스홀더 색상' },
-          { token: 'action.hover', role: 'hover 시 배경' },
-          { token: 'action.disabled', role: '비활성 상태' },
+          { token: 'primary.main', role: 'Border / label color on focus' },
+          { token: 'error.main', role: 'Error state color' },
+          { token: 'text.primary', role: 'Input text color' },
+          { token: 'text.secondary', role: 'Label / placeholder color' },
+          { token: 'action.hover', role: 'Background on hover' },
+          { token: 'action.disabled', role: 'Disabled state' },
         ],
-        affects: '테두리, 라벨, 입력 텍스트, 배경 색상',
-        howToUse: 'color, error prop으로 지정',
+        affects: 'Border, label, input text, and background color',
+        howToUse: 'Set via the color and error props',
       },
       typography: {
         items: [
-          { token: 'body1', role: '입력 텍스트 스타일' },
-          { token: 'caption', role: 'helperText 스타일' },
-          { token: 'body2', role: '라벨 스타일' },
+          { token: 'body1', role: 'Input text style' },
+          { token: 'caption', role: 'helperText style' },
+          { token: 'body2', role: 'Label style' },
         ],
-        affects: '입력 필드 내 텍스트 스타일',
-        howToUse: '자동 적용',
+        affects: 'Text style inside the input field',
+        howToUse: 'Applied automatically',
       },
       spacing: {
         items: [
-          { token: 'spacing(1.5)', role: '내부 padding' },
-          { token: 'spacing(1)', role: 'helperText 간격' },
+          { token: 'spacing(1.5)', role: 'Inner padding' },
+          { token: 'spacing(1)', role: 'helperText spacing' },
         ],
-        affects: '필드 내부 여백',
-        howToUse: 'size, margin prop으로 조절',
+        affects: 'Field inner padding',
+        howToUse: 'Adjusted via the size and margin props',
       },
       shape: {
         items: [
-          { token: 'borderRadius', role: '필드 모서리' },
+          { token: 'borderRadius', role: 'Field corners' },
         ],
-        affects: 'outlined, filled variant 모서리',
+        affects: 'outlined and filled variant corners',
         howToUse: 'theme.shape.borderRadius',
       },
       transitions: {
         items: [
-          { token: 'duration.shorter', role: 'focus 전환 속도' },
+          { token: 'duration.shorter', role: 'focus transition speed' },
         ],
-        affects: '테두리 색상, 라벨 위치 전환',
-        howToUse: '자동 적용',
+        affects: 'Border color and label position transition',
+        howToUse: 'Applied automatically',
       },
     },
 
     stateTokens: {
-      hover: '테두리 색상 진해짐',
-      focus: 'primary.main 테두리, 라벨 축소 이동',
-      error: 'error.main 테두리/라벨',
-      disabled: 'action.disabled 배경, 텍스트',
+      hover: 'Border color darkens',
+      focus: 'primary.main border, label shrinks and moves',
+      error: 'error.main border / label',
+      disabled: 'action.disabled background and text',
     },
   },
 
@@ -194,50 +194,50 @@ const componentTokenMap = {
   // ============================================================
   Select: {
     name: 'Select',
-    description: '드롭다운 선택 컴포넌트. 여러 옵션 중 하나를 선택할 수 있습니다.',
+    description: 'A dropdown selection component. Lets the user pick one of several options.',
     variants: ['outlined', 'filled', 'standard'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'primary.main', role: 'focus 시 테두리 색상' },
-          { token: 'text.primary', role: '선택된 값 텍스트' },
-          { token: 'text.secondary', role: '라벨/플레이스홀더' },
-          { token: 'action.hover', role: '옵션 hover 배경' },
-          { token: 'action.selected', role: '선택된 옵션 배경' },
-          { token: 'background.paper', role: '드롭다운 메뉴 배경' },
+          { token: 'primary.main', role: 'Border color on focus' },
+          { token: 'text.primary', role: 'Selected value text' },
+          { token: 'text.secondary', role: 'Label / placeholder' },
+          { token: 'action.hover', role: 'Option hover background' },
+          { token: 'action.selected', role: 'Selected option background' },
+          { token: 'background.paper', role: 'Dropdown menu background' },
         ],
-        affects: '필드, 드롭다운 메뉴 색상',
-        howToUse: 'TextField와 동일',
+        affects: 'Field and dropdown menu color',
+        howToUse: 'Same as TextField',
       },
       typography: {
         items: [
-          { token: 'body1', role: '선택된 값 텍스트' },
-          { token: 'body2', role: '옵션 텍스트' },
+          { token: 'body1', role: 'Selected value text' },
+          { token: 'body2', role: 'Option text' },
         ],
-        affects: '텍스트 스타일',
-        howToUse: '자동 적용',
+        affects: 'Text style',
+        howToUse: 'Applied automatically',
       },
       shape: {
         items: [
-          { token: 'borderRadius', role: '필드 및 메뉴 모서리' },
+          { token: 'borderRadius', role: 'Field and menu corners' },
         ],
-        affects: '모서리 곡률',
+        affects: 'Corner radius',
         howToUse: 'theme.shape.borderRadius',
       },
       shadows: {
         items: [
-          { token: 'elevation8', role: '드롭다운 메뉴 그림자' },
+          { token: 'elevation8', role: 'Dropdown menu shadow' },
         ],
-        affects: '메뉴 떠있는 효과',
-        howToUse: 'MenuProps로 조절 가능',
+        affects: 'Floating menu effect',
+        howToUse: 'Adjustable via MenuProps',
       },
       zIndex: {
         items: [
-          { token: 'modal', role: '드롭다운 레이어 순서' },
+          { token: 'modal', role: 'Dropdown layer order' },
         ],
-        affects: '다른 요소 위에 표시',
-        howToUse: '자동 적용',
+        affects: 'Displayed above other elements',
+        howToUse: 'Applied automatically',
       },
     },
   },
@@ -247,42 +247,42 @@ const componentTokenMap = {
   // ============================================================
   Card: {
     name: 'Card',
-    description: '콘텐츠를 담는 컨테이너. 관련 정보를 그룹화하여 표시합니다.',
+    description: 'A container for content. Groups related information for display.',
     subComponents: ['CardHeader', 'CardContent', 'CardActions', 'CardMedia'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'background.paper', role: '카드 배경색' },
-          { token: 'text.primary', role: '제목 텍스트' },
-          { token: 'text.secondary', role: '부제목, 설명 텍스트' },
-          { token: 'divider', role: '구분선 색상' },
+          { token: 'background.paper', role: 'Card background color' },
+          { token: 'text.primary', role: 'Title text' },
+          { token: 'text.secondary', role: 'Subtitle and description text' },
+          { token: 'divider', role: 'Divider color' },
         ],
-        affects: '카드 배경, 텍스트 색상',
-        howToUse: 'sx prop으로 커스텀',
+        affects: 'Card background and text color',
+        howToUse: 'Customize via the sx prop',
       },
       shape: {
         items: [
-          { token: 'borderRadius', role: '카드 모서리' },
+          { token: 'borderRadius', role: 'Card corners' },
         ],
-        affects: '카드 외곽 모서리',
-        howToUse: 'theme.shape.borderRadius (현재: 0px)',
+        affects: 'Card outer corners',
+        howToUse: 'theme.shape.borderRadius (currently: 0px)',
       },
       shadows: {
         items: [
-          { token: 'elevation1', role: '기본 그림자' },
-          { token: 'elevation2-24', role: 'elevation prop 값' },
+          { token: 'elevation1', role: 'Default shadow' },
+          { token: 'elevation2-24', role: 'elevation prop value' },
         ],
-        affects: '카드 떠있는 효과',
-        howToUse: 'elevation prop으로 지정',
+        affects: 'Floating card effect',
+        howToUse: 'Set via the elevation prop',
       },
       spacing: {
         items: [
           { token: 'spacing(2)', role: 'CardContent padding' },
           { token: 'spacing(1)', role: 'CardActions padding' },
         ],
-        affects: '내부 여백',
-        howToUse: '자동 적용, sx로 조절',
+        affects: 'Inner padding',
+        howToUse: 'Applied automatically, adjustable via sx',
       },
     },
   },
@@ -292,43 +292,43 @@ const componentTokenMap = {
   // ============================================================
   Table: {
     name: 'Table',
-    description: '데이터를 행과 열로 구성하여 표시하는 테이블 컴포넌트.',
+    description: 'A table component that displays data in rows and columns.',
     subComponents: ['TableHead', 'TableBody', 'TableRow', 'TableCell', 'TablePagination'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'background.paper', role: '테이블 배경' },
-          { token: 'text.primary', role: '셀 텍스트' },
-          { token: 'text.secondary', role: '보조 텍스트' },
-          { token: 'divider', role: '셀 구분선' },
-          { token: 'action.hover', role: '행 hover 배경' },
-          { token: 'action.selected', role: '선택된 행 배경' },
+          { token: 'background.paper', role: 'Table background' },
+          { token: 'text.primary', role: 'Cell text' },
+          { token: 'text.secondary', role: 'Secondary text' },
+          { token: 'divider', role: 'Cell divider' },
+          { token: 'action.hover', role: 'Row hover background' },
+          { token: 'action.selected', role: 'Selected row background' },
         ],
-        affects: '배경, 텍스트, 구분선 색상',
-        howToUse: 'sx prop으로 커스텀',
+        affects: 'Background, text, and divider color',
+        howToUse: 'Customize via the sx prop',
       },
       typography: {
         items: [
-          { token: 'body2', role: '셀 텍스트 (14px)' },
-          { token: 'subtitle2', role: '헤더 셀 텍스트' },
+          { token: 'body2', role: 'Cell text (14px)' },
+          { token: 'subtitle2', role: 'Header cell text' },
         ],
-        affects: '텍스트 스타일',
-        howToUse: '자동 적용',
+        affects: 'Text style',
+        howToUse: 'Applied automatically',
       },
       spacing: {
         items: [
-          { token: 'spacing(2)', role: '셀 padding' },
+          { token: 'spacing(2)', role: 'Cell padding' },
         ],
-        affects: '셀 내부 여백',
+        affects: 'Cell inner padding',
         howToUse: 'size prop (small, medium)',
       },
     },
 
     stateTokens: {
-      hover: 'action.hover 행 배경',
-      selected: 'action.selected 행 배경',
-      sortActive: 'primary.main 정렬 아이콘',
+      hover: 'action.hover row background',
+      selected: 'action.selected row background',
+      sortActive: 'primary.main sort icon',
     },
   },
 
@@ -337,51 +337,51 @@ const componentTokenMap = {
   // ============================================================
   Chip: {
     name: 'Chip',
-    description: '태그, 상태, 카테고리를 표시하는 작은 컴포넌트.',
+    description: 'A small component for showing tags, states, and categories.',
     variants: ['filled', 'outlined'],
     sizes: ['small', 'medium'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'default', role: '기본 회색 배경' },
-          { token: 'primary', role: '주요 강조' },
-          { token: 'secondary', role: '보조 강조' },
-          { token: 'error', role: '오류/삭제 상태' },
-          { token: 'warning', role: '주의 상태' },
-          { token: 'success', role: '성공/완료 상태' },
-          { token: 'info', role: '정보 상태' },
+          { token: 'default', role: 'Default grey background' },
+          { token: 'primary', role: 'Primary emphasis' },
+          { token: 'secondary', role: 'Secondary emphasis' },
+          { token: 'error', role: 'Error / delete state' },
+          { token: 'warning', role: 'Warning state' },
+          { token: 'success', role: 'Success / complete state' },
+          { token: 'info', role: 'Information state' },
         ],
-        affects: '배경색 (filled), 테두리색 (outlined)',
-        howToUse: 'color prop으로 지정',
+        affects: 'Background (filled), border (outlined)',
+        howToUse: 'Set via the color prop',
       },
       typography: {
         items: [
-          { token: 'body2', role: '칩 텍스트 스타일' },
+          { token: 'body2', role: 'Chip text style' },
         ],
-        affects: '라벨 텍스트',
-        howToUse: '자동 적용',
+        affects: 'Label text',
+        howToUse: 'Applied automatically',
       },
       shape: {
         items: [
-          { token: '16px (커스텀)', role: '칩 모서리 (pill 형태)' },
+          { token: '16px (custom)', role: 'Chip corners (pill shape)' },
         ],
-        affects: '둥근 모서리',
-        howToUse: 'theme.components.MuiChip (현재: 4px)',
+        affects: 'Rounded corners',
+        howToUse: 'theme.components.MuiChip (currently: 4px)',
       },
       spacing: {
         items: [
-          { token: 'spacing(0.5)', role: '아이콘-텍스트 간격' },
-          { token: 'spacing(1)', role: '내부 padding' },
+          { token: 'spacing(0.5)', role: 'Icon-to-text spacing' },
+          { token: 'spacing(1)', role: 'Inner padding' },
         ],
-        affects: '내부 여백',
-        howToUse: 'size prop으로 조절',
+        affects: 'Inner padding',
+        howToUse: 'Adjusted via the size prop',
       },
     },
 
     stateTokens: {
-      hover: '배경색 진해짐 (clickable)',
-      focus: 'focusVisible 링',
+      hover: 'Background darkens (clickable)',
+      focus: 'focusVisible ring',
       disabled: 'action.disabled',
     },
   },
@@ -391,43 +391,43 @@ const componentTokenMap = {
   // ============================================================
   Alert: {
     name: 'Alert',
-    description: '사용자에게 중요한 메시지를 전달하는 피드백 컴포넌트.',
+    description: 'A feedback component that delivers important messages to the user.',
     variants: ['standard', 'filled', 'outlined'],
     severities: ['error', 'warning', 'success', 'info'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'error', role: '오류 메시지 (빨간색)' },
-          { token: 'warning', role: '경고 메시지 (주황색)' },
-          { token: 'success', role: '성공 메시지 (초록색)' },
-          { token: 'info', role: '정보 메시지 (파란색)' },
+          { token: 'error', role: 'Error message (red)' },
+          { token: 'warning', role: 'Warning message (orange)' },
+          { token: 'success', role: 'Success message (green)' },
+          { token: 'info', role: 'Info message (blue)' },
         ],
-        affects: '배경색, 아이콘색, 텍스트색',
-        howToUse: 'severity prop으로 지정',
+        affects: 'Background, icon, and text color',
+        howToUse: 'Set via the severity prop',
       },
       typography: {
         items: [
-          { token: 'body2', role: '메시지 텍스트' },
-          { token: 'subtitle2', role: '제목 텍스트 (AlertTitle)' },
+          { token: 'body2', role: 'Message text' },
+          { token: 'subtitle2', role: 'Title text (AlertTitle)' },
         ],
-        affects: '텍스트 스타일',
-        howToUse: '자동 적용',
+        affects: 'Text style',
+        howToUse: 'Applied automatically',
       },
       shape: {
         items: [
-          { token: 'borderRadius', role: 'Alert 모서리' },
+          { token: 'borderRadius', role: 'Alert corners' },
         ],
-        affects: '외곽 모서리',
+        affects: 'Outer corners',
         howToUse: 'theme.shape.borderRadius',
       },
       spacing: {
         items: [
-          { token: 'spacing(1.5)', role: '내부 padding' },
-          { token: 'spacing(1.5)', role: '아이콘-텍스트 간격' },
+          { token: 'spacing(1.5)', role: 'Inner padding' },
+          { token: 'spacing(1.5)', role: 'Icon-to-text spacing' },
         ],
-        affects: '내부 여백',
-        howToUse: '자동 적용',
+        affects: 'Inner padding',
+        howToUse: 'Applied automatically',
       },
     },
   },
@@ -437,48 +437,48 @@ const componentTokenMap = {
   // ============================================================
   Tabs: {
     name: 'Tabs',
-    description: '콘텐츠를 탭으로 구분하여 네비게이션하는 컴포넌트.',
+    description: 'A component for navigating content divided into tabs.',
     subComponents: ['Tab'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'primary.main', role: '선택된 탭, indicator 색상' },
-          { token: 'text.primary', role: '선택된 탭 텍스트' },
-          { token: 'text.secondary', role: '비선택 탭 텍스트' },
-          { token: 'action.hover', role: '탭 hover 배경' },
-          { token: 'divider', role: '탭 구분선 (선택적)' },
+          { token: 'primary.main', role: 'Selected tab and indicator color' },
+          { token: 'text.primary', role: 'Selected tab text' },
+          { token: 'text.secondary', role: 'Unselected tab text' },
+          { token: 'action.hover', role: 'Tab hover background' },
+          { token: 'divider', role: 'Tab divider (optional)' },
         ],
-        affects: '탭 텍스트, indicator 색상',
-        howToUse: 'textColor, indicatorColor prop',
+        affects: 'Tab text and indicator color',
+        howToUse: 'textColor, indicatorColor props',
       },
       typography: {
         items: [
-          { token: 'button', role: '탭 텍스트 스타일' },
+          { token: 'button', role: 'Tab text style' },
         ],
-        affects: '탭 라벨 텍스트',
-        howToUse: '자동 적용',
+        affects: 'Tab label text',
+        howToUse: 'Applied automatically',
       },
       spacing: {
         items: [
-          { token: 'spacing(2)', role: '탭 내부 padding' },
-          { token: 'spacing(3)', role: '탭 간 간격' },
+          { token: 'spacing(2)', role: 'Tab inner padding' },
+          { token: 'spacing(3)', role: 'Spacing between tabs' },
         ],
-        affects: '탭 크기, 간격',
-        howToUse: '자동 적용',
+        affects: 'Tab size and spacing',
+        howToUse: 'Applied automatically',
       },
       transitions: {
         items: [
-          { token: 'duration.standard', role: 'indicator 이동 속도' },
+          { token: 'duration.standard', role: 'indicator movement speed' },
         ],
-        affects: 'indicator 슬라이드 애니메이션',
-        howToUse: '자동 적용',
+        affects: 'indicator slide animation',
+        howToUse: 'Applied automatically',
       },
     },
 
     stateTokens: {
-      hover: 'action.hover 배경',
-      selected: 'primary.main 텍스트, indicator',
+      hover: 'action.hover background',
+      selected: 'primary.main text and indicator',
       disabled: 'text.disabled',
     },
   },
@@ -488,49 +488,49 @@ const componentTokenMap = {
   // ============================================================
   Dialog: {
     name: 'Dialog',
-    description: '모달 창. 사용자의 주의를 끌어 중요한 정보나 액션을 요청합니다.',
+    description: 'A modal window. Draws the user attention to request important information or an action.',
     subComponents: ['DialogTitle', 'DialogContent', 'DialogActions'],
 
     tokens: {
       palette: {
         items: [
-          { token: 'background.paper', role: '다이얼로그 배경' },
-          { token: 'text.primary', role: '제목, 본문 텍스트' },
-          { token: 'text.secondary', role: '보조 텍스트' },
-          { token: 'divider', role: '섹션 구분선' },
-          { token: 'action.active', role: 'backdrop (어두운 오버레이)' },
+          { token: 'background.paper', role: 'Dialog background' },
+          { token: 'text.primary', role: 'Title and body text' },
+          { token: 'text.secondary', role: 'Secondary text' },
+          { token: 'divider', role: 'Section divider' },
+          { token: 'action.active', role: 'backdrop (dark overlay)' },
         ],
-        affects: '배경, 텍스트, backdrop 색상',
-        howToUse: 'sx prop으로 커스텀',
+        affects: 'Background, text, and backdrop color',
+        howToUse: 'Customize via the sx prop',
       },
       typography: {
         items: [
-          { token: 'h6', role: 'DialogTitle 텍스트' },
-          { token: 'body1', role: 'DialogContent 텍스트' },
+          { token: 'h6', role: 'DialogTitle text' },
+          { token: 'body1', role: 'DialogContent text' },
         ],
-        affects: '텍스트 스타일',
-        howToUse: '자동 적용',
+        affects: 'Text style',
+        howToUse: 'Applied automatically',
       },
       shape: {
         items: [
-          { token: 'borderRadius', role: '다이얼로그 모서리' },
+          { token: 'borderRadius', role: 'Dialog corners' },
         ],
-        affects: '외곽 모서리',
+        affects: 'Outer corners',
         howToUse: 'theme.shape.borderRadius',
       },
       shadows: {
         items: [
-          { token: 'elevation24', role: '다이얼로그 그림자' },
+          { token: 'elevation24', role: 'Dialog shadow' },
         ],
-        affects: '떠있는 효과',
-        howToUse: '자동 적용 (가장 높은 elevation)',
+        affects: 'Floating effect',
+        howToUse: 'Applied automatically (highest elevation)',
       },
       zIndex: {
         items: [
-          { token: 'modal (1300)', role: '레이어 순서' },
+          { token: 'modal (1300)', role: 'Layer order' },
         ],
-        affects: '다른 모든 요소 위에 표시',
-        howToUse: '자동 적용',
+        affects: 'Displayed above all other elements',
+        howToUse: 'Applied automatically',
       },
       spacing: {
         items: [
@@ -538,15 +538,15 @@ const componentTokenMap = {
           { token: 'spacing(3)', role: 'DialogContent padding' },
           { token: 'spacing(1)', role: 'DialogActions padding' },
         ],
-        affects: '내부 여백',
-        howToUse: '자동 적용',
+        affects: 'Inner padding',
+        howToUse: 'Applied automatically',
       },
       transitions: {
         items: [
-          { token: 'duration.enteringScreen', role: '열림 애니메이션' },
-          { token: 'duration.leavingScreen', role: '닫힘 애니메이션' },
+          { token: 'duration.enteringScreen', role: 'Open animation' },
+          { token: 'duration.leavingScreen', role: 'Close animation' },
         ],
-        affects: '나타남/사라짐 효과',
+        affects: 'Appear / disappear effect',
         howToUse: 'TransitionComponent prop',
       },
     },
@@ -554,56 +554,56 @@ const componentTokenMap = {
 };
 
 /**
- * 토큰 카테고리 메타데이터
- * 각 토큰 카테고리의 설명과 피그마 비유
+ * Token category metadata
+ * Description and Figma analogy for each token category
  */
 const tokenCategories = {
   palette: {
     name: 'Palette',
-    description: '색상 토큰',
+    description: 'Color tokens',
     figmaAnalogy: 'Color Styles / Variables',
     icon: '',
   },
   typography: {
     name: 'Typography',
-    description: '타이포그래피 토큰',
+    description: 'Typography tokens',
     figmaAnalogy: 'Text Styles',
     icon: '',
   },
   spacing: {
     name: 'Spacing',
-    description: '간격 토큰 (8px 기반)',
+    description: 'Spacing tokens (8px based)',
     figmaAnalogy: 'Auto Layout spacing',
     icon: '',
   },
   shape: {
     name: 'Shape',
-    description: '모양 토큰',
+    description: 'Shape tokens',
     figmaAnalogy: 'Corner Radius',
     icon: '',
   },
   shadows: {
     name: 'Shadows',
-    description: '그림자/Elevation 토큰',
+    description: 'Shadow / elevation tokens',
     figmaAnalogy: 'Drop Shadow Effects',
     icon: '',
   },
   transitions: {
     name: 'Transitions',
-    description: '전환 효과 토큰',
+    description: 'Transition tokens',
     figmaAnalogy: 'Smart Animate',
     icon: '',
   },
   zIndex: {
     name: 'Z-Index',
-    description: '레이어 순서',
+    description: 'Layer order',
     figmaAnalogy: 'Layer Order',
     icon: '',
   },
 };
 
 /**
- * 컴포넌트 목록 (순서대로)
+ * Component list (in order)
  */
 const componentList = [
   'Button',

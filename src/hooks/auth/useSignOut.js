@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
 /**
- * 로그아웃 훅
+ * Sign-out hook
  *
  * @returns {{ signOut: () => Promise<void>, loading: boolean }}
  */

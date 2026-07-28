@@ -1,24 +1,24 @@
 import { Box } from '@mui/material';
 
 /**
- * BentoGrid 컴포넌트
+ * BentoGrid component
  *
- * Apple 스타일의 벤토 박스 그리드 레이아웃.
- * CSS Grid를 활용하여 다양한 크기의 셀을 유연하게 배치한다.
+ * An Apple-style bento box grid layout.
+ * Uses CSS Grid to flexibly arrange cells of varying sizes.
  *
- * 동작 방식:
- * 1. columns prop에 따라 기본 그리드 열 개수가 설정됨
- * 2. BentoItem으로 각 셀의 span을 개별 지정
- * 3. rowHeight로 기본 행 높이를 설정하고 span에 따라 높이가 배수로 적용됨
- * 4. 반응형 브레이크포인트에서 열 개수가 자동 조정됨
+ * How it works:
+ * 1. The base number of grid columns is set by the columns prop
+ * 2. Each cell's span is specified individually via BentoItem
+ * 3. rowHeight sets the base row height, and height is applied as a multiple based on span
+ * 4. The number of columns adjusts automatically at responsive breakpoints
  *
  * Props:
- * @param {ReactNode} children - BentoItem 컴포넌트들 [Required]
- * @param {number} columns - 기본 열 개수 [Optional, 기본값: 4]
- * @param {number|string} gap - 셀 간 간격 [Optional, 기본값: 2]
- * @param {number|string} rowHeight - 기본 행 높이 [Optional, 기본값: '200px']
- * @param {boolean} isAutoRows - 자동 행 높이 여부 [Optional, 기본값: false]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {ReactNode} children - BentoItem components [Required]
+ * @param {number} columns - Base number of columns [Optional, default: 4]
+ * @param {number|string} gap - Gap between cells [Optional, default: 2]
+ * @param {number|string} rowHeight - Base row height [Optional, default: '200px']
+ * @param {boolean} isAutoRows - Whether to use automatic row height [Optional, default: false]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <BentoGrid columns={4} gap={2}>
@@ -40,7 +40,7 @@ export function BentoGrid({
   ...props
 }) {
   /**
-   * rowHeight를 CSS 값으로 변환
+   * Convert rowHeight to a CSS value
    */
   const getRowHeight = () => {
     if (typeof rowHeight === 'number') {
@@ -50,10 +50,10 @@ export function BentoGrid({
   };
 
   /**
-   * 반응형 열 개수 설정
-   * - xs: 1열
-   * - sm: 2열
-   * - md: columns / 2 (최소 2열)
+   * Set the responsive number of columns
+   * - xs: 1 column
+   * - sm: 2 columns
+   * - md: columns / 2 (minimum 2 columns)
    * - lg+: columns
    */
   const getResponsiveColumns = () => {
@@ -92,22 +92,22 @@ export function BentoGrid({
 }
 
 /**
- * BentoItem 컴포넌트
+ * BentoItem component
  *
- * BentoGrid 내에서 개별 셀의 크기와 span을 지정하는 컴포넌트.
+ * A component that specifies the size and span of an individual cell within a BentoGrid.
  *
- * 동작 방식:
- * 1. colSpan으로 가로 span 지정 (1-4)
- * 2. rowSpan으로 세로 span 지정 (1-3)
- * 3. 반응형 브레이크포인트에서 span이 자동 조정됨
+ * How it works:
+ * 1. colSpan specifies the horizontal span (1-4)
+ * 2. rowSpan specifies the vertical span (1-3)
+ * 3. The span adjusts automatically at responsive breakpoints
  *
  * Props:
- * @param {ReactNode} children - 셀 콘텐츠 [Required]
- * @param {number|object} colSpan - 열 span (1-4) 또는 반응형 객체 [Optional, 기본값: 1]
- * @param {number|object} rowSpan - 행 span (1-3) 또는 반응형 객체 [Optional, 기본값: 1]
- * @param {string} background - 배경색 [Optional]
- * @param {boolean} isContained - overflow hidden 적용 [Optional, 기본값: true]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {ReactNode} children - Cell content [Required]
+ * @param {number|object} colSpan - Column span (1-4) or a responsive object [Optional, default: 1]
+ * @param {number|object} rowSpan - Row span (1-3) or a responsive object [Optional, default: 1]
+ * @param {string} background - Background color [Optional]
+ * @param {boolean} isContained - Apply overflow hidden [Optional, default: true]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <BentoItem colSpan={2} rowSpan={2} background="primary.main">
@@ -127,9 +127,9 @@ export function BentoItem({
   ...props
 }) {
   /**
-   * span 값을 CSS grid-column/row 값으로 변환
-   * - 숫자: span N
-   * - 객체: 반응형 span
+   * Convert a span value to a CSS grid-column/row value
+   * - number: span N
+   * - object: responsive span
    */
   const getSpanValue = (span) => {
     if (typeof span === 'number') {

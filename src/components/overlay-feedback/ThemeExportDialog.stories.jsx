@@ -18,14 +18,14 @@ export default {
 const SAMPLE_PROJECT = allProjects[0];
 const SAMPLE_ANALYSIS = getAnalysisResult(SAMPLE_PROJECT.id)?.layers;
 
-/** 기본 — Editorial Minimal 프로젝트 샘플 */
+/** Default: Editorial Minimal project sample */
 export const Default = {
   render: () => {
     const [open, setOpen] = useState(true);
     return (
       <Box sx={ { minHeight: 400 } }>
         <Button variant="contained" onClick={ () => setOpen(true) }>
-          Export 다이얼로그 열기
+          Open Export Dialog
         </Button>
         <ThemeExportDialog
           open={ open }
@@ -39,7 +39,7 @@ export const Default = {
   },
 };
 
-/** Fintech Dashboard 프로젝트 */
+/** Fintech Dashboard project */
 export const DashboardProject = {
   render: () => {
     const project = allProjects[1];
@@ -59,7 +59,7 @@ export const DashboardProject = {
   },
 };
 
-/** Primary 컬러 누락 경고 */
+/** Missing primary color warning */
 export const MissingPrimaryWarning = {
   render: () => {
     const [open, setOpen] = useState(true);

@@ -32,8 +32,8 @@ const Logo = () => (
 /**
  * ## Default
  * 
- * 기본 GNB. 로고와 네비게이션 메뉴를 포함합니다.
- * 브레이크포인트(md) 미만에서 햄버거 메뉴로 전환됩니다.
+ * Default GNB. Includes the logo and navigation menu.
+ * Below the breakpoint (md), it switches to a hamburger menu.
  */
 export const Default = {
   render: () => (
@@ -41,7 +41,7 @@ export const Default = {
       <DocumentTitle
         title="GNB"
         status="Ready"
-        note="Global Navigation Bar - 반응형 헤더 + 드로어"
+        note="Global Navigation Bar: responsive header and drawer"
         brandName="Navigation"
         systemName="GNB"
         version="1.0"
@@ -59,7 +59,7 @@ export const Default = {
         />
         <Box sx={{ p: 4, bgcolor: 'grey.50', minHeight: 300 }}>
           <Typography color="text.secondary">
-            브라우저 너비를 줄여서 반응형 전환을 확인하세요.
+            Reduce the browser width to see the responsive transition.
           </Typography>
         </Box>
       </SectionContainer>
@@ -70,7 +70,7 @@ export const Default = {
 /**
  * ## Transparent Header
  * 
- * 투명 배경의 GNB. 히어로 섹션 위에 오버레이할 때 사용합니다.
+ * GNB with a transparent background. Use it when overlaying on top of a hero section.
  */
 export const Transparent = {
   render: () => (
@@ -78,7 +78,7 @@ export const Transparent = {
       <DocumentTitle
         title="GNB - Transparent"
         status="Ready"
-        note="투명 배경 + 블러 효과"
+        note="Transparent background with blur effect"
         brandName="Navigation"
         systemName="GNB"
         version="1.0"
@@ -119,8 +119,8 @@ export const Transparent = {
 /**
  * ## Ghost
  *
- * 배경 / 보더 / blur 모두 제거. 컨텐츠(로고 + 우측 슬롯)만 떠 있는 형태.
- * Hero 위 transparent overlay 보다 더 minimal — landing 페이지에 사용.
+ * Background, border, and blur all removed. Only the content (logo plus right slot) floats.
+ * More minimal than the transparent overlay on a hero. Use it on landing pages.
  */
 export const Ghost = {
   render: () => (
@@ -128,7 +128,7 @@ export const Ghost = {
       <DocumentTitle
         title="GNB - Ghost"
         status="Ready"
-        note="배경 / 보더 / blur 모두 제거 — 컨텐츠만 노출"
+        note="Background, border, and blur all removed (content only)"
         brandName="Navigation"
         systemName="GNB"
         version="1.0"
@@ -168,7 +168,7 @@ export const Ghost = {
 /**
  * ## With Persistent Elements
  *
- * 항상 표시되는 요소(검색바, 프로필 등)와 함께 사용합니다.
+ * Use it together with always-visible elements (search bar, profile, etc.).
  */
 export const WithPersistent = {
   render: () => (
@@ -176,7 +176,7 @@ export const WithPersistent = {
       <DocumentTitle
         title="GNB - With Persistent"
         status="Ready"
-        note="항상 표시되는 요소 포함"
+        note="Includes persistent elements"
         brandName="Navigation"
         systemName="GNB"
         version="1.0"
@@ -212,7 +212,7 @@ export const WithPersistent = {
         />
         <Box sx={{ p: 4, bgcolor: 'grey.50', minHeight: 300 }}>
           <Typography color="text.secondary">
-            프로필 아바타는 모바일에서도 항상 표시됩니다.
+            The profile avatar is always shown, even on mobile.
           </Typography>
         </Box>
       </SectionContainer>
@@ -223,7 +223,7 @@ export const WithPersistent = {
 /**
  * ## Custom Breakpoint
  * 
- * 브레이크포인트를 lg로 변경하여 더 넓은 화면에서 전환합니다.
+ * Change the breakpoint to lg so it switches on wider screens.
  */
 export const CustomBreakpoint = {
   render: () => (
@@ -231,7 +231,7 @@ export const CustomBreakpoint = {
       <DocumentTitle
         title="GNB - Custom Breakpoint"
         status="Ready"
-        note="breakpoint='lg' 설정"
+        note="breakpoint='lg' setting"
         brandName="Navigation"
         systemName="GNB"
         version="1.0"
@@ -250,7 +250,7 @@ export const CustomBreakpoint = {
         />
         <Box sx={{ p: 4, bgcolor: 'grey.50', minHeight: 300 }}>
           <Typography color="text.secondary">
-            lg(1200px) 미만에서 햄버거 메뉴로 전환됩니다.
+            Below lg (1200px), it switches to a hamburger menu.
           </Typography>
         </Box>
       </SectionContainer>
@@ -267,7 +267,7 @@ export const Props = {
       <DocumentTitle
         title="GNB Props"
         status="Ready"
-        note="GNB 컴포넌트 Props 문서"
+        note="GNB component props documentation"
         brandName="Navigation"
         systemName="GNB"
         version="1.0"
@@ -304,73 +304,73 @@ export const Props = {
                 <td><code>logo</code></td>
                 <td>node</td>
                 <td>-</td>
-                <td>로고 영역 (항상 표시)</td>
+                <td>Logo area (always visible)</td>
               </tr>
               <tr>
                 <td><code>navContent</code></td>
                 <td>node</td>
                 <td>-</td>
-                <td>네비게이션 콘텐츠 (반응형 전환 대상)</td>
+                <td>Navigation content (target of responsive transition)</td>
               </tr>
               <tr>
                 <td><code>persistent</code></td>
                 <td>node</td>
                 <td>-</td>
-                <td>항상 표시될 요소 (검색, 프로필 등)</td>
+                <td>Persistent elements (search, profile, etc.)</td>
               </tr>
               <tr>
                 <td><code>drawerHeader</code></td>
                 <td>node</td>
                 <td>logo</td>
-                <td>드로어 상단 커스텀 요소</td>
+                <td>Custom element at the top of the drawer</td>
               </tr>
               <tr>
                 <td><code>drawerFooter</code></td>
                 <td>node</td>
                 <td>-</td>
-                <td>드로어 하단 커스텀 요소</td>
+                <td>Custom element at the bottom of the drawer</td>
               </tr>
               <tr>
                 <td><code>breakpoint</code></td>
                 <td>'sm' | 'md' | 'lg'</td>
                 <td>'md'</td>
-                <td>반응형 전환 브레이크포인트</td>
+                <td>Responsive transition breakpoint</td>
               </tr>
               <tr>
                 <td><code>height</code></td>
                 <td>number</td>
                 <td>64</td>
-                <td>헤더 높이 (px)</td>
+                <td>Header height (px)</td>
               </tr>
               <tr>
                 <td><code>drawerWidth</code></td>
                 <td>number</td>
                 <td>280</td>
-                <td>드로어 너비 (px)</td>
+                <td>Drawer width (px)</td>
               </tr>
               <tr>
                 <td><code>hasBorder</code></td>
                 <td>boolean</td>
                 <td>true</td>
-                <td>헤더 하단 보더</td>
+                <td>Header bottom border</td>
               </tr>
               <tr>
                 <td><code>isSticky</code></td>
                 <td>boolean</td>
                 <td>true</td>
-                <td>헤더 고정 여부</td>
+                <td>Whether the header is sticky</td>
               </tr>
               <tr>
                 <td><code>isTransparent</code></td>
                 <td>boolean</td>
                 <td>false</td>
-                <td>투명 배경 + 블러 효과</td>
+                <td>Transparent background with blur effect</td>
               </tr>
               <tr>
                 <td><code>isGhost</code></td>
                 <td>boolean</td>
                 <td>false</td>
-                <td>배경 / 보더 / blur 모두 제거 (컨텐츠만 노출)</td>
+                <td>Background, border, and blur all removed (content only)</td>
               </tr>
             </tbody>
           </Box>

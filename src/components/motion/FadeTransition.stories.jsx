@@ -15,36 +15,36 @@ export default {
   argTypes: {
     isIn: {
       control: 'boolean',
-      description: '표시 여부 (true: 페이드 인, false: 페이드 아웃)',
+      description: 'Visibility (true: fade in, false: fade out)',
     },
     duration: {
       control: { type: 'number', min: 100, max: 3000, step: 100 },
-      description: '전환 시간 (밀리초)',
+      description: 'Transition duration (milliseconds)',
     },
     delay: {
       control: { type: 'number', min: 0, max: 2000, step: 100 },
-      description: '전환 지연 시간 (밀리초)',
+      description: 'Transition delay (milliseconds)',
     },
     direction: {
       control: 'select',
       options: ['none', 'up', 'down', 'left', 'right'],
-      description: '슬라이드 방향',
+      description: 'Slide direction',
     },
     distance: {
       control: { type: 'number', min: 0, max: 100, step: 4 },
-      description: '슬라이드 이동 거리 (px)',
+      description: 'Slide travel distance (px)',
     },
     easing: {
       control: 'text',
-      description: 'CSS 이징 함수',
+      description: 'CSS easing function',
     },
     isTriggerOnView: {
       control: 'boolean',
-      description: '뷰포트 진입 시 자동 트리거 여부',
+      description: 'Auto trigger on viewport entry',
     },
     threshold: {
       control: { type: 'range', min: 0, max: 1, step: 0.1 },
-      description: 'IntersectionObserver 감지 비율',
+      description: 'IntersectionObserver detection ratio',
     },
   },
 };
@@ -66,7 +66,7 @@ export const Default = {
   ),
 };
 
-/** 토글 버튼으로 페이드 인/아웃 전환 */
+/** Toggle button to switch between fade in and fade out */
 const ToggleDemo = () => {
   const [isIn, setIsIn] = useState(true);
 

@@ -12,15 +12,15 @@ export default {
   argTypes: {
     text: {
       control: 'text',
-      description: '표시할 텍스트 (". "으로 문장 분리)',
+      description: 'Text to display (sentences split by ". ")',
     },
     activeColor: {
       control: 'text',
-      description: '활성화된 글자 색상 (MUI 테마 토큰)',
+      description: 'Active character color (MUI theme token)',
     },
     inactiveColor: {
       control: 'text',
-      description: '비활성 글자 색상 (MUI 테마 토큰)',
+      description: 'Inactive character color (MUI theme token)',
     },
     variant: {
       control: 'select',
@@ -30,7 +30,7 @@ export default {
   },
 };
 
-/** 스크롤 영역 래퍼 */
+/** Scroll area wrapper */
 const ScrollArea = ({ children, height = '250vh' }) => (
   <Box sx={ { minHeight: height } }>
     <Box sx={ { height: '40vh' } } />

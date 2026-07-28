@@ -21,15 +21,15 @@ export default {
         component: `
 ## Switch [MUI]
 
-토글 스위치 컴포넌트입니다. 켜기/끄기 상태를 전환할 때 사용합니다.
+Toggle switch component. Used to switch between on and off states.
 
-### 사용 패턴
+### Usage Patterns
 
-| 패턴 | 설명 | 예시 |
+| Pattern | Description | Example |
 |------|------|------|
-| Basic | 기본 스위치 | \`<Switch />\` |
-| Labeled | 라벨이 있는 스위치 | \`<FormControlLabel label="라벨" control={<Switch />} />\` |
-| iOS Style | iOS 스타일 스위치 | 커스텀 스타일 적용 |
+| Basic | Basic switch | \`<Switch />\` |
+| Labeled | Switch with a label | \`<FormControlLabel label="Label" control={<Switch />} />\` |
+| iOS Style | iOS style switch | Custom styling applied |
         `,
       },
     },
@@ -38,7 +38,7 @@ export default {
     color: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'error', 'info', 'warning', 'default'],
-      description: '스위치 색상을 설정합니다.',
+      description: 'Sets the switch color.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
@@ -47,7 +47,7 @@ export default {
     size: {
       control: 'select',
       options: ['small', 'medium'],
-      description: '스위치 크기를 설정합니다.',
+      description: 'Sets the switch size.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'medium' },
@@ -55,7 +55,7 @@ export default {
     },
     disabled: {
       control: 'boolean',
-      description: '스위치를 비활성화합니다.',
+      description: 'Disables the switch.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -63,7 +63,7 @@ export default {
     },
     defaultChecked: {
       control: 'boolean',
-      description: '기본 스위치 상태를 설정합니다.',
+      description: 'Sets the default switch state.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -72,7 +72,7 @@ export default {
     edge: {
       control: 'select',
       options: ['start', 'end', false],
-      description: '스위치 가장자리 위치를 설정합니다.',
+      description: 'Sets the switch edge position.',
       table: {
         type: { summary: 'string | false' },
         defaultValue: { summary: 'false' },
@@ -81,7 +81,7 @@ export default {
   },
 };
 
-/** 기본 스위치 */
+/** Basic switch */
 export const Default = {
   args: {
     color: 'primary',
@@ -99,7 +99,7 @@ export const Default = {
   ),
 };
 
-/** 라벨이 있는 스위치 */
+/** Switch with a label */
 export const WithLabel = {
   render: () => {
     const [checked, setChecked] = useState(true);
@@ -112,13 +112,13 @@ export const WithLabel = {
             onChange={ (e) => setChecked(e.target.checked) }
           />
         }
-        label="알림 받기"
+        label="Receive notifications"
       />
     );
   },
 };
 
-/** 크기 비교 */
+/** Size comparison */
 export const Sizes = {
   render: () => (
     <Stack direction="row" spacing={ 2 } alignItems="center">
@@ -134,7 +134,7 @@ export const Sizes = {
   ),
 };
 
-/** 색상 변형 */
+/** Color variants */
 export const Colors = {
   render: () => (
     <Stack direction="row" spacing={ 1 } flexWrap="wrap" useFlexGap>
@@ -166,52 +166,52 @@ export const Colors = {
   ),
 };
 
-/** 비활성화 상태 */
+/** Disabled state */
 export const Disabled = {
   render: () => (
     <Stack spacing={ 1 }>
       <FormControlLabel
         control={ <Switch disabled /> }
-        label="비활성화 (Off)"
+        label="Disabled (Off)"
       />
       <FormControlLabel
         control={ <Switch disabled checked /> }
-        label="비활성화 (On)"
+        label="Disabled (On)"
       />
     </Stack>
   ),
 };
 
-/** 스위치 그룹 */
+/** Switch group */
 export const Group = {
   render: () => (
     <FormControl component="fieldset">
-      <FormLabel component="legend">알림 설정</FormLabel>
+      <FormLabel component="legend">Notification Settings</FormLabel>
       <FormGroup>
         <FormControlLabel
           control={ <Switch defaultChecked /> }
-          label="이메일 알림"
+          label="Email notifications"
         />
         <FormControlLabel
           control={ <Switch /> }
-          label="SMS 알림"
+          label="SMS notifications"
         />
         <FormControlLabel
           control={ <Switch defaultChecked /> }
-          label="푸시 알림"
+          label="Push notifications"
         />
       </FormGroup>
     </FormControl>
   ),
 };
 
-/** 라벨 위치 */
+/** Label placement */
 export const LabelPlacement = {
   render: () => (
     <Stack spacing={ 2 }>
       <FormControlLabel
         control={ <Switch /> }
-        label="End (기본)"
+        label="End (Default)"
         labelPlacement="end"
       />
       <FormControlLabel
@@ -233,7 +233,7 @@ export const LabelPlacement = {
   ),
 };
 
-/** 상태 텍스트 표시 */
+/** Status text display */
 export const WithStatusText = {
   render: () => {
     const [checked, setChecked] = useState(false);
@@ -255,7 +255,7 @@ export const WithStatusText = {
   },
 };
 
-/** 실제 사용 예시 - 설정 패널 */
+/** Real world example: settings panel */
 export const SettingsPanel = {
   render: () => {
     const [settings, setSettings] = useState({
@@ -289,21 +289,21 @@ export const SettingsPanel = {
     return (
       <Paper sx={ { p: 3, width: 400 } }>
         <Typography variant="h6" sx={ { mb: 2, fontWeight: 600 } }>
-          설정
+          Settings
         </Typography>
 
         <Typography variant="overline" color="text.secondary">
-          일반
+          General
         </Typography>
         <SettingItem
-          label="다크 모드"
-          description="어두운 테마를 사용합니다"
+          label="Dark Mode"
+          description="Use a dark theme"
           name="darkMode"
           checked={ settings.darkMode }
         />
         <SettingItem
-          label="자동 저장"
-          description="변경사항을 자동으로 저장합니다"
+          label="Auto Save"
+          description="Save changes automatically"
           name="autoSave"
           checked={ settings.autoSave }
         />
@@ -311,17 +311,17 @@ export const SettingsPanel = {
         <Divider sx={ { my: 2 } } />
 
         <Typography variant="overline" color="text.secondary">
-          알림
+          Notifications
         </Typography>
         <SettingItem
-          label="푸시 알림"
-          description="새로운 소식을 알림으로 받습니다"
+          label="Push Notifications"
+          description="Receive updates as notifications"
           name="notifications"
           checked={ settings.notifications }
         />
         <SettingItem
-          label="뉴스레터"
-          description="주간 뉴스레터를 이메일로 받습니다"
+          label="Newsletter"
+          description="Receive the weekly newsletter by email"
           name="newsletter"
           checked={ settings.newsletter }
         />
@@ -329,11 +329,11 @@ export const SettingsPanel = {
         <Divider sx={ { my: 2 } } />
 
         <Typography variant="overline" color="text.secondary">
-          개인정보
+          Privacy
         </Typography>
         <SettingItem
-          label="분석 데이터 수집"
-          description="서비스 개선을 위해 사용 데이터를 수집합니다"
+          label="Analytics Data Collection"
+          description="Collect usage data to improve the service"
           name="analytics"
           checked={ settings.analytics }
         />
@@ -342,7 +342,7 @@ export const SettingsPanel = {
   },
 };
 
-/** 실제 사용 예시 - 공개/비공개 토글 */
+/** Real world example: public/private toggle */
 export const VisibilityToggle = {
   render: () => {
     const [isPublic, setIsPublic] = useState(false);
@@ -352,12 +352,12 @@ export const VisibilityToggle = {
         <Box sx={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }>
           <Box>
             <Typography variant="subtitle1" sx={ { fontWeight: 600 } }>
-              { isPublic ? '공개' : '비공개' }
+              { isPublic ? 'Public' : 'Private' }
             </Typography>
             <Typography variant="body2" color="text.secondary">
               { isPublic
-                ? '모든 사용자가 볼 수 있습니다'
-                : '나만 볼 수 있습니다'
+                ? 'Visible to everyone'
+                : 'Only visible to you'
               }
             </Typography>
           </Box>

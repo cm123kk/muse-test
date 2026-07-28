@@ -3,8 +3,8 @@ import Box from '@mui/material/Box';
 import * as THREE from 'three';
 
 /**
- * 카메라 기준 wrap-around. pos 가 ±range 를 벗어나면 반대편으로 텔레포트하여
- * 같은 plane 갯수로 무한 갤러리 환각을 만든다.
+ * Camera-relative wrap-around. When pos moves outside ±range, it teleports to the
+ * opposite side, creating the illusion of an infinite gallery with the same number of planes.
  */
 function wrap(pos, camPos, range) {
   const size = range * 2;
@@ -16,24 +16,24 @@ function wrap(pos, camPos, range) {
 /**
  * FloatingImageGallery
  *
- * Three.js 기반 z-depth 갤러리. 무한 wrap-around 분포 + fog + 카메라 lerp + 마우스 패럴랙스.
- * 드래그 / 휠 / 호버 인터랙션 옵션화. 자식으로 오버레이 콘텐츠(타이포·CTA 등) 배치 가능.
+ * A Three.js-based z-depth gallery. Infinite wrap-around distribution + fog + camera lerp + mouse parallax.
+ * Drag / wheel / hover interactions are optional. You can place overlay content (typography, CTAs, and so on) as children.
  *
  * Props:
- * @param {string[]} images - plane 텍스처로 사용할 URL 배열 [Required]
- * @param {string} backgroundColor - scene 배경 + fog 색 [Optional, 기본값: '#FCFCFF']
- * @param {number} count - 생성할 plane 개수 (images 보다 크면 순환) [Optional, 기본값: 60]
- * @param {object} range - { x, y, z } wrap 박스 절반 크기 [Optional]
- * @param {number} planeSize - plane 한 변 크기(px) [Optional, 기본값: 380]
- * @param {number} fogNear - fog 시작 거리 [Optional, 기본값: 100]
- * @param {number} fogFar - fog 끝 거리 [Optional, 기본값: 6000]
- * @param {number} initialZ - 카메라 초기 Z [Optional, 기본값: 1500]
- * @param {boolean} isInteractive - 드래그/휠로 카메라 조작 [Optional, 기본값: true]
- * @param {boolean} hasParallax - 마우스 위치로 카메라 살짝 회전 [Optional, 기본값: true]
- * @param {number} autoDriftZ - 매 프레임 카메라가 -Z 로 자동 이동하는 속도 (px/frame) [Optional, 기본값: 0]
- * @param {number} dpr - devicePixelRatio cap (1 = 성능 우선) [Optional, 기본값: 1]
- * @param {object} sx - 외곽 컨테이너 스타일 [Optional]
- * @param {node} children - 3D 위에 얹는 React 오버레이 [Optional]
+ * @param {string[]} images - Array of URLs used as plane textures [Required]
+ * @param {string} backgroundColor - Scene background + fog color [Optional, default: '#FCFCFF']
+ * @param {number} count - Number of planes to create (cycles when larger than images) [Optional, default: 60]
+ * @param {object} range - { x, y, z } half-size of the wrap box [Optional]
+ * @param {number} planeSize - Size of one side of a plane (px) [Optional, default: 380]
+ * @param {number} fogNear - Fog start distance [Optional, default: 100]
+ * @param {number} fogFar - Fog end distance [Optional, default: 6000]
+ * @param {number} initialZ - Initial camera Z [Optional, default: 1500]
+ * @param {boolean} isInteractive - Control the camera via drag/wheel [Optional, default: true]
+ * @param {boolean} hasParallax - Slightly rotate the camera based on mouse position [Optional, default: true]
+ * @param {number} autoDriftZ - Speed at which the camera auto-moves toward -Z each frame (px/frame) [Optional, default: 0]
+ * @param {number} dpr - devicePixelRatio cap (1 = performance first) [Optional, default: 1]
+ * @param {object} sx - Outer container styles [Optional]
+ * @param {node} children - React overlay placed on top of the 3D scene [Optional]
  *
  * Example usage:
  * <FloatingImageGallery
@@ -63,7 +63,7 @@ export function FloatingImageGallery({
   children,
 }) {
   const containerRef = useRef(null);
-  // 자주 바뀌는 인터랙션 옵션은 ref 로 동기화 (effect 재실행 회피)
+  // Sync frequently changing interaction options through a ref (avoids re-running the effect)
   const optsRef = useRef({ isInteractive, hasParallax, autoDriftZ });
   useLayoutEffect(() => {
     optsRef.current = { isInteractive, hasParallax, autoDriftZ };
@@ -135,7 +135,7 @@ export function FloatingImageGallery({
       frames.push({ mesh, material });
     }
 
-    // 인터랙션 상태
+    // Interaction state
     const mouse = new THREE.Vector2();
     const target = { x: 0, y: 0, z: initialZ };
     const current = { x: 0, y: 0, z: initialZ };

@@ -12,7 +12,7 @@ const toNum = (v, fallback) => {
   return Number.isFinite(n) ? n : fallback;
 };
 
-/** 그리드 mini-diagram — 컬럼 수 시각화 */
+/** Grid mini-diagram - visualizes the number of columns */
 const GridDiagram = ({ columns = 4 }) => {
   const cols = Math.max(1, Math.min(toNum(columns, 4), 24));
   return (
@@ -36,9 +36,9 @@ const GridDiagram = ({ columns = 4 }) => {
   );
 };
 
-/** 스페이싱 mini-diagram — 두 블록 사이 간격 시각화 */
+/** Spacing mini-diagram - visualizes the gap between two blocks */
 const SpacingDiagram = ({ px = 16 }) => {
-  // 4 ~ 64px 범위 안에 매핑
+  // Map into the 4 to 64px range
   const pxNum = toNum(px, 16);
   const visible = Math.max(2, Math.min(pxNum / 2, 24));
   return (
@@ -61,7 +61,7 @@ const SpacingDiagram = ({ px = 16 }) => {
   );
 };
 
-/** 컨테이너 mini-diagram — 너비 비율 시각화 */
+/** Container mini-diagram - visualizes the width ratio */
 const ContainerDiagram = ({ ratio = 0.7 }) => {
   const r = Math.max(0.05, Math.min(toNum(ratio, 0.7), 1));
   return (
@@ -110,20 +110,20 @@ const formatLayoutValue = (token) => {
     case 'container':
       return `${Math.round((typeof token.ratio === 'number' ? token.ratio : 0) * 100)}% · max ${safeText(token.maxWidth ?? '-')}`;
     default:
-      // LLM schema 위반 (e.g. DTCG-style nested $value object) 방어
+      // Guard against LLM schema violations (e.g. DTCG-style nested $value object)
       return safeText(token.value);
   }
 };
 
 /**
- * LayoutTokenPreview 컴포넌트
+ * LayoutTokenPreview component
  *
- * 레이아웃 토큰(grid/spacing/container)의 mini-diagram 프리뷰.
+ * A mini-diagram preview of layout tokens (grid/spacing/container).
  *
  * Props:
  * @param {array} tokens - [{ id, label, kind: 'grid'|'spacing'|'container', columns?, gap?, px?, ratio?, maxWidth?, isEnabled, emphasis }] [Required]
  * @param {function} onChange - (id, patch) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <LayoutTokenPreview
@@ -154,7 +154,7 @@ export function LayoutTokenPreview({ tokens, onChange, references = [], sx }) {
               trailing={ hasRationale ? (
                 <IconButton
                   size="small"
-                  aria-label={ isExpanded ? '결정 근거 닫기' : '결정 근거 보기' }
+                  aria-label={ isExpanded ? 'Hide rationale' : 'Show rationale' }
                   onClick={ () => setExpandedId(isExpanded ? null : token.id) }
                   sx={ {
                     transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',

@@ -3,7 +3,7 @@ import { supabase as defaultClient } from '../../lib/supabase';
 import { normalizeSupabaseError } from '../../utils/supabaseError';
 
 /**
- * 현재 사용자의 user_settings 조회
+ * Fetch the current user's user_settings
  *
  * @param {{ client?: object }} [options]
  * @returns {{ data: import('../../types/database').UserSettings|null, loading: boolean, error: object|null, refetch: () => void }}
@@ -39,7 +39,7 @@ export function useUserSettings({ client = defaultClient } = {}) {
 }
 
 /**
- * user_settings 수정
+ * Update user_settings
  *
  * @param {{ client?: object }} [options]
  * @returns {{ updateUserSettings: (patch: Partial<import('../../types/database').UserSettings>) => Promise<{ ok: boolean, data?: object }>, loading: boolean, error: object|null }}
@@ -53,7 +53,7 @@ export function useUpdateUserSettings({ client = defaultClient } = {}) {
     setError(null);
     try {
       const { data: { user } } = await client.auth.getUser();
-      if (!user) throw new Error('로그인이 필요합니다');
+      if (!user) throw new Error('You need to be signed in');
       const { data, error: err } = await client
         .from('user_settings')
         .update(patch)

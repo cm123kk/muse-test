@@ -22,20 +22,20 @@ import {
   TOKEN_LAYER_CATEGORIES as MUSE_LAYERS,
 } from '../../data/muse/layers.js';
 
-const STEPS = ['모드', '제목+의도', '레퍼런스', '활용 노트', '분석'];
+const STEPS = ['Mode', 'Title + Intent', 'References', 'Usage Notes', 'Analysis'];
 
 const MODE_DEFS = [
   {
     mode: 'concept',
-    title: '컨셉 디자인',
-    subtitle: '레퍼런스로 디자인 컨셉을 빠르게 만들고 싶을 때',
-    description: '레퍼런스 번들을 클로드 디자인에 그대로 입력하세요. 무드·컬러·타이포가 합성된 단일 프롬프트로 컨셉 시안을 빠르게 받아볼 수 있습니다.',
+    title: 'Concept Design',
+    subtitle: 'When you want to quickly shape a design concept from references',
+    description: 'Feed your reference bundle straight into Claude Design. A single prompt that fuses mood, color, and typography returns concept drafts fast.',
   },
   {
     mode: 'system',
-    title: '디자인 시스템',
-    subtitle: '개발 환경에서 계속 관리할 디자인 시스템 토큰 구성',
-    description: '레퍼런스에서 추출한 색·타이포·레이아웃 토큰을 DTCG / MUI theme 형식으로 export 합니다. 새 프로젝트 저장소에 그대로 커밋해 시스템의 출발점으로 쓰세요.',
+    title: 'Design System',
+    subtitle: 'Build design system tokens to maintain in your dev environment',
+    description: 'Export the color, typography, and layout tokens extracted from references as DTCG / MUI theme formats. Commit them straight into a new project repo as your system starting point.',
   },
 ];
 
@@ -111,21 +111,21 @@ function reducer(state, action) {
 }
 
 /**
- * ProjectCreateWizard 컴포넌트 (TP2~TP5 통합)
+ * ProjectCreateWizard component (TP2-TP5 integrated)
  *
- * MUSE 프로젝트 생성 5-스텝 위자드.
- * Step 0: 모드 선택 (TP2) → Step 1: 기본 정보 + 의도 시드 (TP3)
- * → Step 2: 레퍼런스 선택 + 레이어 chip (TP4)
- * → Step 3: 분석 직전 확인 박스 (TP5)
- * → Step 4: 분석 진행
+ * MUSE project creation 5-step wizard.
+ * Step 0: mode selection (TP2) -> Step 1: basic info + intent seed (TP3)
+ * -> Step 2: reference selection + layer chips (TP4)
+ * -> Step 3: pre-analysis confirmation box (TP5)
+ * -> Step 4: analysis in progress
  *
  * Props:
- * @param {array} archive - 아카이브 레퍼런스 [Required]
- * @param {array} recommended - 추천 레퍼런스 (선택) [Optional]
+ * @param {array} archive - Archive references [Required]
+ * @param {array} recommended - Recommended references (optional) [Optional]
  * @param {function} recommendedLoader - ({ intent, type, mode }) => Promise<recommended[]>
  * @param {function} onAnalyze - (payload, onProgress) => Promise<{tokens, visualDirection}>
- * @param {function} onComplete - 완료 시 콜백
- * @param {function} onCancel - 취소
+ * @param {function} onComplete - Callback on completion
+ * @param {function} onCancel - Cancel
  * @param {object} sx
  *
  * Example usage:
@@ -142,11 +142,11 @@ export function ProjectCreateWizard({
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // T2 자동 호출 (Step 2 진입 시)
+  // T2 auto-call (on entering Step 2)
   const [loadedRecommended, setLoadedRecommended] = useState(null);
   const [isLoadingRecommended, setIsLoadingRecommended] = useState(false);
-  const [referenceLayerMap, setReferenceLayerMap] = useState({}); // T2 referenceLayer 결과 캐시
-  const [suggestingRefIds, setSuggestingRefIds] = useState({}); // { [refId]: true } — Step 3 노트 자동 생성 중
+  const [referenceLayerMap, setReferenceLayerMap] = useState({}); // Cache of T2 referenceLayer results
+  const [suggestingRefIds, setSuggestingRefIds] = useState({}); // { [refId]: true }: Step 3 note auto-generation in progress
 
   const handleSuggestNote = async (ref, useLayers) => {
     if (!ref?.id || suggestingRefIds[ref.id]) return;
@@ -163,7 +163,7 @@ export function ProjectCreateWizard({
       }
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.warn('[suggest-ref-note] 실패', e?.message || e);
+      console.warn('[suggest-ref-note] failed', e?.message || e);
     } finally {
       setSuggestingRefIds((prev) => {
         const next = { ...prev };
@@ -178,7 +178,7 @@ export function ProjectCreateWizard({
       setIsLoadingRecommended(true);
       Promise.resolve(recommendedLoader({ ...state.form }))
         .then((result) => {
-          // result 가 array 면 list, 객체면 { recommended, referenceLayer } 형태 가정
+          // If result is an array it's a list; if it's an object, assume { recommended, referenceLayer } shape
           if (Array.isArray(result)) {
             setLoadedRecommended(result);
           } else if (result && Array.isArray(result.recommended)) {
@@ -202,21 +202,21 @@ export function ProjectCreateWizard({
   const isStep0Valid = !!state.form.mode;
   const isStep1Valid = state.form.name.trim().length > 0 && state.form.intent.trim().length > 0;
   const isStep2Valid = state.selectedIds.length > 0;
-  // Step 3 = ref별 활용 노트. 모두 선택 (0자 OK) — 부분 차용 의도가 없으면 비워둬도 진행.
+  // Step 3 = per-ref usage notes. All optional (0 chars OK): if there's no partial-borrow intent, you can leave it blank and continue.
   const isStep3Valid = true;
 
   const handleStartAnalysis = async () => {
     dispatch({ type: 'GOTO', payload: 4 });
     dispatch({ type: 'ANALYSIS_START' });
 
-    // selectedRefs를 selectedIds 기준으로 정렬, useLayers 누락 항목은 자동(빈 배열)
+    // Order selectedRefs by selectedIds; items missing useLayers default to auto (empty array)
     const enrichedSelectedRefs = state.selectedIds.map((id) => {
       const existing = state.selectedRefs.find((r) => r.id === id);
       return existing || { id, useLayers: [] };
     });
 
     const payload = {
-      form: state.form,                  // referenceNotes 포함
+      form: state.form,                  // includes referenceNotes
       selectedIds: state.selectedIds,
       selectedRefs: enrichedSelectedRefs,
       mode: state.form.mode,
@@ -260,7 +260,7 @@ export function ProjectCreateWizard({
   };
 
   const renderStep = () => {
-    // Step 0 — 모드 선택 (TP2)
+    // Step 0: mode selection (TP2)
     if (state.step === 0) {
       return (
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 5, maxWidth: 1200, mx: 'auto', width: '100%' } }>
@@ -293,28 +293,28 @@ export function ProjectCreateWizard({
       );
     }
 
-    // Step 1 — 기본 정보 + TP3 의도 시드
+    // Step 1: basic info + TP3 intent seed
     if (state.step === 1) {
       return (
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4, maxWidth: 720, mx: 'auto', width: '100%' } }>
           <TextField
             value={ state.form.name }
             onChange={ (e) => dispatch({ type: 'UPDATE_FORM', payload: { name: e.target.value } }) }
-            placeholder="프로젝트 이름 (예: Editorial Portfolio)"
-            label="프로젝트 이름"
+            placeholder="Project name (e.g. Editorial Portfolio)"
+            label="Project name"
             fullWidth
           />
           <IntentGuideField
             value={ state.form.intent }
             onChange={ (next) => dispatch({ type: 'SET_INTENT', payload: next }) }
-            label="한 줄 의도"
-            placeholder="예: 차분한 다크 무드의 핀테크 대시보드, 데이터 가독성 우선"
+            label="One-line intent"
+            placeholder="e.g. Calm dark-mood fintech dashboard, data readability first"
           />
         </Box>
       );
     }
 
-    // Step 2 — 레퍼런스 + TP4 레이어 chip
+    // Step 2: references + TP4 layer chips
     if (state.step === 2) {
       return (
         <Box>
@@ -322,7 +322,7 @@ export function ProjectCreateWizard({
             <Box sx={ { display: 'flex', alignItems: 'center', gap: 1, mb: 2 } }>
               <CircularProgress size={ 14 } />
               <Typography variant="caption" color="text.secondary">
-                의도 + 모드({ state.form.mode })에 맞는 레퍼런스를 추천하는 중…
+                Finding references that match your intent and mode ({ state.form.mode })…
               </Typography>
             </Box>
           ) }
@@ -344,7 +344,7 @@ export function ProjectCreateWizard({
       );
     }
 
-    // Step 3 — 레퍼런스별 활용 노트 (각 ref 의 어느 부분을 차용할지)
+    // Step 3: per-reference usage notes (which part of each ref to borrow)
     if (state.step === 3) {
       const selectedFullRefs = state.selectedIds
         .map((id) => archive.find((a) => a.id === id))
@@ -365,11 +365,11 @@ export function ProjectCreateWizard({
       return (
         <Box sx={ { maxWidth: 880, mx: 'auto', width: '100%' } }>
           <Typography variant="h5" sx={ { fontWeight: 700, mb: 1.5 } }>
-            레퍼런스별 활용 노트
+            Usage notes per reference
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={ { mb: 5 } }>
-            각 레퍼런스의 어느 부분을 차용할지 자유롭게 적어주세요. 비워둬도 진행 가능합니다.
-            노트는 분석 시 우선 반영되고, 산출물의 paste block 에 ref별 매칭 단서로 들어갑니다.
+            Jot down which part of each reference you want to borrow. You can leave it blank and still continue.
+            Notes take priority during analysis and appear in the output paste block as per-reference matching cues.
           </Typography>
           <Box sx={ { display: 'flex', flexDirection: 'column', gap: 3 } }>
             { selectedFullRefs.map((ref) => {
@@ -431,7 +431,7 @@ export function ProjectCreateWizard({
                       </Box>
                     ) : (
                       <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mb: 1 } }>
-                        차용 layer: 자동 (전체)
+                        Borrow layers: auto (all)
                       </Typography>
                     ) }
                     <Box sx={ { position: 'relative' } }>
@@ -441,7 +441,7 @@ export function ProjectCreateWizard({
                         multiline
                         minRows={ 2 }
                         maxRows={ 3 }
-                        placeholder={ '예: hero 영역 색감만 차용 / 우측 사이드바 구조 모방' }
+                        placeholder={ 'e.g. borrow only the hero color / mimic the right sidebar structure' }
                         value={ note }
                         onChange={ (e) =>
                           dispatch({ type: 'SET_REFERENCE_NOTE', payload: { id: ref.id, text: e.target.value } })
@@ -449,11 +449,11 @@ export function ProjectCreateWizard({
                         inputProps={ { maxLength: 100, style: { paddingRight: 32 } } }
                         helperText={ `${note.length} / 100` }
                       />
-                      <Tooltip title={ suggestingRefIds[ref.id] ? '생성 중…' : 'AI 로 활용 노트 자동 생성' } placement="top">
+                      <Tooltip title={ suggestingRefIds[ref.id] ? 'Generating…' : 'Auto-generate usage note with AI' } placement="top">
                         <span style={ { position: 'absolute', top: 4, right: 4 } }>
                           <IconButton
                             size="small"
-                            aria-label="AI 노트 자동 생성"
+                            aria-label="Auto-generate note with AI"
                             disabled={ !!suggestingRefIds[ref.id] }
                             onClick={ () => handleSuggestNote(ref, layers) }
                             sx={ {
@@ -488,7 +488,7 @@ export function ProjectCreateWizard({
             }) }
             { selectedFullRefs.length === 0 && (
               <Typography variant="body2" color="text.secondary" sx={ { textAlign: 'center', py: 4 } }>
-                Step 2 에서 레퍼런스를 먼저 선택해주세요.
+                Select references in Step 2 first.
               </Typography>
             ) }
           </Box>
@@ -496,11 +496,11 @@ export function ProjectCreateWizard({
       );
     }
 
-    // Step 4 — 분석
+    // Step 4: analysis
     return (
       <Box sx={ { display: 'flex', justifyContent: 'center' } }>
         <AnalysisProgress
-          title={ `"${state.form.name}" 분석 중` }
+          title={ `Analyzing "${state.form.name}"` }
           intent={ state.form.intent }
           layers={ state.analysisLayers }
           onCancel={ state.analysisState === 'running' ? onCancel : undefined }
@@ -558,7 +558,7 @@ export function ProjectCreateWizard({
           <Box
             sx={ {
               width: '100%',
-              // Step 2(레퍼런스 선택)는 상단 정렬, 나머지는 viewport 중앙 정렬
+              // Step 2 (reference selection) is top-aligned; the rest are centered in the viewport
               my: state.step === 2 ? 0 : 'auto',
             } }
           >
@@ -601,7 +601,7 @@ export function ProjectCreateWizard({
             onClick={ state.step > 0 ? () => dispatch({ type: 'BACK' }) : onCancel }
             disabled={ state.analysisState === 'running' }
           >
-            { state.step > 0 ? '이전' : '취소' }
+            { state.step > 0 ? 'Back' : 'Cancel' }
           </Button>
 
           { state.step === 0 && (
@@ -612,7 +612,7 @@ export function ProjectCreateWizard({
               onClick={ () => dispatch({ type: 'NEXT' }) }
               disabled={ !isStep0Valid }
             >
-              다음
+              Next
             </Button>
           ) }
 
@@ -624,7 +624,7 @@ export function ProjectCreateWizard({
               onClick={ () => dispatch({ type: 'NEXT' }) }
               disabled={ !isStep1Valid }
             >
-              다음
+              Next
             </Button>
           ) }
 
@@ -636,7 +636,7 @@ export function ProjectCreateWizard({
               onClick={ () => dispatch({ type: 'NEXT' }) }
               disabled={ !isStep2Valid }
             >
-              다음 · { state.selectedIds.length }장
+              Next · { state.selectedIds.length }
             </Button>
           ) }
 
@@ -648,7 +648,7 @@ export function ProjectCreateWizard({
               onClick={ handleStartAnalysis }
               disabled={ !isStep3Valid }
             >
-              분석 시작 →
+              Start Analysis →
             </Button>
           ) }
 
@@ -664,7 +664,7 @@ export function ProjectCreateWizard({
                 analysis: null,
               }) }
             >
-              프로젝트 열기
+              Open Project
             </Button>
           ) }
         </Box>

@@ -1,30 +1,30 @@
 import { Box } from '@mui/material';
 
 /**
- * SplitScreen 컴포넌트
+ * SplitScreen component
  *
- * 화면을 두 영역으로 분할하는 레이아웃 컴포넌트.
- * 기본 50:50 분할부터 커스텀 비율까지 지원한다.
+ * A layout component that splits the screen into two regions.
+ * Supports everything from a default 50:50 split to custom ratios.
  *
- * 동작 방식:
- * 1. direction에 따라 가로(row) 또는 세로(column) 분할
- * 2. ratio로 분할 비율 조정 (기본 50:50)
- * 3. stackAt 브레이크포인트에서 스택 레이아웃으로 전환
- * 4. 각 영역에 개별 배경, 스타일 적용 가능
+ * How it works:
+ * 1. Splits horizontally (row) or vertically (column) based on direction
+ * 2. Adjusts the split ratio via ratio (default 50:50)
+ * 3. Switches to a stacked layout at the stackAt breakpoint
+ * 4. Each region can have its own background and styles
  *
  * Props:
- * @param {ReactNode} left - 왼쪽(또는 상단) 영역 콘텐츠 [Required]
- * @param {ReactNode} right - 오른쪽(또는 하단) 영역 콘텐츠 [Required]
- * @param {string} direction - 분할 방향 ('row' | 'column') [Optional, 기본값: 'row']
- * @param {string|number[]} ratio - 분할 비율 ('50:50' | '60:40' | '70:30' | [number, number]) [Optional, 기본값: '50:50']
- * @param {number} gap - 영역 간 간격 [Optional, 기본값: 0]
- * @param {string} stackAt - 스택 전환 브레이크포인트 ('xs' | 'sm' | 'md' | 'lg' | 'none') [Optional, 기본값: 'sm']
- * @param {string} stackOrder - 스택 시 순서 ('normal' | 'reverse') [Optional, 기본값: 'normal']
- * @param {string} minHeight - 최소 높이 [Optional]
- * @param {boolean} isFullHeight - 100vh 높이 적용 [Optional, 기본값: false]
- * @param {object} leftSx - 왼쪽 영역 추가 스타일 [Optional]
- * @param {object} rightSx - 오른쪽 영역 추가 스타일 [Optional]
- * @param {object} sx - 컨테이너 추가 스타일 [Optional]
+ * @param {ReactNode} left - Content for the left (or top) region [Required]
+ * @param {ReactNode} right - Content for the right (or bottom) region [Required]
+ * @param {string} direction - Split direction ('row' | 'column') [Optional, default: 'row']
+ * @param {string|number[]} ratio - Split ratio ('50:50' | '60:40' | '70:30' | [number, number]) [Optional, default: '50:50']
+ * @param {number} gap - Gap between regions [Optional, default: 0]
+ * @param {string} stackAt - Stacking breakpoint ('xs' | 'sm' | 'md' | 'lg' | 'none') [Optional, default: 'sm']
+ * @param {string} stackOrder - Order when stacked ('normal' | 'reverse') [Optional, default: 'normal']
+ * @param {string} minHeight - Minimum height [Optional]
+ * @param {boolean} isFullHeight - Apply 100vh height [Optional, default: false]
+ * @param {object} leftSx - Additional styles for the left region [Optional]
+ * @param {object} rightSx - Additional styles for the right region [Optional]
+ * @param {object} sx - Additional container styles [Optional]
  *
  * Example usage:
  * <SplitScreen
@@ -56,16 +56,16 @@ export function SplitScreen({
   ...props
 }) {
   /**
-   * ratio prop을 flex 비율로 변환
-   * - 문자열 ('50:50') → [50, 50]
-   * - 배열 → 그대로 사용
+   * Convert the ratio prop to a flex ratio
+   * - string ('50:50') -> [50, 50]
+   * - array -> used as is
    */
   const getRatios = () => {
     if (Array.isArray(ratio)) {
       return ratio;
     }
 
-    // 프리셋 비율
+    // Preset ratios
     const presets = {
       '50:50': [50, 50],
       '60:40': [60, 40],
@@ -80,7 +80,7 @@ export function SplitScreen({
       return presets[ratio];
     }
 
-    // 커스텀 문자열 파싱
+    // Parse custom string
     if (typeof ratio === 'string' && ratio.includes(':')) {
       return ratio.split(':').map(Number);
     }
@@ -91,7 +91,7 @@ export function SplitScreen({
   const [leftRatio, rightRatio] = getRatios();
 
   /**
-   * 반응형 flex-direction 설정
+   * Set responsive flex-direction
    */
   const getResponsiveDirection = () => {
     if (stackAt === 'none') {
@@ -111,7 +111,7 @@ export function SplitScreen({
   };
 
   /**
-   * 반응형 flex 값 설정
+   * Set responsive flex values
    */
   const getResponsiveFlex = (ratioValue) => {
     if (stackAt === 'none') {
@@ -169,17 +169,17 @@ export function SplitScreen({
 }
 
 /**
- * StickySection 컴포넌트
+ * StickySection component
  *
- * SplitScreen과 함께 사용하여 한쪽 영역을 sticky로 고정.
- * 스크롤 시 반대편 콘텐츠가 스크롤되는 동안 고정 유지.
+ * Used together with SplitScreen to make one region sticky.
+ * Stays fixed while the content on the opposite side scrolls.
  *
  * Props:
- * @param {ReactNode} children - 섹션 콘텐츠 [Required]
- * @param {string} position - sticky 위치 ('top' | 'bottom') [Optional, 기본값: 'top']
- * @param {string|number} offset - top/bottom 오프셋 [Optional, 기본값: 0]
- * @param {string} height - 섹션 높이 [Optional, 기본값: '100vh']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {ReactNode} children - Section content [Required]
+ * @param {string} position - Sticky position ('top' | 'bottom') [Optional, default: 'top']
+ * @param {string|number} offset - Top/bottom offset [Optional, default: 0]
+ * @param {string} height - Section height [Optional, default: '100vh']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <SplitScreen
@@ -218,17 +218,17 @@ export function StickySection({
 }
 
 /**
- * SplitOverlay 컴포넌트
+ * SplitOverlay component
  *
- * SplitScreen 영역에 오버레이 효과를 적용하는 래퍼.
+ * A wrapper that applies an overlay effect to a SplitScreen region.
  *
  * Props:
- * @param {ReactNode} children - 콘텐츠 [Required]
- * @param {string} background - 배경 이미지 URL 또는 CSS 값 [Optional]
- * @param {string|number} overlay - 오버레이 색상 또는 불투명도 [Optional]
- * @param {string} align - 콘텐츠 수직 정렬 [Optional, 기본값: 'center']
- * @param {string} justify - 콘텐츠 수평 정렬 [Optional, 기본값: 'center']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {ReactNode} children - Content [Required]
+ * @param {string} background - Background image URL or CSS value [Optional]
+ * @param {string|number} overlay - Overlay color or opacity [Optional]
+ * @param {string} align - Vertical alignment of content [Optional, default: 'center']
+ * @param {string} justify - Horizontal alignment of content [Optional, default: 'center']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <SplitScreen

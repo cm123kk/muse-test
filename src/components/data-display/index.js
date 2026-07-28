@@ -1,24 +1,24 @@
 /**
  * Data Display Components
  *
- * 구조화된 데이터 시각화 컴포넌트 모음.
- * MUSE 프로젝트에서는 레이어별 토큰 편집 UI primitive가 이곳에 배치된다.
+ * A collection of structured data visualization components.
+ * In the MUSE project, the per-layer token editing UI primitives live here.
  */
 
-// TokenListItem - 토큰 편집 공통 행 (preview + label + value + emphasis + on/off)
+// TokenListItem - shared token editing row (preview + label + value + emphasis + on/off)
 export { TokenListItem } from './TokenListItem.jsx';
 
-// MUSE 레이어별 프리뷰 — TokenListItem을 반복 사용하는 high-level components
+// MUSE per-layer previews - high-level components that reuse TokenListItem
 export { ColorSwatchList } from './ColorSwatchList.jsx';
 export { TypographyPreview } from './TypographyPreview.jsx';
 export { LayoutTokenPreview } from './LayoutTokenPreview.jsx';
 export { GradientPreview } from './GradientPreview.jsx';
 
-// DESIGN.md (Google Labs alpha spec) preview. system 결과 화면 + components live render + scale 시각화
+// DESIGN.md (Google Labs alpha spec) preview. system result screen + live component render + scale visualization
 export { DesignMdPreview } from './DesignMdPreview.jsx';
 
-// AnalysisLayerTabs — T3 system 분석 결과를 레이어 탭(CategoryTab + 프리뷰 5종)으로 묶은 합성 컴포넌트
+// AnalysisLayerTabs - a composite component that bundles T3 system analysis results into layer tabs (CategoryTab + 5 previews)
 export { AnalysisLayerTabs } from './AnalysisLayerTabs.jsx';
 
-// LayerAnalysisStrip — T1 레이어별 진행 strip (overlay 아닌 stack 흐름)
+// LayerAnalysisStrip - T1 per-layer progress strip (stack flow, not an overlay)
 export { LayerAnalysisStrip } from './LayerAnalysisStrip.jsx';

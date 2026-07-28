@@ -24,12 +24,12 @@ export default {
         component: `
 ## StyledParagraph
 
-왼쪽 장식 라인과 Drop Cap을 지원하는 인용/강조 문단 컴포넌트.
+A quote/emphasis paragraph component that supports a left decoration line and a Drop Cap.
 
-### 용도
-- 인용문 강조
-- 섹션 도입부 텍스트
-- 중요 정보 하이라이트
+### Use Cases
+- Emphasize quotations
+- Section introduction text
+- Highlight important information
         `,
       },
     },
@@ -37,7 +37,7 @@ export default {
   argTypes: {
     children: {
       control: { type: 'text' },
-      description: '문단 텍스트',
+      description: 'Paragraph text',
     },
     variant: {
       control: { type: 'select' },
@@ -46,21 +46,21 @@ export default {
     },
     dropCap: {
       control: { type: 'boolean' },
-      description: '첫 글자 확대 (Drop Cap, 2줄 높이, 자동 float)',
+      description: 'Enlarge first character (Drop Cap, 2 line height, automatic float)',
     },
     styleColor: {
       control: { type: 'select' },
       options: ['primary.main', 'secondary.main', 'text.primary', 'text.secondary', 'error.main', 'warning.main', 'success.main'],
-      description: 'Drop Cap 및 장식 라인 색상',
+      description: 'Drop Cap and decoration line color',
     },
     align: {
       control: { type: 'select' },
       options: ['left', 'center', 'right', 'justify'],
-      description: '텍스트 정렬',
+      description: 'Text alignment',
     },
     maxWidth: {
       control: { type: 'number' },
-      description: '최대 너비 (ch 단위)',
+      description: 'Maximum width (ch unit)',
     },
   },
 };
@@ -69,10 +69,10 @@ const sampleText = {
   short: 'Design systems enable teams to build better products faster by making design reusable.',
   medium: 'A design system is a collection of reusable components, guided by clear standards, that can be assembled together to build any number of applications. It serves as a single source of truth for product teams.',
   long: 'Typography is the art and technique of arranging type to make written language legible, readable, and appealing when displayed. The arrangement of type involves selecting typefaces, point sizes, line lengths, line-spacing, and letter-spacing, and adjusting the space between pairs of letters. The term typography is also applied to the style, arrangement, and appearance of the letters, numbers, and symbols created by the process.',
-  korean: '디자인 시스템은 재사용 가능한 컴포넌트와 명확한 표준으로 구성된 집합으로, 어떤 수의 애플리케이션이든 구축할 수 있습니다. 제품 팀을 위한 단일 진실 공급원(Single Source of Truth) 역할을 합니다.',
+  korean: 'A design system is a collection of reusable components with clear standards that can build any number of applications. It serves as a single source of truth for product teams.',
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     children: sampleText.medium,
@@ -84,7 +84,7 @@ export const Default = {
   },
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -101,11 +101,11 @@ export const Documentation = {
           StyledParagraph
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          왼쪽 장식 라인과 Drop Cap을 지원하는 인용/강조 문단 컴포넌트입니다.
-          styleColor로 장식 라인과 Drop Cap 색상을 동시에 제어합니다.
+          A quote/emphasis paragraph component that supports a left decoration line and a Drop Cap.
+          styleColor controls both the decoration line and Drop Cap color at once.
         </Typography>
 
-        <SectionTitle title="Props" description="StyledParagraph 컴포넌트의 Props 목록입니다." />
+        <SectionTitle title="Props" description="List of props for the StyledParagraph component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -121,7 +121,7 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>children</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>문단 텍스트 (필수)</TableCell>
+                <TableCell>Paragraph text (required)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>variant</TableCell>
@@ -133,49 +133,49 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>dropCap</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>첫 글자 확대 (Drop Cap, 2줄 높이, 자동 float)</TableCell>
+                <TableCell>Enlarge first character (Drop Cap, 2 line height, automatic float)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>styleColor</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>&apos;primary.main&apos;</TableCell>
-                <TableCell>Drop Cap 및 장식 라인 색상</TableCell>
+                <TableCell>Drop Cap and decoration line color</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>maxWidth</TableCell>
                 <TableCell>number | string</TableCell>
                 <TableCell>65</TableCell>
-                <TableCell>최대 너비 (ch 단위 또는 CSS 값)</TableCell>
+                <TableCell>Maximum width (ch unit or CSS value)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>align</TableCell>
                 <TableCell>&apos;left&apos; | &apos;center&apos; | &apos;right&apos; | &apos;justify&apos;</TableCell>
                 <TableCell>&apos;left&apos;</TableCell>
-                <TableCell>텍스트 정렬</TableCell>
+                <TableCell>Text alignment</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Basic Usage" description="기본 사용 예시입니다." />
+        <SectionTitle title="Basic Usage" description="Basic usage example." />
         <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
           <StyledParagraph>
             { sampleText.medium }
           </StyledParagraph>
         </Box>
 
-        <SectionTitle title="Drop Cap" description="첫 글자가 2줄 높이로 확대됩니다." />
+        <SectionTitle title="Drop Cap" description="The first character is enlarged to 2 line height." />
         <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
           <StyledParagraph dropCap>
             { sampleText.long }
           </StyledParagraph>
         </Box>
 
-        <SectionTitle title="Style Color" description="styleColor로 장식 라인과 Drop Cap 색상을 동시에 제어합니다." />
+        <SectionTitle title="Style Color" description="styleColor controls both the decoration line and Drop Cap color at once." />
         <Stack spacing={ 4 }>
           <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
             <Typography variant="caption" sx={ { mb: 1, display: 'block', color: 'text.secondary' } }>
-              primary.main (기본값)
+              primary.main (default)
             </Typography>
             <StyledParagraph dropCap styleColor="primary.main">
               { sampleText.medium }
@@ -199,28 +199,28 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="PullQuote" description="저자 정보를 포함한 인용문 컴포넌트입니다." />
+        <SectionTitle title="PullQuote" description="A quote component that includes author information." />
         <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
           <PullQuote author="Steve Jobs">
             Design is not just what it looks like and feels like. Design is how it works.
           </PullQuote>
         </Box>
 
-        <SectionTitle title="PullQuote with Drop Cap" description="Drop Cap이 적용된 인용문입니다." />
+        <SectionTitle title="PullQuote with Drop Cap" description="A quote with Drop Cap applied." />
         <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
           <PullQuote author="Dieter Rams" dropCap styleColor="secondary.main">
             Good design is as little design as possible. Less, but better, because it concentrates on the essential aspects.
           </PullQuote>
         </Box>
 
-        <SectionTitle title="Korean Text" description="한글 텍스트 예시입니다." />
+        <SectionTitle title="Long Form Text" description="Long form paragraph example." />
         <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
           <StyledParagraph dropCap>
             { sampleText.korean }
           </StyledParagraph>
         </Box>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -232,12 +232,12 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          {`// 기본 사용
+          {`// Basic usage
 <StyledParagraph>
   Your quote text here...
 </StyledParagraph>
 
-// Drop Cap과 색상 지정
+// Drop Cap and color specification
 <StyledParagraph dropCap styleColor="secondary.main">
   Lorem ipsum dolor sit amet...
 </StyledParagraph>

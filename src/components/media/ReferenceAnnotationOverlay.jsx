@@ -5,17 +5,17 @@ import { alpha, useTheme } from '@mui/material/styles';
 /**
  * ReferenceAnnotationOverlay
  *
- * 레퍼런스 이미지 hover 시 외곽 코너 브래킷 + 스캔 라인 + 가장자리 어노테이션 칩
- * 으로 "AI detection" 톤을 표현. 실제 bbox 좌표는 사용하지 않고 이미지 1장 자체를
- * detection 대상으로 다룬다.
+ * On reference image hover, expresses an "AI detection" tone with outer corner brackets +
+ * a scan line + edge annotation chips. It does not use real bbox coordinates; it treats the
+ * single image itself as the detection target.
  *
- * 모든 사이즈에서 타이틀/태그/컬러 모두 노출. 외부 부착이라 작은 썸네일도 가독성 OK.
+ * Title/tags/colors are all shown at every size. Because it attaches to the outside, even small thumbnails stay readable.
  *
  * Props:
- * @param {{ title?: string, tags?: string[], colors?: string[] }} tokens - 표시할 데이터 [Optional]
- * @param {boolean} isActive - 활성화 여부 (entry 트리거) [Required]
- * @param {number} size - 컨테이너 한 변(px) [Required]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {{ title?: string, tags?: string[], colors?: string[] }} tokens - Data to display [Optional]
+ * @param {boolean} isActive - Active state (entry trigger) [Required]
+ * @param {number} size - Size of one side of the container (px) [Required]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  *  <ReferenceAnnotationOverlay tokens={ tokens } isActive size={ 120 } />
@@ -42,7 +42,7 @@ export function ReferenceAnnotationOverlay({ tokens, isActive, size, sx }) {
         ...sx,
       } }
     >
-      {/* 코너 브래킷 4개 */}
+      {/* 4 corner brackets */}
       { CORNERS.map((c) => (
         <Box
           key={ c.key }
@@ -67,7 +67,7 @@ export function ReferenceAnnotationOverlay({ tokens, isActive, size, sx }) {
         />
       )) }
 
-      {/* 스캔 라인 */}
+      {/* Scan line */}
       { isActive && (
         <Box
           sx={ {
@@ -86,7 +86,7 @@ export function ReferenceAnnotationOverlay({ tokens, isActive, size, sx }) {
         />
       ) }
 
-      {/* 좌상단 타이틀 칩 (이미지 외부) */}
+      {/* Top-left title chip (outside the image) */}
       { showTitle && (
         <Box
           sx={ {
@@ -118,7 +118,7 @@ export function ReferenceAnnotationOverlay({ tokens, isActive, size, sx }) {
         </Box>
       ) }
 
-      {/* 하단 태그 칩 라인 (이미지 외부) */}
+      {/* Bottom tag chip row (outside the image) */}
       { showTags && (
         <Box
           sx={ {
@@ -158,7 +158,7 @@ export function ReferenceAnnotationOverlay({ tokens, isActive, size, sx }) {
         </Box>
       ) }
 
-      {/* 우측 세로 컬러 스와치 (이미지 외부) */}
+      {/* Right-side vertical color swatches (outside the image) */}
       { showColors && (
         <Box
           sx={ {

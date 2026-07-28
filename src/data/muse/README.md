@@ -1,33 +1,33 @@
 # MUSE Dummy Data
 
-`docs/muse/02-ux-flow.md` 의 데이터 모델을 그대로 반영한 더미 데이터 세트.
-Storybook 페이지 템플릿(`ArchivePage`, `ProjectListPage`, `ProjectDetailPage`, `SettingsPage`, `ProjectCreateWizard`, `ReferencePicker`)이 모두 이 디렉토리에서 데이터를 import한다.
+A dummy data set that directly reflects the data model in `docs/muse/02-ux-flow.md`.
+The Storybook page templates (`ArchivePage`, `ProjectListPage`, `ProjectDetailPage`, `SettingsPage`, `ProjectCreateWizard`, `ReferencePicker`) all import their data from this directory.
 
-## 파일 구조
+## File structure
 
-| 파일 | 역할 |
+| File | Role |
 |------|------|
-| `schemas.js` | JSDoc typedef. IDE 자동완성용. 런타임 값 없음 |
-| `references.js` | Reference 28건 — `dummyImage/reference{N}.jpg` 정적 import로 연결 |
-| `projects.js` | Project 4건 + id 맵 + thumbnail 조립 버전 |
-| `analysisResults.js` | 프로젝트별 5-layer AnalysisResult |
-| `userSettings.js` | 기본 설정 값 |
-| `dummyImage/` | 실제 레퍼런스 이미지 (reference1.jpg ~ reference28.jpg / jpeg) |
+| `schemas.js` | JSDoc typedefs. For IDE autocomplete. No runtime values |
+| `references.js` | 28 References - linked via static import of `dummyImage/reference{N}.jpg` |
+| `projects.js` | 4 Projects + id map + thumbnail-assembled version |
+| `analysisResults.js` | Per-project 5-layer AnalysisResult |
+| `userSettings.js` | Default settings values |
+| `dummyImage/` | Actual reference images (reference1.jpg to reference28.jpg / jpeg) |
 | `index.js` | barrel export |
 
-## Storybook 데이터 확인
+## Checking data in Storybook
 
-- **`MUSE/Data/References`** — 전체 목록/스키마/그리드/id 조회 3가지 뷰 제공
+- **`MUSE/Data/References`** - provides 3 views: full list/schema/grid/id lookup
 
-## 이미지 교체 방식
+## How to replace images
 
-### 1) 같은 파일명 유지
+### 1) Keep the same filename
 
-`dummyImage/reference1.jpg` 등의 파일명 그대로 내용만 바꾸면 코드 수정 없음. 프로젝트 전체가 자동 반영.
+Swap the contents of `dummyImage/reference1.jpg` and the like while keeping the filename, and no code change is needed. The whole project reflects it automatically.
 
-### 2) 이미지 추가
+### 2) Add an image
 
-새 이미지 파일을 `dummyImage/`에 넣고 `references.js` 상단의 import 구문 + `IMAGES` 배열에만 추가.
+Put a new image file in `dummyImage/` and add it only to the import statements at the top of `references.js` and the `IMAGES` array.
 
 ```js
 import ref29 from './dummyImage/reference29.jpg';
@@ -35,17 +35,17 @@ import ref29 from './dummyImage/reference29.jpg';
 const IMAGES = [..., ref28, ref29];
 ```
 
-`references` 배열 길이가 자동으로 늘어나며, 모든 스토리/페이지가 새 길이를 반영한다.
+The length of the `references` array grows automatically, and all stories/pages reflect the new length.
 
-### 3) 프로젝트 카드 썸네일
+### 3) Project card thumbnails
 
-`projects.js`의 `projectsWithThumbnails`가 Reference 썸네일을 자동 파생. 별도 교체 불필요.
+`projectsWithThumbnails` in `projects.js` auto-derives Reference thumbnails. No separate replacement needed.
 
-### 4) 키비주얼 (프로젝트 상세)
+### 4) Key visual (project detail)
 
-`analysisResults.js`의 `buildKeyVisuals`가 프로젝트의 referenceIds에서 썸네일을 참조.
+`buildKeyVisuals` in `analysisResults.js` references thumbnails from the project's referenceIds.
 
-## 사용 예
+## Usage example
 
 ```jsx
 import {

@@ -15,12 +15,12 @@ export default {
   },
 };
 
-/** 기본 - Theme 트리 탐색기 */
+/** Default - theme tree explorer */
 export const Default = {
   render: () => {
     const theme = useTheme();
 
-    // theme 객체에서 순환 참조와 함수를 제외한 주요 키만 추출
+    // Extract only the key theme entries, excluding circular references and functions
     const themeStructure = {
       palette: {
         primary: theme.palette.primary,
@@ -103,7 +103,7 @@ export const Default = {
             Theme Structure
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={ { mb: 3 } }>
-            클릭하여 펼치기/접기 | <code>src/styles/theme.js</code>
+            Click to expand or collapse | <code>src/styles/theme.js</code>
           </Typography>
 
           <Box sx={ { p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 } }>
@@ -123,9 +123,9 @@ export const Default = {
         <Divider sx={ { my: 3 } } />
 
           <Typography variant="body2" color="text.secondary">
-            이 구조는 피그마의 Local Variables 패널과 유사합니다.
-            각 카테고리(palette, typography 등)가 Variable Collection이고,
-            그 안의 값들이 개별 Variable입니다.
+            This structure is similar to Figma's Local Variables panel.
+            Each category (palette, typography, and so on) is a Variable Collection,
+            and the values inside it are individual Variables.
           </Typography>
         </PageContainer>
       </>
@@ -133,7 +133,7 @@ export const Default = {
   },
 };
 
-/** 테이블 뷰 - 주요 토큰 요약 */
+/** Table view - summary of key tokens */
 export const TableView = {
   name: 'Table View',
   render: () => {
@@ -142,7 +142,7 @@ export const TableView = {
     const tables = [
       {
         title: 'palette',
-        description: '색상 토큰',
+        description: 'Color tokens',
         data: [
           { key: 'primary.main', value: theme.palette.primary.main },
           { key: 'primary.light', value: theme.palette.primary.light },
@@ -161,7 +161,7 @@ export const TableView = {
       },
       {
         title: 'typography',
-        description: '타이포그래피 토큰',
+        description: 'Typography tokens',
         data: [
           { key: 'fontSize', value: theme.typography.fontSize },
           { key: 'h1.fontSize', value: theme.typography.h1.fontSize },
@@ -177,7 +177,7 @@ export const TableView = {
       },
       {
         title: 'spacing',
-        description: '간격 토큰 (8px 기반)',
+        description: 'Spacing tokens (8px based)',
         data: [
           { key: 'spacing(1)', value: theme.spacing(1) },
           { key: 'spacing(2)', value: theme.spacing(2) },
@@ -189,14 +189,14 @@ export const TableView = {
       },
       {
         title: 'shape',
-        description: '모양 토큰',
+        description: 'Shape tokens',
         data: [
           { key: 'borderRadius', value: `${theme.shape.borderRadius}px` },
         ],
       },
       {
         title: 'breakpoints',
-        description: '반응형 분기점',
+        description: 'Responsive breakpoints',
         data: Object.entries(theme.breakpoints.values).map(([key, value]) => ({
           key,
           value: `${value}px`,
@@ -204,7 +204,7 @@ export const TableView = {
       },
       {
         title: 'zIndex',
-        description: '레이어 순서',
+        description: 'Layer order',
         data: Object.entries(theme.zIndex).map(([key, value]) => ({
           key,
           value,
@@ -227,7 +227,7 @@ export const TableView = {
             Token Tables
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={ { mb: 4 } }>
-            주요 토큰을 테이블 형태로 확인합니다.
+            Review the key tokens in table form.
           </Typography>
 
           { tables.map((table) => (

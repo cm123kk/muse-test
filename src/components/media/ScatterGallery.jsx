@@ -3,35 +3,35 @@ import Box from '@mui/material/Box';
 import { ReferenceAnnotationOverlay } from './ReferenceAnnotationOverlay.jsx';
 
 /**
- * ScatterGallery 컴포넌트
+ * ScatterGallery component
  *
- * 이미지를 컨테이너 전체에 흩뿌리는 2D 무드보드. 추가로 외부 progressRef(0~1) 가
- * 주어지면 진행도에 따라 jittered scatter ↔ 두 줄 horizontal flow 사이를
- * 연속 lerp 한다 (단일 RAF 안에서 일체화).
+ * A 2D moodboard that scatters images across the whole container. Additionally, when an external
+ * progressRef (0~1) is provided, it continuously lerps between a jittered scatter and a two-row
+ * horizontal flow based on the progress (unified within a single RAF).
  *
- * - 분포: jittered grid + seeded RNG (deterministic)
- * - flow: i % 2 로 두 줄(상단/하단), 각 줄 반대 방향 + 다른 속도로 무한 흐름
- * - 마우스 parallax: 진행도 0 일 때만 풀 적용, 진행도 ↑ → 약화
+ * - Distribution: jittered grid + seeded RNG (deterministic)
+ * - Flow: two rows (top/bottom) via i % 2, each row flowing infinitely in the opposite direction + at a different speed
+ * - Mouse parallax: fully applied only at progress 0, weakening as progress increases
  *
  * Props:
- * @param {string[]} images - 이미지 URL 배열 [Required]
- * @param {React.MutableRefObject<number>} progressRef - 외부 진행도 ref (0~1). 없으면 항상 0 (scatter only) [Optional]
- * @param {number} cursorRadius - 마우스 영향 falloff scale(px). 거리 = cursorRadius 인 썸네일은 maxShift × 0.5 만큼 시프트 (모든 썸네일이 차등 반응) [Optional, 기본값: 220]
- * @param {number} maxShift - 최대 시프트(px) — 마우스 위치(거리 0)에서의 변위 상한 [Optional, 기본값: 14]
- * @param {number} seed - 분포 시드 [Optional, 기본값: 42]
- * @param {number} gridCols - jittered grid 열 [Optional, 기본값: 6]
- * @param {number} gridRows - jittered grid 행 [Optional, 기본값: 5]
- * @param {number} thumbnailMin - 썸네일 최소 한 변(px) [Optional, 기본값: 64]
- * @param {number} thumbnailMax - 썸네일 최대 한 변(px) [Optional, 기본값: 132]
- * @param {number} centerKeepout - 중앙 보호 반경(px). 이 안에는 썸네일 배치 안 됨 [Optional, 기본값: 0]
- * @param {boolean} hasTooltip - hover 시 추출 토큰(컬러) 툴팁 [Optional, 기본값: false]
- * @param {number} tooltipDelay - 툴팁 진입 delay(ms) [Optional, 기본값: 200]
- * @param {Object<string,{title?:string,colors?:string[],tags?:string[]}>} tokensBySrc - 정적 토큰 매핑 [Optional]
- * @param {number} flowGap - flow 모드 줄 안 이미지 간격(px) [Optional, 기본값: 24]
- * @param {number} flowRows - flow 모드 줄 갯수 (화면을 가득 메우려고 4 권장) [Optional, 기본값: 4]
- * @param {number[]} flowSpeeds - 줄 별 속도(px/s, 양수=오른쪽으로). flowRows 와 길이 일치 [Optional, 기본값: [-34, 42, -38, 46]]
- * @param {node} children - 중앙 오버레이 슬롯 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string[]} images - Array of image URLs [Required]
+ * @param {React.MutableRefObject<number>} progressRef - External progress ref (0~1). Always 0 if absent (scatter only) [Optional]
+ * @param {number} cursorRadius - Mouse influence falloff scale (px). A thumbnail at distance = cursorRadius shifts by maxShift x 0.5 (every thumbnail responds proportionally) [Optional, default: 220]
+ * @param {number} maxShift - Maximum shift (px): the displacement upper bound at the mouse position (distance 0) [Optional, default: 14]
+ * @param {number} seed - Distribution seed [Optional, default: 42]
+ * @param {number} gridCols - jittered grid columns [Optional, default: 6]
+ * @param {number} gridRows - jittered grid rows [Optional, default: 5]
+ * @param {number} thumbnailMin - Minimum thumbnail side (px) [Optional, default: 64]
+ * @param {number} thumbnailMax - Maximum thumbnail side (px) [Optional, default: 132]
+ * @param {number} centerKeepout - Center keepout radius (px). No thumbnails are placed inside it [Optional, default: 0]
+ * @param {boolean} hasTooltip - Extracted-token (color) tooltip on hover [Optional, default: false]
+ * @param {number} tooltipDelay - Tooltip entry delay (ms) [Optional, default: 200]
+ * @param {Object<string,{title?:string,colors?:string[],tags?:string[]}>} tokensBySrc - Static token mapping [Optional]
+ * @param {number} flowGap - Spacing between images within a flow-mode row (px) [Optional, default: 24]
+ * @param {number} flowRows - Number of flow-mode rows (4 recommended to fill the screen) [Optional, default: 4]
+ * @param {number[]} flowSpeeds - Speed per row (px/s, positive = rightward). Length matches flowRows [Optional, default: [-34, 42, -38, 46]]
+ * @param {node} children - Center overlay slot [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  *   const progressRef = useScrollProgress(wrapperRef);
@@ -69,7 +69,7 @@ export function ScatterGallery({
   const onHoverIndexRef = useRef(onHoverIndex);
   useEffect(() => { onHoverIndexRef.current = onHoverIndex; }, [onHoverIndex]);
 
-  /* container size 추적 */
+  /* Track container size */
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -81,11 +81,11 @@ export function ScatterGallery({
     return () => ro.disconnect();
   }, []);
 
-  /* placements 산출 — 이미지 1 장 = placement 1 개 (duplicate 없음).
-   *   1) jittered grid + centerKeepout 으로 scatter 좌표 산출
-   *   2) round-robin 으로 줄에 분배 (i % flowRows)
-   *   3) 줄 별 laneSpan ≥ size.w + 2 × thumbnailMax 가 되도록 균등 gap 계산
-   *      → 줄 안 이미지가 sparse 하게 펼쳐지고, wrap 은 항상 화면 밖에서 발생
+  /* Compute placements: 1 image = 1 placement (no duplicates).
+   *   1) Compute scatter coordinates via jittered grid + centerKeepout
+   *   2) Distribute into rows round-robin (i % flowRows)
+   *   3) Compute an even gap per row so that laneSpan >= size.w + 2 x thumbnailMax
+   *      -> images within a row spread out sparsely, and wrap always happens off-screen
    */
   const placements = useMemo(() => {
     if (!size.w || !size.h || !images?.length) return [];
@@ -103,7 +103,7 @@ export function ScatterGallery({
         const jxRaw = pad + rng() * (1 - pad * 2);
         const jyRaw = pad + rng() * (1 - pad * 2);
         const sz = thumbnailMin + rng() * (thumbnailMax - thumbnailMin);
-        /* noOverlap: 썸네일이 셀 밖으로 나가지 않도록 jitter 클램프 */
+        /* noOverlap: clamp jitter so thumbnails don't spill outside the cell */
         const mX = noOverlap ? Math.min((sz / 2 + 8) / cellW, 0.4) : pad;
         const mY = noOverlap ? Math.min((sz / 2 + 8) / cellH, 0.4) : pad;
         const jx = noOverlap ? Math.max(mX, Math.min(1 - mX, jxRaw)) : jxRaw;
@@ -124,7 +124,7 @@ export function ScatterGallery({
     }
     if (!out.length) return [];
 
-    /* 줄 별 laneSpan / 균등 gap. wrap 화면 밖 보장. */
+    /* Per-row laneSpan / even gap. Guarantees wrap stays off-screen. */
     const minLaneSpan = size.w + 2 * thumbnailMax;
     for (let r = 0; r < flowRows; r += 1) {
       const ofRow = out.filter((p) => p.row === r);
@@ -145,7 +145,7 @@ export function ScatterGallery({
   const hoverIdxRef = useRef(-1);
   useEffect(() => { hoverIdxRef.current = hoverIdx; }, [hoverIdx]);
 
-  /* 단일 RAF — scatter↔flow lerp + cursor parallax */
+  /* Single RAF: scatter <-> flow lerp + cursor parallax */
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return undefined;
@@ -170,7 +170,7 @@ export function ScatterGallery({
     const tick = () => {
       if (!active) return;
       const p = progressRef?.current ?? 0;
-      // 탄력 ease — scatter↔flow 보간이 약간 당겼다가 오버슈트 후 정착
+      // Elastic ease: the scatter <-> flow interpolation pulls back slightly, overshoots, then settles
       const easedP = easeInOutBack(p);
       const t = (performance.now() - startT) / 1000;
 
@@ -178,17 +178,17 @@ export function ScatterGallery({
         const node = itemRefs.current[i];
         if (!node) return;
 
-        // flow 위치 (lane 안 cursor 가 시간에 따라 흐름) — laneSpan 으로 wrap
+        // Flow position (the cursor within the lane flows over time), wrapped by laneSpan
         const speed = flowSpeeds[pl.row] ?? 0;
         const span = pl.flowLaneSpan || 1;
         const rawPos = pl.flowLaneStart + t * speed;
         const wrapped = ((rawPos % span) + span) % span;
-        // lane 을 viewport 가운데에 배치 → laneSpan ≥ W + 2*tileMax 이므로 wrap 은 항상 화면 밖
+        // Place the lane at the viewport center -> since laneSpan >= W + 2*tileMax, wrap is always off-screen
         const flowX = wrapped - span / 2 + size.w / 2 - pl.size / 2;
         const rowY = ((pl.row + 0.5) / flowRows) * size.h;
         const flowY = rowY - pl.size / 2;
 
-        // scatter↔flow 보간 (delta 만 transform 으로) — top/left 은 scatter 정적
+        // scatter <-> flow interpolation (only the delta goes into transform); top/left stay static at scatter
         const deltaX = (flowX - pl.x) * easedP;
         const deltaY = (flowY - pl.y) * easedP;
 
@@ -196,7 +196,7 @@ export function ScatterGallery({
         let ty = 0;
         if (mx > -9000) {
           if (depthParallax) {
-            /* depth parallax: 마우스 방향으로 이미지 이동, 클수록(가까울수록) 더 많이 이동 */
+            /* depth parallax: move images toward the mouse; larger (closer) ones move more */
             const normX = mx / size.w - 0.5;
             const normY = my / size.h - 0.5;
             const depth = (pl.size - thumbnailMin) / Math.max(thumbnailMax - thumbnailMin, 1);
@@ -204,7 +204,7 @@ export function ScatterGallery({
             tx = normX * k;
             ty = normY * k;
           } else {
-            /* repulsion parallax (기존) — 거리 기반 반발 */
+            /* repulsion parallax (existing): distance-based repulsion */
             const ccx = pl.x + deltaX + pl.size / 2;
             const ccy = pl.y + deltaY + pl.size / 2;
             const ddx = ccx - mx;
@@ -233,14 +233,14 @@ export function ScatterGallery({
     };
   }, [placements, cursorRadius, maxShift, size.w, size.h, flowSpeeds, flowRows, progressRef, depthParallax, thumbnailMin, thumbnailMax]);
 
-  /* hoverIdx → 외부 onHoverIndex 콜백 (placement의 imgIdx 전달, 없으면 -1) */
+  /* hoverIdx -> external onHoverIndex callback (passes the placement's imgIdx, or -1 if none) */
   useEffect(() => {
     if (!onHoverIndexRef.current) return;
     const imgIdx = hoverIdx >= 0 && placements[hoverIdx] ? placements[hoverIdx].imgIdx : -1;
     onHoverIndexRef.current(imgIdx);
   }, [hoverIdx, placements]);
 
-  /* tooltip delay — flow 모드(p > 0.5) 에서는 비활성 */
+  /* tooltip delay: disabled in flow mode (p > 0.5) */
   useEffect(() => {
     if (!hasTooltip) return undefined;
     const p = progressRef?.current ?? 0;
@@ -271,8 +271,8 @@ export function ScatterGallery({
         ...sx,
       } }
     >
-      {/* scattered thumbnails — flow 시점에는 transform 으로 이동.
-          외곽 wrapper 는 overflow 해제 (annotation 칩이 이미지 외부로 부착) */}
+      {/* scattered thumbnails: move via transform during flow.
+          The outer wrapper releases overflow (annotation chips attach outside the image) */}
       { placements.map((p, i) => {
         const tokens = tokensBySrc?.[p.src];
         const isAnnotated = hasTooltip && tooltipIdx === i && tokens;
@@ -338,8 +338,8 @@ export function ScatterGallery({
 }
 
 /* ============================================
- * easeInOutBack — 양 끝에서 살짝 overshoot. https://easings.net/#easeInOutBack
- * scatter↔flow 보간에 탄력감을 주기 위해 사용.
+ * easeInOutBack: slight overshoot at both ends. https://easings.net/#easeInOutBack
+ * Used to give the scatter <-> flow interpolation an elastic feel.
  * ============================================ */
 function easeInOutBack(x) {
   const c1 = 1.70158;
@@ -350,7 +350,7 @@ function easeInOutBack(x) {
 }
 
 /* ============================================
- * 작은 seeded RNG — Mulberry32
+ * Small seeded RNG: Mulberry32
  * https://stackoverflow.com/a/47593316
  * ============================================ */
 function mulberry32(seed) {

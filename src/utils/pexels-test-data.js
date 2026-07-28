@@ -1,35 +1,35 @@
 /**
  * MUSE Design Inspiration Test Data
  *
- * 디자이너를 위한 시각적 영감 아카이빙 솔루션 MUSE용 테스트 데이터입니다.
- * Pexels API에서 제공하는 무료 스톡 미디어를 사용합니다.
+ * Test data for MUSE, a visual inspiration archiving solution for designers.
+ * Uses free stock media provided by the Pexels API.
  *
- * ## 이미지 카테고리
- * - abstract: 추상 아트, 플루이드, 패턴
- * - fineart: 파인 아트, 유화, 캔버스
- * - illustration: 디지털 일러스트레이션, 아트워크
- * - poster: 포스터, 타이포그래피, 그래픽
- * - gradient: 그라디언트, 컬러, 홀로그래픽
- * - photography: 제품 촬영, 스틸라이프, 에디토리얼
- * - portrait: 포트레이트, 패션, 인물 사진
- * - spatial: 공간 디자인, 인테리어, 건축
+ * ## Image categories
+ * - abstract: abstract art, fluid, patterns
+ * - fineart: fine art, oil painting, canvas
+ * - illustration: digital illustration, artwork
+ * - poster: posters, typography, graphics
+ * - gradient: gradients, color, holographic
+ * - photography: product shots, still life, editorial
+ * - portrait: portrait, fashion, people photography
+ * - spatial: spatial design, interiors, architecture
  *
- * ## 비디오 카테고리
- * - motion: 모션 그래픽, 추상 애니메이션
+ * ## Video categories
+ * - motion: motion graphics, abstract animation
  *
- * ## 사용법
+ * ## Usage
  * ```js
  * import { testImages, testVideos, getRandomImage } from '@/utils/pexels-test-data';
  *
- * // 특정 카테고리 이미지
+ * // Image from a specific category
  * <img src={testImages.spatial[0].src.medium} />
  *
- * // 랜덤 이미지
+ * // Random image
  * <img src={getRandomImage('spatial').src.large} />
  * ```
  *
- * ## 라이선스
- * Pexels License: 무료 사용, 상업적 사용 가능, 저작자 표시 권장
+ * ## License
+ * Pexels License: free to use, commercial use allowed, attribution recommended
  * https://www.pexels.com/license/
  */
 
@@ -46,11 +46,11 @@ const createImageSizes = (id) => ({
 
 // ============================================================
 // Design Inspiration Images by Category
-// 디자인 결과물 중심 키워드: abstract, fine art, illustration, poster, gradient, photography, portrait
-// 각 카테고리 8개 이미지
+// Keywords focused on design output: abstract, fine art, illustration, poster, gradient, photography, portrait
+// 8 images per category
 // ============================================================
 export const testImages = {
-  // 추상 아트 (query: "abstract art", "abstract painting")
+  // Abstract art (query: "abstract art", "abstract painting")
   abstract: [
     {
       id: 2110951,
@@ -118,7 +118,7 @@ export const testImages = {
     },
   ],
 
-  // 파인 아트 (query: "fine art", "artwork", "painting")
+  // Fine art (query: "fine art", "artwork", "painting")
   fineart: [
     {
       id: 1585325,
@@ -186,7 +186,7 @@ export const testImages = {
     },
   ],
 
-  // 일러스트레이션 (query: "illustration", "digital art", "artwork")
+  // Illustration (query: "illustration", "digital art", "artwork")
   illustration: [
     {
       id: 2832468,
@@ -254,7 +254,7 @@ export const testImages = {
     },
   ],
 
-  // 포스터 & 그래픽 (query: "poster", "graphic poster", "typography poster")
+  // Posters & graphics (query: "poster", "graphic poster", "typography poster")
   poster: [
     {
       id: 752484,
@@ -418,7 +418,7 @@ export const testImages = {
     },
   ],
 
-  // 그라디언트 & 컬러 (query: "gradient", "color gradient", "colorful background")
+  // Gradients & color (query: "gradient", "color gradient", "colorful background")
   gradient: [
     {
       id: 3109807,
@@ -486,7 +486,7 @@ export const testImages = {
     },
   ],
 
-  // 사진 (query: "photography", "still life", "product photography")
+  // Photography (query: "photography", "still life", "product photography")
   photography: [
     {
       id: 3945659,
@@ -554,7 +554,7 @@ export const testImages = {
     },
   ],
 
-  // 포트레이트 (query: "portrait", "fashion portrait", "artistic portrait")
+  // Portrait (query: "portrait", "fashion portrait", "artistic portrait")
   portrait: [
     {
       id: 1542085,
@@ -622,7 +622,7 @@ export const testImages = {
     },
   ],
 
-  // 공간 디자인 & 인테리어 (query: "interior design", "architecture", "minimal interior")
+  // Spatial design & interiors (query: "interior design", "architecture", "minimal interior")
   spatial: [
     {
       id: 1571460,
@@ -791,7 +791,7 @@ export const testImages = {
 // Design Reference Videos (query: "abstract animation", "motion graphics")
 // ============================================================
 export const testVideos = {
-  // 모션 그래픽 & 추상 애니메이션
+  // Motion graphics & abstract animation
   motion: [
     {
       id: 3129671,
@@ -840,9 +840,9 @@ export const testVideos = {
 // ============================================================
 
 /**
- * 특정 카테고리에서 랜덤 이미지 반환
- * @param {string} category - 카테고리명 (branding, editorial, uiux, typography, photography, spatial, abstract, motion)
- * @returns {Object} 이미지 객체
+ * Return a random image from a specific category
+ * @param {string} category - Category name (branding, editorial, uiux, typography, photography, spatial, abstract, motion)
+ * @returns {Object} Image object
  */
 export const getRandomImage = (category = 'abstract') => {
   const images = testImages[category] || testImages.abstract;
@@ -850,9 +850,9 @@ export const getRandomImage = (category = 'abstract') => {
 };
 
 /**
- * 특정 카테고리에서 랜덤 비디오 반환
- * @param {string} category - 카테고리명 (abstract, creative, spatial)
- * @returns {Object} 비디오 객체
+ * Return a random video from a specific category
+ * @param {string} category - Category name (abstract, creative, spatial)
+ * @returns {Object} Video object
  */
 export const getRandomVideo = (category = 'abstract') => {
   const videos = testVideos[category] || testVideos.abstract;
@@ -860,7 +860,7 @@ export const getRandomVideo = (category = 'abstract') => {
 };
 
 /**
- * 모든 카테고리 이름 반환
+ * Return all category names
  * @returns {Object} { images: string[], videos: string[] }
  */
 export const getCategories = () => ({
@@ -869,9 +869,9 @@ export const getCategories = () => ({
 });
 
 /**
- * 특정 비율의 이미지만 필터링
- * @param {string} aspectRatio - 비율 (예: '16/9', '4/3', '1/1')
- * @returns {Object[]} 필터링된 이미지 배열
+ * Filter images to a specific aspect ratio
+ * @param {string} aspectRatio - Aspect ratio (e.g. '16/9', '4/3', '1/1')
+ * @returns {Object[]} Filtered array of images
  */
 export const getImagesByRatio = (aspectRatio) => {
   return Object.values(testImages)
@@ -880,9 +880,9 @@ export const getImagesByRatio = (aspectRatio) => {
 };
 
 /**
- * 특정 태그로 이미지 필터링
- * @param {string} tag - 태그명
- * @returns {Object[]} 필터링된 이미지 배열
+ * Filter images by a specific tag
+ * @param {string} tag - Tag name
+ * @returns {Object[]} Filtered array of images
  */
 export const getImagesByTag = (tag) => {
   return Object.values(testImages)
@@ -891,11 +891,11 @@ export const getImagesByTag = (tag) => {
 };
 
 /**
- * 플레이스홀더 이미지 URL 생성 (Pexels 기반)
- * @param {number} width - 너비
- * @param {number} height - 높이
- * @param {string} category - 카테고리
- * @returns {string} 이미지 URL
+ * Generate a placeholder image URL (Pexels-based)
+ * @param {number} width - Width
+ * @param {number} height - Height
+ * @param {string} category - Category
+ * @returns {string} Image URL
  */
 export const getPlaceholder = (width = 400, height = 300, category = 'abstract') => {
   const image = getRandomImage(category);
@@ -903,8 +903,8 @@ export const getPlaceholder = (width = 400, height = 300, category = 'abstract')
 };
 
 /**
- * 모든 태그 목록 반환
- * @returns {string[]} 고유 태그 배열
+ * Return the list of all tags
+ * @returns {string[]} Array of unique tags
  */
 export const getAllTags = () => {
   const tags = new Set();

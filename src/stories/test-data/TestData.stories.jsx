@@ -29,23 +29,23 @@ export default {
     docs: {
       description: {
         component: `
-## 테스트 데이터
+## Test Data
 
-Pexels API 기반의 무료 스톡 이미지/비디오 테스트 데이터입니다.
+Free stock image and video test data based on the Pexels API.
 
-### 사용법
+### Usage
 \`\`\`js
 import { testImages, testVideos, getRandomImage } from '@/utils/pexels-test-data';
 
-// 특정 카테고리 이미지
+// Image from a specific category
 <img src={testImages.nature[0].src.medium} />
 
-// 랜덤 이미지
+// Random image
 <img src={getRandomImage('product').src.large} />
 \`\`\`
 
-### 라이선스
-Pexels License: 무료 사용, 상업적 사용 가능, 저작자 표시 권장
+### License
+Pexels License: free to use, commercial use allowed, attribution recommended
         `,
       },
     },
@@ -53,7 +53,7 @@ Pexels License: 무료 사용, 상업적 사용 가능, 저작자 표시 권장
 };
 
 /**
- * 이미지 카드 컴포넌트
+ * Image card component
  */
 const ImageCard = ({ image, onCopy }) => {
   return (
@@ -96,7 +96,7 @@ const ImageCard = ({ image, onCopy }) => {
 };
 
 /**
- * 비디오 카드 컴포넌트
+ * Video card component
  */
 const VideoCard = ({ video, onCopy }) => {
   return (
@@ -143,7 +143,7 @@ const VideoCard = ({ video, onCopy }) => {
 };
 
 /**
- * 메인 테스트 데이터 갤러리 컴포넌트
+ * Main test data gallery component
  */
 const TestDataGallery = () => {
   const [mediaType, setMediaType] = useState(0);
@@ -170,10 +170,10 @@ const TestDataGallery = () => {
           Test Data Gallery
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          Storybook 및 개발 테스트용 Pexels 스톡 미디어입니다. 칩을 클릭하면 URL이 복사됩니다.
+          Pexels stock media for Storybook and development testing. Click a chip to copy the URL.
         </Typography>
 
-        {/* 탭 */}
+        {/* Tabs */}
         <Tabs
           value={mediaType}
           onChange={(_, v) => setMediaType(v)}
@@ -183,7 +183,7 @@ const TestDataGallery = () => {
           <Tab label={`Videos (${categories.videos.length} categories)`} />
         </Tabs>
 
-        {/* 이미지 탭 */}
+        {/* Images tab */}
         {mediaType === 0 && (
           <>
             {categories.images.map((category) => (
@@ -204,7 +204,7 @@ const TestDataGallery = () => {
           </>
         )}
 
-        {/* 비디오 탭 */}
+        {/* Videos tab */}
         {mediaType === 1 && (
           <>
             {categories.videos.map((category) => (
@@ -225,8 +225,8 @@ const TestDataGallery = () => {
           </>
         )}
 
-        {/* Usage 섹션 */}
-        <SectionTitle title="Usage" description="코드 예시" />
+        {/* Usage section */}
+        <SectionTitle title="Usage" description="Code example" />
         <Box
           component="pre"
           sx={{
@@ -241,14 +241,14 @@ const TestDataGallery = () => {
 {`import { testImages, testVideos, getRandomImage } from '@/utils/pexels-test-data';
 import AspectMedia from '@/components/media/AspectMedia';
 
-// 이미지 사용
+// Using an image
 <AspectMedia
   src={testImages.nature[0].src.medium}
   alt={testImages.nature[0].alt}
   aspectRatio="16/9"
 />
 
-// 비디오 사용
+// Using a video
 <AspectMedia
   type="video"
   src={testVideos.nature[0].src.hd}
@@ -258,13 +258,13 @@ import AspectMedia from '@/components/media/AspectMedia';
   isLoop
 />
 
-// 랜덤 이미지
+// Random image
 const randomImg = getRandomImage('product');
 <img src={randomImg.src.large} alt={randomImg.alt} />`}
         </Box>
 
-        {/* API 참조 테이블 */}
-        <SectionTitle title="API Reference" description="유틸리티 함수" />
+        {/* API reference table */}
+        <SectionTitle title="API Reference" description="Utility functions" />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -278,34 +278,34 @@ const randomImg = getRandomImage('product');
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>getRandomImage(category)</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>category: string</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>특정 카테고리에서 랜덤 이미지 반환</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Returns a random image from a specific category</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>getRandomVideo(category)</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>category: string</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>특정 카테고리에서 랜덤 비디오 반환</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Returns a random video from a specific category</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>getCategories()</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>-</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>사용 가능한 카테고리 목록 반환</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Returns the list of available categories</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>getImagesByRatio(ratio)</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>ratio: string (e.g. '16/9')</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>특정 비율의 이미지만 필터링</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Filters images by a specific aspect ratio</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>getPlaceholder(w, h, cat)</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>width, height, category</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>지정 크기의 플레이스홀더 URL 생성</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Generates a placeholder URL at the given size</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        {/* 이미지 사이즈 테이블 */}
-        <SectionTitle title="Image Sizes" description="사용 가능한 크기 옵션" />
+        {/* Image sizes table */}
+        <SectionTitle title="Image Sizes" description="Available size options" />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -319,27 +319,27 @@ const randomImg = getRandomImage('product');
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>thumbnail</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>160px</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>작은 미리보기, 아이콘</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Small previews, icons</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>small</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>320px</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>모바일 썸네일</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Mobile thumbnails</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>medium</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>640px</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>카드, 리스트 아이템</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Cards, list items</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>large</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>1260px</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>히어로, 배경</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Hero, backgrounds</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>original</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>Full</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>원본 해상도</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Original resolution</TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -356,7 +356,7 @@ const randomImg = getRandomImage('product');
   );
 };
 
-/** 기본 갤러리 */
+/** Default gallery */
 export const Default = {
   render: () => <TestDataGallery />,
 };

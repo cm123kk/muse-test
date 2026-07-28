@@ -28,16 +28,16 @@ export default {
         component: `
 ## Dialog [MUI]
 
-모달 대화상자 컴포넌트입니다. 사용자의 주의를 집중시키고 중요한 정보나 결정을 요청할 때 사용합니다.
+A modal dialog component. Use it to focus the user's attention and request important information or a decision.
 
-### 구성 요소
+### Components
 
-| 컴포넌트 | 설명 | 예시 |
+| Component | Description | Example |
 |----------|------|------|
-| Dialog | 대화상자 컨테이너 | \`<Dialog open={open}>...</Dialog>\` |
-| DialogTitle | 제목 영역 | 대화상자 제목 |
-| DialogContent | 내용 영역 | 본문, 폼 등 |
-| DialogActions | 액션 버튼 영역 | 확인, 취소 버튼 |
+| Dialog | Dialog container | \`<Dialog open={open}>...</Dialog>\` |
+| DialogTitle | Title area | Dialog title |
+| DialogContent | Content area | Body, form, etc. |
+| DialogActions | Action button area | Confirm, Cancel buttons |
         `,
       },
     },
@@ -46,7 +46,7 @@ export default {
     maxWidth: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'xl', false],
-      description: '대화상자의 최대 너비를 설정합니다.',
+      description: 'Sets the maximum width of the dialog.',
       table: {
         type: { summary: 'string | false' },
         defaultValue: { summary: 'sm' },
@@ -54,7 +54,7 @@ export default {
     },
     fullWidth: {
       control: 'boolean',
-      description: 'maxWidth까지 전체 너비를 사용합니다.',
+      description: 'Uses the full width up to maxWidth.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -62,7 +62,7 @@ export default {
     },
     fullScreen: {
       control: 'boolean',
-      description: '전체 화면 대화상자로 표시합니다.',
+      description: 'Displays the dialog in full screen.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -71,7 +71,7 @@ export default {
     scroll: {
       control: 'select',
       options: ['paper', 'body'],
-      description: '스크롤 동작을 설정합니다.',
+      description: 'Sets the scroll behavior.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'paper' },
@@ -80,7 +80,7 @@ export default {
   },
 };
 
-/** 기본 대화상자 */
+/** Basic dialog */
 export const Default = {
   args: {
     maxWidth: 'sm',
@@ -94,7 +94,7 @@ export const Default = {
     return (
       <>
         <Button variant="outlined" onClick={ () => setOpen(true) }>
-          대화상자 열기
+          Open Dialog
         </Button>
         <Dialog
           open={ open }
@@ -104,17 +104,17 @@ export const Default = {
           fullScreen={ args.fullScreen }
           scroll={ args.scroll }
         >
-          <DialogTitle>기본 대화상자</DialogTitle>
+          <DialogTitle>Basic Dialog</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              대화상자는 사용자의 주의를 집중시키고 중요한 정보를 전달하거나
-              결정을 요청할 때 사용합니다.
+              A dialog focuses the user's attention and is used to convey
+              important information or request a decision.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={ () => setOpen(false) }>취소</Button>
+            <Button onClick={ () => setOpen(false) }>Cancel</Button>
             <Button onClick={ () => setOpen(false) } variant="contained">
-              확인
+              Confirm
             </Button>
           </DialogActions>
         </Dialog>
@@ -123,7 +123,7 @@ export const Default = {
   },
 };
 
-/** 확인 대화상자 */
+/** Confirmation dialog */
 export const Confirmation = {
   render: () => {
     const [open, setOpen] = useState(false);
@@ -131,19 +131,19 @@ export const Confirmation = {
     return (
       <>
         <Button variant="contained" color="error" onClick={ () => setOpen(true) }>
-          삭제하기
+          Delete
         </Button>
         <Dialog open={ open } onClose={ () => setOpen(false) }>
-          <DialogTitle>항목을 삭제하시겠습니까?</DialogTitle>
+          <DialogTitle>Delete this item?</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              이 작업은 되돌릴 수 없습니다. 선택한 항목이 영구적으로 삭제됩니다.
+              This action cannot be undone. The selected item will be permanently deleted.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={ () => setOpen(false) }>취소</Button>
+            <Button onClick={ () => setOpen(false) }>Cancel</Button>
             <Button onClick={ () => setOpen(false) } color="error" variant="contained">
-              삭제
+              Delete
             </Button>
           </DialogActions>
         </Dialog>
@@ -152,7 +152,7 @@ export const Confirmation = {
   },
 };
 
-/** 폼 대화상자 */
+/** Form dialog */
 export const FormDialog = {
   render: () => {
     const [open, setOpen] = useState(false);
@@ -160,39 +160,39 @@ export const FormDialog = {
     return (
       <>
         <Button variant="contained" onClick={ () => setOpen(true) }>
-          새 항목 추가
+          Add New Item
         </Button>
         <Dialog open={ open } onClose={ () => setOpen(false) } maxWidth="sm" fullWidth>
-          <DialogTitle>새 항목 추가</DialogTitle>
+          <DialogTitle>Add New Item</DialogTitle>
           <DialogContent>
             <DialogContentText sx={ { mb: 2 } }>
-              새로운 항목의 정보를 입력해주세요.
+              Please enter the information for the new item.
             </DialogContentText>
             <Stack spacing={ 2 }>
               <TextField
                 autoFocus
-                label="제목"
+                label="Title"
                 fullWidth
                 variant="outlined"
               />
               <TextField
-                label="설명"
+                label="Description"
                 fullWidth
                 multiline
                 rows={ 3 }
                 variant="outlined"
               />
               <TextField
-                label="카테고리"
+                label="Category"
                 fullWidth
                 variant="outlined"
               />
             </Stack>
           </DialogContent>
           <DialogActions>
-            <Button onClick={ () => setOpen(false) }>취소</Button>
+            <Button onClick={ () => setOpen(false) }>Cancel</Button>
             <Button onClick={ () => setOpen(false) } variant="contained">
-              추가
+              Add
             </Button>
           </DialogActions>
         </Dialog>
@@ -201,7 +201,7 @@ export const FormDialog = {
   },
 };
 
-/** 알림 대화상자 */
+/** Alert dialog */
 export const Alert = {
   render: () => {
     const [open, setOpen] = useState(false);
@@ -209,27 +209,27 @@ export const Alert = {
     return (
       <>
         <Button variant="outlined" color="warning" onClick={ () => setOpen(true) }>
-          경고 표시
+          Show Warning
         </Button>
         <Dialog open={ open } onClose={ () => setOpen(false) }>
           <DialogTitle sx={ { color: 'warning.main' } }>
-            주의가 필요합니다
+            Attention Required
           </DialogTitle>
           <DialogContent>
             <DialogContentText>
-              저장하지 않은 변경사항이 있습니다.
-              페이지를 떠나면 변경사항이 손실됩니다.
+              You have unsaved changes.
+              If you leave this page, your changes will be lost.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={ () => setOpen(false) }>
-              계속 편집
+              Keep Editing
             </Button>
             <Button onClick={ () => setOpen(false) } color="warning">
-              저장 안 함
+              Don't Save
             </Button>
             <Button onClick={ () => setOpen(false) } variant="contained">
-              저장
+              Save
             </Button>
           </DialogActions>
         </Dialog>
@@ -238,7 +238,7 @@ export const Alert = {
   },
 };
 
-/** 크기 변형 */
+/** Size variants */
 export const Sizes = {
   render: () => {
     const [openSize, setOpenSize] = useState(null);
@@ -265,12 +265,12 @@ export const Sizes = {
             <DialogTitle>maxWidth: { size }</DialogTitle>
             <DialogContent>
               <DialogContentText>
-                fullWidth를 true로 설정하면 maxWidth까지 전체 너비를 사용합니다.
-                현재 설정된 maxWidth는 "{ size }"입니다.
+                Setting fullWidth to true uses the full width up to maxWidth.
+                The current maxWidth is "{ size }".
               </DialogContentText>
             </DialogContent>
             <DialogActions>
-              <Button onClick={ () => setOpenSize(null) }>닫기</Button>
+              <Button onClick={ () => setOpenSize(null) }>Close</Button>
             </DialogActions>
           </Dialog>
         )) }
@@ -279,7 +279,7 @@ export const Sizes = {
   },
 };
 
-/** 스크롤 대화상자 */
+/** Scrollable dialog */
 export const Scrollable = {
   render: () => {
     const [open, setOpen] = useState(false);
@@ -287,7 +287,7 @@ export const Scrollable = {
     return (
       <>
         <Button variant="outlined" onClick={ () => setOpen(true) }>
-          긴 콘텐츠 대화상자
+          Long Content Dialog
         </Button>
         <Dialog
           open={ open }
@@ -296,7 +296,7 @@ export const Scrollable = {
           maxWidth="sm"
           fullWidth
         >
-          <DialogTitle>이용약관</DialogTitle>
+          <DialogTitle>Terms of Service</DialogTitle>
           <DialogContent dividers>
             { [...Array(10)].map((_, index) => (
               <Typography key={ index } paragraph>
@@ -310,9 +310,9 @@ export const Scrollable = {
             )) }
           </DialogContent>
           <DialogActions>
-            <Button onClick={ () => setOpen(false) }>취소</Button>
+            <Button onClick={ () => setOpen(false) }>Cancel</Button>
             <Button onClick={ () => setOpen(false) } variant="contained">
-              동의
+              Agree
             </Button>
           </DialogActions>
         </Dialog>
@@ -321,25 +321,25 @@ export const Scrollable = {
   },
 };
 
-/** 리스트 대화상자 */
+/** List dialog */
 export const ListDialog = {
   render: () => {
     const [open, setOpen] = useState(false);
 
     const users = [
-      { name: '김철수', email: 'kim@example.com' },
-      { name: '이영희', email: 'lee@example.com' },
-      { name: '박민수', email: 'park@example.com' },
-      { name: '최수진', email: 'choi@example.com' },
+      { name: 'James Kim', email: 'kim@example.com' },
+      { name: 'Emily Lee', email: 'lee@example.com' },
+      { name: 'Michael Park', email: 'park@example.com' },
+      { name: 'Sophia Choi', email: 'choi@example.com' },
     ];
 
     return (
       <>
         <Button variant="outlined" onClick={ () => setOpen(true) }>
-          사용자 선택
+          Select User
         </Button>
         <Dialog open={ open } onClose={ () => setOpen(false) }>
-          <DialogTitle>담당자 선택</DialogTitle>
+          <DialogTitle>Select Assignee</DialogTitle>
           <List sx={ { pt: 0 } }>
             { users.map((user) => (
               <ListItem
@@ -366,7 +366,7 @@ export const ListDialog = {
   },
 };
 
-/** 커스텀 헤더 */
+/** Custom header */
 export const CustomHeader = {
   render: () => {
     const [open, setOpen] = useState(false);
@@ -374,12 +374,12 @@ export const CustomHeader = {
     return (
       <>
         <Button variant="contained" onClick={ () => setOpen(true) }>
-          설정 열기
+          Open Settings
         </Button>
         <Dialog open={ open } onClose={ () => setOpen(false) } maxWidth="sm" fullWidth>
           <DialogTitle sx={ { m: 0, p: 2, display: 'flex', justifyContent: 'space-between', alignItems: 'center' } }>
             <Typography variant="h6" component="span">
-              설정
+              Settings
             </Typography>
             <IconButton
               onClick={ () => setOpen(false) }
@@ -393,35 +393,35 @@ export const CustomHeader = {
             <Stack spacing={ 3 }>
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  알림 설정
+                  Notification Settings
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  이메일 알림, 푸시 알림 등을 설정할 수 있습니다.
+                  Configure email notifications, push notifications, and more.
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  개인정보
+                  Privacy
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  프로필 정보와 개인정보 보호 설정을 관리합니다.
+                  Manage your profile information and privacy settings.
                 </Typography>
               </Box>
               <Box>
                 <Typography variant="subtitle2" gutterBottom>
-                  보안
+                  Security
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  비밀번호 변경, 2단계 인증 등 보안 설정을 관리합니다.
+                  Manage security settings such as password changes and two-factor authentication.
                 </Typography>
               </Box>
             </Stack>
           </DialogContent>
           <Divider />
           <DialogActions>
-            <Button onClick={ () => setOpen(false) }>닫기</Button>
+            <Button onClick={ () => setOpen(false) }>Close</Button>
             <Button onClick={ () => setOpen(false) } variant="contained">
-              저장
+              Save
             </Button>
           </DialogActions>
         </Dialog>
@@ -430,7 +430,7 @@ export const CustomHeader = {
   },
 };
 
-/** 중첩 대화상자 */
+/** Nested dialog */
 export const Nested = {
   render: () => {
     const [open1, setOpen1] = useState(false);
@@ -439,29 +439,29 @@ export const Nested = {
     return (
       <>
         <Button variant="outlined" onClick={ () => setOpen1(true) }>
-          첫 번째 대화상자
+          First Dialog
         </Button>
 
         <Dialog open={ open1 } onClose={ () => setOpen1(false) }>
-          <DialogTitle>첫 번째 대화상자</DialogTitle>
+          <DialogTitle>First Dialog</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              대화상자 안에서 다른 대화상자를 열 수 있습니다.
+              You can open another dialog from inside a dialog.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
-            <Button onClick={ () => setOpen1(false) }>닫기</Button>
+            <Button onClick={ () => setOpen1(false) }>Close</Button>
             <Button onClick={ () => setOpen2(true) } variant="contained">
-              다음 대화상자 열기
+              Open Next Dialog
             </Button>
           </DialogActions>
         </Dialog>
 
         <Dialog open={ open2 } onClose={ () => setOpen2(false) }>
-          <DialogTitle>두 번째 대화상자</DialogTitle>
+          <DialogTitle>Second Dialog</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              이것은 중첩된 대화상자입니다.
+              This is a nested dialog.
             </DialogContentText>
           </DialogContent>
           <DialogActions>
@@ -469,7 +469,7 @@ export const Nested = {
               onClick={ () => setOpen2(false) }
               variant="contained"
             >
-              확인
+              Confirm
             </Button>
           </DialogActions>
         </Dialog>
@@ -478,7 +478,7 @@ export const Nested = {
   },
 };
 
-/** 실제 사용 예시 - 로그인 */
+/** Real-world example: login */
 export const LoginDialog = {
   render: () => {
     const [open, setOpen] = useState(false);
@@ -486,41 +486,41 @@ export const LoginDialog = {
     return (
       <>
         <Button variant="contained" onClick={ () => setOpen(true) }>
-          로그인
+          Log In
         </Button>
         <Dialog open={ open } onClose={ () => setOpen(false) } maxWidth="xs" fullWidth>
           <DialogTitle sx={ { textAlign: 'center', pt: 4 } }>
             <Typography variant="h5" sx={ { fontWeight: 700 } }>
-              로그인
+              Log In
             </Typography>
           </DialogTitle>
           <DialogContent>
             <Stack spacing={ 2 } sx={ { mt: 1 } }>
               <TextField
-                label="이메일"
+                label="Email"
                 type="email"
                 fullWidth
                 variant="outlined"
               />
               <TextField
-                label="비밀번호"
+                label="Password"
                 type="password"
                 fullWidth
                 variant="outlined"
               />
               <Button variant="contained" fullWidth size="large">
-                로그인
+                Log In
               </Button>
-              <Divider>또는</Divider>
+              <Divider>or</Divider>
               <Button variant="outlined" fullWidth>
-                Google로 계속하기
+                Continue with Google
               </Button>
             </Stack>
           </DialogContent>
           <DialogActions sx={ { justifyContent: 'center', pb: 3 } }>
             <Typography variant="body2" color="text.secondary">
-              계정이 없으신가요?
-              <Button size="small">회원가입</Button>
+              Don't have an account?
+              <Button size="small">Sign Up</Button>
             </Typography>
           </DialogActions>
         </Dialog>

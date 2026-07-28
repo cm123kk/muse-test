@@ -3,24 +3,24 @@ import Typography from '@mui/material/Typography';
 import Switch from '@mui/material/Switch';
 
 /**
- * TokenListItem 컴포넌트
+ * TokenListItem component
  *
- * MUSE 프로젝트 상세 화면에서 각 레이어(컬러/타이포/레이아웃/그라디언트/키비주얼)의
- * 토큰 한 건을 표현하는 공통 행 컴포넌트.
+ * A shared row component that represents a single token of each layer
+ * (color/typography/layout/gradient/key visual) on the MUSE project detail screen.
  *
- * 구성: [preview 48x48] [label + value] [on/off switch]
+ * Structure: [preview 48x48] [label + value] [on/off switch]
  *
- * - `isEnabled=false`면 행 전체가 dimmed 처리됨 (opacity 0.4, 편집 가능은 유지)
- * - preview는 slot 패턴: 컬러 스와치, 타이포 샘플, 그라디언트 박스 등 임의 노드 주입
+ * - When `isEnabled=false`, the entire row is dimmed (opacity 0.4, editing still allowed)
+ * - preview uses the slot pattern: inject any node such as a color swatch, typography sample, or gradient box
  *
  * Props:
- * @param {node} preview - 좌측 48x48 프리뷰 영역 (ReactNode) [Required]
- * @param {string} label - 토큰 이름/역할 [Required]
- * @param {string} value - 토큰 값 (HEX, px, 폰트명 등 문자열 표현) [Optional]
- * @param {boolean} isEnabled - 토큰 활성화 상태 [Optional, 기본값: true]
- * @param {function} onToggleEnabled - 활성화 토글 (nextEnabled) => void [Optional]
- * @param {node} trailing - 우측 Switch 앞에 렌더할 보조 액션 (ReactNode) [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {node} preview - Left 48x48 preview area (ReactNode) [Required]
+ * @param {string} label - Token name/role [Required]
+ * @param {string} value - Token value (string representation such as HEX, px, font name) [Optional]
+ * @param {boolean} isEnabled - Token enabled state [Optional, default: true]
+ * @param {function} onToggleEnabled - Enable toggle (nextEnabled) => void [Optional]
+ * @param {node} trailing - Auxiliary action rendered before the right-hand Switch (ReactNode) [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <TokenListItem
@@ -110,7 +110,7 @@ export function TokenListItem({
         ) }
       </Box>
 
-      {/* 3. Trailing slot (예: 결정 근거 토글) */}
+      {/* 3. Trailing slot (e.g. decision rationale toggle) */}
       { trailing && (
         <Box sx={ { flex: '0 0 auto', display: 'flex', alignItems: 'center' } }>
           { trailing }
@@ -124,7 +124,7 @@ export function TokenListItem({
         size="small"
         color="primary"
         sx={ { flex: '0 0 auto' } }
-        aria-label="토큰 활성화"
+        aria-label="Toggle token"
       />
     </Box>
   );

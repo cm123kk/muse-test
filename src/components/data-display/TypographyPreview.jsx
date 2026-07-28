@@ -9,7 +9,7 @@ import { TokenListItem } from './TokenListItem.jsx';
 import { TokenDecisionTracePanel } from './TokenDecisionTracePanel.jsx';
 
 /**
- * 타이포 토큰을 문자열 summary로 포맷 (value 슬롯용)
+ * Format a typography token into a string summary (for the value slot)
  * @param {object} token - { fontFamily, fontSize, fontWeight, lineHeight, letterSpacing }
  * @returns {string}
  */
@@ -26,16 +26,16 @@ const formatTypoValue = (token) => {
 };
 
 /**
- * TypographyPreview 컴포넌트
+ * TypographyPreview component
  *
- * 타이포그래피 토큰 목록을 TokenListItem으로 렌더링.
- * Preview 슬롯에 실제 폰트 스타일로 샘플 문자를 그려 **시각 비교 가능**.
+ * Renders the typography token list with TokenListItem.
+ * Draws a sample character in the actual font style in the preview slot for **visual comparison**.
  *
  * Props:
  * @param {array} tokens - [{ id, label, fontFamily, fontSize, fontWeight, lineHeight, letterSpacing, sampleText?, isEnabled, emphasis }] [Required]
  * @param {function} onChange - (id, patch) => void [Optional]
- * @param {string} defaultSample - 모든 토큰 공통 샘플 텍스트 [Optional, 기본값: 'Aa']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} defaultSample - Common sample text for all tokens [Optional, default: 'Aa']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <TypographyPreview
@@ -75,7 +75,7 @@ export function TypographyPreview({ tokens, onChange, defaultSample = 'Aa', refe
               trailing={ hasRationale ? (
                 <IconButton
                   size="small"
-                  aria-label={ isExpanded ? '결정 근거 닫기' : '결정 근거 보기' }
+                  aria-label={ isExpanded ? 'Hide rationale' : 'Show rationale' }
                   onClick={ () => setExpandedId(isExpanded ? null : token.id) }
                   sx={ {
                     transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',

@@ -16,24 +16,24 @@ export default {
 };
 
 /**
- * 라우팅 레벨의 공통 레이아웃. AppShell 은 여기 한 번만.
- * 모든 라우트(Archive / ProjectList / ProjectCreate / ProjectDetail / Settings) 가 공유.
- * 페이지 템플릿은 이 쉘을 포함하지 않는다.
+ * Shared layout at the routing level. AppShell lives here only once.
+ * Shared by every route (Archive / ProjectList / ProjectCreate / ProjectDetail / Settings).
+ * Page templates do not include this shell.
  *
- * (start-point: 인증/AuthGuard 미포함. 학습자가 Supabase 연동 단계에서 추가)
+ * (start-point: auth/AuthGuard not included. The learner adds it during the Supabase integration step)
  */
 const routeLayout = {
   BrowserRouter: {
     'Route /': {
       AppShellLayout: {
-        역할: 'AppShell 에 MuseNav 를 주입하고 자식 라우트의 페이지를 Outlet 으로 렌더',
+        Role: 'Injects MuseNav into AppShell and renders child route pages via Outlet',
         AppShell: {
-          역할: 'GNB(=헤더) 를 내장한 최상위 쉘. 헤더는 페이지 전환 시에도 언마운트되지 않음',
+          Role: 'Top-level shell with a built-in GNB (header). The header is not unmounted on page transitions',
           'logo slot ← <MuseNav />': {
-            좌_로고: 'MUSE 로고 + /archive 링크',
-            '좌_nav links': 'Archive / Projects / Settings (NavLink isActive 스타일)',
+            left_logo: 'MUSE logo + /archive link',
+            'left_nav links': 'Archive / Projects / Settings (NavLink isActive style)',
           },
-          'main (children) ← <Outlet />': '자식 라우트의 페이지가 여기 렌더됨',
+          'main (children) ← <Outlet />': 'Child route pages are rendered here',
         },
       },
     },
@@ -44,117 +44,117 @@ const routeLayout = {
 };
 
 /**
- * 각 페이지(템플릿)가 포함하는 컴포넌트 트리.
- * AppShell / GNB 는 여기에 없다 — 라우트 레이아웃이 책임짐.
- * 페이지 템플릿은 PageContainer 이하의 "본문" 만 소유한다.
+ * The component tree each page (template) contains.
+ * AppShell / GNB are not here. The route layout owns them.
+ * Page templates own only the "body" below PageContainer.
  */
 const pageStructure = {
-  'ArchivePage (레퍼런스 아카이브)': {
-    역할: '업로드 → 자동 태깅(T1) → 필터 → 무한 그리드',
+  'ArchivePage (Reference Archive)': {
+    Role: 'Upload → Auto-tagging (T1) → Filter → Infinite grid',
     PageContainer: {
-      'Hero (제목 + 새 프로젝트 버튼)': {
-        Typography_Archive: 'h3 제목',
-        Button_새프로젝트: 'onNewProject → navigate("/projects/new")',
+      'Hero (title + New Project button)': {
+        Typography_Archive: 'h3 title',
+        Button_NewProject: 'onNewProject → navigate("/projects/new")',
       },
-      'Upload 영역': {
-        FileDropzone: '다중 파일 드롭 (concurrency 3)',
-        Alert_오류: '업로드 실패 배너',
-        Alert_태깅중: 'pendingCount 표시',
+      'Upload area': {
+        FileDropzone: 'Multi-file drop (concurrency 3)',
+        Alert_error: 'Upload failure banner',
+        Alert_tagging: 'Shows pendingCount',
       },
       FilterPanel: {
-        '색상 SuperSection': 'hex swatch 26px (HSL 유사도 OR)',
-        '디자인 레이어 SuperSection': 'Typography / Layout / Gradient 칩',
-        'Visual Direction SuperSection': 'Genre / Style / Subject 칩',
+        'Color SuperSection': 'hex swatch 26px (HSL similarity OR)',
+        'Design Layer SuperSection': 'Typography / Layout / Gradient chips',
+        'Visual Direction SuperSection': 'Genre / Style / Subject chips',
       },
       InfiniteMasonry: {
         ArchiveCard: {
-          ImageCard: 'dominantColors 14px 스와치',
-          pending_skeleton: '_pending 플래그 시',
-          retry_button: '_tagError 시 🔄 (자동 삭제 금지)',
+          ImageCard: 'dominantColors 14px swatch',
+          pending_skeleton: 'When _pending flag is set',
+          retry_button: 'On _tagError, 🔄 (no auto-delete)',
           delete_button: '✕',
         },
       },
     },
-    Dialog_삭제확인: '(PageContainer 바깥, portal)',
+    Dialog_deleteConfirm: '(outside PageContainer, portal)',
   },
 
-  'ProjectListPage (프로젝트 목록)': {
-    역할: '생성된 프로젝트 카드 그리드',
+  'ProjectListPage (Project List)': {
+    Role: 'Grid of created project cards',
     PageContainer: {
-      'Hero (제목 + 새 프로젝트 버튼)': '',
+      'Hero (title + New Project button)': '',
       'Grid (MUI)': {
         MoodboardCard: {
-          썸네일: 'project.referenceIds[0] 에서 파생',
+          thumbnail: 'Derived from project.referenceIds[0]',
           title: 'project.name',
-          type_chip_오버레이: 'Brand / Editorial / Space / Web',
-          '호출측 어댑터': 'MoodboardCard API 확장 대신 ProjectListPage 에서 필드 매핑',
+          type_chip_overlay: 'Brand / Editorial / Space / Web',
+          'Caller-side adapter': 'Field mapping in ProjectListPage instead of extending the MoodboardCard API',
         },
       },
     },
   },
 
-  'ProjectCreateWizard (프로젝트 생성)': {
-    역할: '3-step Wizard. useReducer 기반 상태. T2/T3 외부 주입. AppShell 바깥에서도 동작 가능',
+  'ProjectCreateWizard (Project Creation)': {
+    Role: '3-step Wizard. useReducer-based state. T2/T3 injected externally. Works even outside AppShell',
     Stepper: {
-      'Step 1 — 의도 입력': {
+      'Step 1: Intent input': {
         TextField_name: '',
-        TextField_intent: '"미니멀 럭셔리" 같은 자유 문장',
+        TextField_intent: 'Free-form sentence like "minimal luxury"',
         Select_type: 'Brand / Editorial / Space / Web',
       },
-      'Step 2 — 레퍼런스 선택': {
+      'Step 2: Reference selection': {
         ReferencePicker: {
-          ImageCard_grid: '선택 가능한 그리드',
-          recommended_highlight: 'T2 추천 ID 강조 (recommendedLoader prop)',
+          ImageCard_grid: 'Selectable grid',
+          recommended_highlight: 'Highlights T2 recommended IDs (recommendedLoader prop)',
         },
       },
-      'Step 3 — 분석 실행': {
-        AnalysisProgress: 'T3 호출 진행 표시 (analyze prop, text-only compose)',
+      'Step 3: Run Analysis': {
+        AnalysisProgress: 'Shows T3 call progress (analyze prop, text-only compose)',
       },
     },
   },
 
-  'ProjectDetailPage (토큰 편집)': {
-    역할: 'SplitScreen 60:40. 좌 편집 / 우 실시간 프리뷰',
+  'ProjectDetailPage (Token editing)': {
+    Role: 'SplitScreen 60:40. Left edit / Right real-time preview',
     PageContainer: {
-      'Project header (뒤로가기 + 제목 + Export 버튼)': '',
+      'Project header (back + title + Export button)': '',
       CategoryTab: 'color / typography / layout / gradient / visualDirection',
       SplitScreen: {
-        '좌 60% — 편집 영역': {
+        'Left 60%: Edit area': {
           TokenListItem: {
-            slot_preview: '레이어별 프리뷰 컴포넌트 주입',
+            slot_preview: 'Injects a per-layer preview component',
             toggle_on_off: '',
-            emphasis_0_1_2: '강조도 3단',
+            emphasis_0_1_2: '3 emphasis levels',
           },
-          'preview 슬롯 (레이어별)': {
-            ColorSwatchList: 'color 레이어',
-            TypographyPreview: 'typography 레이어',
-            LayoutTokenPreview: 'layout 레이어',
-            GradientPreview: 'gradient 레이어',
-            VisualDirection_Markdown: 'visualDirection 레이어 (MD 렌더)',
+          'preview slot (per layer)': {
+            ColorSwatchList: 'color layer',
+            TypographyPreview: 'typography layer',
+            LayoutTokenPreview: 'layout layer',
+            GradientPreview: 'gradient layer',
+            VisualDirection_Markdown: 'visualDirection layer (MD render)',
           },
         },
-        '우 40% — 실시간 프리뷰': {
-          buildThemeObject: '활성 토큰만 MUI theme 환원',
-          sample_UI: '환원된 테마가 실제 컴포넌트에 적용된 샘플',
+        'Right 40%: Real-time preview': {
+          buildThemeObject: 'Reduces only active tokens back to an MUI theme',
+          sample_UI: 'Sample with the reduced theme applied to real components',
         },
       },
       ThemeExportDialog: {
-        Radio_형식: 'JSON (범용) / ZIP (번들)',
-        'ZIP 번들 구성': 'README.md + muse.json + visualDirection.md + references/',
-        '규칙': 'MUI 식별자 제거, hex/CSS value 만 (프레임워크 비종속)',
+        Radio_format: 'JSON (general) / ZIP (bundle)',
+        'ZIP bundle contents': 'README.md + muse.json + visualDirection.md + references/',
+        'Rule': 'Strips MUI identifiers, keeps only hex/CSS values (framework-agnostic)',
       },
     },
   },
 
-  'SettingsPage (설정)': {
-    역할: '4 섹션 폼. Save 버튼은 onSave prop 있을 때만 렌더',
+  'SettingsPage (Settings)': {
+    Role: '4-section form. The Save button renders only when the onSave prop is present',
     PageContainer: {
-      'Hero (제목)': '',
-      'Section — AI 모델': { Select: 'claude-haiku-4-5-20251001 등' },
-      'Section — 자동 태깅': { Switch: 'isAutoTagEnabled' },
-      'Section — 스토리지': { RadioGroup: 'local / cloud' },
-      'Section — 테마': { RadioGroup: 'light / dark' },
-      Button_저장: 'onSave prop 있을 때만',
+      'Hero (title)': '',
+      'Section: AI model': { Select: 'claude-haiku-4-5-20251001, etc.' },
+      'Section: Auto-tagging': { Switch: 'isAutoTagEnabled' },
+      'Section: Storage': { RadioGroup: 'local / cloud' },
+      'Section: Theme': { RadioGroup: 'light / dark' },
+      Button_save: 'Only when the onSave prop is present',
     },
   },
 };
@@ -165,7 +165,7 @@ export const Default = {
       <DocumentTitle
         title="Page Composition"
         status="Available"
-        note="라우팅 레이아웃과 페이지 템플릿의 컴포넌트 포함 관계 트리"
+        note="Tree of component containment relationships between routing layout and page templates"
         brandName="MUSE"
         systemName="Starter Kit"
         version="1.0"
@@ -175,13 +175,13 @@ export const Default = {
           Page Composition
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={ { mb: 3 } }>
-          라우트 레이아웃(AppShell 포함) 과 페이지 템플릿(본문만) 의 역할 분리를 트리로 시각화합니다.
+          Visualizes the separation of roles between the route layout (which includes AppShell) and page templates (body only) as a tree.
         </Typography>
 
-        <SectionTitle title="① 라우트 레이아웃 — AppShell 은 여기 한 번만" />
+        <SectionTitle title="1. Route Layout: AppShell only here, once" />
         <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mb: 1 } }>
-          AppShell 은 GNB(헤더) 를 내장한 최상위 쉘이다. 페이지 전환 시 언마운트되지 않도록,
-          <code> App.jsx </code> 의 중첩 라우트에서 <code>AppShellLayout</code> 을 공통 레이아웃 엘리먼트로 사용한다.
+          AppShell is the top-level shell with a built-in GNB (header). To keep it from unmounting on page transitions,
+          <code>AppShellLayout</code> is used as the shared layout element in the nested routes of <code> App.jsx </code>.
         </Typography>
         <Box sx={ { p: 2, mb: 4, border: '1px solid', borderColor: 'divider', borderRadius: 1 } }>
           <Box sx={ { fontFamily: 'monospace' } }>
@@ -197,9 +197,9 @@ export const Default = {
           </Box>
         </Box>
 
-        <SectionTitle title="② 페이지별 본문 구성 — 각 페이지는 PageContainer 이하만 소유" />
+        <SectionTitle title="2. Per-page Body Composition: each page owns only what is below PageContainer" />
         <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mb: 1 } }>
-          페이지 템플릿은 stateless. 헤더(GNB)·공통 배경은 책임지지 않는다. 클릭해서 펼치면 포함된 컴포넌트 트리가 표시됩니다.
+          Page templates are stateless. They are not responsible for the header (GNB) or the shared background. Click to expand and see the contained component tree.
         </Typography>
         <Box sx={ { p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1 } }>
           <Box sx={ { fontFamily: 'monospace' } }>
@@ -218,19 +218,19 @@ export const Default = {
         <Divider sx={ { my: 3 } } />
 
         <Typography variant="body2" color="text.secondary" sx={ { mb: 1 } }>
-          <strong>원칙</strong>
+          <strong>Principles</strong>
         </Typography>
         <Box component="ul" sx={ { pl: 3, mb: 2, '& li': { fontSize: 14, color: 'text.secondary', mb: 0.5 } } }>
-          <li><strong>AppShell 은 라우트 레이아웃</strong> — 페이지 컴포넌트가 AppShell 을 포함하면 헤더가 페이지마다 언마운트/리마운트 되고, 로고·nav 정의가 페이지 수만큼 중복된다.</li>
-          <li>페이지 템플릿은 <strong>stateless</strong> — props in / callbacks out. 상태는 <code>*Route.jsx</code> 컨테이너에서 주입.</li>
-          <li>공통 컴포넌트(MoodboardCard 등) API 확장 대신 <strong>호출측 어댑터</strong>로 필드 매핑.</li>
-          <li>AI 호출(T2/T3)은 콜백 prop 으로 경계에 둬서 Storybook mock 과 프로덕션 양립.</li>
-          <li>Wizard 는 <strong>useReducer + 경계 콜백</strong> (<code>recommendedLoader</code>, <code>analyze</code>).</li>
+          <li><strong>AppShell is the route layout</strong>: if a page component includes AppShell, the header unmounts/remounts on every page, and logo and nav definitions are duplicated once per page.</li>
+          <li>Page templates are <strong>stateless</strong>: props in / callbacks out. State is injected from the <code>*Route.jsx</code> container.</li>
+          <li>Instead of extending the API of shared components (such as MoodboardCard), map fields with a <strong>caller-side adapter</strong>.</li>
+          <li>AI calls (T2/T3) are placed at the boundary as callback props, so Storybook mocks and production coexist.</li>
+          <li>The Wizard uses <strong>useReducer + boundary callbacks</strong> (<code>recommendedLoader</code>, <code>analyze</code>).</li>
         </Box>
 
         <Typography variant="body2" color="text.secondary">
-          실구현: 라우트 구조는 <code>src/App.jsx</code>, 공통 레이아웃은 <code>src/pages/AppShellLayout.jsx</code>,
-          페이지 본문은 <code>src/components/templates/*.jsx</code>.
+          Actual implementation: route structure in <code>src/App.jsx</code>, shared layout in <code>src/pages/AppShellLayout.jsx</code>,
+          page bodies in <code>src/components/templates/*.jsx</code>.
         </Typography>
       </PageContainer>
     </>

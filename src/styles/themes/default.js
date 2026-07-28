@@ -1,25 +1,25 @@
 /**
- * Default Theme — MUSE Visual Direction
+ * Default Theme - MUSE Visual Direction
  *
- * MUSE 프로젝트의 기본 디자인 토큰.
- * docs/muse/03-visual-direction.md 의 설계 원칙을 구현한다.
+ * Base design tokens for the MUSE project.
+ * Implements the design principles from docs/muse/03-visual-direction.md.
  *
- * ## 핵심 철학 (MUSE)
- * - **Image-First Neutral**: Primary는 near-black `#14132B` — 레퍼런스 이미지/토큰이 주인공
- * - **Subtle Tint**: 완벽한 흰/검 제거, 바이올렛 틴트는 은은하게만
- * - **Sharp by default, Round on clickables**: 전역 borderRadius=0 유지, 클리커블만 pill/24px
- * - **Dimmed Tinted Shadow**: offset 없는 blur 기반 그림자, 색은 near-black 틴트로 일관
- * - **Accent Sparingly**: 바이올렛 `#4F46E5`는 "분석 중" 등 필수 강조에만 소량 사용
+ * ## Core Philosophy (MUSE)
+ * - **Image-First Neutral**: Primary is near-black `#14132B`. Reference images and tokens are the focus.
+ * - **Subtle Tint**: Remove pure white/black, keep the violet tint understated.
+ * - **Sharp by default, Round on clickables**: Keep global borderRadius=0, only clickables get pill/24px.
+ * - **Dimmed Tinted Shadow**: Blur-based shadow with no offset, color kept consistent with the near-black tint.
+ * - **Accent Sparingly**: Use the violet `#4F46E5` only in small amounts for essential emphasis, such as "analyzing".
  */
 
 import { createTheme } from '@mui/material/styles';
 
 // ============================================================
-// 1. Color Tokens (색상 토큰)
+// 1. Color Tokens
 // ============================================================
 const palette = {
   mode: 'light',
-  // 브랜드 색상 — Image-First Neutral (near-black with subtle violet tint)
+  // Brand colors - Image-First Neutral (near-black with subtle violet tint)
   primary: {
     light: '#2D2B5A',
     main: '#14132B',
@@ -33,7 +33,7 @@ const palette = {
     contrastText: '#FFFFFF',
   },
 
-  // 상태 색상 (Feedback) — MUI 기본 유지
+  // State colors (Feedback) - keep MUI defaults
   error: {
     light: '#ef5350',
     main: '#d32f2f',
@@ -52,7 +52,7 @@ const palette = {
     dark: '#1b5e20',
     contrastText: '#FFFFFF',
   },
-  // info = MUSE Accent (필수 강조용 바이올렛, 소량 사용)
+  // info = MUSE Accent (violet for essential emphasis, used sparingly)
   info: {
     light: '#6366F1',
     main: '#4F46E5',
@@ -60,23 +60,23 @@ const palette = {
     contrastText: '#FFFFFF',
   },
 
-  // 텍스트 색상 — Primary와 동일축 near-black (ink 개념)
+  // Text colors - near-black on the same axis as Primary (ink concept)
   text: {
     primary: '#14132B',
     secondary: '#7A798E',
     disabled: 'rgba(20, 19, 43, 0.38)',
   },
 
-  // 배경 색상 — 은은한 블루-바이올렛 틴트 (완벽한 흰색 회피)
+  // Background colors - subtle blue-violet tint (avoid pure white)
   background: {
     default: '#FCFCFF',
     paper: '#F8F8FC',
   },
 
-  // 구분선 — near-black 저투명
+  // Divider - low-opacity near-black
   divider: 'rgba(20, 19, 43, 0.08)',
 
-  // 액션 상태 — near-black 틴트로 일관
+  // Action states - kept consistent with the near-black tint
   action: {
     active: 'rgba(20, 19, 43, 0.54)',
     hover: 'rgba(20, 19, 43, 0.04)',
@@ -86,7 +86,7 @@ const palette = {
     focus: 'rgba(20, 19, 43, 0.12)',
   },
 
-  // Grey 스케일 — 바이올렛 틴트 재정의 (기존 MUI grey 대체)
+  // Grey scale - redefined with a violet tint (replaces the default MUI grey)
   grey: {
     50: '#FAFAFD',
     100: '#F3F3F9',
@@ -102,86 +102,84 @@ const palette = {
 };
 
 // ============================================================
-// 2. Typography Tokens (타이포그래피 토큰)
+// 2. Typography Tokens
 // ============================================================
+// Unified system font stack.
+// The project renders the OS default UI font (no web font is bundled/loaded),
+// so this reflects what actually shows in the running app. Body and headings
+// share the same stack for a consistent, native look.
+const systemFontStack = [
+  '-apple-system',
+  'BlinkMacSystemFont',
+  'system-ui',
+  'Roboto',
+  '"Helvetica Neue"',
+  '"Segoe UI"',
+  '"Apple SD Gothic Neo"',
+  '"Noto Sans KR"',
+  '"Malgun Gothic"',
+  '"Apple Color Emoji"',
+  '"Segoe UI Emoji"',
+  '"Segoe UI Symbol"',
+  'sans-serif',
+].join(',');
+
 const typography = {
-  // 기본 폰트 패밀리
-  fontFamily: [
-    '"Pretendard Variable"',
-    'Pretendard',
-    '-apple-system',
-    'BlinkMacSystemFont',
-    'system-ui',
-    'Roboto',
-    '"Helvetica Neue"',
-    '"Segoe UI"',
-    '"Apple SD Gothic Neo"',
-    '"Noto Sans KR"',
-    '"Malgun Gothic"',
-    '"Apple Color Emoji"',
-    '"Segoe UI Emoji"',
-    '"Segoe UI Symbol"',
-    'sans-serif',
-  ].join(','),
+  // Base font family (OS system font)
+  fontFamily: systemFontStack,
 
-  // 헤딩 폰트 패밀리
-  headingFontFamily: '"Outfit", "Pretendard Variable", Pretendard, sans-serif',
+  // Heading font family - unified with body (same system stack)
+  headingFontFamily: systemFontStack,
 
-  // 폰트 크기 기준
+  // Font size baseline
   fontSize: 14,
   htmlFontSize: 16,
 
-  // 폰트 굵기
+  // Font weights
   fontWeightLight: 300,
   fontWeightRegular: 400,
   fontWeightMedium: 500,
   fontWeightBold: 700,
 
-  // 헤딩 스타일 — MUSE: fluid 대형화 + 덜 무거운 weight
+  // Heading styles - MUSE: fluid up-scaling with lighter weight
   h1: {
-    fontFamily: '"Outfit", "Pretendard Variable", Pretendard, sans-serif',
     fontWeight: 700,
     fontSize: 'clamp(3rem, 6vw, 6rem)', // 48px ~ 96px
     lineHeight: 1.1,
     letterSpacing: '-0.02em',
   },
   h2: {
-    fontFamily: '"Outfit", "Pretendard Variable", Pretendard, sans-serif',
     fontWeight: 600,
     fontSize: 'clamp(2rem, 4vw, 3.5rem)', // 32px ~ 56px
     lineHeight: 1.15,
     letterSpacing: '-0.02em',
   },
   h3: {
-    fontFamily: '"Outfit", "Pretendard Variable", Pretendard, sans-serif',
     fontWeight: 700,
     fontSize: 'clamp(1.875rem, 3.25vw, 2.625rem)', // 30px ~ 42px
     lineHeight: 1.2,
     letterSpacing: '-0.015em',
   },
   h4: {
-    fontFamily: '"Outfit", "Pretendard Variable", Pretendard, sans-serif',
     fontWeight: 600,
     fontSize: '1.5rem',      // 24px
     lineHeight: 1.3,
     letterSpacing: '-0.01em',
   },
   h5: {
-    fontFamily: '"Outfit", "Pretendard Variable", Pretendard, sans-serif',
     fontWeight: 600,
     fontSize: '1.25rem',     // 20px
     lineHeight: 1.4,
     letterSpacing: '0',
   },
   h6: {
-    fontFamily: '"Outfit", "Pretendard Variable", Pretendard, sans-serif',
     fontWeight: 500,
     fontSize: '1.125rem',    // 18px
     lineHeight: 1.4,
     letterSpacing: '0',
   },
 
-  // 본문 스타일 — 넉넉한 line-height로 정보 밀도 낮추기
+  // Body styles - generous line-height to lower information density
   body1: {
     fontSize: '1rem',        // 16px
     lineHeight: 1.7,
@@ -193,7 +191,7 @@ const typography = {
     letterSpacing: '0',
   },
 
-  // 부제목
+  // Subtitles
   subtitle1: {
     fontSize: '1.125rem',    // 18px
     fontWeight: 500,
@@ -207,7 +205,7 @@ const typography = {
     letterSpacing: '0',
   },
 
-  // 기타
+  // Misc
   button: {
     fontSize: '0.9375rem',   // 15px
     fontWeight: 500,
@@ -231,19 +229,19 @@ const typography = {
 };
 
 // ============================================================
-// 3. Spacing Token (간격 토큰)
+// 3. Spacing Token
 // ============================================================
-const spacing = 8; // 기본 단위: 8px
+const spacing = 8; // Base unit: 8px
 
 // ============================================================
-// 4. Shape Token (모양 토큰)
+// 4. Shape Token
 // ============================================================
 const shape = {
   borderRadius: 0, // Sharp corners (0px)
 };
 
 // ============================================================
-// 5. Shadow Tokens (그림자 토큰) — MUSE near-black 틴트
+// 5. Shadow Tokens - MUSE near-black tint
 // ============================================================
 const customShadows = {
   none: 'none',
@@ -254,20 +252,20 @@ const customShadows = {
 };
 
 // ============================================================
-// 6. Breakpoints (브레이크포인트)
+// 6. Breakpoints
 // ============================================================
 const breakpoints = {
   values: {
-    xs: 0,      // 모바일
-    sm: 600,    // 태블릿 세로
-    md: 900,    // 태블릿 가로
-    lg: 1200,   // 데스크톱
-    xl: 1536,   // 대형 데스크톱
+    xs: 0,      // Mobile
+    sm: 600,    // Tablet portrait
+    md: 900,    // Tablet landscape
+    lg: 1200,   // Desktop
+    xl: 1536,   // Large desktop
   },
 };
 
 // ============================================================
-// 7. Z-Index (레이어 순서)
+// 7. Z-Index (layer order)
 // ============================================================
 const zIndex = {
   mobileStepper: 1000,
@@ -281,7 +279,7 @@ const zIndex = {
 };
 
 // ============================================================
-// 8. Transitions (전환 효과)
+// 8. Transitions
 // ============================================================
 const transitions = {
   duration: {
@@ -302,7 +300,7 @@ const transitions = {
 };
 
 // ============================================================
-// 9. Component Overrides (컴포넌트 오버라이드)
+// 9. Component Overrides
 // ============================================================
 const components = {
   MuiCssBaseline: {
@@ -312,7 +310,7 @@ const components = {
       },
     },
   },
-  // 최상위 면 — elevation 전 레벨 shadow 제거 (flat)
+  // Top-level surface - remove shadow at all elevation levels (flat)
   MuiPaper: {
     defaultProps: { elevation: 0 },
     styleOverrides: {
@@ -352,7 +350,7 @@ const components = {
       },
     },
   },
-  // 클리커블 요소 — pill + 사이즈 업 + elevation 제거
+  // Clickable elements - pill + size up + remove elevation
   MuiButton: {
     defaultProps: {
       disableElevation: true,
@@ -396,7 +394,7 @@ const components = {
       },
     },
   },
-  // 입력 요소 — 16px radius, padding 확대, 내부 input 사이즈 업
+  // Input elements - 16px radius, larger padding, larger inner input
   MuiOutlinedInput: {
     styleOverrides: {
       root: {
@@ -435,7 +433,7 @@ const components = {
 };
 
 // ============================================================
-// Theme 생성
+// Theme creation
 // ============================================================
 const defaultTheme = createTheme({
   palette,
@@ -448,11 +446,11 @@ const defaultTheme = createTheme({
   components,
 });
 
-// 커스텀 속성 추가 (타입 확장 없이 접근 가능하도록)
+// Add custom properties (accessible without type augmentation)
 defaultTheme.customShadows = customShadows;
 
 /**
- * 대시보드 스타일 설정 (Default)
+ * Dashboard style settings (Default)
  */
 defaultTheme.dashboard = {
   style: 'default',
@@ -496,7 +494,7 @@ defaultTheme.dashboard = {
   background: '#FCFCFF',
   atmosphere: 'linear-gradient(to bottom, #FCFCFF 0%, #F8F8FC 100%)',
   atmosphereOpacity: 0,
-  accentColor: '#4F46E5', // MUSE Accent (info.main) — 필수 강조용
+  accentColor: '#4F46E5', // MUSE Accent (info.main) - for essential emphasis
   accentColors: {
     wind: '#4DB6AC',
     humidity: '#FFB74D',
@@ -508,7 +506,7 @@ defaultTheme.dashboard = {
 
 export default defaultTheme;
 
-// 개별 토큰 내보내기 (문서화용)
+// Export individual tokens (for documentation)
 export {
   palette,
   typography,

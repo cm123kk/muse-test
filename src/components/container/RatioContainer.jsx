@@ -1,32 +1,32 @@
 import { Box } from '@mui/material';
 
 /**
- * 황금비율 상수
+ * Golden ratio constant
  */
 const PHI = 1.618033988749895;
 
 /**
- * RatioContainer 컴포넌트
+ * RatioContainer component
  *
- * 고정된 종횡비를 유지하는 컨테이너 컴포넌트.
- * CSS aspect-ratio 속성을 활용하여 16:9, 4:3, 1:1, 황금비율 등 다양한 비율을 지원한다.
+ * A container component that maintains a fixed aspect ratio.
+ * Uses the CSS aspect-ratio property to support various ratios such as 16:9, 4:3, 1:1, and the golden ratio.
  *
- * 동작 방식:
- * 1. ratio prop에 따라 컨테이너의 종횡비가 설정됨
- * 2. 컨테이너 너비가 변해도 비율이 유지됨
- * 3. children은 컨테이너 내부에 align prop에 따라 배치됨
- * 4. contain이 true면 overflow: hidden 적용
+ * How it works:
+ * 1. The container aspect ratio is set based on the ratio prop
+ * 2. The ratio is preserved even when the container width changes
+ * 3. children are positioned inside the container according to the align prop
+ * 4. overflow: hidden is applied when contain is true
  *
  * Props:
- * @param {ReactNode} children - 컨테이너 내용 [Required]
- * @param {string|number} ratio - 비율 ('16:9' | '4:3' | '1:1' | '3:2' | '21:9' | 'phi' | 'phi-vertical' | number) [Optional, 기본값: '16:9']
- * @param {string} maxWidth - 최대 너비 [Optional]
- * @param {string} minHeight - 최소 높이 [Optional]
- * @param {boolean} isContained - 내용이 컨테이너를 넘지 않도록 overflow hidden [Optional, 기본값: true]
- * @param {string} align - 내용 정렬 ('center' | 'start' | 'end' | 'stretch') [Optional, 기본값: 'center']
- * @param {string} justify - 수평 정렬 ('center' | 'start' | 'end' | 'stretch') [Optional, 기본값: 'center']
- * @param {string} background - 배경색 또는 그라데이션 [Optional]
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {ReactNode} children - Container content [Required]
+ * @param {string|number} ratio - Ratio ('16:9' | '4:3' | '1:1' | '3:2' | '21:9' | 'phi' | 'phi-vertical' | number) [Optional, default: '16:9']
+ * @param {string} maxWidth - Maximum width [Optional]
+ * @param {string} minHeight - Minimum height [Optional]
+ * @param {boolean} isContained - overflow hidden so content does not exceed the container [Optional, default: true]
+ * @param {string} align - Content alignment ('center' | 'start' | 'end' | 'stretch') [Optional, default: 'center']
+ * @param {string} justify - Horizontal alignment ('center' | 'start' | 'end' | 'stretch') [Optional, default: 'center']
+ * @param {string} background - Background color or gradient [Optional]
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
  * <RatioContainer ratio="16:9">
@@ -49,30 +49,30 @@ export function RatioContainer({
   ...props
 }) {
   /**
-   * ratio prop을 CSS aspect-ratio 값으로 변환
-   * - 문자열 비율 (예: '16:9') → '16/9'
-   * - 프리셋 키워드 (예: 'phi') → 황금비율 값
-   * - 숫자 → 그대로 사용 (width/height 비율)
+   * Convert the ratio prop into a CSS aspect-ratio value
+   * - String ratio (e.g. '16:9') -> '16/9'
+   * - Preset keyword (e.g. 'phi') -> golden ratio value
+   * - Number -> used as is (width/height ratio)
    */
   const getAspectRatio = () => {
-    // 숫자인 경우 그대로 반환
+    // Return as is when it is a number
     if (typeof ratio === 'number') {
       return ratio;
     }
 
-    // 프리셋 키워드 처리
+    // Handle preset keywords
     const presets = {
-      'phi': PHI,           // 1.618:1 (가로로 긴 황금비율)
-      'phi-vertical': 1 / PHI,  // 1:1.618 (세로로 긴 황금비율)
+      'phi': PHI,           // 1.618:1 (wide golden ratio)
+      'phi-vertical': 1 / PHI,  // 1:1.618 (tall golden ratio)
       'square': 1,          // 1:1
-      'golden': PHI,        // phi와 동일
+      'golden': PHI,        // same as phi
     };
 
     if (presets[ratio]) {
       return presets[ratio];
     }
 
-    // 문자열 비율 파싱 (예: '16:9' → '16/9')
+    // Parse string ratio (e.g. '16:9' -> '16/9')
     if (typeof ratio === 'string' && ratio.includes(':')) {
       const [width, height] = ratio.split(':').map(Number);
       if (!isNaN(width) && !isNaN(height) && height !== 0) {
@@ -80,11 +80,11 @@ export function RatioContainer({
       }
     }
 
-    // 기본값
+    // Default value
     return 16 / 9;
   };
 
-  // 정렬 값 매핑
+  // Alignment value mapping
   const alignMap = {
     center: 'center',
     start: 'flex-start',
@@ -105,7 +105,7 @@ export function RatioContainer({
         alignItems: alignMap[align] || 'center',
         justifyContent: alignMap[justify] || 'center',
         background: background,
-        // 이미지가 컨테이너를 채우도록
+        // Make images fill the container
         '& > img, & > video': {
           width: '100%',
           height: '100%',
@@ -121,6 +121,6 @@ export function RatioContainer({
 }
 
 /**
- * 황금비율 상수 export (다른 컴포넌트에서 사용)
+ * Golden ratio constant export (used by other components)
  */
 export { PHI };

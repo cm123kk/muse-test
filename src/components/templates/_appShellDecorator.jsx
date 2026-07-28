@@ -2,10 +2,11 @@ import Typography from '@mui/material/Typography';
 import { AppShell } from '../layout/AppShell.jsx';
 
 /**
- * Storybook decorator — 템플릿 스토리를 AppShell 로 감싸는 shell.
+ * Storybook decorator: a shell that wraps template stories in AppShell.
  *
- * 실제 앱에서는 <AppShellLayout /> 이 라우트 레벨에서 AppShell 을 감싸고 MuseNav 를
- * 주입하지만, 스토리는 Router context 없이 독립 렌더되므로 간단한 로고 텍스트만 넣는다.
+ * In the real app, <AppShellLayout /> wraps AppShell at the route level and injects
+ * MuseNav, but stories render standalone without a Router context, so we only add a
+ * simple logo text.
  */
 export const withAppShell = (Story) => (
   <AppShell

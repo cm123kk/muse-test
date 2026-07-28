@@ -4,7 +4,7 @@ import Button from '@mui/material/Button';
 import Placeholder from '../../common/ui/Placeholder';
 import PerspectiveTransition from './PerspectiveTransition';
 
-/** key를 변경하여 컴포넌트를 리마운트 → 애니메이션 재생 */
+/** Change key to remount the component and replay the animation */
 function useReplay() {
   const [key, setKey] = useState(0);
   const replay = useCallback(() => setKey((k) => k + 1), []);
@@ -31,28 +31,28 @@ export default {
   argTypes: {
     rotateFrom: {
       control: { type: 'range', min: 0, max: 180, step: 5 },
-      description: '초기 회전 각도 (deg)',
+      description: 'Initial rotation angle (deg)',
     },
     perspective: {
       control: { type: 'range', min: 200, max: 2000, step: 100 },
-      description: '원근감 거리 (px)',
+      description: 'Perspective distance (px)',
     },
     transformOrigin: {
       control: 'select',
       options: ['bottom center', 'top center', 'center center', 'left center', 'right center'],
-      description: '회전 축 기준점',
+      description: 'Rotation axis origin',
     },
     duration: {
       control: { type: 'range', min: 200, max: 2000, step: 100 },
-      description: '전환 시간 (ms)',
+      description: 'Transition duration (ms)',
     },
     delay: {
       control: { type: 'range', min: 0, max: 1000, step: 50 },
-      description: '전환 지연 (ms)',
+      description: 'Transition delay (ms)',
     },
     isIn: {
       control: 'boolean',
-      description: '표시 여부',
+      description: 'Visibility',
     },
   },
 };
@@ -121,7 +121,7 @@ export const TopOrigin = {
       <Box sx={ { p: 4, maxWidth: 400 } }>
         <ReplayButton onClick={ replay } />
         <PerspectiveTransition key={ key } rotateFrom={ 60 } transformOrigin="top center">
-          <Placeholder.Box label="Top Origin (앞으로 넘어짐)" height={ 240 } />
+          <Placeholder.Box label="Top Origin (falls forward)" height={ 240 } />
         </PerspectiveTransition>
       </Box>
     );

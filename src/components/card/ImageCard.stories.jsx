@@ -9,19 +9,19 @@ export default {
   component: ImageCard,
   tags: ['autodocs'],
   argTypes: {
-    src: { control: 'text', description: '이미지 URL' },
-    title: { control: 'text', description: '제목' },
-    tags: { control: 'object', description: '태그 배열' },
-    hideActions: { control: 'boolean', description: '기본 액션 버튼 숨김' },
-    isSelectable: { control: 'boolean', description: '선택 체크박스 표시' },
-    isSelected: { control: 'boolean', description: '선택 상태' },
+    src: { control: 'text', description: 'Image URL' },
+    title: { control: 'text', description: 'Title' },
+    tags: { control: 'object', description: 'Array of tags' },
+    hideActions: { control: 'boolean', description: 'Hide the default action buttons' },
+    isSelectable: { control: 'boolean', description: 'Show the selection checkbox' },
+    isSelected: { control: 'boolean', description: 'Selected state' },
     onLike: { action: 'liked' },
     onToggleSelect: { action: 'toggled' },
     onClick: { action: 'clicked' },
   },
 };
 
-/** 기본 — 제목 + 태그 + 기본 액션 */
+/** Default: title + tags + default actions */
 export const Default = {
   args: {
     src: placeholderSvg(600, 400),
@@ -30,7 +30,7 @@ export const Default = {
   },
 };
 
-/** 태그만 — 제목 없이 태그 배지만 노출 */
+/** Tags only: only the tag badges, no title */
 export const TagsOnly = {
   args: {
     src: placeholderSvg(600, 400),
@@ -38,7 +38,7 @@ export const TagsOnly = {
   },
 };
 
-/** 선택 가능 — 아카이브/레퍼런스 선택 UI용 */
+/** Selectable: for archive/reference selection UI */
 export const Selectable = {
   render: () => {
     const [selected, setSelected] = useState(false);
@@ -57,7 +57,7 @@ export const Selectable = {
   },
 };
 
-/** 다중 선택 예시 — ReferencePicker 패턴 프리뷰 */
+/** Multi-select example: ReferencePicker pattern preview */
 export const MultiSelectGrid = {
   render: () => {
     const [picked, setPicked] = useState(new Set());
@@ -97,7 +97,7 @@ export const MultiSelectGrid = {
   },
 };
 
-/** 실사 이미지 예시 — Placeholder.Media 사용 */
+/** Real image example: using Placeholder.Media */
 export const WithMediaPlaceholder = {
   render: () => (
     <Box sx={ { maxWidth: 960 } }>

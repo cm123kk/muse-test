@@ -2,15 +2,15 @@ import Box from '@mui/material/Box';
 import Container from '@mui/material/Container';
 
 /**
- * PageContainer 컴포넌트
+ * PageContainer component
  *
- * 스토리북 문서 페이지의 최상위 컨테이너
- * xl(1536px) 이상에서는 maxWidth 적용, 이하에서는 100% 너비
- * DocumentTitle 고정 헤더를 고려한 상단 패딩 포함
+ * Top-level container for a Storybook document page.
+ * Applies maxWidth at xl (1536px) and above, and 100% width below that.
+ * Includes top padding to account for the fixed DocumentTitle header.
  *
  * Props:
- * @param {ReactNode} children - 페이지 콘텐츠 [Required]
- * @param {string} maxWidth - 최대 너비 breakpoint [Optional, 기본값: 'xl']
+ * @param {ReactNode} children - Page content [Required]
+ * @param {string} maxWidth - Maximum width breakpoint [Optional, default: 'xl']
  *
  * Example usage:
  * <PageContainer>

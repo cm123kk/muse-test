@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import { useSignIn } from '../../hooks/auth/useSignIn';
 
 /**
- * 로그인 폼
+ * Login form
  *
  * Props:
- * @param {function} onSuccess - 로그인 성공 시 콜백 [Optional]
+ * @param {function} onSuccess - callback on successful login [Optional]
  *
  * Example usage:
  * <LoginForm onSuccess={() => navigate('/archive')} />
@@ -34,7 +34,7 @@ function LoginForm({ onSuccess }) {
       )}
 
       <TextField
-        label="이메일"
+        label="Email"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -45,7 +45,7 @@ function LoginForm({ onSuccess }) {
       />
 
       <TextField
-        label="비밀번호"
+        label="Password"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
@@ -62,7 +62,7 @@ function LoginForm({ onSuccess }) {
         disabled={loading || !email || !password}
         size="large"
       >
-        {loading ? '로그인 중...' : '로그인'}
+        {loading ? 'Signing in...' : 'Sign in'}
       </Button>
     </Box>
   );

@@ -1,99 +1,99 @@
 # appendix. Screen ↔ Component Map
 
-> [02-ux-flow.md](./02-ux-flow.md) 본문에서 분리된 부록. 화면 그룹별 컴포넌트 상세 매핑.
+> An appendix split out from the body of [02-ux-flow.md](./02-ux-flow.md). Detailed component mapping by screen group.
 
 ---
 
-## A. 앱 골격 (글로벌 레이아웃 · 네비게이션)
+## A. App Skeleton (Global Layout, Navigation)
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `AppShell` | 전역 레이아웃 (GNB + 메인 영역) | 재활용 | `components/layout/AppShell.jsx` |
-| `GNB` | 글로벌 네비게이션 바 | 재활용 | `components/navigation/GNB.jsx` |
-| `PageContainer` | 반응형 페이지 컨테이너 | 재활용 | `components/layout/PageContainer.jsx` |
-| `SectionContainer` | 섹션 단위 컨테이너 | 재활용 | `components/container/SectionContainer.jsx` |
+| `AppShell` | Global layout (GNB + main area) | Reuse | `components/layout/AppShell.jsx` |
+| `GNB` | Global navigation bar | Reuse | `components/navigation/GNB.jsx` |
+| `PageContainer` | Responsive page container | Reuse | `components/layout/PageContainer.jsx` |
+| `SectionContainer` | Section-level container | Reuse | `components/container/SectionContainer.jsx` |
 
-## B. Archive (레퍼런스 수집 · 탐색)
+## B. Archive (Reference Collection, Exploration)
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `FileDropzone` | 드래그앤드롭 / URL 업로드 | 재활용 | `components/input/FileDropzone.jsx` |
-| `Masonry` (MUI) | 인피니트 그리드 베이스 | 수정 | 인피니트 스크롤 훅 연결 |
-| `ImageCard` | 레퍼런스 썸네일 + 태그 배지 + 선택 체크박스 | 수정 | `components/card/ImageCard.jsx` 확장 |
-| `SearchBar` | 아카이브 검색 | 재활용 | `components/input/SearchBar.jsx` |
-| `FilterBar` | 태그/컬러톤 필터 | 재활용 | `components/templates/FilterBar.jsx` |
-| `TagInput` | 개별 레퍼런스 태그 편집 | 재활용 | `components/input/TagInput.jsx` |
+| `FileDropzone` | Drag and drop / URL upload | Reuse | `components/input/FileDropzone.jsx` |
+| `Masonry` (MUI) | Infinite grid base | Modify | Connect the infinite scroll hook |
+| `ImageCard` | Reference thumbnail + tag badge + selection checkbox | Modify | Extends `components/card/ImageCard.jsx` |
+| `SearchBar` | Archive search | Reuse | `components/input/SearchBar.jsx` |
+| `FilterBar` | Tag/color-tone filter | Reuse | `components/templates/FilterBar.jsx` |
+| `TagInput` | Per-reference tag editing | Reuse | `components/input/TagInput.jsx` |
 
-## C. Project (목록 · 5-step Wizard)
+## C. Project (List, 5-step Wizard)
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `MoodboardCard` | 프로젝트 목록 카드 (2x2 썸네일) | 재활용 | `components/card/MoodboardCard.jsx` |
-| `CardContainer` | 카드 기본 컨테이너 | 재활용 | `components/card/CardContainer.jsx` |
-| `TextField` / `Select` / `Button` | 폼 입력 | 재활용 | MUI |
-| `ProjectCreateWizard` | 5-step 위자드 (Step 0~4) | 신규 | 카테고리: `templates` |
-| `ReferencePicker` | 추천 + 아카이브 다중 선택 패널 | 신규 | 카테고리: `templates` |
-| `ModeSelectCard` | Step 0 모드 카드 (concept / system) | 재활용 | `components/card/ModeSelectCard.jsx` |
-| `IntentGuideField` | Step 1 의도 입력 | 재활용 | `components/input/IntentGuideField.jsx` |
-| `ReferenceLayerChipRow` | Step 2 카드별 layer chip | 재활용 | `components/card/ReferenceLayerChipRow.jsx` |
-| `RefinementNotesField` | Step 3 활용 노트 | 재활용 | `components/input/RefinementNotesField.jsx` |
+| `MoodboardCard` | Project list card (2x2 thumbnails) | Reuse | `components/card/MoodboardCard.jsx` |
+| `CardContainer` | Base card container | Reuse | `components/card/CardContainer.jsx` |
+| `TextField` / `Select` / `Button` | Form inputs | Reuse | MUI |
+| `ProjectCreateWizard` | 5-step wizard (Step 0-4) | New | Category: `templates` |
+| `ReferencePicker` | Recommendation + archive multi-select panel | New | Category: `templates` |
+| `ModeSelectCard` | Step 0 mode card (concept / system) | Reuse | `components/card/ModeSelectCard.jsx` |
+| `IntentGuideField` | Step 1 intent input | Reuse | `components/input/IntentGuideField.jsx` |
+| `ReferenceLayerChipRow` | Step 2 per-card layer chip | Reuse | `components/card/ReferenceLayerChipRow.jsx` |
+| `RefinementNotesField` | Step 3 usage notes | Reuse | `components/input/RefinementNotesField.jsx` |
 
-## D. 분석 피드백 (진행 상태 · 경고)
+## D. Analysis Feedback (Progress State, Warnings)
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `Dialog` (MUI) | 경고/확인 모달 | 재활용 | MUI |
-| `AnalysisProgress` | 분석 진행 (레이어별 인디케이터) | 신규 | 카테고리: `overlay-feedback` |
+| `Dialog` (MUI) | Warning/confirmation modal | Reuse | MUI |
+| `AnalysisProgress` | Analysis progress (per-layer indicator) | New | Category: `overlay-feedback` |
 
-## E. ProjectDetail (토큰 편집 셸)
+## E. ProjectDetail (Token Editing Shell)
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `CategoryTab` | 레이어 탭 (color / typography / layout / gradient / VD) | 재활용 | `components/in-page-navigation/CategoryTab.jsx` |
-| `SplitScreen` | 토큰 편집 패널 + 프리뷰 좌우 분할 | 재활용 | `components/layout/SplitScreen.jsx` |
-| `Switch` | 토큰 on/off 토글 | 재활용 | MUI |
-| `TokenListItem` | 레이어 공통 토큰 행 (on/off + emphasis 슬라이더) | 신규 | 카테고리: `data-display` |
+| `CategoryTab` | Layer tab (color / typography / layout / gradient / VD) | Reuse | `components/in-page-navigation/CategoryTab.jsx` |
+| `SplitScreen` | Left/right split of token editing panel and preview | Reuse | `components/layout/SplitScreen.jsx` |
+| `Switch` | Token on/off toggle | Reuse | MUI |
+| `TokenListItem` | Common token row for layers (on/off + emphasis slider) | New | Category: `data-display` |
 
-## F. 레이어별 프리뷰 (토큰 시각화)
+## F. Per-Layer Preview (Token Visualization)
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `ColorSwatchList` | 컬러 토큰 스와치 + HEX + 토글 | 신규 | 카테고리: `data-display` |
-| `TypographyPreview` | 타이포 샘플 텍스트 + 속성 | 신규 | 카테고리: `data-display` |
-| `LayoutTokenPreview` | 그리드/스페이싱 다이어그램 | 신규 | 카테고리: `data-display` |
-| `GradientPreview` | 그라디언트 토큰 스와치 | 신규 | 카테고리: `data-display` |
-| `TokenDecisionTracePanel` | TP6 펼침 (출처 + 이유 + appliedUserNotes + 탈락 후보) | 신규 | 카테고리: `data-display` |
-| `DesignMdPreview` | DESIGN.md alpha spec 결과 화면 | 신규 | 카테고리: `data-display` |
+| `ColorSwatchList` | Color token swatch + HEX + toggle | New | Category: `data-display` |
+| `TypographyPreview` | Typography sample text + properties | New | Category: `data-display` |
+| `LayoutTokenPreview` | Grid/spacing diagram | New | Category: `data-display` |
+| `GradientPreview` | Gradient token swatch | New | Category: `data-display` |
+| `TokenDecisionTracePanel` | TP6 expansion (source + reason + appliedUserNotes + rejected candidates) | New | Category: `data-display` |
+| `DesignMdPreview` | DESIGN.md alpha spec result screen | New | Category: `data-display` |
 
 ## G. Export
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `ThemeExportDialog` | Universal JSON / ZIP 번들 / 단독 JSON 다운로드 | 신규 | 카테고리: `overlay-feedback` |
+| `ThemeExportDialog` | Universal JSON / ZIP bundle / standalone JSON download | New | Category: `overlay-feedback` |
 
-## H. Auth (가입 · 로그인)
+## H. Auth (Sign-up, Login)
 
-| 컴포넌트 | 용도 | 구분 | 기존 경로 / 비고 |
+| Component | Purpose | Type | Existing Path / Notes |
 |----------|------|------|-----------------|
-| `AuthHero` | 가입/로그인 진입 화면 | 재활용 | `components/templates/AuthHero.jsx` |
-| `LoginForm` | 이메일 + 비밀번호 입력 | 신규 | 카테고리: `input` (component-work 위임) |
-| `SignUpForm` | 회원가입 입력 | 신규 | 카테고리: `input` (component-work 위임) |
-| `AuthGuard` | 로그인 가드 라우트 | 신규 | 카테고리: `layout` (component-work 위임) |
+| `AuthHero` | Sign-up/login entry screen | Reuse | `components/templates/AuthHero.jsx` |
+| `LoginForm` | Email + password input | New | Category: `input` (delegated to component-work) |
+| `SignUpForm` | Sign-up input | New | Category: `input` (delegated to component-work) |
+| `AuthGuard` | Login guard route | New | Category: `layout` (delegated to component-work) |
 
 ---
 
-## 그룹별 합계 (재활용 / 수정 / 신규)
+## Totals by Group (Reuse / Modify / New)
 
-| 그룹 | 재활용 | 수정 | 신규 |
+| Group | Reuse | Modify | New |
 |------|-------|------|------|
-| A. 앱 골격 | 4 | 0 | 0 |
+| A. App Skeleton | 4 | 0 | 0 |
 | B. Archive | 4 | 2 | 0 |
 | C. Project | 7 | 0 | 2 |
-| D. 분석 피드백 | 1 | 0 | 1 |
+| D. Analysis Feedback | 1 | 0 | 1 |
 | E. ProjectDetail | 3 | 0 | 1 |
-| F. 레이어 프리뷰 | 0 | 0 | 6 |
+| F. Layer Preview | 0 | 0 | 6 |
 | G. Export | 0 | 0 | 1 |
 | H. Auth | 1 | 0 | 3 |
-| **합계** | **20** | **2** | **14** |
+| **Total** | **20** | **2** | **14** |
 
-> 본문 (02-ux-flow.md § 컴포넌트 리스트) 의 카운트 (재활용 17 / 수정 2 / 신규 10) 는 H 그룹 (Auth) + ProjectDetail 의 일부를 누락한 구버전. 본 부록이 최신 truth.
+> The count in the body (02-ux-flow.md § Component List) of reuse 17 / modify 2 / new 10 is an older version that omits the H group (Auth) and part of ProjectDetail. This appendix is the current truth.

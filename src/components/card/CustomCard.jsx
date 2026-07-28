@@ -3,31 +3,31 @@ import Box from '@mui/material/Box';
 import { CardContainer } from './CardContainer';
 
 /**
- * CustomCard 컴포넌트
+ * CustomCard component
  *
- * 미디어 영역과 콘텐츠 영역으로 구성된 커스텀 카드 컴포넌트.
- * 다양한 레이아웃(vertical, horizontal, overlay)을 지원한다.
+ * A custom card component made up of a media area and a content area.
+ * Supports a variety of layouts (vertical, horizontal, overlay).
  *
- * 동작 방식:
- * 1. layout에 따라 미디어와 콘텐츠 배치 결정
- * 2. 미디어 영역은 이미지, 비디오 등 시각적 콘텐츠 표시
- * 3. 콘텐츠 영역은 텍스트, 버튼 등 정보 표시
- * 4. overlaySlot을 통해 미디어 위에 액션 버튼, 배지 등 오버레이 가능
+ * How it works:
+ * 1. Determines the placement of media and content based on layout
+ * 2. The media area displays visual content such as images and video
+ * 3. The content area displays information such as text and buttons
+ * 4. overlaySlot allows overlaying action buttons, badges, and more on top of the media
  *
  * Props:
- * @param {string} layout - 레이아웃 타입 ('vertical' | 'horizontal' | 'overlay') [Optional, 기본값: 'vertical']
- * @param {string} mediaPosition - 미디어 위치 ('start' | 'end') [Optional, 기본값: 'start']
- * @param {string} mediaRatio - 미디어 영역 비율 ('1/1' | '4/3' | '16/9' | '21/9' | 'auto') [Optional, 기본값: '16/9']
- * @param {string} mediaSrc - 미디어 소스 URL [Optional]
- * @param {string} mediaAlt - 미디어 대체 텍스트 [Optional, 기본값: '']
- * @param {node} mediaSlot - 커스텀 미디어 요소 (mediaSrc보다 우선) [Optional]
- * @param {node} overlaySlot - 미디어 영역 위에 표시할 오버레이 요소 (액션 버튼, 배지 등) [Optional]
- * @param {node} children - 콘텐츠 영역 내용 [Optional]
- * @param {string} contentPadding - 콘텐츠 패딩 ('none' | 'sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {string} contentAlign - 콘텐츠 정렬 ('start' | 'center' | 'end') [Optional, 기본값: 'start']
- * @param {boolean} isInteractive - 호버 효과 [Optional, 기본값: false]
- * @param {function} onClick - 클릭 핸들러 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} layout - Layout type ('vertical' | 'horizontal' | 'overlay') [Optional, default: 'vertical']
+ * @param {string} mediaPosition - Media position ('start' | 'end') [Optional, default: 'start']
+ * @param {string} mediaRatio - Media area ratio ('1/1' | '4/3' | '16/9' | '21/9' | 'auto') [Optional, default: '16/9']
+ * @param {string} mediaSrc - Media source URL [Optional]
+ * @param {string} mediaAlt - Media alt text [Optional, default: '']
+ * @param {node} mediaSlot - Custom media element (takes precedence over mediaSrc) [Optional]
+ * @param {node} overlaySlot - Overlay element to display on top of the media area (action buttons, badges, etc.) [Optional]
+ * @param {node} children - Content area contents [Optional]
+ * @param {string} contentPadding - Content padding ('none' | 'sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {string} contentAlign - Content alignment ('start' | 'center' | 'end') [Optional, default: 'start']
+ * @param {boolean} isInteractive - Hover effect [Optional, default: false]
+ * @param {function} onClick - Click handler [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <CustomCard
@@ -57,7 +57,7 @@ const CustomCard = forwardRef(function CustomCard({
   ...props
 }, ref) {
   /**
-   * 패딩 맵
+   * Padding map
    */
   const paddingMap = {
     none: 0,
@@ -67,7 +67,7 @@ const CustomCard = forwardRef(function CustomCard({
   };
 
   /**
-   * 정렬 맵
+   * Alignment map
    */
   const alignMap = {
     start: 'flex-start',
@@ -76,7 +76,7 @@ const CustomCard = forwardRef(function CustomCard({
   };
 
   /**
-   * 레이아웃별 컨테이너 스타일
+   * Container styles per layout
    */
   const getLayoutStyles = () => {
     switch (layout) {
@@ -101,8 +101,8 @@ const CustomCard = forwardRef(function CustomCard({
   };
 
   /**
-   * 미디어 영역 스타일
-   * - 'auto' ratio: 원본 이미지 비율 유지 (aspectRatio 미적용)
+   * Media area styles
+   * - 'auto' ratio: preserves the original image ratio (aspectRatio not applied)
    */
   const getMediaStyles = () => {
     const base = {
@@ -137,7 +137,7 @@ const CustomCard = forwardRef(function CustomCard({
   };
 
   /**
-   * 콘텐츠 영역 스타일
+   * Content area styles
    */
   const getContentStyles = () => {
     const base = {
@@ -171,16 +171,16 @@ const CustomCard = forwardRef(function CustomCard({
   };
 
   /**
-   * 미디어 렌더링
-   * - mediaSlot: 커스텀 미디어 요소 (우선)
-   * - mediaSrc: 이미지 URL
-   * - overlaySlot: 미디어 위 오버레이 요소 (액션 버튼, 배지 등)
+   * Media rendering
+   * - mediaSlot: custom media element (takes precedence)
+   * - mediaSrc: image URL
+   * - overlaySlot: overlay element on top of the media (action buttons, badges, etc.)
    */
   const renderMedia = () => {
     const hasMedia = mediaSlot || mediaSrc;
     if (!hasMedia && !overlaySlot) return null;
 
-    // 이미지 스타일 (auto ratio: 원본 비율 유지)
+    // Image styles (auto ratio: preserves original ratio)
     const imgStyles = mediaRatio === 'auto'
       ? {
           display: 'block',
@@ -198,10 +198,10 @@ const CustomCard = forwardRef(function CustomCard({
 
     return (
       <Box className="custom-card-media" sx={getMediaStyles()}>
-        {/* 커스텀 미디어 슬롯 (우선) */}
+        {/* Custom media slot (takes precedence) */}
         {mediaSlot}
 
-        {/* 기본 이미지 렌더링 */}
+        {/* Default image rendering */}
         {!mediaSlot && mediaSrc && (
           <Box
             component="img"
@@ -212,7 +212,7 @@ const CustomCard = forwardRef(function CustomCard({
           />
         )}
 
-        {/* 오버레이 슬롯 (액션 버튼, 배지 등) */}
+        {/* Overlay slot (action buttons, badges, etc.) */}
         {overlaySlot}
       </Box>
     );

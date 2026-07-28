@@ -14,9 +14,9 @@ import Stack from '@mui/material/Stack';
 import { PageContainer } from '../layout/PageContainer.jsx';
 
 const AI_MODELS = [
-  { value: 'claude-opus-4-7', label: 'Claude Opus 4.7 (최고 품질)' },
-  { value: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6 (균형)' },
-  { value: 'claude-haiku-4-5', label: 'Claude Haiku 4.5 (빠름)' },
+  { value: 'claude-opus-4-7', label: 'Claude Opus 4.7 (Highest quality)' },
+  { value: 'claude-sonnet-4-6', label: 'Claude Sonnet 4.6 (Balanced)' },
+  { value: 'claude-haiku-4-5', label: 'Claude Haiku 4.5 (Fastest)' },
 ];
 
 const THEME_MODES = [
@@ -26,16 +26,16 @@ const THEME_MODES = [
 ];
 
 /**
- * SettingsPage 템플릿
+ * SettingsPage template
  *
- * MUSE 설정 화면. AI 모델, 자동 태깅, 테마 모드를 관리한다.
+ * MUSE settings screen. Manages the AI model, auto-tagging, and theme mode.
  *
  * Props:
  * @param {object} settings - { aiModel, themeMode, isAutoTagEnabled } [Required]
  * @param {function} onChange - (patch) => void [Required]
- * @param {function} onSave - "저장" 클릭 [Optional]
- * @param {object} usage - { references: number, projects: number, referenceLimit?: number, projectLimit?: number } 사용량 (선택, 백엔드 연동 후 채워 넣음) [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {function} onSave - "Save" click [Optional]
+ * @param {object} usage - { references: number, projects: number, referenceLimit?: number, projectLimit?: number } usage (optional, filled in after backend integration) [Optional]
+ * @param {object} sx - additional styles [Optional]
  *
  * Example usage:
  * <SettingsPage
@@ -60,24 +60,24 @@ export function SettingsPage({ settings, onChange, onSave, usage, sx }) {
       </Box>
 
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 5 } }>
-          {/* 사용량 (선택) — 백엔드 연동 후 사용량/한도를 props 로 주입하면 표시 */ }
+          {/* Usage (optional): shown when usage/limits are injected via props after backend integration */ }
           { usage && (usage.referenceLimit || usage.projectLimit) && (
             <>
               <Section
-                title="사용량"
-                description="현재 계정 사용량"
+                title="Usage"
+                description="Current account usage"
               >
                 <Stack spacing={ 1 }>
                   { usage.referenceLimit && (
                     <UsageRow
-                      label="레퍼런스"
+                      label="References"
                       used={ usage.references ?? 0 }
                       limit={ usage.referenceLimit }
                     />
                   ) }
                   { usage.projectLimit && (
                     <UsageRow
-                      label="프로젝트"
+                      label="Projects"
                       used={ usage.projects ?? 0 }
                       limit={ usage.projectLimit }
                     />
@@ -91,8 +91,8 @@ export function SettingsPage({ settings, onChange, onSave, usage, sx }) {
 
           {/* AI Model */}
           <Section
-            title="AI 모델"
-            description="레퍼런스 태깅과 토큰 분석에 사용할 모델"
+            title="AI Model"
+            description="Model used for reference tagging and token analysis"
           >
             <FormControl fullWidth>
               <Select
@@ -110,8 +110,8 @@ export function SettingsPage({ settings, onChange, onSave, usage, sx }) {
 
           {/* Auto-tag toggle */}
           <Section
-            title="자동 태깅"
-            description="아카이빙 시 AI가 컬러톤/스타일/카테고리 태그를 자동 부여"
+            title="Auto-tagging"
+            description="AI automatically assigns color tone, style, and category tags on archiving"
           >
             <FormControlLabel
               control={
@@ -120,7 +120,7 @@ export function SettingsPage({ settings, onChange, onSave, usage, sx }) {
                   onChange={ (e) => patch({ isAutoTagEnabled: e.target.checked }) }
                 />
               }
-              label={ settings.isAutoTagEnabled ? '활성' : '비활성' }
+              label={ settings.isAutoTagEnabled ? 'On' : 'Off' }
             />
           </Section>
 
@@ -128,8 +128,8 @@ export function SettingsPage({ settings, onChange, onSave, usage, sx }) {
 
           {/* Theme */}
           <Section
-            title="테마 모드"
-            description="MUSE 앱 자체의 라이트/다크 모드"
+            title="Theme Mode"
+            description="Light/dark mode for the MUSE app itself"
           >
             <RadioGroup
               row
@@ -159,7 +159,7 @@ export function SettingsPage({ settings, onChange, onSave, usage, sx }) {
                   setDirty(false);
                 } }
               >
-                저장
+                Save
               </Button>
             </Box>
           ) }
@@ -170,7 +170,7 @@ export function SettingsPage({ settings, onChange, onSave, usage, sx }) {
   );
 }
 
-/** 사용량 행 — 라벨 좌측, 카운트 우측 */
+/** Usage row: label on the left, count on the right */
 function UsageRow({ label, used, limit }) {
   const ratio = limit > 0 ? Math.min(used / limit, 1) : 0;
   const color = ratio >= 1 ? 'error.main' : ratio >= 0.8 ? 'warning.main' : 'text.primary';
@@ -194,7 +194,7 @@ function UsageRow({ label, used, limit }) {
   );
 }
 
-/** 섹션 래퍼 (내부 유틸) */
+/** Section wrapper (internal util) */
 function Section({ title, description, children }) {
   return (
     <Box>

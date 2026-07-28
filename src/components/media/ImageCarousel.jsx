@@ -6,32 +6,32 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { Indicator } from '../../common/ui/Indicator';
 
 /**
- * ImageCarousel 컴포넌트
+ * ImageCarousel component
  *
- * 단일 이미지 영역 내에서 여러 이미지를 캐러셀로 표시하는 컴포넌트.
- * 스와이프 제스처, 키보드 네비게이션, 자동 재생을 지원한다.
+ * A component that displays multiple images as a carousel within a single image area.
+ * Supports swipe gestures, keyboard navigation, and autoplay.
  *
- * 동작 방식:
- * 1. 이미지들이 가로로 배치되고 현재 인덱스에 따라 이동
- * 2. 터치/마우스 드래그로 스와이프 가능
- * 3. 자동 재생 시 일정 간격으로 다음 이미지로 전환
- * 4. 내장 Indicator로 현재 위치 표시 및 직접 이동
+ * How it works:
+ * 1. Images are laid out horizontally and shift based on the current index
+ * 2. Swiping is possible via touch/mouse drag
+ * 3. When autoplay is on, it advances to the next image at a fixed interval
+ * 4. A built-in Indicator shows the current position and lets you jump directly
  *
  * Props:
- * @param {Array} images - 이미지 배열 [{ src, alt }] 또는 string[] [Required]
- * @param {string} aspectRatio - 컨테이너 종횡비 [Optional, 기본값: '16/9']
- * @param {string} transition - 트랜지션 타입 ('slide' | 'fade') [Optional, 기본값: 'slide']
- * @param {number} transitionDuration - 트랜지션 시간 (ms) [Optional, 기본값: 300]
- * @param {boolean} isAutoPlay - 자동 재생 [Optional, 기본값: false]
- * @param {number} autoPlayInterval - 자동 재생 간격 (ms) [Optional, 기본값: 5000]
- * @param {boolean} isLoop - 무한 루프 [Optional, 기본값: true]
- * @param {boolean} hasIndicator - 인디케이터 표시 [Optional, 기본값: true]
- * @param {string} indicatorType - 인디케이터 타입 [Optional, 기본값: 'dot']
- * @param {string} indicatorPosition - 인디케이터 위치 [Optional, 기본값: 'bottom']
- * @param {boolean} hasArrows - 화살표 버튼 표시 [Optional, 기본값: true]
- * @param {boolean} isPausedOnHover - 호버 시 자동 재생 일시 정지 [Optional, 기본값: true]
- * @param {function} onSlideChange - 슬라이드 변경 콜백 (index) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {Array} images - Array of images [{ src, alt }] or string[] [Required]
+ * @param {string} aspectRatio - Container aspect ratio [Optional, default: '16/9']
+ * @param {string} transition - Transition type ('slide' | 'fade') [Optional, default: 'slide']
+ * @param {number} transitionDuration - Transition time (ms) [Optional, default: 300]
+ * @param {boolean} isAutoPlay - Autoplay [Optional, default: false]
+ * @param {number} autoPlayInterval - Autoplay interval (ms) [Optional, default: 5000]
+ * @param {boolean} isLoop - Infinite loop [Optional, default: true]
+ * @param {boolean} hasIndicator - Show indicator [Optional, default: true]
+ * @param {string} indicatorType - Indicator type [Optional, default: 'dot']
+ * @param {string} indicatorPosition - Indicator position [Optional, default: 'bottom']
+ * @param {boolean} hasArrows - Show arrow buttons [Optional, default: true]
+ * @param {boolean} isPausedOnHover - Pause autoplay on hover [Optional, default: true]
+ * @param {function} onSlideChange - Slide change callback (index) => void [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <ImageCarousel
@@ -70,7 +70,7 @@ export function ImageCarousel({
   const autoPlayRef = useRef(null);
 
   /**
-   * 이미지 데이터 정규화
+   * Normalize image data
    */
   const normalizedImages = images.map((img, idx) => {
     if (typeof img === 'string') {
@@ -82,7 +82,7 @@ export function ImageCarousel({
   const totalImages = normalizedImages.length;
 
   /**
-   * 다음 슬라이드로 이동
+   * Move to the next slide
    */
   const goToNext = useCallback(() => {
     setCurrentIndex((prev) => {
@@ -94,7 +94,7 @@ export function ImageCarousel({
   }, [totalImages, isLoop]);
 
   /**
-   * 이전 슬라이드로 이동
+   * Move to the previous slide
    */
   const goToPrev = useCallback(() => {
     setCurrentIndex((prev) => {
@@ -106,7 +106,7 @@ export function ImageCarousel({
   }, [totalImages, isLoop]);
 
   /**
-   * 특정 인덱스로 이동
+   * Move to a specific index
    */
   const goToIndex = useCallback((index) => {
     if (index >= 0 && index < totalImages) {
@@ -115,14 +115,14 @@ export function ImageCarousel({
   }, [totalImages]);
 
   /**
-   * 슬라이드 변경 시 콜백 호출
+   * Call the callback when the slide changes
    */
   useEffect(() => {
     onSlideChange?.(currentIndex);
   }, [currentIndex, onSlideChange]);
 
   /**
-   * 자동 재생 로직
+   * Autoplay logic
    */
   useEffect(() => {
     if (isAutoPlay && !isPaused && !isDragging) {
@@ -137,7 +137,7 @@ export function ImageCarousel({
   }, [isAutoPlay, isPaused, isDragging, autoPlayInterval, goToNext]);
 
   /**
-   * 키보드 네비게이션
+   * Keyboard navigation
    */
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -153,7 +153,7 @@ export function ImageCarousel({
   }, [goToNext, goToPrev]);
 
   /**
-   * 드래그/스와이프 핸들러
+   * Drag/swipe handlers
    */
   const handleDragStart = (clientX) => {
     setIsDragging(true);
@@ -169,7 +169,7 @@ export function ImageCarousel({
   const handleDragEnd = () => {
     if (!isDragging) return;
 
-    const threshold = 50; // 최소 드래그 거리
+    const threshold = 50; // Minimum drag distance
     if (dragOffset > threshold) {
       goToPrev();
     } else if (dragOffset < -threshold) {
@@ -180,7 +180,7 @@ export function ImageCarousel({
     setDragOffset(0);
   };
 
-  // 마우스 이벤트
+  // Mouse events
   const handleMouseDown = (e) => handleDragStart(e.clientX);
   const handleMouseMove = (e) => handleDragMove(e.clientX);
   const handleMouseUp = () => handleDragEnd();
@@ -188,13 +188,13 @@ export function ImageCarousel({
     if (isDragging) handleDragEnd();
   };
 
-  // 터치 이벤트
+  // Touch events
   const handleTouchStart = (e) => handleDragStart(e.touches[0].clientX);
   const handleTouchMove = (e) => handleDragMove(e.touches[0].clientX);
   const handleTouchEnd = () => handleDragEnd();
 
   /**
-   * 인디케이터 위치 스타일
+   * Indicator position styles
    */
   const getIndicatorPositionStyles = () => {
     const base = { position: 'absolute', zIndex: 2 };
@@ -212,9 +212,9 @@ export function ImageCarousel({
   };
 
   /**
-   * 슬라이드 컨테이너 transform 계산
-   * 컨테이너 너비가 totalImages * 100%이므로,
-   * 한 슬라이드 이동 = (100 / totalImages)%
+   * Compute the slide container transform.
+   * Since the container width is totalImages * 100%,
+   * one slide step = (100 / totalImages)%
    */
   const getSlideTransform = () => {
     if (transition === 'fade') {
@@ -222,7 +222,7 @@ export function ImageCarousel({
     }
 
     // slide transition
-    // 컨테이너 너비 대비 이동 비율 계산
+    // Compute the move ratio relative to the container width
     const slidePercent = 100 / totalImages;
     const dragPercent = isDragging ? (dragOffset / 300) * slidePercent : 0;
     const translateX = -(currentIndex * slidePercent) + dragPercent;
@@ -250,7 +250,7 @@ export function ImageCarousel({
       } }
       { ...props }
     >
-      {/* 슬라이드 컨테이너 */}
+      {/* Slide container */}
       <Box
         onMouseDown={ handleMouseDown }
         onMouseMove={ handleMouseMove }
@@ -297,7 +297,7 @@ export function ImageCarousel({
         )) }
       </Box>
 
-      {/* 화살표 버튼 */}
+      {/* Arrow buttons */}
       { hasArrows && totalImages > 1 && (
         <>
           <IconButton
@@ -337,7 +337,7 @@ export function ImageCarousel({
         </>
       ) }
 
-      {/* 인디케이터 */}
+      {/* Indicator */}
       { hasIndicator && totalImages > 1 && (
         <Box sx={ getIndicatorPositionStyles() }>
           <Indicator

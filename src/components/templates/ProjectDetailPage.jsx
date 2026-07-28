@@ -25,18 +25,18 @@ import TableCell from '@mui/material/TableCell';
 import { RefImage } from '../media/RefImage.jsx';
 
 /**
- * ProjectDetailPage 템플릿
+ * ProjectDetailPage template
  *
- * MUSE 프로젝트 상세 화면. 좌측: 레이어 탭 + 토큰 편집 / 우측: 토큰 요약 프리뷰.
- * 상단 "Export"는 범용 JSON + ZIP 번들 다이얼로그를 연다.
+ * MUSE project detail screen. Left: layer tabs + token editing / Right: token summary preview.
+ * The top "Export" button opens the generic JSON + ZIP bundle dialog.
  *
  * Props:
  * @param {object} project - { id, name, intent, type, referenceIds } [Required]
- * @param {object} analysis - 레이어별 토큰 {color, typography, layout, gradient, visualDirection} [Required]
- * @param {array}  [references] - 전체 store references — ZIP 이미지 번들링용 [Optional]
+ * @param {object} analysis - tokens per layer {color, typography, layout, gradient, visualDirection} [Required]
+ * @param {array}  [references] - all store references, used for ZIP image bundling [Optional]
  * @param {function} onUpdateToken - (layerKey, tokenId, patch) => void [Required]
- * @param {function} onBack - 뒤로가기 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {function} onBack - go back [Optional]
+ * @param {object} sx - additional styles [Optional]
  *
  * Example usage:
  * <ProjectDetailPage
@@ -72,7 +72,7 @@ export function ProjectDetailPage({
       setTimeout(() => setCopyState('idle'), 1500);
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.error('[copy] 클립보드 실패', e);
+      console.error('[copy] clipboard failed', e);
     }
   };
 
@@ -83,8 +83,8 @@ export function ProjectDetailPage({
       await exportConceptPrompt({ project, analysis, references });
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.error('[ProjectDetailPage] concept bundle 다운로드 실패', e);
-      window.alert(`다운로드 실패: ${e?.message || e}`);
+      console.error('[ProjectDetailPage] concept bundle download failed', e);
+      window.alert(`Download failed: ${e?.message || e}`);
     }
   };
 
@@ -96,8 +96,8 @@ export function ProjectDetailPage({
       setDeleteOpen(false);
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.error('[ProjectDetailPage] 삭제 실패', e);
-      window.alert(`삭제 실패: ${e?.message || e}`);
+      console.error('[ProjectDetailPage] delete failed', e);
+      window.alert(`Delete failed: ${e?.message || e}`);
     } finally {
       setIsDeleting(false);
     }
@@ -112,7 +112,7 @@ export function ProjectDetailPage({
       return (
         <Box sx={ { py: 4 } }>
           <Typography variant="caption" color="text.disabled" sx={ { fontStyle: 'italic' } }>
-            (활용 노트 없음)
+            (No usage notes)
           </Typography>
         </Box>
       );
@@ -125,7 +125,7 @@ export function ProjectDetailPage({
           color="text.secondary"
           sx={ { textTransform: 'uppercase', letterSpacing: '0.08em', display: 'block', mb: 1 } }
         >
-          활용 노트 ({ notedRefs.length })
+          Usage Notes ({ notedRefs.length })
         </Typography>
         <Table size="small" sx={ { '& td': { borderColor: 'divider' } } }>
           <TableBody>
@@ -198,7 +198,7 @@ export function ProjectDetailPage({
       {/* Project header */}
       <Box sx={ { display: 'flex', alignItems: 'center', gap: 1, py: { xs: 3, md: 6 } } }>
         { onBack && (
-          <IconButton onClick={ onBack } aria-label="뒤로">
+          <IconButton onClick={ onBack } aria-label="Back">
             <ArrowBackIcon />
           </IconButton>
         ) }
@@ -223,7 +223,7 @@ export function ProjectDetailPage({
         { onDelete && (
           <IconButton
             onClick={ () => setDeleteOpen(true) }
-            aria-label="프로젝트 삭제"
+            aria-label="Delete Project"
             sx={ { color: 'text.secondary', '&:hover': { color: 'error.main' } } }
           >
             <DeleteOutlineIcon />
@@ -232,7 +232,7 @@ export function ProjectDetailPage({
       </Box>
 
         { isConceptMode ? (
-          /* Concept 모드: 단일 prompt 뷰 (탭/스플릿 없음) */
+          /* Concept mode: single prompt view (no tabs/split) */
           <Box sx={ { mt: 2 } }>
             <Box sx={ { display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', mb: 1 } }>
               <Box>
@@ -240,7 +240,7 @@ export function ProjectDetailPage({
                   Concept Prompt
                 </Typography>
                 <Typography variant="body2" color="text.secondary" sx={ { mt: 0.5 } }>
-                  Claude Desktop · Gemini · ChatGPT 웹채팅에 그대로 붙여넣어 즉시 시각화
+                  Paste it straight into Claude Desktop, Gemini, or ChatGPT to visualize instantly.
                 </Typography>
               </Box>
               <Box sx={ { display: 'flex', gap: 1 } }>
@@ -250,7 +250,7 @@ export function ProjectDetailPage({
                   onClick={ handleCopyConceptPrompt }
                   disabled={ !conceptPrompt }
                 >
-                  { copyState === 'copied' ? '복사됨 ✓' : '프롬프트 복사' }
+                  { copyState === 'copied' ? 'Copied ✓' : 'Copy Prompt' }
                 </Button>
                 <Button
                   variant="outlined"
@@ -258,7 +258,7 @@ export function ProjectDetailPage({
                   onClick={ handleDownloadConceptBundle }
                   disabled={ !conceptPrompt }
                 >
-                  ZIP 다운로드 (이미지 포함)
+                  Download ZIP (with images)
                 </Button>
               </Box>
             </Box>
@@ -277,10 +277,10 @@ export function ProjectDetailPage({
                 fontFamily: 'inherit',
               } }
             >
-              { conceptPrompt || '(프롬프트가 아직 생성되지 않았습니다)' }
+              { conceptPrompt || '(No prompt has been generated yet)' }
             </Box>
             <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mt: 1, textAlign: 'right' } }>
-              { conceptPrompt.length } / 800 자
+              { conceptPrompt.length } / 800 chars
             </Typography>
           </Box>
         ) : (
@@ -304,7 +304,7 @@ export function ProjectDetailPage({
             }
             right={
               <Box sx={ { display: 'flex', flexDirection: 'column', gap: 6 } }>
-                {/* 분석 결과 — 레이어 탭 (모듈화: AnalysisLayerTabs) */}
+                {/* Analysis results: layer tabs (modularized as AnalysisLayerTabs) */}
                 <AnalysisLayerTabs
                   analysis={ analysis }
                   project={ project }
@@ -312,7 +312,7 @@ export function ProjectDetailPage({
                   onUpdateToken={ onUpdateToken }
                 />
 
-                {/* 디자인 가이드 — showcase */}
+                {/* Design guide: showcase */}
                 { analysis && (
                   <Box
                     sx={ {
@@ -347,22 +347,22 @@ export function ProjectDetailPage({
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>프로젝트 삭제</DialogTitle>
+        <DialogTitle>Delete Project</DialogTitle>
         <DialogContent>
           <DialogContentText>
-            <strong>{ project?.name || '이 프로젝트' }</strong> 를 삭제하시겠습니까?
+            Delete <strong>{ project?.name || 'this project' }</strong>?
             <br />
-            분석 결과와 큐레이션이 함께 삭제되며 되돌릴 수 없습니다.
+            The analysis and curation are deleted along with it, and this cannot be undone.
             <br />
-            (업로드한 레퍼런스 자체는 아카이브에 남습니다.)
+            (The uploaded references themselves stay in your Archive.)
           </DialogContentText>
         </DialogContent>
         <DialogActions>
           <Button onClick={ () => setDeleteOpen(false) } disabled={ isDeleting }>
-            취소
+            Cancel
           </Button>
           <Button onClick={ handleDeleteConfirm } color="error" variant="contained" disabled={ isDeleting }>
-            { isDeleting ? '삭제 중…' : '삭제' }
+            { isDeleting ? 'Deleting…' : 'Delete' }
           </Button>
         </DialogActions>
       </Dialog>

@@ -1,17 +1,17 @@
 /**
- * MUSE Export — Universal JSON + ZIP 번들 생성
+ * MUSE Export - Universal JSON + ZIP bundle generation
  *
- * 출력 스키마는 MUI 특화가 아닌 "임의 프레임워크에서 소비 가능한 형태".
- * 외부 AI 코딩 도구(Cursor/Claude Code 등)가 그대로 context로 받을 수 있게 설계.
+ * The output schema is not MUI-specific, but "consumable by any framework".
+ * Designed so external AI coding tools (Cursor/Claude Code, etc.) can take it directly as context.
  *
- * ZIP 구조:
+ * ZIP structure:
  *   muse-export-{slug}.zip
- *   ├── muse.json                 ← universal tokens + metadata + vd 태그
- *   ├── visual-direction.md       ← 독립 MD (muse.json.visualDirection.markdown과 동일)
- *   ├── README.md                 ← AI 도구용 사용 가이드
- *   └── references/
- *       ├── ref-XXX.jpg
- *       └── ...
+ *   |-- muse.json                 <- universal tokens + metadata + vd tags
+ *   |-- visual-direction.md       <- standalone MD (identical to muse.json.visualDirection.markdown)
+ *   |-- README.md                 <- usage guide for AI tools
+ *   \`-- references/
+ *       |-- ref-XXX.jpg
+ *       \`-- ...
  */
 
 import JSZip from 'jszip';
@@ -59,7 +59,7 @@ const inferExt = (url, mime) => {
   return '.jpg';
 };
 
-/** 활성 토큰만 뽑아 export용 형태로 변환 (내부 _flag는 제외) */
+/** Pick only enabled tokens and convert to export form (excludes internal _flag) */
 const pickEnabledTokens = (list) =>
   (list || [])
     .filter((t) => t.isEnabled !== false)
@@ -73,13 +73,13 @@ const pickEnabledTokens = (list) =>
  * ============================================ */
 
 /**
- * 프로젝트 + 분석 + 참조된 references → 범용 JSON 스키마로 변환.
+ * Convert project + analysis + referenced references -> a universal JSON schema.
  *
- * 특징:
- *  - MUI · Tailwind · 어떤 프레임워크에도 종속되지 않음
- *  - color.hex, typography.fontSize (CSS value), layout.kind 등 값 그대로 명시
- *  - visualDirection.markdown 이 서술형 디렉션 포함 (한글)
- *  - references 는 파일 경로만 포함 (이미지 바이너리는 별도 ZIP 엔트리)
+ * Characteristics:
+ *  - Not tied to MUI, Tailwind, or any framework
+ *  - Specifies values as-is: color.hex, typography.fontSize (CSS value), layout.kind, etc.
+ *  - visualDirection.markdown contains the narrative direction
+ *  - references includes only file paths (image binaries are separate ZIP entries)
  */
 export function buildUniversalJson({ project, analysis, references }) {
   const projectRefs = (references || []).filter((r) =>
@@ -107,47 +107,47 @@ export function buildUniversalJson({ project, analysis, references }) {
     },
 
     color: {
-      description: '이미지 기반으로 추출한 컬러 토큰. HEX 값 그대로 사용 가능. role은 primary/secondary/accent/neutral.',
+      description: 'Color tokens extracted from images. HEX values are usable as-is. role is primary/secondary/accent/neutral.',
       tokens: pickEnabledTokens(analysis?.color),
     },
 
     typography: {
-      description: '타이포그래피 토큰. fontFamily는 CSS font stack, fontSize는 clamp() 등 CSS 값 그대로.',
+      description: 'Typography tokens. fontFamily is a CSS font stack; fontSize is a raw CSS value like clamp().',
       tokens: pickEnabledTokens(analysis?.typography),
     },
 
     layout: {
-      description: '레이아웃 토큰. kind는 grid(columns+gap) / container(ratio+maxWidth). spacing 은 별도 axis.',
+      description: 'Layout tokens. kind is grid(columns+gap) / container(ratio+maxWidth). spacing is a separate axis.',
       tokens: pickEnabledTokens(analysis?.layout),
     },
 
     gradient: {
-      description: '그라디언트 토큰. gradient 필드에 CSS gradient 문자열 그대로 적용 가능.',
+      description: 'Gradient tokens. The gradient field can be applied as a raw CSS gradient string.',
       tokens: pickEnabledTokens(analysis?.gradient),
     },
 
     spacing: {
-      description: 'spacing scale 토큰 (xs/sm/md/lg/xl 형태의 object map). DESIGN.md spacing 과 1:1.',
+      description: 'Spacing scale tokens (an object map like xs/sm/md/lg/xl). 1:1 with DESIGN.md spacing.',
       scale: analysis?.spacing || {},
     },
 
     rounded: {
-      description: 'border radius scale 토큰 (object map). DESIGN.md rounded 와 1:1.',
+      description: 'Border radius scale tokens (object map). 1:1 with DESIGN.md rounded.',
       scale: analysis?.rounded || {},
     },
 
     elevation: {
-      description: 'shadow 토큰 (optional). 빈 배열은 평면 디자인 의미. DESIGN.md x-elevation 과 1:1.',
+      description: 'Shadow tokens (optional). An empty array means a flat design. 1:1 with DESIGN.md x-elevation.',
       tokens: pickEnabledTokens(Array.isArray(analysis?.elevation) ? analysis.elevation : []),
     },
 
     components: {
-      description: 'UI component 결합. 모든 값은 {a.b} token reference. DESIGN.md components 와 1:1.',
+      description: 'UI component composition. All values are {a.b} token references. 1:1 with DESIGN.md components.',
       specs: analysis?.components || {},
     },
 
     visualDirection: {
-      description: '맥락 기반 비주얼 디렉션. 서술형 MD 문서 + 집계 태그.',
+      description: 'Context-based visual direction. A narrative MD document + aggregated tags.',
       markdown: analysis?.visualDirection?.markdown || '',
       tags: analysis?.visualDirection?.tags || { genre: [], style: [], subject: [] },
     },
@@ -164,61 +164,61 @@ export function buildUniversalJson({ project, analysis, references }) {
 }
 
 /* ============================================
- * README 빌더 (AI 도구 가이드)
+ * README builder (AI tool guide)
  * ============================================ */
 
 function buildReadme(project, references) {
   const name = project.name || 'Untitled';
   const attachmentTable = buildAttachmentTable(project, references);
-  return `# MUSE Export — ${name}
+  return `# MUSE Export - ${name}
 
 Generated by MUSE on ${new Date().toISOString().slice(0, 10)}.
 
-## Reference Images (외부 AI 에 첨부할 정확한 파일명)
+## Reference Images (exact filenames to attach to external AI)
 
 ${attachmentTable}
 
-> 외부 AI 에 첨부할 때 위 파일명을 그대로 사용. 본문의 \`ref-XXX\` 언급은 위 파일과 1:1 매칭됩니다.
+> When attaching to an external AI, use the filenames above as-is. The \`ref-XXX\` mentions in the body map 1:1 to the files above.
 
-## 파일 구성
+## File layout
 
-| 파일 | 용도 |
+| File | Purpose |
 |------|------|
-| \`muse.json\` | 범용 디자인 토큰 + 메타 + 비주얼 디렉션 태그 (기계 판독용) |
-| \`visual-direction.md\` | 서술형 디자인 디렉션 (사람/LLM 판독용) |
-| \`ai-paste-block.md\` | 외부 AI 도구 paste 용 (플랫폼 중립 prose + 첨부물 매칭) |
-| 각 reference 이미지 | 위 매칭 표 참조 |
+| \`muse.json\` | Universal design tokens + meta + visual direction tags (machine-readable) |
+| \`visual-direction.md\` | Narrative design direction (human/LLM-readable) |
+| \`ai-paste-block.md\` | For pasting into external AI tools (platform-neutral prose + attachment matching) |
+| Each reference image | See the matching table above |
 
-## AI 코딩 도구에 넣는 법
+## How to feed into AI coding tools
 
 ### Cursor / Claude Code
-이 폴더를 프로젝트 루트 (예: \`design/muse/\`)에 복사한 뒤 프롬프트:
+Copy this folder into the project root (e.g. \`design/muse/\`), then prompt:
 
-> \`design/muse/muse.json\`의 토큰을 사용해 이 프로젝트를 구현하라.
-> 톤과 의도는 \`design/muse/visual-direction.md\`를 따른다.
-> 필요 시 위 매칭 표의 원본 이미지를 참고한다.
+> Implement this project using the tokens in \`design/muse/muse.json\`.
+> Follow the tone and intent in \`design/muse/visual-direction.md\`.
+> Refer to the original images in the matching table above when needed.
 
-### ChatGPT / Claude 대화
-\`ai-paste-block.md\` 본문을 paste + 매칭 표의 이미지 파일을 첨부 순번대로 업로드:
+### ChatGPT / Claude conversation
+Paste the body of \`ai-paste-block.md\` and upload the image files from the matching table in attachment order:
 
-> 이 토큰과 디렉션 문서를 기준으로 {프레임워크} 컴포넌트를 만들어줘.
+> Build {framework} components based on this token and direction document.
 
-## muse.json 스키마 요약
+## muse.json schema summary
 
-- \`meta\` — 프로젝트 메타 (name/intent/mode/createdAt)
-- \`color.tokens\` — \`[{ id, label, hex, role, group }]\`
-- \`typography.tokens\` — \`[{ id, label, variant, fontFamily, fontWeight, fontSize, lineHeight, letterSpacing }]\`
-- \`layout.tokens\` — \`[{ id, label, kind, columns|gap|px|ratio|maxWidth }]\`
-- \`gradient.tokens\` — \`[{ id, label, gradient }]\` (CSS string)
-- \`visualDirection\` — \`{ markdown, tags: { genre, style, subject } }\`
-- \`references\` — \`[{ id, filename, title, tags, dominantColors }]\`
+- \`meta\` - project meta (name/intent/mode/createdAt)
+- \`color.tokens\` - \`[{ id, label, hex, role, group }]\`
+- \`typography.tokens\` - \`[{ id, label, variant, fontFamily, fontWeight, fontSize, lineHeight, letterSpacing }]\`
+- \`layout.tokens\` - \`[{ id, label, kind, columns|gap|px|ratio|maxWidth }]\`
+- \`gradient.tokens\` - \`[{ id, label, gradient }]\` (CSS string)
+- \`visualDirection\` - \`{ markdown, tags: { genre, style, subject } }\`
+- \`references\` - \`[{ id, filename, title, tags, dominantColors }]\`
 
-프레임워크 비종속: MUI/Tailwind/Chakra/Styled Components 어디서든 \`hex\` · CSS value를 그대로 쓰면 됨.
+Framework-independent: in MUI/Tailwind/Chakra/Styled Components, use \`hex\` and the CSS values as-is.
 
 ---
 
-**의도**: ${project.intent || '(없음)'}
-**프로젝트 모드**: ${project.mode || 'system'}
+**Intent**: ${project.intent || '(none)'}
+**Project mode**: ${project.mode || 'system'}
 `;
 }
 
@@ -227,7 +227,7 @@ ${attachmentTable}
  * ============================================ */
 
 /**
- * concept 모드 전용 — 단일 .md 파일 다운로드 (ZIP 없음)
+ * concept mode only - download a single .md file (no ZIP)
  * @returns {Promise<{ filename: string, size: number }>}
  */
 export async function exportConceptPrompt({ project, analysis, references }) {
@@ -238,20 +238,20 @@ export async function exportConceptPrompt({ project, analysis, references }) {
   const pasteBlock = buildAiPasteBlock({ project, analysis, references });
   const attachmentTable = buildAttachmentTable(project, references);
 
-  const md = `# ${project?.name || 'Concept'} — Concept Prompt
+  const md = `# ${project?.name || 'Concept'} - Concept Prompt
 
 _Generated by MUSE on ${date} (mode: concept)_
 
-## Reference Images (외부 AI 에 첨부할 정확한 파일명)
+## Reference Images (exact filenames to attach to external AI)
 
 ${attachmentTable}
 
-> 외부 AI 도구에 paste 할 때 위 파일명을 그대로 첨부 순번대로 업로드.
+> When pasting into an external AI tool, upload the files above in attachment order using the filenames as-is.
 
-## 사용 방법
+## How to use
 
-아래 "AI Paste Block" 단락을 외부 AI 도구 (Claude Design / Gemini / AI Studio / ChatGPT 등) 에
-그대로 붙여넣고 위 매칭 표의 파일을 첨부 순번대로 함께 업로드하세요.
+Paste the "AI Paste Block" section below into an external AI tool (Claude Design / Gemini / AI Studio / ChatGPT, etc.)
+as-is, and upload the files from the matching table above together in attachment order.
 
 ## Prompt (raw)
 
@@ -263,12 +263,12 @@ ${pasteBlock}
 
 ---
 
-**프로젝트 의도**: ${project?.intent || '(없음)'}
+**Project intent**: ${project?.intent || '(none)'}
 `;
   zip.file('concept-prompt.md', md);
   zip.file('ai-paste-block.md', pasteBlock);
 
-  // 이미지 동봉 (첨부 순번 prefix, paste block 매칭 단서와 일치)
+  // Include images (attachment-order prefix, matching the paste block cues)
   const projectRefs = (project?.referenceIds || [])
     .map((id) => (references || []).find((r) => r.id === id))
     .filter(Boolean);
@@ -299,16 +299,16 @@ ${pasteBlock}
 }
 
 /**
- * 프로젝트 하나를 ZIP으로 묶어 다운로드. (system 모드)
- * concept 모드는 exportConceptPrompt 로 분기됨.
+ * Bundle one project into a ZIP and download it. (system mode)
+ * concept mode branches to exportConceptPrompt.
  * @param {object} params
- * @param {object} params.project - Project 엔티티
- * @param {object} params.analysis - AnalysisLayers (layers 직접 접근 가능한 형태)
- * @param {array}  params.references - 전체 store references (사용되는 것만 ZIP에 포함)
+ * @param {object} params.project - Project entity
+ * @param {object} params.analysis - AnalysisLayers (a shape where layers are directly accessible)
+ * @param {array}  params.references - All store references (only the used ones are included in the ZIP)
  * @returns {Promise<{ filename: string, size: number }>}
  */
 export async function exportProjectAsZip({ project, analysis, references }) {
-  // concept 모드: ZIP 대신 .md 단일 파일
+  // concept mode: a single .md file instead of a ZIP
   if (project?.mode === 'concept') {
     return exportConceptPrompt({ project, analysis });
   }
@@ -328,10 +328,10 @@ export async function exportProjectAsZip({ project, analysis, references }) {
   // 3) README for AI tools
   zip.file('README.md', buildReadme(project, references));
 
-  // 3.5) ai-paste-block.md — 외부 AI 도구 paste 용 (플랫폼 중립) (모든 mode 공통)
+  // 3.5) ai-paste-block.md - for pasting into external AI tools (platform-neutral) (common to all modes)
   zip.file('ai-paste-block.md', buildAiPasteBlock({ project, analysis, references }));
 
-  // 4) references/ — 사용 이미지만 바이너리로 (첨부 순번 prefix: 01-ref-XXX)
+  // 4) references/ - used images only, as binaries (attachment-order prefix: 01-ref-XXX)
   const projectRefs = (project.referenceIds || [])
     .map((id) => (references || []).find((r) => r.id === id))
     .filter(Boolean);
@@ -374,18 +374,18 @@ export async function exportProjectAsZip({ project, analysis, references }) {
 }
 
 /**
- * system 모드 전용 — DESIGN.md 중심의 가벼운 ZIP.
+ * system mode only - a lightweight ZIP centered on DESIGN.md.
  *
- * ZIP 구조:
+ * ZIP structure:
  *   muse-system-{slug}-{date}.zip
- *   ├── DESIGN.md            ← Google Labs alpha spec, front-matter + 8 prose section
- *   ├── decision-trace.md    ← TP6 결정 추적 (whichReferences / whyChosen / appliedUserNotes)
- *   ├── muse.json            ← universal tokens (호환용)
- *   ├── tokens.dtcg.json     ← DTCG (선택 — 추가 도구 호환)
- *   ├── visual-direction.md  ← VD markdown 단독
- *   ├── README.md            ← 사용 가이드 + 매칭 표
- *   └── references/
- *       └── {ref-id}.{ext}
+ *   |-- DESIGN.md            <- Google Labs alpha spec, front-matter + 8 prose sections
+ *   |-- decision-trace.md    <- TP6 decision trace (whichReferences / whyChosen / appliedUserNotes)
+ *   |-- muse.json            <- universal tokens (for compatibility)
+ *   |-- tokens.dtcg.json     <- DTCG (optional - for compatibility with other tools)
+ *   |-- visual-direction.md  <- VD markdown alone
+ *   |-- README.md            <- usage guide + matching table
+ *   \`-- references/
+ *       \`-- {ref-id}.{ext}
  *
  * @returns {Promise<{ filename: string, size: number }>}
  */
@@ -406,7 +406,7 @@ export async function exportSystemBundle({ project, analysis, references }) {
   zip.file('decision-trace.md', buildDecisionTraceMd({ project, layers: analysis }));
   zip.file('muse.json', JSON.stringify(buildUniversalJson({ project, analysis, references }), null, 2));
   zip.file('tokens.dtcg.json', JSON.stringify(buildDtcgTokens(tokens), null, 2));
-  zip.file('visual-direction.md', analysis?.visualDirection?.markdown || '_(visual direction 없음)_');
+  zip.file('visual-direction.md', analysis?.visualDirection?.markdown || '_(no visual direction)_');
   zip.file('README.md', buildReadme(project, references));
 
   const projectRefs = (project.referenceIds || [])
@@ -444,7 +444,7 @@ export async function exportSystemBundle({ project, analysis, references }) {
 }
 
 /**
- * muse.json만 다운로드 (이미지 제외 가벼운 경로).
+ * Download muse.json only (a lightweight path without images).
  */
 export function downloadUniversalJson({ project, analysis, references }) {
   const universal = buildUniversalJson({ project, analysis, references });

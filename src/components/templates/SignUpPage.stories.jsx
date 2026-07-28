@@ -8,8 +8,8 @@ export default {
     layout: 'fullscreen',
   },
   argTypes: {
-    onSignUpSuccess: { action: 'signUpSuccess', description: '가입 성공 시 콜백' },
-    onNavigateToLogin: { action: 'navigateToLogin', description: '로그인 링크 클릭 시 콜백' },
+    onSignUpSuccess: { action: 'signUpSuccess', description: 'Callback on successful sign up' },
+    onNavigateToLogin: { action: 'navigateToLogin', description: 'Callback when the Login link is clicked' },
   },
 };
 

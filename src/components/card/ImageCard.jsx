@@ -7,30 +7,30 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { CustomCard } from './CustomCard';
 
 /**
- * ImageCard 컴포넌트
+ * ImageCard component
  *
- * 그리드의 기본 아이템. CustomCard를 확장하여 구현.
- * Hover 시 위치 변경 효과 + 액션 버튼 / 선택 체크박스 표시.
+ * The default grid item. Implemented by extending CustomCard.
+ * On hover, applies a position-shift effect and shows action buttons / a selection checkbox.
  *
- * 동작 방식:
- * 1. 사용자가 카드에 마우스를 올리면 카드가 살짝 위로 이동
- * 2. Hover 상태에서 우측 상단에 기본 액션(좋아요) 또는 customOverlay 표시
- * 3. `isSelectable`일 경우 좌측 상단에 선택 체크박스 표시 (선택된 경우 항상 보임)
- * 4. `isSelected`일 때 primary 컬러 링으로 선택 상태 강조
- * 5. 카드 하단에 제목/태그 정보 상시 표시
+ * How it works:
+ * 1. When the user hovers over the card, the card moves slightly upward
+ * 2. On hover, shows the default action (like) or customOverlay in the top-right
+ * 3. If `isSelectable`, shows a selection checkbox in the top-left (always visible when selected)
+ * 4. When `isSelected`, emphasizes the selected state with a primary color ring
+ * 5. The title/tag info is always shown at the bottom of the card
  *
  * Props:
- * @param {string} src - 이미지 URL [Required]
- * @param {string} title - 이미지 제목/설명 [Optional]
- * @param {string[]} tags - 관련 태그 목록 (상위 3개 표시) [Optional]
- * @param {string[]} dominantColors - HEX 색상 배열 (상위 5개를 작은 원형 swatch 로 표시) [Optional, 기본값: []]
- * @param {function} onLike - 좋아요 버튼 클릭 핸들러 [Optional]
- * @param {boolean} hideActions - 기본 액션 버튼 숨김 여부 [Optional, 기본값: false]
- * @param {node} customOverlay - 커스텀 오버레이 요소 (hideActions와 함께 사용) [Optional]
- * @param {boolean} isSelectable - 선택 체크박스 표시 여부 [Optional, 기본값: false]
- * @param {boolean} isSelected - 현재 선택 상태 [Optional, 기본값: false]
- * @param {function} onToggleSelect - 선택 토글 핸들러 (nextSelected) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} src - Image URL [Required]
+ * @param {string} title - Image title/description [Optional]
+ * @param {string[]} tags - List of related tags (top 3 shown) [Optional]
+ * @param {string[]} dominantColors - Array of HEX colors (top 5 shown as small circular swatches) [Optional, default: []]
+ * @param {function} onLike - Like button click handler [Optional]
+ * @param {boolean} hideActions - Whether to hide the default action buttons [Optional, default: false]
+ * @param {node} customOverlay - Custom overlay element (used together with hideActions) [Optional]
+ * @param {boolean} isSelectable - Whether to show the selection checkbox [Optional, default: false]
+ * @param {boolean} isSelected - Current selection state [Optional, default: false]
+ * @param {function} onToggleSelect - Selection toggle handler (nextSelected) => void [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <ImageCard
@@ -40,7 +40,7 @@ import { CustomCard } from './CustomCard';
  *   onLike={ () => handleLike() }
  * />
  *
- * // 선택 가능 모드 (ReferencePicker 등)
+ * // Selectable mode (ReferencePicker, etc.)
  * <ImageCard
  *   src="/image.jpg"
  *   tags={ ['Minimal', 'Blue'] }
@@ -69,7 +69,7 @@ export function ImageCard({
     onToggleSelect?.(!isSelected);
   };
 
-  /** 우측 상단 액션 버튼 (기본: 좋아요) */
+  /** Top-right action button (default: like) */
   const ActionButtons = (
     <Box
       className="action-buttons"
@@ -101,7 +101,7 @@ export function ImageCard({
     </Box>
   );
 
-  /** 좌측 상단 선택 체크박스 (isSelectable일 때만) */
+  /** Top-left selection checkbox (only when isSelectable) */
   const SelectCheckbox = isSelectable ? (
     <Box
       className="select-checkbox"
@@ -110,7 +110,7 @@ export function ImageCard({
         position: 'absolute',
         top: 8,
         left: 8,
-        // 선택됐거나 hover 상태일 때 보이도록
+        // Visible when selected or hovered
         opacity: isSelected ? 1 : 0,
         transition: 'opacity 0.2s',
       } }
@@ -133,7 +133,7 @@ export function ImageCard({
     </Box>
   ) : null;
 
-  /** 오버레이 슬롯 결정 — isSelectable이 우선순위, 그 외엔 기존 로직 유지 */
+  /** Determine the overlay slot: isSelectable takes priority, otherwise keep the existing logic */
   const overlaySlot = (
     <>
       { SelectCheckbox }

@@ -7,18 +7,18 @@ import { PageContainer } from '../layout/PageContainer.jsx';
 import { MoodboardCard } from '../card/MoodboardCard.jsx';
 
 /**
- * ProjectListPage 템플릿
+ * ProjectListPage template
  *
- * MUSE 프로젝트 목록 화면. MoodboardCard를 2x2 썸네일 그리드로 사용해
- * 각 프로젝트의 레퍼런스 미리보기 + 이름 + 유형을 표시.
+ * MUSE project list screen. Uses MoodboardCard as a 2x2 thumbnail grid to show
+ * each project's reference preview, name, and type.
  *
  * Props:
- * @param {array} projects - 프로젝트 목록 [{ id, name, intent?, thumbnails[], createdAt? }] [Required]
- * @param {function} onSelectProject - 프로젝트 클릭 (id) => void [Optional]
- * @param {function} onNewProject - 새 프로젝트 버튼 클릭 [Optional]
- * @param {function} onEditProject - 편집 (id) => void [Optional]
- * @param {function} onDeleteProject - 삭제 (id) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {array} projects - project list [{ id, name, intent?, thumbnails[], createdAt? }] [Required]
+ * @param {function} onSelectProject - project click (id) => void [Optional]
+ * @param {function} onNewProject - new project button click [Optional]
+ * @param {function} onEditProject - edit (id) => void [Optional]
+ * @param {function} onDeleteProject - delete (id) => void [Optional]
+ * @param {object} sx - additional styles [Optional]
  *
  * Example usage:
  * <ProjectListPage
@@ -46,7 +46,7 @@ export function ProjectListPage({
           startIcon={<AddIcon />}
           onClick={onNewProject}
         >
-          새 프로젝트
+          New Project
         </Button>
       </Box>
 
@@ -61,10 +61,10 @@ export function ProjectListPage({
           }}
         >
           <Typography variant="body1" color="text.secondary" sx={{ mb: 2 }}>
-            아직 생성된 프로젝트가 없습니다
+            No projects yet
           </Typography>
           <Button variant="contained" color="primary" startIcon={<AddIcon />} onClick={onNewProject}>
-            첫 프로젝트 만들기
+            Create your first project
           </Button>
         </Box>
       ) : (
@@ -78,7 +78,7 @@ export function ProjectListPage({
                   description={project.intent}
                   items={(project.thumbnails || []).map((url, i) => ({
                     id: `${project.id}-thumb-${i}`,
-                    // MoodboardCard는 image.thumbnail 또는 image.src.medium을 읽음
+                    // MoodboardCard reads image.thumbnail or image.src.medium
                     thumbnail: url,
                   }))}
                   createdAt={project.createdAt}

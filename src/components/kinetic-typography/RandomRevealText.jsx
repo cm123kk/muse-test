@@ -2,23 +2,23 @@ import { useEffect, useState, useMemo } from 'react';
 import Box from '@mui/material/Box';
 
 /**
- * RandomRevealText 컴포넌트
+ * RandomRevealText component
  *
- * 텍스트의 각 글자를 랜덤 순서로 blur에서 선명하게 전환하며 노출하는 키네틱 타이포그래피.
- * Fisher-Yates 셔플로 랜덤 순서를 생성하고, stagger 간격으로 순차 reveal.
+ * Kinetic typography that reveals each character in a random order, transitioning from blur to sharp.
+ * Generates a random order with a Fisher-Yates shuffle and reveals characters sequentially at the stagger interval.
  *
- * 동작 흐름:
- * 1. 컴포넌트가 마운트되면 공백을 제외한 글자의 랜덤 순서를 생성한다
- * 2. delay 후 stagger 간격으로 각 글자가 순차적으로 나타난다
- * 3. 각 글자는 blur(12px) + opacity(0) → blur(0) + opacity(1) 전환
- * 4. 모든 글자가 reveal되면 애니메이션이 완료된다
+ * Behavior:
+ * 1. When the component mounts, it generates a random order of characters (excluding spaces)
+ * 2. After the delay, each character appears sequentially at the stagger interval
+ * 3. Each character transitions from blur(12px) + opacity(0) -> blur(0) + opacity(1)
+ * 4. The animation completes once all characters are revealed
  *
  * Props:
- * @param {string} text - 표시할 텍스트 [Required]
- * @param {number} delay - 애니메이션 시작 지연 시간 (ms) [Optional, 기본값: 300]
- * @param {number} stagger - 글자 간 reveal 간격 (ms) [Optional, 기본값: 80]
- * @param {string} variant - MUI Typography variant [Optional, 기본값: 'body1']
- * @param {object} sx - MUI sx 스타일 [Optional]
+ * @param {string} text - Text to display [Required]
+ * @param {number} delay - Delay before the animation starts (ms) [Optional, default: 300]
+ * @param {number} stagger - Reveal interval between characters (ms) [Optional, default: 80]
+ * @param {string} variant - MUI Typography variant [Optional, default: 'body1']
+ * @param {object} sx - MUI sx style [Optional]
  *
  * Example usage:
  * <RandomRevealText text="Hello World" delay={500} stagger={60} />
@@ -32,7 +32,7 @@ function RandomRevealText({
 }) {
   const [revealedIndices, setRevealedIndices] = useState(new Set());
 
-  /** 공백을 제외한 글자의 랜덤 순서 생성 (Fisher-Yates shuffle) */
+  /** Generate a random order of characters, excluding spaces (Fisher-Yates shuffle) */
   const randomOrder = useMemo(() => {
     const indices = text
       .split('')
@@ -46,7 +46,7 @@ function RandomRevealText({
     return indices;
   }, [text]);
 
-  /** stagger 간격으로 순차적 reveal 타이머 설정 */
+  /** Set up sequential reveal timers at the stagger interval */
   useEffect(() => {
     const timeouts = [];
 

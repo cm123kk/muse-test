@@ -3,7 +3,7 @@ import Box from '@mui/material/Box';
 import { keyframes } from '@mui/material/styles';
 
 /**
- * 트랜지션 키프레임 정의
+ * Transition keyframe definitions
  */
 const fadeIn = keyframes`
   from { opacity: 0; }
@@ -66,26 +66,26 @@ const flipOut = keyframes`
 `;
 
 /**
- * ImageTransition 컴포넌트
+ * ImageTransition component
  *
- * 인덱스 기반 이미지 트랜지션 컴포넌트.
- * 다양한 트랜지션 효과(fade, slide, zoom, reveal, flip)를 지원한다.
+ * An index-based image transition component.
+ * Supports various transition effects (fade, slide, zoom, reveal, flip).
  *
- * 동작 방식:
- * 1. activeIndex가 변경되면 이전 이미지와 새 이미지 간 트랜지션 실행
- * 2. 이전/다음 방향을 자동 감지하여 적절한 애니메이션 적용
- * 3. 트랜지션 완료 후 onTransitionEnd 콜백 호출
+ * How it works:
+ * 1. When activeIndex changes, a transition runs between the previous and new image
+ * 2. The previous/next direction is auto-detected and the appropriate animation is applied
+ * 3. The onTransitionEnd callback is called after the transition completes
  *
  * Props:
- * @param {Array} images - 이미지 소스 배열 [{ src, alt }] 또는 string[] [Required]
- * @param {number} activeIndex - 현재 활성 이미지 인덱스 [Required]
- * @param {string} transition - 트랜지션 효과 ('fade' | 'slide' | 'zoom' | 'reveal' | 'flip') [Optional, 기본값: 'fade']
- * @param {number} duration - 트랜지션 지속 시간 (ms) [Optional, 기본값: 500]
- * @param {string} easing - CSS 이징 함수 [Optional, 기본값: 'ease-out']
- * @param {string} aspectRatio - 컨테이너 종횡비 [Optional, 기본값: '16/9']
- * @param {string} objectFit - 이미지 맞춤 방식 [Optional, 기본값: 'cover']
- * @param {function} onTransitionEnd - 트랜지션 완료 콜백 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {Array} images - Array of image sources [{ src, alt }] or string[] [Required]
+ * @param {number} activeIndex - Current active image index [Required]
+ * @param {string} transition - Transition effect ('fade' | 'slide' | 'zoom' | 'reveal' | 'flip') [Optional, default: 'fade']
+ * @param {number} duration - Transition duration (ms) [Optional, default: 500]
+ * @param {string} easing - CSS easing function [Optional, default: 'ease-out']
+ * @param {string} aspectRatio - Container aspect ratio [Optional, default: '16/9']
+ * @param {string} objectFit - Image fit mode [Optional, default: 'cover']
+ * @param {function} onTransitionEnd - Transition complete callback [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <ImageTransition
@@ -113,8 +113,8 @@ export function ImageTransition({
   const prevIndexRef = useRef(activeIndex);
 
   /**
-   * 이미지 데이터 정규화
-   * string[] → [{ src, alt }] 형태로 변환
+   * Normalize image data
+   * Convert string[] -> [{ src, alt }] form
    */
   const normalizedImages = images.map((img, idx) => {
     if (typeof img === 'string') {
@@ -124,11 +124,11 @@ export function ImageTransition({
   });
 
   /**
-   * activeIndex 변경 감지 및 트랜지션 시작
+   * Detect activeIndex changes and start the transition
    */
   useEffect(() => {
     if (activeIndex !== prevIndexRef.current) {
-      // 방향 결정 및 애니메이션 시작을 다음 프레임으로 지연
+      // Defer determining the direction and starting the animation to the next frame
       const newDirection = activeIndex > prevIndexRef.current ? 'next' : 'prev';
 
       const startTimer = requestAnimationFrame(() => {
@@ -136,7 +136,7 @@ export function ImageTransition({
         setIsTransitioning(true);
       });
 
-      // 트랜지션 완료 후 상태 업데이트
+      // Update state after the transition completes
       const endTimer = setTimeout(() => {
         setDisplayedIndex(activeIndex);
         setIsTransitioning(false);
@@ -152,7 +152,7 @@ export function ImageTransition({
   }, [activeIndex, duration, onTransitionEnd]);
 
   /**
-   * 트랜지션 타입에 따른 애니메이션 스타일 반환
+   * Return animation styles based on the transition type
    */
   const getAnimationStyles = (isEntering) => {
     const animationBase = {
@@ -208,7 +208,7 @@ export function ImageTransition({
   };
 
   /**
-   * 현재 이미지와 다음 이미지
+   * Current image and next image
    */
   const currentImage = normalizedImages[displayedIndex];
   const nextImage = normalizedImages[activeIndex];
@@ -227,7 +227,7 @@ export function ImageTransition({
       } }
       { ...props }
     >
-      {/* 현재 이미지 (트랜지션 중일 때 exit 애니메이션) */}
+      {/* Current image (exit animation during a transition) */}
       <Box
         component="img"
         src={ currentImage.src }
@@ -243,7 +243,7 @@ export function ImageTransition({
         } }
       />
 
-      {/* 다음 이미지 (트랜지션 중일 때 enter 애니메이션) */}
+      {/* Next image (enter animation during a transition) */}
       { isTransitioning && nextImage && displayedIndex !== activeIndex && (
         <Box
           component="img"

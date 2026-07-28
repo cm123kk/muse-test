@@ -10,20 +10,20 @@ export default {
   argTypes: {
     label: {
       control: 'text',
-      description: '영역 라벨 텍스트',
+      description: 'Area label text',
     },
     width: {
       control: 'text',
-      description: '폭 (px 또는 CSS 값)',
+      description: 'Width (px or CSS value)',
     },
     height: {
       control: { type: 'number', min: 40, max: 600 },
-      description: '높이 (px)',
+      description: 'Height (px)',
     },
   },
 };
 
-/** 기본 Box */
+/** Default Box */
 export const Default = {
   args: {
     label: 'Content Area',
@@ -34,7 +34,7 @@ export const Default = {
   ),
 };
 
-/** 모든 서브컴포넌트 한눈에 보기 */
+/** All subcomponents at a glance */
 export const AllSubComponents = {
   render: () => (
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 5 } }>
@@ -114,7 +114,7 @@ export const AllSubComponents = {
   ),
 };
 
-/** 레이아웃 데모 시나리오 — Grid + Box 조합 */
+/** Layout demo scenario: Grid + Box combination */
 export const LayoutExample = {
   render: () => (
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4 } }>
@@ -148,7 +148,7 @@ export const LayoutExample = {
   ),
 };
 
-/** 카드 데모 시나리오 — Image + Text 조합 */
+/** Card demo scenario: Image + Text combination */
 export const CardExample = {
   render: () => (
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4 } }>

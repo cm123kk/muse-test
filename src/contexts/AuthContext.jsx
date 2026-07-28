@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
 
 export const useAuthContext = () => useContext(AuthContext);
 
-/** Storybook / 테스트 전용 — 실제 Supabase 세션 없이 mock 유저를 주입한다. */
+/** Storybook / test only. Injects a mock user without a real Supabase session. */
 const MOCK_USER = { id: 'mock-uid-0001', email: 'demo@muse.test' };
 const MOCK_AUTH = { user: MOCK_USER, session: { user: MOCK_USER }, loading: false };
 

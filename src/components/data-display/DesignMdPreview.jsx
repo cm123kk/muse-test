@@ -10,17 +10,17 @@ import DownloadIcon from '@mui/icons-material/Download';
 import { buildDesignMd } from '../../utils/tokenConverters.js';
 
 /**
- * DESIGN.md preview — getdesign.md 스타일.
+ * DESIGN.md preview, getdesign.md style.
  *
- * variant 별 분기:
- *  - 'raw'      : DESIGN.md raw markdown 박스 + 복사 / 다운로드만 (DESIGN.md 탭 용)
- *  - 'showcase' : components 라이브 렌더 + spacing/rounded/elevation 시각화 (디자인 가이드 용, 탭 밖 하단)
- *  - 'full'     : 모두 (default — 단독 사용 시)
+ * Branching by variant:
+ *  - 'raw'      : DESIGN.md raw markdown box + copy / download only (for the DESIGN.md tab)
+ *  - 'showcase' : live component render + spacing/rounded/elevation visualization (for the design guide, below the tabs)
+ *  - 'full'     : all of the above (default, for standalone use)
  *
  * Props:
  * @param {object} project - { name, intent, mode } [Required]
  * @param {object} layers  - analysis layers [Required]
- * @param {'raw'|'showcase'|'full'} variant - 분기 [Optional, 기본값: 'full']
+ * @param {'raw'|'showcase'|'full'} variant - Branch [Optional, default: 'full']
  *
  * Example:
  * <DesignMdPreview project={ project } layers={ analysis } variant="raw" />
@@ -58,13 +58,13 @@ export function DesignMdPreview({ project, layers, variant = 'full' }) {
   const showRaw = variant === 'raw' || variant === 'full';
   const showShowcase = variant === 'showcase' || variant === 'full';
 
-  const sectionLabel = variant === 'showcase' ? '00 — SHOWCASE' : '00 — DESIGN.MD';
+  const sectionLabel = variant === 'showcase' ? '00 - SHOWCASE' : '00 - DESIGN.MD';
   const sectionTitle = variant === 'showcase'
-    ? `${project?.name || 'Untitled'} — live system`
+    ? `${project?.name || 'Untitled'} - live system`
     : `${project?.name || 'Untitled'}.DESIGN.md`;
   const sectionLede = variant === 'showcase'
-    ? 'color · typography · spacing 토큰과 이를 조합한 sample card UI.'
-    : 'Google Labs alpha spec. YAML front-matter + prose 8 sections — AI 코딩 에이전트가 그대로 컨텍스트로 받는다.';
+    ? 'color, typography, spacing tokens and a sample card UI combining them.'
+    : 'Google Labs alpha spec. YAML front-matter + prose 8 sections: an AI coding agent consumes it directly as context.';
 
   const Header = (
     <Box sx={ { display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', gap: 3, flexWrap: 'wrap' } }>
@@ -98,7 +98,7 @@ export function DesignMdPreview({ project, layers, variant = 'full' }) {
             startIcon={ copied ? <CheckIcon /> : <ContentCopyIcon /> }
             onClick={ handleCopy }
           >
-            { copied ? '복사됨' : '전체 복사' }
+            { copied ? 'Copied' : 'Copy all' }
           </Button>
           <Button
             variant="contained"
@@ -117,13 +117,13 @@ export function DesignMdPreview({ project, layers, variant = 'full' }) {
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4 } }>
       { Header }
 
-      {/* ================ 01 — COLOR (gradient 포함) ================ */}
+      {/* ================ 01 - COLOR (includes gradient) ================ */}
       { showShowcase && (
         <ShowcaseSection
           index="01"
           eyebrow="COLOR"
           title="Color palette"
-          lede="브랜드 정체성과 정보 위계를 결정하는 팔레트와 보조 그라디언트."
+          lede="Palette and supporting gradients that define brand identity and information hierarchy."
         >
           <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4 } }>
             <ColorSwatchGrid colors={ layers?.color } />
@@ -143,49 +143,49 @@ export function DesignMdPreview({ project, layers, variant = 'full' }) {
         </ShowcaseSection>
       ) }
 
-      {/* ================ 02 — TYPOGRAPHY ================ */}
+      {/* ================ 02 - TYPOGRAPHY ================ */}
       { showShowcase && (
         <ShowcaseSection
           index="02"
           eyebrow="TYPOGRAPHY"
           title="Type scale"
-          lede="가독성과 위계를 만드는 폰트 스케일."
+          lede="Font scale that establishes readability and hierarchy."
         >
           <TypographySamples typography={ layers?.typography } />
         </ShowcaseSection>
       ) }
 
-      {/* ================ 03 — SPACING ================ */}
+      {/* ================ 03 - SPACING ================ */}
       { showShowcase && (
         <ShowcaseSection
           index="03"
           eyebrow="SPACING"
           title="Spacing scale"
-          lede="레이아웃·여백의 일관된 리듬을 만드는 단위 스케일."
+          lede="Unit scale that builds a consistent rhythm for layout and spacing."
         >
           <ScaleVisualizer
             scale={ layers?.spacing }
             renderer={ (val) => (
               <Box sx={ { width: val, height: val, bgcolor: 'primary.main', borderRadius: 0.5 } } />
             ) }
-            empty="(spacing 없음)"
+            empty="(No spacing)"
           />
         </ShowcaseSection>
       ) }
 
-      {/* ================ 04 — SAMPLE CARD (composition) ================ */}
+      {/* ================ 04 - SAMPLE CARD (composition) ================ */}
       { showShowcase && (
         <ShowcaseSection
           index="04"
           eyebrow="COMPOSITION"
           title="Sample card"
-          lede="color · typography · spacing · rounded 토큰을 결합한 단순 카드 UI."
+          lede="A simple card UI combining color, typography, spacing, and rounded tokens."
         >
           <SampleCard layers={ layers } />
         </ShowcaseSection>
       ) }
 
-      {/* ================ Raw DESIGN.md (raw 전용) ================ */}
+      {/* ================ Raw DESIGN.md (raw only) ================ */}
       { showRaw && (
         <Box>
           <Typography variant="overline" color="text.secondary" sx={ { letterSpacing: '0.12em', display: 'block', mb: 1 } }>
@@ -212,7 +212,7 @@ export function DesignMdPreview({ project, layers, variant = 'full' }) {
             >
               { designMd }
             </Box>
-            <Tooltip title={ copied ? '복사됨' : '전체 복사' } arrow>
+            <Tooltip title={ copied ? 'Copied' : 'Copy all' } arrow>
               <IconButton
                 size="small"
                 onClick={ handleCopy }
@@ -230,7 +230,7 @@ export function DesignMdPreview({ project, layers, variant = 'full' }) {
             </Tooltip>
           </Box>
           <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mt: 1 } }>
-            { designMd.length.toLocaleString() } chars · YAML front-matter + prose 8 sections (있는 섹션만 canonical 순서)
+            { designMd.length.toLocaleString() } chars · YAML front-matter + prose 8 sections (present sections only, canonical order)
           </Typography>
         </Box>
       ) }
@@ -243,7 +243,7 @@ export function DesignMdPreview({ project, layers, variant = 'full' }) {
  * ============================================ */
 
 /* ============================================
- * ShowcaseSection — reference 의 큰 헤더 (eyebrow + serif title + lede) + body
+ * ShowcaseSection - reference large header (eyebrow + serif title + lede) + body
  * ============================================ */
 
 function ShowcaseSection({ index, eyebrow, title, lede, children }) {
@@ -255,7 +255,7 @@ function ShowcaseSection({ index, eyebrow, title, lede, children }) {
           color="text.secondary"
           sx={ { fontSize: '0.7rem', letterSpacing: '0.18em', lineHeight: 1, fontWeight: 500 } }
         >
-          { index ? `${index} — ` : '' }{ eyebrow }
+          { index ? `${index} - ` : '' }{ eyebrow }
         </Typography>
         <Typography
           variant="h4"
@@ -279,8 +279,8 @@ function ShowcaseSection({ index, eyebrow, title, lede, children }) {
 }
 
 /* ============================================
- * ColorSwatchGrid — 카테고리(group)별 색상 카드 (flex wrap)
- *   각 카드: 위 큰 색 박스 + 아래 토큰명 / hex / role
+ * ColorSwatchGrid - color cards per category (group) (flex wrap)
+ *   Each card: large color box on top + token name / hex / role below
  * ============================================ */
 
 function ColorSwatchGrid({ colors }) {
@@ -289,12 +289,12 @@ function ColorSwatchGrid({ colors }) {
     return (
       <Box sx={ { p: 3, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 2 } }>
         <Typography variant="body2" color="text.disabled" sx={ { fontStyle: 'italic' } }>
-          (color 없음)
+          (No color)
         </Typography>
       </Box>
     );
   }
-  // group 별로 묶기 — group 없으면 'Etc'
+  // Group by group; fall back to 'Etc' when there is no group
   const grouped = list.reduce((acc, c) => {
     const g = c.group || 'Etc';
     if (!acc[g]) acc[g] = [];
@@ -359,7 +359,7 @@ function ColorSwatchGrid({ colors }) {
 }
 
 /* ============================================
- * TypographySamples — 좌측 메타 / 우측 폰트 샘플 row (수직 stack)
+ * TypographySamples - meta on the left / font sample on the right, per row (vertical stack)
  * ============================================ */
 
 function TypographySamples({ typography }) {
@@ -368,7 +368,7 @@ function TypographySamples({ typography }) {
     return (
       <Box sx={ { p: 3, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 2 } }>
         <Typography variant="body2" color="text.disabled" sx={ { fontStyle: 'italic' } }>
-          (typography 없음)
+          (No typography)
         </Typography>
       </Box>
     );
@@ -463,7 +463,7 @@ function TypographySamples({ typography }) {
 }
 
 /* ============================================
- * GradientGrid — 그라디언트 카드 (위 큰 그라디언트 박스 + 아래 메타)
+ * GradientGrid - gradient cards (large gradient box on top + meta below)
  * ============================================ */
 
 function GradientGrid({ gradients }) {
@@ -521,7 +521,7 @@ function GradientGrid({ gradients }) {
 }
 
 /* ============================================
- * SampleCard — color · typography · spacing · rounded 결합 카드
+ * SampleCard - card combining color, typography, spacing, and rounded tokens
  * ============================================ */
 
 function SampleCard({ layers }) {
@@ -554,7 +554,7 @@ function SampleCard({ layers }) {
     return (
       <Box sx={ { p: 3, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider', borderRadius: 2 } }>
         <Typography variant="body2" color="text.disabled" sx={ { fontStyle: 'italic' } }>
-          (sample card 구성 불가 — color / typography 토큰 부족)
+          (Cannot build sample card: not enough color / typography tokens)
         </Typography>
       </Box>
     );
@@ -664,7 +664,7 @@ function SampleCard({ layers }) {
                   mb: bodyMb,
                 } }
               >
-                { body.label || `${body.variant || 'body'} — color · typography · spacing · rounded 토큰을 모두 사용한 카드 UI.` }
+                { body.label || `${body.variant || 'body'}: a card UI using color, typography, spacing, and rounded tokens.` }
               </Box>
               <Box
                 component="span"
@@ -695,7 +695,7 @@ function SampleCard({ layers }) {
 }
 
 /* ============================================
- * ScaleVisualizer — 카드 안에 list (수직)
+ * ScaleVisualizer - list inside a card (vertical)
  * ============================================ */
 
 function ScaleVisualizer({ scale, renderer, empty }) {

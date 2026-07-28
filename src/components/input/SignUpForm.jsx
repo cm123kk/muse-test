@@ -6,10 +6,10 @@ import Alert from '@mui/material/Alert';
 import { useSignUp } from '../../hooks/auth/useSignUp';
 
 /**
- * 회원가입 폼
+ * Sign-up form
  *
  * Props:
- * @param {function} onSuccess - 가입 성공 시 콜백 [Optional]
+ * @param {function} onSuccess - callback on successful sign-up [Optional]
  *
  * Example usage:
  * <SignUpForm onSuccess={() => navigate('/archive')} />
@@ -26,11 +26,11 @@ function SignUpForm({ onSuccess }) {
     setLocalError('');
 
     if (password.length < 8) {
-      setLocalError('비밀번호는 8자 이상이어야 합니다.');
+      setLocalError('Password must be at least 8 characters.');
       return;
     }
     if (password !== confirmPassword) {
-      setLocalError('비밀번호가 일치하지 않습니다.');
+      setLocalError('Passwords do not match.');
       return;
     }
 
@@ -50,7 +50,7 @@ function SignUpForm({ onSuccess }) {
       )}
 
       <TextField
-        label="이메일"
+        label="Email"
         type="email"
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -61,19 +61,19 @@ function SignUpForm({ onSuccess }) {
       />
 
       <TextField
-        label="비밀번호"
+        label="Password"
         type="password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
         fullWidth
         required
         autoComplete="new-password"
-        helperText="8자 이상"
+        helperText="At least 8 characters"
         sx={{ mb: 2 }}
       />
 
       <TextField
-        label="비밀번호 확인"
+        label="Confirm password"
         type="password"
         value={confirmPassword}
         onChange={(e) => setConfirmPassword(e.target.value)}
@@ -90,7 +90,7 @@ function SignUpForm({ onSuccess }) {
         disabled={!isSubmittable}
         size="large"
       >
-        {loading ? '가입 중...' : '회원가입'}
+        {loading ? 'Signing up...' : 'Sign up'}
       </Button>
     </Box>
   );

@@ -21,12 +21,12 @@ export default {
   },
 };
 
-/** 타이포그래피 시스템 문서 */
+/** Typography system documentation */
 export const Docs = {
   render: () => {
     const theme = useTheme();
 
-    // 토큰 구조 (트리 뷰용)
+    // Token structure (for the tree view)
     const tokenStructure = {
       typography: {
         fontFamily: theme.typography.fontFamily,
@@ -51,24 +51,24 @@ export const Docs = {
       },
     };
 
-    // 토큰 값 (테이블용)
+    // Token values (for the table)
     const tokenValues = [
-      { variant: 'h1', fontSize: theme.typography.h1?.fontSize, fontWeight: theme.typography.h1?.fontWeight, usage: '페이지 메인 타이틀' },
-      { variant: 'h2', fontSize: theme.typography.h2?.fontSize, fontWeight: theme.typography.h2?.fontWeight, usage: '섹션 타이틀' },
-      { variant: 'h3', fontSize: theme.typography.h3?.fontSize, fontWeight: theme.typography.h3?.fontWeight, usage: '서브섹션 타이틀' },
-      { variant: 'h4', fontSize: theme.typography.h4?.fontSize, fontWeight: theme.typography.h4?.fontWeight, usage: '카드 타이틀' },
-      { variant: 'h5', fontSize: theme.typography.h5?.fontSize, fontWeight: theme.typography.h5?.fontWeight, usage: '작은 타이틀' },
-      { variant: 'h6', fontSize: theme.typography.h6?.fontSize, fontWeight: theme.typography.h6?.fontWeight, usage: '라벨 타이틀' },
-      { variant: 'subtitle1', fontSize: theme.typography.subtitle1?.fontSize, fontWeight: theme.typography.subtitle1?.fontWeight, usage: '서브타이틀' },
-      { variant: 'subtitle2', fontSize: theme.typography.subtitle2?.fontSize, fontWeight: theme.typography.subtitle2?.fontWeight, usage: '작은 서브타이틀' },
-      { variant: 'body1', fontSize: theme.typography.body1?.fontSize, fontWeight: theme.typography.body1?.fontWeight, usage: '본문 텍스트' },
-      { variant: 'body2', fontSize: theme.typography.body2?.fontSize, fontWeight: theme.typography.body2?.fontWeight, usage: '보조 본문' },
-      { variant: 'button', fontSize: theme.typography.button?.fontSize, fontWeight: theme.typography.button?.fontWeight, usage: '버튼 텍스트' },
-      { variant: 'caption', fontSize: theme.typography.caption?.fontSize, fontWeight: theme.typography.caption?.fontWeight, usage: '캡션, 주석' },
-      { variant: 'overline', fontSize: theme.typography.overline?.fontSize, fontWeight: theme.typography.overline?.fontWeight, usage: '라벨, 카테고리' },
+      { variant: 'h1', fontSize: theme.typography.h1?.fontSize, fontWeight: theme.typography.h1?.fontWeight, usage: 'Page main title' },
+      { variant: 'h2', fontSize: theme.typography.h2?.fontSize, fontWeight: theme.typography.h2?.fontWeight, usage: 'Section title' },
+      { variant: 'h3', fontSize: theme.typography.h3?.fontSize, fontWeight: theme.typography.h3?.fontWeight, usage: 'Subsection title' },
+      { variant: 'h4', fontSize: theme.typography.h4?.fontSize, fontWeight: theme.typography.h4?.fontWeight, usage: 'Card title' },
+      { variant: 'h5', fontSize: theme.typography.h5?.fontSize, fontWeight: theme.typography.h5?.fontWeight, usage: 'Small title' },
+      { variant: 'h6', fontSize: theme.typography.h6?.fontSize, fontWeight: theme.typography.h6?.fontWeight, usage: 'Label title' },
+      { variant: 'subtitle1', fontSize: theme.typography.subtitle1?.fontSize, fontWeight: theme.typography.subtitle1?.fontWeight, usage: 'Subtitle' },
+      { variant: 'subtitle2', fontSize: theme.typography.subtitle2?.fontSize, fontWeight: theme.typography.subtitle2?.fontWeight, usage: 'Small subtitle' },
+      { variant: 'body1', fontSize: theme.typography.body1?.fontSize, fontWeight: theme.typography.body1?.fontWeight, usage: 'Body text' },
+      { variant: 'body2', fontSize: theme.typography.body2?.fontSize, fontWeight: theme.typography.body2?.fontWeight, usage: 'Secondary body' },
+      { variant: 'button', fontSize: theme.typography.button?.fontSize, fontWeight: theme.typography.button?.fontWeight, usage: 'Button text' },
+      { variant: 'caption', fontSize: theme.typography.caption?.fontSize, fontWeight: theme.typography.caption?.fontWeight, usage: 'Captions, annotations' },
+      { variant: 'overline', fontSize: theme.typography.overline?.fontSize, fontWeight: theme.typography.overline?.fontWeight, usage: 'Labels, categories' },
     ];
 
-    // Font Weight 데이터
+    // Font weight data
     const fontWeights = [
       { name: 'Light', token: 'fontWeightLight', value: theme.typography.fontWeightLight },
       { name: 'Regular', token: 'fontWeightRegular', value: theme.typography.fontWeightRegular },
@@ -87,24 +87,24 @@ export const Docs = {
           version="1.0"
         />
         <PageContainer>
-          {/* 제목 + 1줄 개요 */}
+          {/* Title + one-line overview */}
           <Typography variant="h4" sx={ { fontWeight: 700, mb: 1 } }>
             Typography System
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-            프로젝트에서 사용하는 타이포그래피 스케일과 폰트 설정입니다.
+            The typography scale and font settings used across the project.
           </Typography>
 
-          {/* 토큰 구조 (트리 뷰) */}
-          <SectionTitle title="토큰 구조" description="theme.typography 계층 구조" />
+          {/* Token structure (tree view) */}
+          <SectionTitle title="Token Structure" description="theme.typography hierarchy" />
           <Box sx={ { p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1, mb: 4 } }>
             { Object.entries(tokenStructure).map(([key, value]) => (
               <TreeNode key={ key } keyName={ key } value={ value } defaultOpen />
             )) }
           </Box>
 
-          {/* 토큰 값 (테이블) - Typography Scale */}
-          <SectionTitle title="토큰 값" description="Typography variant별 설정" />
+          {/* Token values (table) - Typography Scale */}
+          <SectionTitle title="Token Values" description="Settings per Typography variant" />
           <TableContainer sx={ { mb: 4 } }>
             <Table size="small">
               <TableHead>
@@ -113,7 +113,7 @@ export const Docs = {
                   <TableCell sx={ { fontWeight: 600 } }>Size</TableCell>
                   <TableCell sx={ { fontWeight: 600 } }>Weight</TableCell>
                   <TableCell sx={ { fontWeight: 600 } }>Sample</TableCell>
-                  <TableCell sx={ { fontWeight: 600 } }>용도</TableCell>
+                  <TableCell sx={ { fontWeight: 600 } }>Usage</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -134,8 +134,8 @@ export const Docs = {
             </Table>
           </TableContainer>
 
-          {/* Font Weight 테이블 */}
-          <SectionTitle title="Font Weight" description="사용 가능한 폰트 굵기" />
+          {/* Font weight table */}
+          <SectionTitle title="Font Weight" description="Available font weights" />
           <TableContainer sx={ { mb: 4 } }>
             <Table size="small">
               <TableHead>
@@ -163,8 +163,8 @@ export const Docs = {
             </Table>
           </TableContainer>
 
-          {/* 사용 예시 */}
-          <SectionTitle title="사용 예시" description="MUI Typography 컴포넌트 활용" />
+          {/* Usage examples */}
+          <SectionTitle title="Usage" description="Using the MUI Typography component" />
           <Box
             component="pre"
             sx={ {
@@ -177,28 +177,28 @@ export const Docs = {
               mb: 4,
             } }
           >
-{ `// Typography variant 사용
-<Typography variant="h1">페이지 타이틀</Typography>
-<Typography variant="body1">본문 텍스트</Typography>
-<Typography variant="caption">캡션 텍스트</Typography>
+{ `// Using a Typography variant
+<Typography variant="h1">Page title</Typography>
+<Typography variant="body1">Body text</Typography>
+<Typography variant="caption">Caption text</Typography>
 
-// sx prop으로 커스텀
-<Typography sx={{ fontWeight: 700 }}>볼드 텍스트</Typography>
-<Typography sx={{ fontSize: '1.5rem' }}>커스텀 크기</Typography>
+// Customizing with the sx prop
+<Typography sx={{ fontWeight: 700 }}>Bold text</Typography>
+<Typography sx={{ fontSize: '1.5rem' }}>Custom size</Typography>
 
-// color와 함께 사용
-<Typography variant="h4" color="primary">Primary 컬러 제목</Typography>
-<Typography variant="body2" color="text.secondary">보조 텍스트</Typography>
+// Using with color
+<Typography variant="h4" color="primary">Primary color heading</Typography>
+<Typography variant="body2" color="text.secondary">Secondary text</Typography>
 
-// fontWeight 토큰 사용
-<Box sx={{ fontWeight: 'fontWeightBold' }}>볼드 텍스트</Box>
-<Box sx={{ fontWeight: 'fontWeightLight' }}>라이트 텍스트</Box>` }
+// Using fontWeight tokens
+<Box sx={{ fontWeight: 'fontWeightBold' }}>Bold text</Box>
+<Box sx={{ fontWeight: 'fontWeightLight' }}>Light text</Box>` }
           </Box>
 
           {/* Vibe Coding Prompt */}
           <SectionTitle
             title="Vibe Coding Prompt"
-            description="AI 코딩 도구에서 활용할 수 있는 프롬프트 예시"
+            description="Example prompts for AI coding tools"
           />
           <Box
             component="pre"
@@ -212,23 +212,23 @@ export const Docs = {
               borderRadius: 1,
             } }
           >
-{ `/* 타이포그래피 토큰 활용 프롬프트 예시 */
+{ `/* Example prompts for using typography tokens */
 
-"Typography variant='h4'를 사용해서 카드 제목을 만들어줘.
-fontWeight: 700으로 볼드 처리해줘."
+"Use Typography variant='h4' to build a card title.
+Make it bold with fontWeight: 700."
 
-"body1으로 본문, caption으로 날짜를 표시하는
-블로그 포스트 카드를 만들어줘."
+"Build a blog post card that shows the body with body1
+and the date with caption."
 
-"h2는 섹션 제목, body2는 설명으로 사용해서
-가격표 컴포넌트를 만들어줘."
+"Build a pricing table component using h2 for the section title
+and body2 for the description."
 
-"overline variant로 카테고리 라벨을 만들고,
-h5로 아이템 이름을 표시해줘."
+"Build a category label with the overline variant,
+and show the item name with h5."
 
-"fontWeightLight (${theme.typography.fontWeightLight})와
-fontWeightBold (${theme.typography.fontWeightBold})를 사용해서
-강조 텍스트와 일반 텍스트를 구분해줘."` }
+"Use fontWeightLight (${theme.typography.fontWeightLight}) and
+fontWeightBold (${theme.typography.fontWeightBold}) to differentiate
+emphasized text from regular text."` }
           </Box>
         </PageContainer>
       </>

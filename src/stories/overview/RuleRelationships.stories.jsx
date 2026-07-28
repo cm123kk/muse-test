@@ -24,10 +24,10 @@ export default {
 };
 
 /**
- * PriorityChip - 우선순위 뱃지
+ * PriorityChip - priority badge
  *
  * Props:
- * @param {string} priority - 우선순위 키 (root, CRITICAL, MUST, SHOULD, Reference, Skill, Skill Resource) [Required]
+ * @param {string} priority - priority key (root, CRITICAL, MUST, SHOULD, Reference, Skill, Skill Resource) [Required]
  */
 function PriorityChip({ priority }) {
   const meta = priorityMeta[priority];
@@ -49,15 +49,15 @@ function PriorityChip({ priority }) {
 }
 
 /**
- * TreeDiagram - CLAUDE.md 중심 룰 계층 트리
+ * TreeDiagram - rule hierarchy tree centered on CLAUDE.md
  *
- * ruleNodes와 ruleEdges 데이터를 기반으로
- * CLAUDE.md에서 각 서브룰로의 로드 관계를 시각적으로 표현
+ * Based on the ruleNodes and ruleEdges data, visually represents
+ * the load relationships from CLAUDE.md to each sub-rule.
  */
 function TreeDiagram() {
   const root = ruleNodes.find((n) => n.id === 'claude-md');
 
-  // 자동 로드 그룹 (CLAUDE.md → loads)
+  // Auto-load groups (CLAUDE.md -> loads)
   const ruleGroups = {
     CRITICAL: ruleNodes.filter((n) => n.priority === 'CRITICAL'),
     MUST: ruleNodes.filter((n) => n.priority === 'MUST'),
@@ -65,16 +65,16 @@ function TreeDiagram() {
     Reference: ruleNodes.filter((n) => n.priority === 'Reference'),
   };
 
-  // 스킬 그룹 (CLAUDE.md → activates)
+  // Skill groups (CLAUDE.md -> activates)
   const skillNodes = ruleNodes.filter((n) => n.priority === 'Skill');
   const skillResourceNodes = ruleNodes.filter((n) => n.priority === 'Skill Resource');
 
-  // 서브룰 간 참조 엣지 (loads, activates 제외)
+  // Reference edges between sub-rules (excluding loads, activates)
   const crossEdges = ruleEdges.filter(
     (e) => e.from !== 'claude-md' && e.type === 'references'
   );
 
-  // Skill → Resource 엣지
+  // Skill -> Resource edges
   const resourceEdges = ruleEdges.filter((e) => e.type === 'resources');
 
   return (
@@ -96,9 +96,9 @@ function TreeDiagram() {
         { root.name }
       </Box>
 
-      {/* 자동 로드 룰 그룹 */}
+      {/* Auto-load rule groups */}
       <Typography variant="caption" color="text.secondary" sx={ { display: 'block', pl: 4, mb: 1 } }>
-        자동 로드 (loads)
+        Auto-load (loads)
       </Typography>
       <Box sx={ { display: 'flex', flexDirection: 'column', gap: 2, pl: 4, mb: 3 } }>
         { Object.entries(ruleGroups).map(([priority, nodes]) => {
@@ -142,11 +142,11 @@ function TreeDiagram() {
         }) }
       </Box>
 
-      {/* 스킬 그룹 (의도 기반 활성화) */}
+      {/* Skill groups (intent-based activation) */}
       { skillNodes.length > 0 && (
         <>
           <Typography variant="caption" color="text.secondary" sx={ { display: 'block', pl: 4, mb: 1 } }>
-            의도 기반 활성화 (activates)
+            Intent-based activation (activates)
           </Typography>
           <Box sx={ { pl: 4, mb: 2 } }>
             { skillNodes.map((node) => (
@@ -214,11 +214,11 @@ function TreeDiagram() {
         </>
       ) }
 
-      {/* 서브룰 간 참조 */}
+      {/* Cross-rule references */}
       { crossEdges.length > 0 && (
         <Box sx={ { mt: 2, pt: 2, borderTop: '1px dashed', borderColor: 'divider' } }>
           <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mb: 1 } }>
-            룰 간 참조 (references)
+            Cross-rule references (references)
           </Typography>
           { crossEdges.map((edge, i) => {
             const fromNode = ruleNodes.find((n) => n.id === edge.from);
@@ -257,24 +257,24 @@ export const Doc = {
           Rule Relationships
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          CLAUDE.md를 중심으로 한 프로젝트 룰의 계층 구조와 참조 관계입니다.
+          The hierarchy and reference relationships of project rules, centered on CLAUDE.md.
         </Typography>
 
-        {/* 1. 룰 계층 구조 */}
-        <SectionTitle title="룰 계층 구조" description="CLAUDE.md에서 각 서브룰로의 로드 관계" />
+        {/* 1. Rule hierarchy */}
+        <SectionTitle title="Rule Hierarchy" description="Load relationships from CLAUDE.md to each sub-rule" />
         <Box sx={ { mb: 4 } }>
           <TreeDiagram />
         </Box>
 
-        {/* 2. 룰 목록 */}
-        <SectionTitle title="룰 목록" description="모든 룰 파일과 우선순위, 역할" />
+        {/* 2. Rule list */}
+        <SectionTitle title="Rule List" description="All rule files with their priority and role" />
         <TableContainer sx={ { mb: 4 } }>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell sx={ { fontWeight: 600 } }>파일명</TableCell>
-                <TableCell sx={ { fontWeight: 600 } }>우선순위</TableCell>
-                <TableCell sx={ { fontWeight: 600 } }>설명</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>File Name</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>Priority</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>Description</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -295,8 +295,8 @@ export const Doc = {
           </Table>
         </TableContainer>
 
-        {/* 3. 참조 관계 */}
-        <SectionTitle title="참조 관계" description="룰 간 참조 방식과 방향" />
+        {/* 3. Reference relationships */}
+        <SectionTitle title="Reference Relationships" description="How rules reference each other and in which direction" />
         <Box sx={ { display: 'flex', gap: 3, mb: 2 } }>
           { Object.entries(edgeTypes).map(([key, meta]) => (
             <Box key={ key } sx={ { display: 'flex', alignItems: 'center', gap: 1 } }>
@@ -320,8 +320,8 @@ export const Doc = {
                 <TableCell sx={ { fontWeight: 600 } }>From</TableCell>
                 <TableCell sx={ { fontWeight: 600 } }></TableCell>
                 <TableCell sx={ { fontWeight: 600 } }>To</TableCell>
-                <TableCell sx={ { fontWeight: 600 } }>유형</TableCell>
-                <TableCell sx={ { fontWeight: 600 } }>비고</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>Type</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>Notes</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -351,17 +351,17 @@ export const Doc = {
           </Table>
         </TableContainer>
 
-        {/* 4. 활용 조건 매트릭스 */}
-        <SectionTitle title="활용 조건 매트릭스" description="작업 유형별 확인해야 할 룰과 스킬" />
+        {/* 4. Usage condition matrix */}
+        <SectionTitle title="Usage Condition Matrix" description="Rules and skills to check for each task type" />
         <TableContainer>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell sx={ { fontWeight: 600 } }>작업 유형</TableCell>
-                <TableCell sx={ { fontWeight: 600 } }>확인할 룰</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>Task Type</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>Rules to Check</TableCell>
                 <TableCell sx={ { fontWeight: 600 } }>Skill</TableCell>
                 <TableCell sx={ { fontWeight: 600 } }>Skill Resources</TableCell>
-                <TableCell sx={ { fontWeight: 600 } }>비고</TableCell>
+                <TableCell sx={ { fontWeight: 600 } }>Notes</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

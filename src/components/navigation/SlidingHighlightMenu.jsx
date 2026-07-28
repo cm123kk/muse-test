@@ -6,23 +6,23 @@ import { useTheme, alpha } from '@mui/material/styles';
 import { motion } from 'framer-motion';
 
 /**
- * SlidingHighlightMenu - 슬라이딩 하이라이트 메뉴
+ * SlidingHighlightMenu - sliding highlight menu
  *
- * 여러 개의 액션/네비게이션 아이템을 담는 시리즈 컨테이너.
- * hover 시 배경/언더라인 인디케이터가 아이템 간 부드럽게 이동한다.
- * 각 아이템은 독립적인 onClick 핸들러를 가진다 (선택 상태 없음).
+ * A series container that holds multiple action / navigation items.
+ * On hover, a background / underline indicator glides smoothly between items.
+ * Each item has its own independent onClick handler (no selected state).
  *
- * 동작 원리:
- * 1. 아이템에 마우스를 올리면 hoveredId가 업데이트된다
- * 2. 해당 아이템 내부에 motion.span(layoutId)이 렌더된다
- * 3. Framer Motion이 이전 위치 → 새 위치로 spring 애니메이션을 실행한다
- * 4. 마우스가 컨테이너를 벗어나면 AnimatePresence로 인디케이터가 fade out된다
+ * How it works:
+ * 1. hoveredId updates when the mouse enters an item
+ * 2. A motion.span (layoutId) is rendered inside that item
+ * 3. Framer Motion runs a spring animation from the previous position -> the new position
+ * 4. When the mouse leaves the container, the indicator fades out via AnimatePresence
  *
  * Props:
- * @param {Array} items - 아이템 목록 [{ id, label, onClick }] [Required]
- * @param {string} indicator - 인디케이터 스타일 ('background' | 'underline') [Optional, 기본값: 'background']
- * @param {string} direction - 메뉴 방향 ('horizontal' | 'vertical') [Optional, 기본값: 'horizontal']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {Array} items - List of items [{ id, label, onClick }] [Required]
+ * @param {string} indicator - Indicator style ('background' | 'underline') [Optional, default: 'background']
+ * @param {string} direction - Menu direction ('horizontal' | 'vertical') [Optional, default: 'horizontal']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <SlidingHighlightMenu
@@ -85,7 +85,7 @@ function SlidingHighlightMenu({
             },
           } }
         >
-          {/* Hover 인디케이터 — layoutId가 아이템 간 위치 전환을 자동 애니메이션 */}
+          {/* Hover indicator: layoutId automatically animates the position transition between items */}
           { hoveredId === item.id && (
             <motion.div
               layoutId="hover-highlight"
@@ -111,7 +111,7 @@ function SlidingHighlightMenu({
             />
           ) }
 
-          {/* 라벨 */}
+          {/* Label */}
           <Typography
             variant="body2"
             sx={ {

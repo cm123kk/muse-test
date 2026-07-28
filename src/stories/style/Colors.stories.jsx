@@ -16,7 +16,7 @@ import {
   TreeNode,
 } from '../../components/storybookDocumentation';
 
-/** MUSE Neutral Tint Scale — 바이올렛 틴트 커스텀 그레이 */
+/** MUSE Neutral Tint Scale: violet-tinted custom gray */
 const museNeutralScale = {
   50: '#FAFAFD',
   100: '#F3F3F9',
@@ -30,7 +30,7 @@ const museNeutralScale = {
   900: '#14132B',
 };
 
-/** MUSE Accent Scale — 필수 강조용 바이올렛 (info.main 계열) */
+/** MUSE Accent Scale: violet for essential emphasis (info.main family) */
 const museAccentScale = {
   50: '#EEF0FF',
   100: '#E0E3FF',
@@ -51,7 +51,7 @@ export default {
   },
 };
 
-/** 팔레트 스케일 컴포넌트 - 큰 블록 형태 */
+/** Palette scale component: large block layout */
 const PaletteScale = ({ name, colorObj, description }) => (
   <Box sx={ { mb: 6 } }>
     <Typography variant="h6" sx={ { fontWeight: 600, mb: 0.5 } }>{ name }</Typography>
@@ -99,7 +99,7 @@ const PaletteScale = ({ name, colorObj, description }) => (
   </Box>
 );
 
-/** 시멘틱 토큰 블록 컴포넌트 */
+/** Semantic token block component */
 const SemanticColorBlock = ({ name, colorObj, description }) => {
   const shades = ['light', 'main', 'dark'];
   return (
@@ -154,7 +154,7 @@ const SemanticColorBlock = ({ name, colorObj, description }) => {
   );
 };
 
-/** 단일 색상 블록 컴포넌트 */
+/** Single color block component */
 const SingleColorBlock = ({ name, color, hasBorder = false }) => (
   <Box
     sx={ {
@@ -193,12 +193,12 @@ const SingleColorBlock = ({ name, color, hasBorder = false }) => (
   </Box>
 );
 
-/** Docs - 색상 시스템 문서 (첫 번째 스토리) */
+/** Docs - color system documentation (first story) */
 export const Docs = {
   render: () => {
     const theme = useTheme();
 
-    // 토큰 구조 (트리 뷰용)
+    // Token structure (for the tree view)
     const tokenStructure = {
       palette: {
         primary: theme.palette.primary,
@@ -213,21 +213,21 @@ export const Docs = {
       },
     };
 
-    // 토큰 값 (테이블용)
+    // Token values (for the table)
     const tokenValues = [
-      { token: 'primary.main', value: theme.palette.primary.main, description: '주요 브랜드 색상, CTA 버튼' },
-      { token: 'primary.light', value: theme.palette.primary.light, description: 'hover 상태, 배경 강조' },
-      { token: 'primary.dark', value: theme.palette.primary.dark, description: 'active 상태, 텍스트 강조' },
-      { token: 'secondary.main', value: theme.palette.secondary.main, description: '보조 액션, 태그' },
-      { token: 'error.main', value: theme.palette.error.main, description: '오류, 삭제, 위험' },
-      { token: 'warning.main', value: theme.palette.warning.main, description: '주의, 경고' },
-      { token: 'success.main', value: theme.palette.success.main, description: '성공, 완료, 활성' },
-      { token: 'info.main', value: theme.palette.info.main, description: '정보, 안내' },
-      { token: 'text.primary', value: theme.palette.text.primary, description: '주요 텍스트' },
-      { token: 'text.secondary', value: theme.palette.text.secondary, description: '보조 텍스트, 캡션' },
-      { token: 'background.default', value: theme.palette.background.default, description: '페이지 배경' },
-      { token: 'background.paper', value: theme.palette.background.paper, description: '카드, 모달 배경' },
-      { token: 'divider', value: theme.palette.divider, description: '구분선, 보더' },
+      { token: 'primary.main', value: theme.palette.primary.main, description: 'Main brand color, CTA buttons' },
+      { token: 'primary.light', value: theme.palette.primary.light, description: 'Hover state, background emphasis' },
+      { token: 'primary.dark', value: theme.palette.primary.dark, description: 'Active state, text emphasis' },
+      { token: 'secondary.main', value: theme.palette.secondary.main, description: 'Secondary actions, tags' },
+      { token: 'error.main', value: theme.palette.error.main, description: 'Error, delete, danger' },
+      { token: 'warning.main', value: theme.palette.warning.main, description: 'Caution, warning' },
+      { token: 'success.main', value: theme.palette.success.main, description: 'Success, complete, active' },
+      { token: 'info.main', value: theme.palette.info.main, description: 'Information, guidance' },
+      { token: 'text.primary', value: theme.palette.text.primary, description: 'Primary text' },
+      { token: 'text.secondary', value: theme.palette.text.secondary, description: 'Secondary text, captions' },
+      { token: 'background.default', value: theme.palette.background.default, description: 'Page background' },
+      { token: 'background.paper', value: theme.palette.background.paper, description: 'Card and modal background' },
+      { token: 'divider', value: theme.palette.divider, description: 'Dividers, borders' },
     ];
 
     return (
@@ -241,24 +241,24 @@ export const Docs = {
           version="1.0"
         />
         <PageContainer>
-          {/* 제목 + 1줄 개요 */}
+          {/* Title + one-line overview */}
           <Typography variant="h4" sx={ { fontWeight: 700, mb: 1 } }>
             Color System
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-            프로젝트에서 사용하는 색상 팔레트와 시멘틱 컬러 토큰입니다.
+            The color palette and semantic color tokens used across the project.
           </Typography>
 
-          {/* 토큰 구조 (트리 뷰) */}
-          <SectionTitle title="토큰 구조" description="theme.palette 계층 구조" />
+          {/* Token structure (tree view) */}
+          <SectionTitle title="Token Structure" description="theme.palette hierarchy" />
           <Box sx={ { p: 2, border: '1px solid', borderColor: 'divider', borderRadius: 1, mb: 4 } }>
             { Object.entries(tokenStructure).map(([key, value]) => (
               <TreeNode key={ key } keyName={ key } value={ value } defaultOpen />
             )) }
           </Box>
 
-          {/* 토큰 값 (테이블) */}
-          <SectionTitle title="토큰 값" description="주요 색상 토큰의 실제 값" />
+          {/* Token values (table) */}
+          <SectionTitle title="Token Values" description="Actual values of key color tokens" />
           <TableContainer sx={ { mb: 4 } }>
             <Table size="small">
               <TableHead>
@@ -266,7 +266,7 @@ export const Docs = {
                   <TableCell sx={ { fontWeight: 600 } }>Token</TableCell>
                   <TableCell sx={ { fontWeight: 600 } }>Value</TableCell>
                   <TableCell sx={ { fontWeight: 600 } }>Preview</TableCell>
-                  <TableCell sx={ { fontWeight: 600 } }>설명</TableCell>
+                  <TableCell sx={ { fontWeight: 600 } }>Description</TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -293,8 +293,8 @@ export const Docs = {
             </Table>
           </TableContainer>
 
-          {/* 사용 예시 */}
-          <SectionTitle title="사용 예시" description="MUI sx prop에서의 색상 토큰 활용" />
+          {/* Usage examples */}
+          <SectionTitle title="Usage" description="Using color tokens in the MUI sx prop" />
           <Box
             component="pre"
             sx={ {
@@ -307,22 +307,22 @@ export const Docs = {
               mb: 4,
             } }
           >
-{ `// 배경색 적용
+{ `// Background color
 <Box sx={{ backgroundColor: 'primary.main' }} />
 <Box sx={{ backgroundColor: 'background.paper' }} />
 
-// 텍스트 색상
-<Typography sx={{ color: 'text.primary' }}>주요 텍스트</Typography>
-<Typography sx={{ color: 'text.secondary' }}>보조 텍스트</Typography>
+// Text color
+<Typography sx={{ color: 'text.primary' }}>Primary text</Typography>
+<Typography sx={{ color: 'text.secondary' }}>Secondary text</Typography>
 
-// 보더 색상
+// Border color
 <Box sx={{ border: '1px solid', borderColor: 'divider' }} />
 
-// 상태별 색상
+// State colors
 <Button color="primary">Primary</Button>
 <Button color="error">Error</Button>
 
-// hover 상태
+// Hover state
 <Box sx={{
   backgroundColor: 'primary.main',
   '&:hover': { backgroundColor: 'primary.dark' }
@@ -332,7 +332,7 @@ export const Docs = {
           {/* Vibe Coding Prompt */}
           <SectionTitle
             title="Vibe Coding Prompt"
-            description="AI 코딩 도구에서 활용할 수 있는 프롬프트 예시"
+            description="Example prompts for AI coding tools"
           />
           <Box
             component="pre"
@@ -346,19 +346,19 @@ export const Docs = {
               borderRadius: 1,
             } }
           >
-{ `/* 색상 토큰 활용 프롬프트 예시 */
+{ `/* Example prompts for using color tokens */
 
-"primary.main (${theme.palette.primary.main})을 사용해서 CTA 버튼을 만들어줘.
-hover 시 primary.dark로 변경되도록 해줘."
+"Use primary.main (${theme.palette.primary.main}) to build a CTA button.
+Make it change to primary.dark on hover."
 
-"text.primary와 text.secondary를 사용해서
-카드 컴포넌트의 제목과 설명 텍스트 색상을 구분해줘."
+"Use text.primary and text.secondary to differentiate
+the title and description text colors in a card component."
 
-"background.paper 배경에 primary.main 보더를 가진
-선택된 상태의 카드를 만들어줘."
+"Build a selected-state card with a background.paper background
+and a primary.main border."
 
-"error.main 색상으로 삭제 버튼을 만들고,
-hover 시 error.dark로 어두워지게 해줘."` }
+"Build a delete button with the error.main color,
+and darken it to error.dark on hover."` }
           </Box>
         </PageContainer>
       </>
@@ -366,7 +366,7 @@ hover 시 error.dark로 어두워지게 해줘."` }
   },
 };
 
-/** 1. Color Palette - MUSE 원시 스케일 */
+/** 1. Color Palette - MUSE raw scale */
 export const Palette = {
   name: '1. Color Palette',
   render: () => (
@@ -381,11 +381,11 @@ export const Palette = {
       />
       <PageContainer>
         <Typography variant="h4" sx={ { fontWeight: 700, mb: 1 } }>
-          Color Palette (MUSE 원시 스케일)
+          Color Palette (MUSE Raw Scale)
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          MUSE는 완벽한 흰/검을 제거하고 은은한 바이올렛 틴트축 위에 그레이를 재정의했다.
-          이 스케일들을 조합해 시멘틱 토큰(primary/secondary/text/background 등)을 구성한다.
+          MUSE removes pure white and black, redefining its grays along a subtle violet tint axis.
+          These scales are combined to build the semantic tokens (primary, secondary, text, background, and so on).
         </Typography>
 
         <Divider sx={ { mb: 4 } } />
@@ -393,41 +393,41 @@ export const Palette = {
         <PaletteScale
           name="Neutral Tint"
           colorObj={ museNeutralScale }
-          description="MUSE 기본 그레이 스케일 — 배경/텍스트/보더의 축. `theme.palette.grey[*]`로 접근"
+          description="MUSE base gray scale: the axis for background, text, and borders. Access via `theme.palette.grey[*]`"
         />
         <PaletteScale
           name="Accent Violet"
           colorObj={ museAccentScale }
-          description="필수 강조용 바이올렛 — `theme.palette.info.main (#4F46E5)` 계열. 분석 중, 선택 표시 등 소량만 사용"
+          description="Violet for essential emphasis: the `theme.palette.info.main (#4F46E5)` family. Use sparingly (analyzing state, selection indicators, and similar)"
         />
-        <PaletteScale name="Red" colorObj={ red } description="Error 상태 (MUI 기본 유지)" />
-        <PaletteScale name="Orange" colorObj={ orange } description="Warning 상태 (MUI 기본 유지)" />
-        <PaletteScale name="Green" colorObj={ green } description="Success 상태 (MUI 기본 유지)" />
+        <PaletteScale name="Red" colorObj={ red } description="Error state (MUI default kept)" />
+        <PaletteScale name="Orange" colorObj={ orange } description="Warning state (MUI default kept)" />
+        <PaletteScale name="Green" colorObj={ green } description="Success state (MUI default kept)" />
 
-        <SectionTitle title="명도 가이드" description="MUSE Neutral Tint 기준" />
+        <SectionTitle title="Lightness Guide" description="Based on the MUSE Neutral Tint" />
 
         <TableContainer>
           <Table size="small">
             <TableBody>
               <TableRow>
                 <TableCell sx={ { fontWeight: 600, width: '20%' } }>50-100</TableCell>
-                <TableCell>매우 밝음 — `background.default (#FCFCFF)` / `paper (#F8F8FC)` 근방</TableCell>
+                <TableCell>Very light: near `background.default (#FCFCFF)` and `paper (#F8F8FC)`</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontWeight: 600 } }>200-300</TableCell>
-                <TableCell>밝음 — divider, hover, 보더</TableCell>
+                <TableCell>Light: divider, hover, borders</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontWeight: 600 } }>400-500</TableCell>
-                <TableCell>중간 — disabled, placeholder</TableCell>
+                <TableCell>Medium: disabled, placeholder</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontWeight: 600 } }>600-700</TableCell>
-                <TableCell>어두움 — `text.secondary (#7A798E)`, `secondary.main (#5A586E)`</TableCell>
+                <TableCell>Dark: `text.secondary (#7A798E)`, `secondary.main (#5A586E)`</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontWeight: 600 } }>800-900</TableCell>
-                <TableCell>매우 어두움 — `primary.main` & `text.primary (#14132B)` (이미지 퍼스트 뉴트럴)</TableCell>
+                <TableCell>Very dark: `primary.main` and `text.primary (#14132B)` (image-first neutral)</TableCell>
               </TableRow>
             </TableBody>
           </Table>
@@ -437,7 +437,7 @@ export const Palette = {
   ),
 };
 
-/** 2. Semantic Tokens - 역할별 색상 */
+/** 2. Semantic Tokens - role-based colors */
 export const SemanticTokens = {
   name: '2. Semantic Tokens',
   render: () => {
@@ -454,56 +454,56 @@ export const SemanticTokens = {
         />
         <PageContainer>
           <Typography variant="h4" sx={ { fontWeight: 700, mb: 1 } }>
-            Semantic Tokens (역할별 색상)
+            Semantic Tokens (Role-based Colors)
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-            색상에 의미와 역할을 부여한 토큰입니다. 컴포넌트에서 이 토큰을 참조합니다.
+            Tokens that assign meaning and a role to each color. Components reference these tokens.
           </Typography>
 
-          <SectionTitle title="브랜드 색상" />
+          <SectionTitle title="Brand Colors" />
 
           <SemanticColorBlock
             name="Primary"
             colorObj={ theme.palette.primary }
-            description="CTA 버튼, 링크, 선택된 상태"
+            description="CTA buttons, links, selected state"
           />
           <SemanticColorBlock
             name="Secondary"
             colorObj={ theme.palette.secondary }
-            description="보조 버튼, 태그"
+            description="Secondary buttons, tags"
           />
 
           <SectionTitle
-            title="상태 색상 (Feedback Colors)"
-            description="사용자에게 시스템 상태를 전달하는 색상입니다."
+            title="Feedback Colors"
+            description="Colors that communicate system state to the user."
           />
 
           <SemanticColorBlock
             name="Error"
             colorObj={ theme.palette.error }
-            description="오류, 삭제, 위험"
+            description="Error, delete, danger"
           />
           <SemanticColorBlock
             name="Warning"
             colorObj={ theme.palette.warning }
-            description="주의, 경고"
+            description="Caution, warning"
           />
           <SemanticColorBlock
             name="Success"
             colorObj={ theme.palette.success }
-            description="성공, 완료, 활성"
+            description="Success, complete, active"
           />
           <SemanticColorBlock
             name="Info"
             colorObj={ theme.palette.info }
-            description="정보, 안내"
+            description="Information, guidance"
           />
 
-          <SectionTitle title="텍스트 및 배경 색상" />
+          <SectionTitle title="Text and Background Colors" />
 
           <Box sx={ { mb: 6 } }>
             <Typography variant="h6" sx={ { fontWeight: 600, mb: 0.5 } }>Text</Typography>
-            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>텍스트 색상</Typography>
+            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>Text colors</Typography>
             <Box sx={ { display: 'flex', flexWrap: 'wrap', gap: 1 } }>
               <SingleColorBlock name="primary" color={ theme.palette.text.primary } />
               <SingleColorBlock name="secondary" color={ theme.palette.text.secondary } />
@@ -513,7 +513,7 @@ export const SemanticTokens = {
 
           <Box sx={ { mb: 6 } }>
             <Typography variant="h6" sx={ { fontWeight: 600, mb: 0.5 } }>Background</Typography>
-            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>배경 색상</Typography>
+            <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>Background colors</Typography>
             <Box sx={ { display: 'flex', flexWrap: 'wrap', gap: 1 } }>
               <SingleColorBlock name="default" color={ theme.palette.background.default } hasBorder />
               <SingleColorBlock name="paper" color={ theme.palette.background.paper } hasBorder />
@@ -525,7 +525,7 @@ export const SemanticTokens = {
   },
 };
 
-/** 3. Usage - 컴포넌트에서의 활용 */
+/** 3. Usage - application in components */
 export const Usage = {
   name: '3. Usage',
   render: () => (
@@ -540,15 +540,15 @@ export const Usage = {
       />
       <PageContainer>
         <Typography variant="h4" sx={ { fontWeight: 700, mb: 1 } }>
-          컴포넌트 적용 예시
+          Component Usage Examples
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          Semantic Token이 실제 컴포넌트에 어떻게 적용되는지 확인합니다.
+          See how semantic tokens are applied to real components.
         </Typography>
 
         <SectionTitle
-          title="Button 컴포넌트"
-          description="Button의 color prop에 Semantic Token 이름을 전달하면 해당 색상이 적용됩니다."
+          title="Button Component"
+          description="Pass a semantic token name to the Button color prop to apply that color."
         />
 
         <Box
@@ -569,8 +569,8 @@ export const Usage = {
         </Box>
 
         <SectionTitle
-          title="sx prop으로 직접 사용"
-          description="sx prop에서 theme 값을 직접 참조할 수 있습니다."
+          title="Using the sx prop directly"
+          description="You can reference theme values directly in the sx prop."
         />
 
         <Box
@@ -584,12 +584,12 @@ export const Usage = {
             borderRadius: 2,
           } }
         >
-{ `// 문자열로 참조 (권장)
+{ `// Reference by string (recommended)
 <Box sx={{ backgroundColor: 'primary.main' }} />
 <Box sx={{ color: 'text.secondary' }} />
 <Box sx={{ borderColor: 'divider' }} />
 
-// 함수로 참조 (복잡한 계산 필요시)
+// Reference by function (when complex calculation is needed)
 <Box sx={{ backgroundColor: (theme) => theme.palette.primary.light }} />` }
         </Box>
       </PageContainer>

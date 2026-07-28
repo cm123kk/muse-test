@@ -20,20 +20,20 @@ export default {
         component: `
 ## CustomCard
 
-미디어 영역과 콘텐츠 영역으로 구성된 기본 카드 컴포넌트.
-ImageCard, MoodboardCard 등 다양한 카드 컴포넌트의 기반이 됩니다.
+A basic card component composed of a media area and a content area.
+It is the foundation for various card components such as ImageCard and MoodboardCard.
 
-### 레이아웃 타입
-- **vertical**: 미디어가 위, 콘텐츠가 아래 (기본값)
-- **horizontal**: 미디어와 콘텐츠가 좌우 배치
-- **overlay**: 미디어 위에 콘텐츠가 오버레이
+### Layout types
+- **vertical**: Media on top, content below (default)
+- **horizontal**: Media and content arranged side by side
+- **overlay**: Content overlaid on top of the media
 
-### 미디어 비율
-- \`1/1\`: 정사각형
-- \`4/3\`: 표준 사진 비율
-- \`16/9\`: 와이드스크린
-- \`21/9\`: 울트라와이드
-- \`auto\`: 원본 이미지 비율 유지
+### Media ratios
+- \`1/1\`: Square
+- \`4/3\`: Standard photo ratio
+- \`16/9\`: Widescreen
+- \`21/9\`: Ultrawide
+- \`auto\`: Keep the original image ratio
         `,
       },
     },
@@ -42,37 +42,37 @@ ImageCard, MoodboardCard 등 다양한 카드 컴포넌트의 기반이 됩니�
     layout: {
       control: 'select',
       options: ['vertical', 'horizontal', 'overlay'],
-      description: '카드 레이아웃 타입',
+      description: 'Card layout type',
     },
     mediaPosition: {
       control: 'select',
       options: ['start', 'end'],
-      description: '미디어 위치',
+      description: 'Media position',
     },
     mediaRatio: {
       control: 'select',
       options: ['1/1', '4/3', '16/9', '21/9', 'auto'],
-      description: '미디어 영역 비율',
+      description: 'Media area ratio',
     },
     contentPadding: {
       control: 'select',
       options: ['none', 'sm', 'md', 'lg'],
-      description: '콘텐츠 영역 패딩',
+      description: 'Content area padding',
     },
     contentAlign: {
       control: 'select',
       options: ['start', 'center', 'end'],
-      description: '콘텐츠 정렬',
+      description: 'Content alignment',
     },
     isInteractive: {
       control: 'boolean',
-      description: '호버 인터랙션 효과',
+      description: 'Hover interaction effect',
     },
   },
 };
 
 /**
- * 기본 Vertical 레이아웃
+ * Default Vertical layout
  */
 export const Default = {
   args: {
@@ -85,17 +85,17 @@ export const Default = {
   render: (args) => (
     <CustomCard { ...args } sx={ { width: 320 } }>
       <Typography variant="h6" sx={ { fontWeight: 600, mb: 1 } }>
-        카드 제목
+        Card Title
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        CustomCard는 다양한 레이아웃을 지원하는 기본 카드 컴포넌트입니다.
+        CustomCard is a basic card component that supports various layouts.
       </Typography>
     </CustomCard>
   ),
 };
 
 /**
- * Horizontal 레이아웃
+ * Horizontal layout
  */
 export const Horizontal = {
   render: () => (
@@ -107,20 +107,20 @@ export const Horizontal = {
       sx={ { width: 480 } }
     >
       <Typography variant="h6" sx={ { fontWeight: 600, mb: 1 } }>
-        Horizontal 레이아웃
+        Horizontal Layout
       </Typography>
       <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-        미디어와 콘텐츠가 좌우로 배치됩니다.
+        Media and content are arranged side by side.
       </Typography>
       <Button variant="outlined" size="small" sx={ { textTransform: 'none' } }>
-        자세히 보기
+        View Details
       </Button>
     </CustomCard>
   ),
 };
 
 /**
- * Horizontal - 미디어 오른쪽
+ * Horizontal: media on the right
  */
 export const HorizontalMediaEnd = {
   render: () => (
@@ -133,17 +133,17 @@ export const HorizontalMediaEnd = {
       sx={ { width: 480 } }
     >
       <Typography variant="h6" sx={ { fontWeight: 600, mb: 1 } }>
-        미디어가 오른쪽에
+        Media on the Right
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        mediaPosition=&quot;end&quot;로 미디어를 오른쪽에 배치합니다.
+        Use mediaPosition=&quot;end&quot; to place the media on the right.
       </Typography>
     </CustomCard>
   ),
 };
 
 /**
- * Overlay 레이아웃
+ * Overlay layout
  */
 export const Overlay = {
   render: () => (
@@ -154,17 +154,17 @@ export const Overlay = {
       sx={ { width: 400, height: 300 } }
     >
       <Typography variant="h5" sx={ { fontWeight: 700, mb: 1 } }>
-        Overlay 레이아웃
+        Overlay Layout
       </Typography>
       <Typography variant="body2" sx={ { opacity: 0.9 } }>
-        미디어 위에 콘텐츠가 오버레이됩니다. 그라데이션 배경으로 텍스트 가독성을 확보합니다.
+        Content is overlaid on top of the media. A gradient background ensures text readability.
       </Typography>
     </CustomCard>
   ),
 };
 
 /**
- * 다양한 미디어 비율
+ * Various media ratios
  */
 export const MediaRatios = {
   render: () => (
@@ -187,7 +187,7 @@ export const MediaRatios = {
 };
 
 /**
- * Auto 비율 (원본 유지)
+ * Auto ratio (keep original)
  */
 export const AutoRatio = {
   render: () => (
@@ -199,7 +199,7 @@ export const AutoRatio = {
         sx={ { width: 200 } }
       >
         <Typography variant="body2" sx={ { fontWeight: 600 } }>
-          가로 이미지 (auto)
+          Landscape image (auto)
         </Typography>
       </CustomCard>
       <CustomCard
@@ -209,7 +209,7 @@ export const AutoRatio = {
         sx={ { width: 200 } }
       >
         <Typography variant="body2" sx={ { fontWeight: 600 } }>
-          세로 이미지 (auto)
+          Portrait image (auto)
         </Typography>
       </CustomCard>
     </Box>
@@ -217,7 +217,7 @@ export const AutoRatio = {
 };
 
 /**
- * overlaySlot 사용 예시
+ * overlaySlot usage example
  */
 export const WithOverlaySlot = {
   render: () => (
@@ -261,17 +261,17 @@ export const WithOverlaySlot = {
       sx={ { width: 280 } }
     >
       <Typography variant="body2" sx={ { fontWeight: 600 } }>
-        overlaySlot 사용
+        Using overlaySlot
       </Typography>
       <Typography variant="caption" color="text.secondary">
-        미디어 위에 액션 버튼 오버레이
+        Action buttons overlaid on top of the media
       </Typography>
     </CustomCard>
   ),
 };
 
 /**
- * mediaSlot 사용 예시 (커스텀 미디어)
+ * mediaSlot usage example (custom media)
  */
 export const WithMediaSlot = {
   render: () => (
@@ -301,17 +301,17 @@ export const WithMediaSlot = {
       sx={ { width: 280 } }
     >
       <Typography variant="subtitle1" sx={ { fontWeight: 700 } }>
-        커스텀 미디어 슬롯
+        Custom Media Slot
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        2×2 썸네일 그리드
+        2×2 thumbnail grid
       </Typography>
     </CustomCard>
   ),
 };
 
 /**
- * Interactive 카드
+ * Interactive card
  */
 export const Interactive = {
   render: () => (
@@ -344,17 +344,17 @@ export const Interactive = {
       sx={ { width: 320 } }
     >
       <Typography variant="h6" sx={ { fontWeight: 600, mb: 0.5 } }>
-        Interactive 카드
+        Interactive Card
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        마우스를 올리면 호버 효과가 적용됩니다.
+        A hover effect is applied when you move the mouse over it.
       </Typography>
     </CustomCard>
   ),
 };
 
 /**
- * 콘텐츠 없는 카드
+ * Card without content
  */
 export const MediaOnly = {
   render: () => (
@@ -379,7 +379,7 @@ export const MediaOnly = {
 };
 
 /**
- * 콘텐츠 패딩 비교
+ * Content padding comparison
  */
 export const ContentPaddings = {
   render: () => (

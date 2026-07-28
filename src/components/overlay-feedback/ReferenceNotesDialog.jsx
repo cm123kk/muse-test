@@ -12,19 +12,19 @@ import { RefImage } from '../media/RefImage.jsx';
 import { LAYER_LABEL } from '../../data/muse/layers.js';
 
 /**
- * ReferenceNotesDialog — 레퍼런스별 자유 텍스트 노트 일괄 편집
+ * ReferenceNotesDialog - bulk edit free-text notes per reference
  *
- * 프로젝트 상세에서 "사용된 레퍼런스" 옆 ✏️ 버튼 클릭 시 열림.
- * 모든 used reference 를 list 형식으로 한 화면에서 편집.
- * 노트는 paste block 생성에만 사용되며 T3 재호출 X.
+ * Opens from the project detail view when the pencil button next to "Used references" is clicked.
+ * Edit every used reference in a list layout on a single screen.
+ * Notes are only used to build the paste block and do not trigger a T3 re-call.
  *
  * Props:
- * @param {boolean} open - Dialog 노출 여부 [Required]
- * @param {function} onClose - 닫기 콜백 [Required]
- * @param {Array<{id, thumbnailUrl, title}>} usedReferences - 프로젝트가 참조하는 레퍼런스 [Required]
- * @param {Object<string, string>} initialNotes - 현재 저장된 ref별 노트 {refId: text} [Optional, 기본값: {}]
- * @param {Object<string, string[]>} useLayersByRef - ref별 useLayers (read-only 표시) [Optional, 기본값: {}]
- * @param {function} onSave - (nextNotes) => Promise<void> 저장 콜백 [Required]
+ * @param {boolean} open - Whether the Dialog is shown [Required]
+ * @param {function} onClose - Close callback [Required]
+ * @param {Array<{id, thumbnailUrl, title}>} usedReferences - References the project uses [Required]
+ * @param {Object<string, string>} initialNotes - Currently saved notes per ref {refId: text} [Optional, default: {}]
+ * @param {Object<string, string[]>} useLayersByRef - useLayers per ref (read-only display) [Optional, default: {}]
+ * @param {function} onSave - (nextNotes) => Promise<void> save callback [Required]
  *
  * Example usage:
  * <ReferenceNotesDialog
@@ -66,8 +66,8 @@ export function ReferenceNotesDialog({
       onClose?.();
     } catch (e) {
       // eslint-disable-next-line no-console
-      console.error('[ReferenceNotesDialog] save 실패', e);
-      window.alert(`저장 실패: ${e?.message || e}`);
+      console.error('[ReferenceNotesDialog] save failed', e);
+      window.alert(`Save failed: ${e?.message || e}`);
     } finally {
       setIsSaving(false);
     }
@@ -75,10 +75,10 @@ export function ReferenceNotesDialog({
 
   return (
     <Dialog open={ open } onClose={ () => !isSaving && onClose?.() } maxWidth="md" fullWidth>
-      <DialogTitle>레퍼런스별 활용 노트</DialogTitle>
+      <DialogTitle>Usage Notes by Reference</DialogTitle>
       <DialogContent>
         <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-          각 레퍼런스의 어느 부분을 차용할지 자유롭게 적어주세요. 외부 AI 도구에 paste 할 때 이 노트가 ref별 매칭 단서로 들어갑니다.
+          Write freely about which parts of each reference to borrow. When you paste into an external AI tool, these notes serve as matching cues for each reference.
         </Typography>
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 2 } }>
           { usedReferences.map((ref) => {
@@ -140,7 +140,7 @@ export function ReferenceNotesDialog({
                     </Box>
                   ) : (
                     <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mb: 1 } }>
-                      차용 layer: 자동 (전체)
+                      Borrow layers: auto (all)
                     </Typography>
                   ) }
                   <TextField
@@ -149,7 +149,7 @@ export function ReferenceNotesDialog({
                     multiline
                     minRows={ 2 }
                     maxRows={ 3 }
-                    placeholder={ '예: hero 영역 색감만 차용 / 우측 사이드바 구조 모방' }
+                    placeholder={ 'e.g. Borrow only the hero color scheme / mimic the right sidebar structure' }
                     value={ note }
                     onChange={ (e) => handleChange(ref.id, e.target.value) }
                     inputProps={ { maxLength: 100 } }
@@ -161,15 +161,15 @@ export function ReferenceNotesDialog({
           }) }
           { usedReferences.length === 0 && (
             <Typography variant="body2" color="text.secondary" sx={ { textAlign: 'center', py: 4 } }>
-              사용된 레퍼런스가 없습니다.
+              No references used.
             </Typography>
           ) }
         </Box>
       </DialogContent>
       <DialogActions>
-        <Button onClick={ onClose } disabled={ isSaving }>취소</Button>
+        <Button onClick={ onClose } disabled={ isSaving }>Cancel</Button>
         <Button onClick={ handleSave } variant="contained" disabled={ isSaving }>
-          { isSaving ? '저장 중…' : '저장' }
+          { isSaving ? 'Saving…' : 'Save' }
         </Button>
       </DialogActions>
     </Dialog>

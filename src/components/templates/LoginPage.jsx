@@ -4,11 +4,11 @@ import AuthFormCard from '../input/AuthFormCard';
 import LoginForm from '../input/LoginForm';
 
 /**
- * 로그인 페이지 템플릿 (AuthFormCard + LoginForm 조합)
+ * Login page template (AuthFormCard + LoginForm combination)
  *
  * Props:
- * @param {function} onLoginSuccess - 로그인 성공 시 콜백 [Optional]
- * @param {function} onNavigateToSignUp - 회원가입 링크 클릭 시 콜백 [Optional]
+ * @param {function} onLoginSuccess - Callback on successful login [Optional]
+ * @param {function} onNavigateToSignUp - Callback when the sign-up link is clicked [Optional]
  *
  * Example usage:
  * <LoginPage
@@ -19,11 +19,11 @@ import LoginForm from '../input/LoginForm';
 function LoginPage({ onLoginSuccess, onNavigateToSignUp }) {
   return (
     <AuthFormCard
-      title="로그인"
-      subtitle="MUSE에 오신 것을 환영합니다."
+      title="Sign in"
+      subtitle="Welcome to MUSE."
       footer={
         <Typography variant="body2" color="text.secondary">
-          계정이 없으신가요?{' '}
+          Don't have an account?{' '}
           <Link
             component="button"
             type="button"
@@ -31,7 +31,7 @@ function LoginPage({ onLoginSuccess, onNavigateToSignUp }) {
             onClick={onNavigateToSignUp}
             sx={{ cursor: 'pointer' }}
           >
-            회원가입
+            Sign up
           </Link>
         </Typography>
       }

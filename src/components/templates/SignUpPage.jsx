@@ -4,11 +4,11 @@ import AuthFormCard from '../input/AuthFormCard';
 import SignUpForm from '../input/SignUpForm';
 
 /**
- * 회원가입 페이지 템플릿 (AuthFormCard + SignUpForm 조합)
+ * Sign-up page template (AuthFormCard + SignUpForm combination)
  *
  * Props:
- * @param {function} onSignUpSuccess - 가입 성공 시 콜백 [Optional]
- * @param {function} onNavigateToLogin - 로그인 링크 클릭 시 콜백 [Optional]
+ * @param {function} onSignUpSuccess - callback on successful sign-up [Optional]
+ * @param {function} onNavigateToLogin - callback when the login link is clicked [Optional]
  *
  * Example usage:
  * <SignUpPage
@@ -19,11 +19,11 @@ import SignUpForm from '../input/SignUpForm';
 function SignUpPage({ onSignUpSuccess, onNavigateToLogin }) {
   return (
     <AuthFormCard
-      title="회원가입"
-      subtitle="무료로 시작하세요. 신용카드 없이."
+      title="Sign up"
+      subtitle="Start for free. No credit card required."
       footer={
         <Typography variant="body2" color="text.secondary">
-          이미 계정이 있으신가요?{' '}
+          Already have an account?{' '}
           <Link
             component="button"
             type="button"
@@ -31,7 +31,7 @@ function SignUpPage({ onSignUpSuccess, onNavigateToLogin }) {
             onClick={onNavigateToLogin}
             sx={{ cursor: 'pointer' }}
           >
-            로그인
+            Sign in
           </Link>
         </Typography>
       }

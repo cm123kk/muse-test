@@ -13,30 +13,30 @@ import { SearchBar } from '../input/SearchBar';
 import { SortMenu } from './SortMenu.jsx';
 
 /**
- * FilterBar 템플릿
+ * FilterBar template
  *
- * 검색 및 태그 기반 필터링 인터랙션을 관리하는 상단 바.
- * SearchBar, Keyword Chip 등을 조합한 필터링 UI.
+ * A top bar that manages search and tag-based filtering interactions.
+ * A filtering UI that combines SearchBar, Keyword Chip, and more.
  *
- * 동작 방식:
- * 1. 검색어 입력으로 실시간 필터링
- * 2. 태그 Chip 클릭으로 필터 토글
- * 3. 정렬 옵션 선택
- * 4. 뷰 모드 전환 (그리드/리스트)
+ * How it works:
+ * 1. Real-time filtering as you type a search term
+ * 2. Toggle filters by clicking tag Chips
+ * 3. Select a sort option
+ * 4. Switch view mode (grid/list)
  *
  * Props:
- * @param {string} searchValue - 현재 검색어 [Optional, 기본값: '']
- * @param {function} onSearchChange - 검색어 변경 핸들러 [Required]
- * @param {string[]} availableTags - 사용 가능한 태그 목록 [Optional]
- * @param {string[]} selectedTags - 선택된 태그 목록 [Optional, 기본값: []]
- * @param {function} onTagToggle - 태그 토글 핸들러 (tag) => void [Required]
- * @param {function} onClearFilters - 필터 초기화 핸들러 [Optional]
- * @param {string} sortBy - 현재 정렬 기준 [Optional, 기본값: 'newest']
- * @param {function} onSortChange - 정렬 변경 핸들러 [Optional]
- * @param {string} viewMode - 현재 뷰 모드 ('grid' | 'list') [Optional, 기본값: 'grid']
- * @param {function} onViewModeChange - 뷰 모드 변경 핸들러 [Optional]
- * @param {number} resultCount - 검색 결과 수 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} searchValue - Current search term [Optional, default: '']
+ * @param {function} onSearchChange - Search term change handler [Required]
+ * @param {string[]} availableTags - List of available tags [Optional]
+ * @param {string[]} selectedTags - List of selected tags [Optional, default: []]
+ * @param {function} onTagToggle - Tag toggle handler (tag) => void [Required]
+ * @param {function} onClearFilters - Filter reset handler [Optional]
+ * @param {string} sortBy - Current sort key [Optional, default: 'newest']
+ * @param {function} onSortChange - Sort change handler [Optional]
+ * @param {string} viewMode - Current view mode ('grid' | 'list') [Optional, default: 'grid']
+ * @param {function} onViewModeChange - View mode change handler [Optional]
+ * @param {number} resultCount - Number of search results [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <FilterBar
@@ -67,7 +67,7 @@ export function FilterBar({
   const hasActiveFilters = selectedTags.length > 0 || searchValue.length > 0;
 
   /**
-   * 태그 토글 핸들러
+   * Tag toggle handler
    */
   const handleTagClick = useCallback(
     (tag) => {
@@ -77,7 +77,7 @@ export function FilterBar({
   );
 
   /**
-   * 모든 필터 초기화
+   * Reset all filters
    */
   const handleClearAll = useCallback(() => {
     onClearFilters?.();
@@ -85,7 +85,7 @@ export function FilterBar({
 
   return (
     <Box sx={{ mb: 3, ...sx }}>
-      {/* 메인 바 */}
+      {/* Main bar */}
       <Box
         sx={{
           display: 'flex',
@@ -94,7 +94,7 @@ export function FilterBar({
           flexWrap: 'wrap',
         }}
       >
-        {/* 검색바 */}
+        {/* Search bar */}
         <SearchBar
           value={searchValue}
           onChange={onSearchChange}
@@ -105,12 +105,12 @@ export function FilterBar({
           sx={{ flex: 1, minWidth: 200 }}
         />
 
-        {/* 정렬 버튼 */}
+        {/* Sort button */}
         {onSortChange && (
           <SortMenu value={sortBy} onChange={onSortChange} />
         )}
 
-        {/* 뷰 모드 토글 */}
+        {/* View mode toggle */}
         {onViewModeChange && (
           <Box
             sx={{
@@ -147,7 +147,7 @@ export function FilterBar({
         )}
       </Box>
 
-      {/* 확장 필터 영역 */}
+      {/* Expanded filter area */}
       <Collapse in={showFilters}>
         <Box
           sx={{
@@ -184,7 +184,7 @@ export function FilterBar({
             )}
           </Box>
 
-          {/* 태그 Chip 목록 */}
+          {/* Tag Chip list */}
           <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1 }}>
             {availableTags.map((tag) => {
               const isSelected = selectedTags.includes(tag);
@@ -210,7 +210,7 @@ export function FilterBar({
         </Box>
       </Collapse>
 
-      {/* 활성 필터 표시 & 결과 수 */}
+      {/* Active filter display & result count */}
       {(hasActiveFilters || resultCount !== undefined) && (
         <Box
           sx={{
@@ -223,7 +223,7 @@ export function FilterBar({
             borderColor: 'divider',
           }}
         >
-          {/* 활성 필터 Chip */}
+          {/* Active filter Chips */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1, flexWrap: 'wrap' }}>
             {selectedTags.map((tag) => (
               <Chip
@@ -262,7 +262,7 @@ export function FilterBar({
             )}
           </Box>
 
-          {/* 결과 수 */}
+          {/* Result count */}
           {resultCount !== undefined && (
             <Typography variant="body2" color="text.secondary">
               {resultCount} {resultCount === 1 ? 'result' : 'results'}

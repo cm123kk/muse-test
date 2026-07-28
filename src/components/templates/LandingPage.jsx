@@ -11,10 +11,10 @@ import FooterCtaSection from './FooterCtaSection';
 import AuthModal from '../overlay-feedback/AuthModal';
 
 /**
- * LandingPage 템플릿
+ * LandingPage template
  *
  * Props:
- * @param {function} onNavigateToSignUp - 회원가입/시작하기 성공 시 콜백 [Optional]
+ * @param {function} onNavigateToSignUp - Callback on successful sign-up / get started [Optional]
  *
  * Example usage:
  * <LandingPage onNavigateToSignUp={() => navigate('/signup')} />
@@ -40,7 +40,7 @@ function LandingPage({ onNavigateToSignUp }) {
 
   return (
     <Box sx={{ bgcolor: 'background.default' }}>
-      {/* 전역 GNB: 랜딩 전체 sticky. ghost 모드(배경/보더 제거) + 로고 + 시작하기 CTA */}
+      {/* Global GNB: sticky across the whole landing. Ghost mode (background/border removed) + logo + get started CTA */}
       <GNB
         isGhost
         logo={
@@ -53,12 +53,12 @@ function LandingPage({ onNavigateToSignUp }) {
         }
         persistent={
           <Button variant="contained" onClick={openSignUp}>
-            시작하기
+            Get Started
           </Button>
         }
       />
 
-      {/* 히어로 + 브릿지 전환 구간: 200vh 스크롤 공간, hero는 sticky */}
+      {/* Hero + bridge transition zone: 200vh of scroll space, hero is sticky */}
       <Box sx={{ height: '200vh', position: 'relative' }} ref={scrollRef}>
         <Box sx={{ position: 'sticky', top: 0, height: '100vh' }}>
           <HeroSection
@@ -71,7 +71,7 @@ function LandingPage({ onNavigateToSignUp }) {
       {/* Solution 1 */}
       <SolutionOneSection />
 
-      {/* T1 태그 마퀴 (3행 교차 방향) */}
+      {/* T1 tag marquee (3 rows, alternating directions) */}
       <TagMarqueeSection />
 
       {/* Solution 2 */}

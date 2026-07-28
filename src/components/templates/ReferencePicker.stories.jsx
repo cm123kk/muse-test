@@ -17,7 +17,7 @@ const toPickerItem = (ref) => ({
   tags: ref.tags,
 });
 
-/** 첫 6개를 추천으로 간주 — 실제로는 의도 기반 AI 추천 */
+/** Treat the first 6 as recommendations (in practice, intent-based AI recommendations) */
 const RECOMMENDED = allReferences.slice(0, 6).map(toPickerItem);
 const ARCHIVE = allReferences.map(toPickerItem);
 

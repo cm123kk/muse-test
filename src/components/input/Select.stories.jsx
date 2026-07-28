@@ -22,16 +22,16 @@ export default {
         component: `
 ## Select [MUI]
 
-드롭다운 목록에서 하나 이상의 옵션을 선택하는 컴포넌트입니다.
+Component for selecting one or more options from a dropdown list.
 
-### 사용 패턴
+### Usage Patterns
 
-| 패턴 | 설명 | 예시 |
+| Pattern | Description | Example |
 |------|------|------|
-| Basic | 기본 단일 선택 | \`<Select><MenuItem>...</MenuItem></Select>\` |
-| Multiple | 다중 선택 | \`multiple\` prop |
-| Grouped | 그룹화된 옵션 | \`ListSubheader\` 사용 |
-| Native | 네이티브 셀렉트 | \`native\` prop |
+| Basic | Basic single select | \`<Select><MenuItem>...</MenuItem></Select>\` |
+| Multiple | Multiple select | \`multiple\` prop |
+| Grouped | Grouped options | Use \`ListSubheader\` |
+| Native | Native select | \`native\` prop |
         `,
       },
     },
@@ -40,7 +40,7 @@ export default {
     variant: {
       control: 'select',
       options: ['outlined', 'filled', 'standard'],
-      description: '셀렉트의 시각적 스타일을 설정합니다.',
+      description: 'Sets the visual style of the select.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'outlined' },
@@ -49,7 +49,7 @@ export default {
     size: {
       control: 'select',
       options: ['small', 'medium'],
-      description: '셀렉트의 크기를 설정합니다.',
+      description: 'Sets the size of the select.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'medium' },
@@ -57,7 +57,7 @@ export default {
     },
     disabled: {
       control: 'boolean',
-      description: '셀렉트를 비활성화합니다.',
+      description: 'Disables the select.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -65,7 +65,7 @@ export default {
     },
     error: {
       control: 'boolean',
-      description: '에러 상태를 표시합니다.',
+      description: 'Displays the error state.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -73,7 +73,7 @@ export default {
     },
     multiple: {
       control: 'boolean',
-      description: '다중 선택을 활성화합니다.',
+      description: 'Enables multiple selection.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -82,7 +82,7 @@ export default {
   },
 };
 
-/** 기본 셀렉트 */
+/** Basic select */
 export const Default = {
   args: {
     variant: 'outlined',
@@ -101,26 +101,26 @@ export const Default = {
         disabled={ args.disabled }
         error={ args.error }
       >
-        <InputLabel>나이</InputLabel>
+        <InputLabel>Age</InputLabel>
         <Select
           value={ value }
-          label="나이"
+          label="Age"
           onChange={ (e) => setValue(e.target.value) }
         >
           <MenuItem value="">
-            <em>선택 안함</em>
+            <em>None</em>
           </MenuItem>
-          <MenuItem value={ 10 }>10대</MenuItem>
-          <MenuItem value={ 20 }>20대</MenuItem>
-          <MenuItem value={ 30 }>30대</MenuItem>
-          <MenuItem value={ 40 }>40대 이상</MenuItem>
+          <MenuItem value={ 10 }>10s</MenuItem>
+          <MenuItem value={ 20 }>20s</MenuItem>
+          <MenuItem value={ 30 }>30s</MenuItem>
+          <MenuItem value={ 40 }>40s and above</MenuItem>
         </Select>
       </FormControl>
     );
   },
 };
 
-/** Variant 비교 */
+/** Variant comparison */
 export const AllVariants = {
   render: () => {
     const [values, setValues] = useState({ outlined: '', filled: '', standard: '' });
@@ -134,27 +134,27 @@ export const AllVariants = {
         <FormControl variant="outlined">
           <InputLabel>Outlined</InputLabel>
           <Select value={ values.outlined } label="Outlined" onChange={ handleChange('outlined') }>
-            <MenuItem value={ 1 }>옵션 1</MenuItem>
-            <MenuItem value={ 2 }>옵션 2</MenuItem>
-            <MenuItem value={ 3 }>옵션 3</MenuItem>
+            <MenuItem value={ 1 }>Option 1</MenuItem>
+            <MenuItem value={ 2 }>Option 2</MenuItem>
+            <MenuItem value={ 3 }>Option 3</MenuItem>
           </Select>
         </FormControl>
 
         <FormControl variant="filled">
           <InputLabel>Filled</InputLabel>
           <Select value={ values.filled } label="Filled" onChange={ handleChange('filled') }>
-            <MenuItem value={ 1 }>옵션 1</MenuItem>
-            <MenuItem value={ 2 }>옵션 2</MenuItem>
-            <MenuItem value={ 3 }>옵션 3</MenuItem>
+            <MenuItem value={ 1 }>Option 1</MenuItem>
+            <MenuItem value={ 2 }>Option 2</MenuItem>
+            <MenuItem value={ 3 }>Option 3</MenuItem>
           </Select>
         </FormControl>
 
         <FormControl variant="standard">
           <InputLabel>Standard</InputLabel>
           <Select value={ values.standard } label="Standard" onChange={ handleChange('standard') }>
-            <MenuItem value={ 1 }>옵션 1</MenuItem>
-            <MenuItem value={ 2 }>옵션 2</MenuItem>
-            <MenuItem value={ 3 }>옵션 3</MenuItem>
+            <MenuItem value={ 1 }>Option 1</MenuItem>
+            <MenuItem value={ 2 }>Option 2</MenuItem>
+            <MenuItem value={ 3 }>Option 3</MenuItem>
           </Select>
         </FormControl>
       </Stack>
@@ -162,7 +162,7 @@ export const AllVariants = {
   },
 };
 
-/** 크기 비교 */
+/** Size comparison */
 export const Sizes = {
   render: () => {
     const [small, setSmall] = useState('');
@@ -173,16 +173,16 @@ export const Sizes = {
         <FormControl size="small" sx={ { minWidth: 150 } }>
           <InputLabel>Small</InputLabel>
           <Select value={ small } label="Small" onChange={ (e) => setSmall(e.target.value) }>
-            <MenuItem value={ 1 }>옵션 1</MenuItem>
-            <MenuItem value={ 2 }>옵션 2</MenuItem>
+            <MenuItem value={ 1 }>Option 1</MenuItem>
+            <MenuItem value={ 2 }>Option 2</MenuItem>
           </Select>
         </FormControl>
 
         <FormControl size="medium" sx={ { minWidth: 150 } }>
           <InputLabel>Medium</InputLabel>
           <Select value={ medium } label="Medium" onChange={ (e) => setMedium(e.target.value) }>
-            <MenuItem value={ 1 }>옵션 1</MenuItem>
-            <MenuItem value={ 2 }>옵션 2</MenuItem>
+            <MenuItem value={ 1 }>Option 1</MenuItem>
+            <MenuItem value={ 2 }>Option 2</MenuItem>
           </Select>
         </FormControl>
       </Stack>
@@ -190,7 +190,7 @@ export const Sizes = {
   },
 };
 
-/** 도움말 텍스트 & 에러 */
+/** Helper text and error */
 export const WithHelperText = {
   render: () => {
     const [value, setValue] = useState('');
@@ -199,33 +199,33 @@ export const WithHelperText = {
     return (
       <Stack spacing={ 3 } sx={ { width: 250 } }>
         <FormControl>
-          <InputLabel>카테고리</InputLabel>
-          <Select value={ value } label="카테고리" onChange={ (e) => setValue(e.target.value) }>
-            <MenuItem value="tech">기술</MenuItem>
-            <MenuItem value="design">디자인</MenuItem>
-            <MenuItem value="business">비즈니스</MenuItem>
+          <InputLabel>Category</InputLabel>
+          <Select value={ value } label="Category" onChange={ (e) => setValue(e.target.value) }>
+            <MenuItem value="tech">Technology</MenuItem>
+            <MenuItem value="design">Design</MenuItem>
+            <MenuItem value="business">Business</MenuItem>
           </Select>
-          <FormHelperText>관심 카테고리를 선택하세요</FormHelperText>
+          <FormHelperText>Select a category of interest</FormHelperText>
         </FormControl>
 
         <FormControl error>
-          <InputLabel>필수 선택</InputLabel>
+          <InputLabel>Required</InputLabel>
           <Select
             value={ errorValue }
-            label="필수 선택"
+            label="Required"
             onChange={ (e) => setErrorValue(e.target.value) }
           >
-            <MenuItem value="a">옵션 A</MenuItem>
-            <MenuItem value="b">옵션 B</MenuItem>
+            <MenuItem value="a">Option A</MenuItem>
+            <MenuItem value="b">Option B</MenuItem>
           </Select>
-          <FormHelperText>필수 선택 항목입니다</FormHelperText>
+          <FormHelperText>This field is required</FormHelperText>
         </FormControl>
       </Stack>
     );
   },
 };
 
-/** 다중 선택 */
+/** Multiple selection */
 export const Multiple = {
   render: () => {
     const [values, setValues] = useState([]);
@@ -234,12 +234,12 @@ export const Multiple = {
 
     return (
       <FormControl sx={ { minWidth: 300 } }>
-        <InputLabel>프레임워크</InputLabel>
+        <InputLabel>Framework</InputLabel>
         <Select
           multiple
           value={ values }
           onChange={ (e) => setValues(e.target.value) }
-          input={ <OutlinedInput label="프레임워크" /> }
+          input={ <OutlinedInput label="Framework" /> }
           renderValue={ (selected) => (
             <Box sx={ { display: 'flex', flexWrap: 'wrap', gap: 0.5 } }>
               { selected.map((value) => (
@@ -254,76 +254,76 @@ export const Multiple = {
             </MenuItem>
           )) }
         </Select>
-        <FormHelperText>사용 가능한 프레임워크를 모두 선택하세요</FormHelperText>
+        <FormHelperText>Select all frameworks you use</FormHelperText>
       </FormControl>
     );
   },
 };
 
-/** 그룹화된 옵션 */
+/** Grouped options */
 export const Grouped = {
   render: () => {
     const [value, setValue] = useState('');
 
     return (
       <FormControl sx={ { minWidth: 250 } }>
-        <InputLabel>지역</InputLabel>
-        <Select value={ value } label="지역" onChange={ (e) => setValue(e.target.value) }>
-          <ListSubheader>수도권</ListSubheader>
-          <MenuItem value="seoul">서울</MenuItem>
-          <MenuItem value="incheon">인천</MenuItem>
-          <MenuItem value="gyeonggi">경기</MenuItem>
+        <InputLabel>Region</InputLabel>
+        <Select value={ value } label="Region" onChange={ (e) => setValue(e.target.value) }>
+          <ListSubheader>Capital Area</ListSubheader>
+          <MenuItem value="seoul">Seoul</MenuItem>
+          <MenuItem value="incheon">Incheon</MenuItem>
+          <MenuItem value="gyeonggi">Gyeonggi</MenuItem>
 
-          <ListSubheader>충청권</ListSubheader>
-          <MenuItem value="daejeon">대전</MenuItem>
-          <MenuItem value="chungnam">충남</MenuItem>
-          <MenuItem value="chungbuk">충북</MenuItem>
+          <ListSubheader>Chungcheong</ListSubheader>
+          <MenuItem value="daejeon">Daejeon</MenuItem>
+          <MenuItem value="chungnam">Chungnam</MenuItem>
+          <MenuItem value="chungbuk">Chungbuk</MenuItem>
 
-          <ListSubheader>영남권</ListSubheader>
-          <MenuItem value="busan">부산</MenuItem>
-          <MenuItem value="daegu">대구</MenuItem>
-          <MenuItem value="ulsan">울산</MenuItem>
+          <ListSubheader>Yeongnam</ListSubheader>
+          <MenuItem value="busan">Busan</MenuItem>
+          <MenuItem value="daegu">Daegu</MenuItem>
+          <MenuItem value="ulsan">Ulsan</MenuItem>
         </Select>
       </FormControl>
     );
   },
 };
 
-/** 비활성화 옵션 */
+/** Disabled options */
 export const DisabledOptions = {
   render: () => {
     const [value, setValue] = useState('');
 
     return (
       <FormControl sx={ { minWidth: 200 } }>
-        <InputLabel>요금제</InputLabel>
-        <Select value={ value } label="요금제" onChange={ (e) => setValue(e.target.value) }>
-          <MenuItem value="free">무료</MenuItem>
-          <MenuItem value="basic">베이직</MenuItem>
-          <MenuItem value="pro" disabled>프로 (준비 중)</MenuItem>
-          <MenuItem value="enterprise" disabled>엔터프라이즈 (준비 중)</MenuItem>
+        <InputLabel>Plan</InputLabel>
+        <Select value={ value } label="Plan" onChange={ (e) => setValue(e.target.value) }>
+          <MenuItem value="free">Free</MenuItem>
+          <MenuItem value="basic">Basic</MenuItem>
+          <MenuItem value="pro" disabled>Pro (Coming soon)</MenuItem>
+          <MenuItem value="enterprise" disabled>Enterprise (Coming soon)</MenuItem>
         </Select>
-        <FormHelperText>현재 사용 가능한 요금제만 선택 가능</FormHelperText>
+        <FormHelperText>Only currently available plans can be selected</FormHelperText>
       </FormControl>
     );
   },
 };
 
-/** 비활성화 셀렉트 */
+/** Disabled select */
 export const Disabled = {
   render: () => (
     <FormControl sx={ { minWidth: 200 } } disabled>
-      <InputLabel>비활성화</InputLabel>
-      <Select value="" label="비활성화">
-        <MenuItem value={ 1 }>옵션 1</MenuItem>
-        <MenuItem value={ 2 }>옵션 2</MenuItem>
+      <InputLabel>Disabled</InputLabel>
+      <Select value="" label="Disabled">
+        <MenuItem value={ 1 }>Option 1</MenuItem>
+        <MenuItem value={ 2 }>Option 2</MenuItem>
       </Select>
-      <FormHelperText>선택할 수 없습니다</FormHelperText>
+      <FormHelperText>Cannot be selected</FormHelperText>
     </FormControl>
   ),
 };
 
-/** 네이티브 셀렉트 */
+/** Native select */
 export const Native = {
   render: () => {
     const [value, setValue] = useState('');
@@ -331,7 +331,7 @@ export const Native = {
     return (
       <FormControl sx={ { minWidth: 200 } }>
         <InputLabel variant="standard" htmlFor="native-select">
-          브라우저
+          Browser
         </InputLabel>
         <Select
           native
@@ -340,19 +340,19 @@ export const Native = {
           inputProps={ { id: 'native-select' } }
           variant="standard"
         >
-          <option value="">선택하세요</option>
+          <option value="">Select an option</option>
           <option value="chrome">Chrome</option>
           <option value="firefox">Firefox</option>
           <option value="safari">Safari</option>
           <option value="edge">Edge</option>
         </Select>
-        <FormHelperText>네이티브 셀렉트 - 모바일에서 더 나은 UX</FormHelperText>
+        <FormHelperText>Native select: better UX on mobile</FormHelperText>
       </FormControl>
     );
   },
 };
 
-/** 실제 사용 예시 - 필터 */
+/** Real world example: filters */
 export const FilterExample = {
   render: () => {
     const [category, setCategory] = useState('all');
@@ -362,47 +362,47 @@ export const FilterExample = {
     return (
       <Box sx={ { p: 3, bgcolor: 'grey.50', width: 500 } }>
         <Typography variant="subtitle2" sx={ { mb: 2, fontWeight: 600 } }>
-          필터 옵션
+          Filter Options
         </Typography>
         <Stack direction="row" spacing={ 2 }>
           <FormControl size="small" sx={ { minWidth: 120 } }>
-            <InputLabel>카테고리</InputLabel>
+            <InputLabel>Category</InputLabel>
             <Select
               value={ category }
-              label="카테고리"
+              label="Category"
               onChange={ (e) => setCategory(e.target.value) }
             >
-              <MenuItem value="all">전체</MenuItem>
-              <MenuItem value="tech">기술</MenuItem>
-              <MenuItem value="design">디자인</MenuItem>
-              <MenuItem value="marketing">마케팅</MenuItem>
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="tech">Technology</MenuItem>
+              <MenuItem value="design">Design</MenuItem>
+              <MenuItem value="marketing">Marketing</MenuItem>
             </Select>
           </FormControl>
 
           <FormControl size="small" sx={ { minWidth: 120 } }>
-            <InputLabel>상태</InputLabel>
+            <InputLabel>Status</InputLabel>
             <Select
               value={ status }
-              label="상태"
+              label="Status"
               onChange={ (e) => setStatus(e.target.value) }
             >
-              <MenuItem value="all">전체</MenuItem>
-              <MenuItem value="active">활성</MenuItem>
-              <MenuItem value="pending">대기</MenuItem>
-              <MenuItem value="inactive">비활성</MenuItem>
+              <MenuItem value="all">All</MenuItem>
+              <MenuItem value="active">Active</MenuItem>
+              <MenuItem value="pending">Pending</MenuItem>
+              <MenuItem value="inactive">Inactive</MenuItem>
             </Select>
           </FormControl>
 
           <FormControl size="small" sx={ { minWidth: 120 } }>
-            <InputLabel>정렬</InputLabel>
+            <InputLabel>Sort</InputLabel>
             <Select
               value={ sort }
-              label="정렬"
+              label="Sort"
               onChange={ (e) => setSort(e.target.value) }
             >
-              <MenuItem value="newest">최신순</MenuItem>
-              <MenuItem value="oldest">오래된순</MenuItem>
-              <MenuItem value="name">이름순</MenuItem>
+              <MenuItem value="newest">Newest</MenuItem>
+              <MenuItem value="oldest">Oldest</MenuItem>
+              <MenuItem value="name">Name</MenuItem>
             </Select>
           </FormControl>
         </Stack>

@@ -10,30 +10,30 @@ export default {
   argTypes: {
     analysis: {
       control: 'object',
-      description: '레이어별 토큰 묶음 { color, typography, layout, gradient, visualDirection }',
+      description: 'Token bundle per Layer { color, typography, layout, gradient, visualDirection }',
     },
     project: {
       control: 'object',
-      description: 'DesignMdPreview 에 전달할 프로젝트 메타',
+      description: 'Project meta passed to DesignMdPreview',
     },
     references: {
       control: 'object',
-      description: '결정 추적(출처 썸네일)용 전체 레퍼런스 목록',
+      description: 'Full Reference list for decision tracking (source thumbnails)',
     },
     categories: {
       control: 'object',
-      description: '탭 카테고리 [{ id, label }] (기본: 5 레이어 + DESIGN.md)',
+      description: 'Tab categories [{ id, label }] (Default: 5 Layers + DESIGN.md)',
     },
     defaultLayer: {
       control: 'select',
       options: ['color', 'typography', 'layout', 'gradient', 'visualDirection', 'designMd'],
-      description: '초기 활성 레이어 키',
+      description: 'Initial active Layer key',
     },
-    onUpdateToken: { action: 'updateToken', description: '(layerKey, tokenId, patch) => void 토큰 편집 콜백' },
+    onUpdateToken: { action: 'updateToken', description: '(layerKey, tokenId, patch) => void Token edit callback' },
   },
 };
 
-/* T3 system 모드 분석 결과 픽스처 — 스토리 데모용 */
+/* T3 system mode analysis result fixture, for story demos */
 const SAMPLE_ANALYSIS = {
   color: [
     { id: 'c1', label: 'Brand Red', value: '#D91A0A', isEnabled: true, emphasis: 2 },
@@ -52,7 +52,7 @@ const SAMPLE_ANALYSIS = {
     { id: 'g1', label: 'Sunrise', gradient: 'linear-gradient(135deg, #FEE2F5, #FEF9C3)', isEnabled: true, emphasis: 1 },
   ],
   visualDirection: {
-    markdown: '# Visual Direction\n\n브루탈리스트 편집 디자인. 강한 대비, 컨덴스드 타이포 중심.',
+    markdown: '# Visual Direction\n\nBrutalist editorial design. Strong contrast, condensed typography focus.',
     tags: {
       genre: ['Editorial', 'Brutalist'],
       style: ['High-contrast', 'All-caps'],
@@ -61,7 +61,7 @@ const SAMPLE_ANALYSIS = {
   },
 };
 
-const SAMPLE_PROJECT = { id: 'p1', name: 'Editorial Manifesto', mode: 'system', intent: '강렬한 편집 디자인 시스템' };
+const SAMPLE_PROJECT = { id: 'p1', name: 'Editorial Manifesto', mode: 'system', intent: 'Bold editorial design system' };
 
 export const Default = {
   args: {
@@ -72,7 +72,7 @@ export const Default = {
   },
 };
 
-/** 토큰 편집이 실제로 반영되는 controlled 데모 */
+/** Controlled demo where token edits are actually reflected */
 function EditableDemo(args) {
   const [analysis, setAnalysis] = useState(SAMPLE_ANALYSIS);
 
@@ -97,7 +97,7 @@ function EditableDemo(args) {
   );
 }
 
-/* 토큰 편집이 실제로 반영되는 controlled 예시 */
+/* Controlled example where token edits are actually reflected */
 export const Editable = {
   render: (args) => <EditableDemo { ...args } />,
   args: {

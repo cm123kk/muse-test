@@ -1,38 +1,38 @@
 /**
  * Layout Components
  *
- * 레이아웃 관련 컴포넌트 모음
- * 황금비율, 그리드, 화면 분할 등 다양한 레이아웃 패턴을 제공
+ * Collection of layout-related components
+ * Provides various layout patterns such as golden ratio, grids, and screen splits
  */
 
-// PhiSplit - 황금비율 2분할 레이아웃
+// PhiSplit - golden ratio two-way split layout
 export { PhiSplit } from './PhiSplit.jsx';
 
-// BentoGrid - 벤토 박스 그리드 레이아웃
+// BentoGrid - bento box grid layout
 export { BentoGrid, BentoItem } from './BentoGrid.jsx';
 export { BENTO_PRESETS } from './bentoPresets.js';
 
-// FullPageContainer - 전체 화면 섹션 컨테이너
+// FullPageContainer - full-screen section container
 export {
   FullPageContainer,
   FullPageSection,
   FullPageSnap,
 } from './FullPageContainer.jsx';
 
-// SplitScreen - 화면 분할 레이아웃
+// SplitScreen - screen split layout
 export {
   SplitScreen,
   StickySection,
   SplitOverlay,
 } from './SplitScreen.jsx';
 
-// PageContainer - 반응형 페이지 컨테이너
+// PageContainer - responsive page container
 export { PageContainer } from './PageContainer.jsx';
 
-// AppShell - 반응형 앱 셸
+// AppShell - responsive app shell
 export { AppShell } from './AppShell.jsx';
 export { useAppShell } from './useAppShell.js';
 
-// InfiniteMasonry - 인피니트 스크롤 Masonry 래퍼 + 훅
+// InfiniteMasonry - infinite scroll Masonry wrapper + hook
 export { InfiniteMasonry } from './InfiniteMasonry.jsx';
 export { useInfiniteScroll } from './useInfiniteScroll.js';

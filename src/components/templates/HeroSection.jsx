@@ -7,7 +7,7 @@ const imageModules = import.meta.glob('/src/assets/example/*.{jpg,jpeg}', { eage
 const EXAMPLE_IMAGES = Object.values(imageModules).map((m) => m.default);
 
 const MARQUEE_SIZE = 64;
-const MARQUEE_SPEED = 60; // px/s (한 방향 이동 속도)
+const MARQUEE_SPEED = 60; // px/s (one-directional travel speed)
 
 function mulberry32(seed) {
   let t = seed >>> 0;
@@ -68,7 +68,7 @@ function generatePositions(count, w, h) {
   return list;
 }
 
-/* 마퀴 타겟 위치: 3행, 트랙 너비 = w + MARQUEE_SIZE (out-of-screen 랩어라운드 기준) */
+/* Marquee target positions: 3 rows, track width = w + MARQUEE_SIZE (based on out-of-screen wraparound) */
 function generateMarqueePositions(count, w, h) {
   const ROW_Y = [h * 0.22, h * 0.5, h * 0.78];
   const rowCounts = [0, 0, 0];
@@ -79,7 +79,7 @@ function generateMarqueePositions(count, w, h) {
     const row = i % 3;
     const col = colIdx[row]++;
     const n = rowCounts[row];
-    /* 트랙 = w + MARQUEE_SIZE → 이미지가 완전히 화면 밖에서 랩어라운드 */
+    /* Track = w + MARQUEE_SIZE -> images wrap around fully off-screen */
     const trackW = w + MARQUEE_SIZE;
     const spacing = trackW / n;
     const x = col * spacing + (spacing - MARQUEE_SIZE) / 2;
@@ -89,11 +89,11 @@ function generateMarqueePositions(count, w, h) {
 }
 
 /**
- * HeroSection 컴포넌트
+ * HeroSection component
  *
  * Props:
- * @param {function} onNavigateToSignUp - 시작하기 버튼 클릭 시 콜백 [Optional]
- * @param {number} scrollProgress - 0~1 스크롤 진행도 (LandingPage에서 전달) [Optional]
+ * @param {function} onNavigateToSignUp - Callback when the get started button is clicked [Optional]
+ * @param {number} scrollProgress - Scroll progress from 0 to 1 (passed from LandingPage) [Optional]
  *
  * Example usage:
  * <HeroSection onNavigateToSignUp={() => navigate('/signup')} scrollProgress={sp} />
@@ -101,7 +101,7 @@ function generateMarqueePositions(count, w, h) {
 function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
   const [size, setSize] = useState({ w: window.innerWidth, h: window.innerHeight });
   const [hoverIdx, setHoverIdx] = useState(-1);
-  /* 히어로 콘텐츠(타이틀+본문+CTA) 실제 높이 — exit 거리 계산용 */
+  /* Actual height of the hero content (title + body + CTA), used to compute the exit distance */
   const [heroContentH, setHeroContentH] = useState(0);
 
   const containerRef = useRef(null);
@@ -120,7 +120,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
     return () => window.removeEventListener('resize', onResize);
   }, []);
 
-  /* 히어로 콘텐츠 높이 측정 (폰트 반응형/리사이즈 대응) */
+  /* Measure hero content height (handles responsive fonts / resize) */
   useEffect(() => {
     const el = heroContentRef.current;
     if (!el) return;
@@ -152,7 +152,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
     let prevMouseX = -99999, prevMouseY = -99999;
     let velX = 0, velY = 0;
     const offsX = [], offsY = [];
-    /* 행별 마퀴 오프셋 (px, 부호가 방향 결정) */
+    /* Per-row marquee offset (px, sign determines direction) */
     const marqueeOffsets = [0, 0, 0];
     let lastTime = performance.now();
     let active = true;
@@ -181,17 +181,17 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
       const sp = scrollProgressRef.current;
       const w = window.innerWidth;
 
-      /* sp 구간별 파생 값 */
-      const lerpSp = Math.min(sp / 0.8, 1);          // 0→1 as sp 0→0.8 (위치 이동)
-      const marqueeSp = Math.max(0, (sp - 0.75) / 0.25); // 0→1 as sp 0.75→1.0 (마퀴 속도 램프업)
+      /* Values derived per sp range */
+      const lerpSp = Math.min(sp / 0.8, 1);          // 0->1 as sp 0->0.8 (position movement)
+      const marqueeSp = Math.max(0, (sp - 0.75) / 0.25); // 0->1 as sp 0.75->1.0 (marquee speed ramp-up)
 
-      /* 행별 마퀴 오프셋 누적 */
+      /* Accumulate per-row marquee offset */
       const speed = MARQUEE_SPEED * marqueeSp;
-      marqueeOffsets[0] -= speed * dt; // 좌
-      marqueeOffsets[1] += speed * dt; // 우
-      marqueeOffsets[2] -= speed * dt; // 좌
+      marqueeOffsets[0] -= speed * dt; // left
+      marqueeOffsets[1] += speed * dt; // right
+      marqueeOffsets[2] -= speed * dt; // left
 
-      /* 마우스 속도 */
+      /* Mouse velocity */
       if (prevMouseX > -9000 && mouseX > -9000) {
         velX = velX * 0.55 + (mouseX - prevMouseX) * 0.45;
         velY = velY * 0.55 + (mouseY - prevMouseY) * 0.45;
@@ -212,7 +212,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
 
         if (!offsX[i]) { offsX[i] = 0; offsY[i] = 0; }
 
-        /* 마우스 proximity 효과 (scatter 구간에서만) */
+        /* Mouse proximity effect (scatter phase only) */
         if (sp < 0.3 && mouseSpeed > 0.4 && mouseX > -9000) {
           const imgCx = sPos.x + sPos.size / 2;
           const imgCy = sPos.y + sPos.size / 2;
@@ -224,22 +224,22 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
         offsX[i] *= DECAY;
         offsY[i] *= DECAY;
 
-        /* 마퀴 X: 랩어라운드를 "최종 좌표"에 적용 → 점프가 항상 화면 밖 경계에서만 발생.
-           (마퀴 오프셋은 누적값 그대로 사용. 미리 랩하면 전환 중 marqueeSp 가중으로 화면 안에서 튐) */
+        /* Marquee X: apply the wraparound to the "final coordinate" -> jumps always happen only at off-screen boundaries.
+           (Use the marquee offset as the raw accumulated value. Wrapping early causes on-screen jitter due to marqueeSp weighting during the transition) */
         const trackW = w + MARQUEE_SIZE;
         const marqX = mPos.x + marqueeOffsets[mPos.row];
 
-        /* 위치 블렌드(lerpSp, 스크롤 연동)와 마퀴 흐름(marqueeOffsets, 시간 누적)을 분리.
-           흐름 오프셋을 marqueeSp 로 다시 곱하면 스크롤 속도가 그대로 화면 속도에 실려
-           (오프셋 × d(marqueeSp)/dt) 전환 중 이미지가 확 튄다.
-           대신 흐름은 lerpSp(거의 1, 느리게 변함)에만 싣고, 가속 램프업은
-           speed = MARQUEE_SPEED * marqueeSp(오프셋 누적 속도)에서만 처리한다. */
+        /* Separate the position blend (lerpSp, scroll-linked) from the marquee flow (marqueeOffsets, time-accumulated).
+           Multiplying the flow offset by marqueeSp again would carry the scroll speed directly into the on-screen speed
+           (offset x d(marqueeSp)/dt), making the image jump sharply during the transition.
+           Instead, carry the flow on lerpSp only (near 1, changing slowly), and handle the acceleration ramp-up only in
+           speed = MARQUEE_SPEED * marqueeSp (offset accumulation speed). */
         const finalDx = (marqX - sPos.x) * lerpSp;
         const finalDy = (mPos.y - sPos.y) * lerpSp;
 
-        /* 최종 left 좌표를 화면 밖 안전 범위 (-MARQUEE_SIZE, w] 로 랩.
-           전환 중엔 좌표가 범위 안 → 무동작. 정상 흐름에선 화면 밖 한쪽으로 사라질 때
-           반대쪽 화면 밖에서 재등장하므로 "더해지는 이미지"도 화면 안에 노출되지 않음. */
+        /* Wrap the final left coordinate into the off-screen safe range (-MARQUEE_SIZE, w].
+           During the transition the coordinate stays in range -> no action. In normal flow, when it disappears off one
+           side of the screen it reappears off the opposite side, so the "added image" is never exposed on screen. */
         let finalX = sPos.x + finalDx;
         while (finalX < -MARQUEE_SIZE) finalX += trackW;
         while (finalX > w) finalX -= trackW;
@@ -263,17 +263,17 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
     };
   }, []);
 
-  /* container(100vh) 중앙에서 화면 밖까지 밀어내기 위한 최소 거리 */
+  /* Minimum distance to push from the center of the container (100vh) out past the screen */
   const halfVh = window.innerHeight / 2 + 60;
 
-  /* 히어로 텍스트 + CTA: sp 0→0.4 구간에서 위로 슬라이드 아웃 (화면 위 밖으로 완전 이탈).
-     블록은 세로 중앙 정렬이므로, 맨 아래 CTA까지 화면 위로 빼려면
-     (뷰포트 절반 + 블록 절반 + 여유)만큼 올려야 한다. */
+  /* Hero text + CTA: slides up and out over the sp 0->0.4 range (fully exits above the screen).
+     Since the block is vertically centered, pushing even the bottom CTA above the screen
+     requires moving up by (half the viewport + half the block + margin). */
   const heroExit = Math.min(1, scrollProgress / 0.4);
   const heroExitDist = window.innerHeight / 2 + heroContentH / 2 + 40;
   const heroTranslateY = -heroExit * heroExitDist;
 
-  /* 브릿지 텍스트: sp 0.45→0.8 구간에서 아래→위 슬라이드 인 (화면 아래 밖에서 진입) */
+  /* Bridge text: slides in bottom-to-top over the sp 0.45->0.8 range (enters from below the screen) */
   const bridgeEnter = Math.max(0, Math.min(1, (scrollProgress - 0.45) / 0.35));
   const bridgeTranslateY = (1 - bridgeEnter) * halfVh;
 
@@ -282,7 +282,11 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
       ref={containerRef}
       sx={{ position: 'relative', height: '100vh', overflow: 'hidden', bgcolor: 'background.default' }}
     >
-      {/* Layer 1: 호버 블러 배경 */}
+      {/* Layer 1: hover blur background.
+         With position: fixed it covers the whole viewport (y=0), so the area behind the transparent
+         ghost GNB that overlaps the hero via sticky transitions the same way. (With absolute, the hero
+         container starts below by the GNB height, leaving the top band empty so the transition behind
+         the GNB was not visible) */}
       {EXAMPLE_IMAGES.map((src, i) => (
         <Box
           key={src}
@@ -290,7 +294,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
           src={src}
           alt=""
           sx={{
-            position: 'absolute',
+            position: 'fixed',
             inset: 0,
             width: '100%',
             height: '100%',
@@ -305,7 +309,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
         />
       ))}
 
-      {/* Layer 2: 이미지들 (scatter → marquee) */}
+      {/* Layer 2: images (scatter -> marquee) */}
       {positions.map((pos, i) => (
         <Box
           key={i}
@@ -332,7 +336,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
         />
       ))}
 
-      {/* Layer 3: 히어로 중앙 텍스트 */}
+      {/* Layer 3: hero centered text */}
       <Box
         sx={{
           position: 'absolute',
@@ -364,15 +368,15 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
             color="text.secondary"
             sx={{ fontSize: { xs: '1rem', md: '1.25rem' }, mb: 5, maxWidth: 480, mx: 'auto' }}
           >
-            바이브 디자인을 위한 영감을 관리하세요.
+            Curate the inspiration behind your vibe design.
           </Typography>
           <Button variant="contained" size="large" onClick={onNavigateToSignUp} sx={{ px: 5 }}>
-            시작하기
+            Get Started
           </Button>
         </Box>
       </Box>
 
-      {/* Layer 4: 브릿지 텍스트 */}
+      {/* Layer 4: bridge text */}
       <Box
         sx={{
           position: 'absolute',
@@ -389,13 +393,14 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
           sx={{
             textAlign: 'center',
             fontSize: { xs: '1.5rem', md: '2.5rem' },
-            fontWeight: 700,
+            fontWeight: 800,
+            letterSpacing: '-0.02em',
             lineHeight: 1.4,
             color: 'text.primary',
             px: 3,
           }}
         >
-          레퍼런스로 만든 ai의 디자인,<br />얼마나 이해하고 계신가요?
+          How well do you really understand<br />the designs AI builds from your references?
         </Typography>
       </Box>
     </Box>

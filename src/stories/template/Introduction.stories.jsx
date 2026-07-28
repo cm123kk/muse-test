@@ -10,11 +10,11 @@ export default {
     docs: {
       description: {
         component: `
-## 템플릿
+## Template
 
-여러 컴포넌트가 조합된 재사용 가능한 템플릿입니다.
+Reusable templates composed of multiple components.
 
-### 예정된 템플릿
+### Planned Templates
 - Card Grid Template
 - Form Template
 - Dashboard Template
@@ -29,10 +29,10 @@ export const Default = {
     <PageContainer>
       <Paper sx={ { p: 3 } }>
         <Typography variant="h6" gutterBottom>
-          템플릿 섹션
+          Template Section
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          이 섹션에는 여러 컴포넌트가 조합된 템플릿이 추가될 예정입니다.
+          Templates composed of multiple components will be added to this section.
         </Typography>
       </Paper>
     </PageContainer>

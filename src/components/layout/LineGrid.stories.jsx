@@ -15,21 +15,21 @@ export default {
         component: `
 ## LineGrid
 
-MUI Grid를 확장하여 아이템 사이에 선(border)을 자동으로 그려주는 커스텀 레이아웃 컴포넌트입니다.
+A custom layout component that extends MUI Grid to automatically draw lines (borders) between items.
 
-### 주요 기능
-- **Grid Container 모드**: \`container\` prop 사용 시 Grid 아이템 사이에 수직/수평선 자동 생성
-- **Stack 모드**: \`container\` prop 없이 사용 시 Stack + Divider로 동작
-- **Equal Height**: \`equalHeight\` prop으로 모든 행 높이 균등 분배
-- **Row Heights**: \`rowHeights\` prop으로 행별 비율 지정 가능
+### Key Features
+- **Grid Container mode**: automatically creates vertical/horizontal lines between Grid items when the \`container\` prop is used
+- **Stack mode**: works as Stack + Divider when used without the \`container\` prop
+- **Equal Height**: distributes all row heights evenly with the \`equalHeight\` prop
+- **Row Heights**: specify per-row ratios with the \`rowHeights\` prop
 
-### 사용 패턴
-| 패턴 | 설명 | 예시 |
+### Usage Patterns
+| Pattern | Description | Example |
 |------|------|------|
-| Grid Container | 선이 있는 그리드 | \`<LineGrid container gap={16}>\` |
-| Stack | 수직 구분선 | \`<LineGrid>\` |
-| Equal Height | 균등 높이 | \`<LineGrid container equalHeight>\` |
-| Row Heights | 비율 지정 | \`<LineGrid container rowHeights={[1, 2]}>\` |
+| Grid Container | Grid with lines | \`<LineGrid container gap={16}>\` |
+| Stack | Vertical dividers | \`<LineGrid>\` |
+| Equal Height | Even height | \`<LineGrid container equalHeight>\` |
+| Row Heights | Ratio specification | \`<LineGrid container rowHeights={[1, 2]}>\` |
         `,
       },
     },
@@ -37,7 +37,7 @@ MUI Grid를 확장하여 아이템 사이에 선(border)을 자동으로 그려�
   argTypes: {
     container: {
       control: 'boolean',
-      description: 'Grid container 모드 활성화. false면 Stack 모드로 동작',
+      description: 'Enable Grid container mode. When false, works in Stack mode',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -45,7 +45,7 @@ MUI Grid를 확장하여 아이템 사이에 선(border)을 자동으로 그려�
     },
     gap: {
       control: { type: 'range', min: 0, max: 64, step: 8 },
-      description: '아이템 간 간격 (px). 선은 이 간격의 중앙에 그려집니다',
+      description: 'Spacing between items (px). Lines are drawn at the center of this spacing',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '0' },
@@ -53,7 +53,7 @@ MUI Grid를 확장하여 아이템 사이에 선(border)을 자동으로 그려�
     },
     borderColor: {
       control: 'text',
-      description: '선 색상 (MUI 색상 토큰)',
+      description: 'Line color (MUI color token)',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'text.primary' },
@@ -61,7 +61,7 @@ MUI Grid를 확장하여 아이템 사이에 선(border)을 자동으로 그려�
     },
     equalHeight: {
       control: 'boolean',
-      description: '모든 행 높이를 균등하게 분배',
+      description: 'Distribute all row heights evenly',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -69,7 +69,7 @@ MUI Grid를 확장하여 아이템 사이에 선(border)을 자동으로 그려�
     },
     rowHeights: {
       control: 'object',
-      description: '행별 높이 비율 배열 (예: [1, 2, 1])',
+      description: 'Array of per-row height ratios (example: [1, 2, 1])',
       table: {
         type: { summary: 'number[]' },
         defaultValue: { summary: 'null' },
@@ -78,7 +78,7 @@ MUI Grid를 확장하여 아이템 사이에 선(border)을 자동으로 그려�
   },
 };
 
-/** 기본 Grid Container - 선이 있는 그리드 레이아웃 */
+/** Basic Grid Container: grid layout with lines */
 export const Default = {
   args: {
     container: true,
@@ -108,7 +108,7 @@ export const Default = {
   ),
 };
 
-/** Stack 모드 - 수직 Divider로 섹션 구분 */
+/** Stack mode: separate sections with vertical Dividers */
 export const StackMode = {
   args: {
     gap: 16,
@@ -125,7 +125,7 @@ export const StackMode = {
   ),
 };
 
-/** Equal Height - 모든 행 균등 높이 */
+/** Equal Height: even height for all rows */
 export const EqualHeight = {
   args: {
     gap: 16,
@@ -157,7 +157,7 @@ export const EqualHeight = {
   ),
 };
 
-/** Row Heights - 행별 비율 지정 */
+/** Row Heights: specify per-row ratios */
 export const CustomRowHeights = {
   args: {
     gap: 16,
@@ -181,7 +181,7 @@ export const CustomRowHeights = {
   ),
 };
 
-/** 반응형 그리드 - 브레이크포인트별 레이아웃 변경 */
+/** Responsive grid: layout changes per breakpoint */
 export const Responsive = {
   args: {
     gap: 16,
@@ -190,7 +190,7 @@ export const Responsive = {
   render: ({ gap, borderColor }) => (
     <Box sx={ { width: '100%', maxWidth: 800 } }>
       <Typography variant="caption" color="text.secondary" sx={ { mb: 2, display: 'block' } }>
-        브라우저 크기를 조절해서 반응형 동작을 확인하세요
+        Resize the browser to see the responsive behavior
       </Typography>
       <LineGrid container gap={ gap } borderColor={ borderColor }>
         <Grid size={ { xs: 12, md: 8 } }>
@@ -213,7 +213,7 @@ export const Responsive = {
   ),
 };
 
-/** Border Color 변형 - 다양한 선 색상 */
+/** Border Color variants: various line colors */
 export const BorderColorVariants = {
   render: () => (
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4, width: '100%', maxWidth: 400 } }>

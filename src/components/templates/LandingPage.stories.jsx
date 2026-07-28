@@ -8,8 +8,8 @@ export default {
     layout: 'fullscreen',
   },
   argTypes: {
-    onNavigateToSignUp: { action: 'navigateToSignUp', description: '회원가입 버튼 클릭 시 콜백' },
-    onNavigateToLogin: { action: 'navigateToLogin', description: '로그인 버튼 클릭 시 콜백' },
+    onNavigateToSignUp: { action: 'navigateToSignUp', description: 'Callback when the Sign Up button is clicked' },
+    onNavigateToLogin: { action: 'navigateToLogin', description: 'Callback when the Login button is clicked' },
   },
 };
 

@@ -14,18 +14,18 @@ export default {
         component: `
 ## InfiniteMasonry
 
-MUI \`Masonry\`를 기반으로 한 인피니트 스크롤 그리드.
+An infinite scroll grid based on the MUI \`Masonry\` component.
 
-- \`IntersectionObserver\` 기반 sentinel로 뷰포트 진입 시 \`onLoadMore\` 호출
-- Masonry 컬럼 계산에 간섭하지 않도록 sentinel은 Masonry 바깥에 배치
-- 로딩 중에는 sentinel 옵저버가 일시 비활성화되어 중복 호출 방지
-- 반응형 컬럼 지원 (\`xs/sm/md/lg\`), 기본 \`{ xs: 2, sm: 3, md: 4 }\`
+- Calls \`onLoadMore\` when an \`IntersectionObserver\` based sentinel enters the viewport
+- The sentinel is placed outside Masonry so it does not interfere with Masonry column calculation
+- The sentinel observer is temporarily disabled while loading to prevent duplicate calls
+- Responsive column support (\`xs/sm/md/lg\`), default \`{ xs: 2, sm: 3, md: 4 }\`
 
-### 용도
+### Use Cases
 
-- MUSE 아카이브 인피니트 그리드
-- 프로젝트 생성 시 레퍼런스 선택 패널
-- 일반적인 카드/이미지 카탈로그
+- MUSE archive infinite grid
+- Reference selection panel during Project creation
+- General card and image catalogs
         `,
       },
     },
@@ -33,44 +33,44 @@ MUI \`Masonry\`를 기반으로 한 인피니트 스크롤 그리드.
   argTypes: {
     items: {
       control: 'object',
-      description: '렌더링할 아이템 배열',
+      description: 'Array of items to render',
     },
     renderItem: {
       control: false,
-      description: '각 아이템 렌더 함수 (item, index) => ReactNode',
+      description: 'Render function for each item (item, index) => ReactNode',
     },
     onLoadMore: {
       action: 'loadMore',
-      description: 'sentinel이 뷰포트에 들어왔을 때 호출',
+      description: 'Called when the sentinel enters the viewport',
     },
     hasMore: {
       control: 'boolean',
-      description: '추가 로드 가능 여부',
+      description: 'Whether more items can be loaded',
     },
     isLoading: {
       control: 'boolean',
-      description: '현재 로딩 중인지 여부',
+      description: 'Whether it is currently loading',
     },
     columns: {
       control: 'object',
-      description: 'Masonry 컬럼 수 또는 반응형 객체',
+      description: 'Number of Masonry columns or a responsive object',
     },
     spacing: {
       control: { type: 'number', min: 0, max: 6 },
-      description: '아이템 간 간격 (8px 단위)',
+      description: 'Spacing between items (in units of 8px)',
     },
     keyExtractor: {
       control: 'text',
-      description: '아이템에서 key를 뽑을 필드명',
+      description: 'Name of the field to extract the key from each item',
     },
     emptyContent: {
       control: false,
-      description: 'items 비어있을 때 표시할 콘텐츠',
+      description: 'Content to show when items is empty',
     },
   },
 };
 
-/** Mock 데이터 팩토리 (결정적 — index만으로 재현 가능) */
+/** Mock data factory (deterministic, reproducible from index alone) */
 const makeMockItems = (start, count) =>
   Array.from({ length: count }, (_, i) => {
     const idx = start + i;
@@ -81,7 +81,7 @@ const makeMockItems = (start, count) =>
     };
   });
 
-/** 기본 — 점진 로드 (실제 인피니트 스크롤) */
+/** Default: incremental loading (real infinite scroll) */
 export const Default = {
   render: () => {
     const [items, setItems] = useState(() => makeMockItems(0, 24));
@@ -91,7 +91,7 @@ export const Default = {
     const handleLoadMore = useCallback(() => {
       if (isLoading || !hasMore) return;
       setIsLoading(true);
-      // 실제 API 호출 흉내 — 600ms 딜레이
+      // Simulate a real API call (600ms delay)
       setTimeout(() => {
         setItems((prev) => {
           const next = makeMockItems(prev.length, 12);
@@ -119,7 +119,7 @@ export const Default = {
   },
 };
 
-/** 로딩 — 초기 비어있는 상태에서 자동 로드 */
+/** Loading: automatic load from an initially empty state */
 export const InitiallyEmpty = {
   render: () => {
     const [items, setItems] = useState([]);
@@ -164,7 +164,7 @@ export const InitiallyEmpty = {
   },
 };
 
-/** 빈 상태 — emptyContent 커스텀 */
+/** Empty state: custom emptyContent */
 export const EmptyState = {
   render: () => (
     <Box sx={ { width: '100%', px: 2 } }>
@@ -173,13 +173,13 @@ export const EmptyState = {
         hasMore={ false }
         isLoading={ false }
         renderItem={ () => null }
-        emptyContent={ '아직 수집된 레퍼런스가 없습니다. 이미지를 드래그하거나 URL을 붙여넣어 보세요.' }
+        emptyContent={ 'No References have been collected yet. Try dragging an image or pasting a URL.' }
       />
     </Box>
   ),
 };
 
-/** 이미지 갤러리 — Placeholder.Media 조합 예시 */
+/** Image gallery: Placeholder.Media combination example */
 export const ImageGallery = {
   render: () => {
     const [items, setItems] = useState(() =>

@@ -1,41 +1,41 @@
 /**
  * Theme System
  *
- * 테마를 관리하는 유틸리티를 제공합니다.
- * 각 테마는 MUI createTheme 규격을 따릅니다.
+ * Provides utilities for managing themes.
+ * Each theme follows the MUI createTheme specification.
  */
 
 import defaultTheme from './default.js';
 import darkTheme from './dark.js';
 
-/** 사용 가능한 테마 목록 */
+/** List of available themes */
 export const themes = {
   default: defaultTheme,
   light: defaultTheme,
   dark: darkTheme,
 };
 
-/** 테마 메타데이터 */
+/** Theme metadata */
 export const themeMeta = {
-  default: { name: 'Default', description: '프로젝트 기본 테마', mode: 'light' },
+  default: { name: 'Default', description: 'Project base theme', mode: 'light' },
   light: { name: 'Light', description: 'MUSE light mode', mode: 'light' },
   dark: { name: 'Dark', description: 'MUSE dark mode', mode: 'dark' },
 };
 
 /**
- * 테마 이름으로 테마 객체 가져오기
+ * Get a theme object by theme name
  *
- * @param {string} themeName - 테마 이름
- * @returns {object} MUI 테마 객체
+ * @param {string} themeName - Theme name
+ * @returns {object} MUI theme object
  */
 export const getTheme = (themeName) => {
   return themes[themeName] || themes.default;
 };
 
 /**
- * 테마 이름 목록 가져오기
+ * Get the list of theme names
  *
- * @returns {string[]} 테마 이름 배열
+ * @returns {string[]} Array of theme names
  */
 export const getThemeNames = () => Object.keys(themes);
 

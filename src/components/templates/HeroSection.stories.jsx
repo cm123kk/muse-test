@@ -8,11 +8,11 @@ export default {
     layout: 'fullscreen',
   },
   argTypes: {
-    onNavigateToSignUp: { action: 'navigateToSignUp', description: '시작하기 버튼 클릭 시 콜백' },
-    onNavigateToLogin: { action: 'navigateToLogin', description: '로그인 버튼 클릭 시 콜백' },
+    onNavigateToSignUp: { action: 'navigateToSignUp', description: 'Callback when the Get Started button is clicked' },
+    onNavigateToLogin: { action: 'navigateToLogin', description: 'Callback when the Login button is clicked' },
     centerKeepout: {
       control: { type: 'number', min: 0, max: 400 },
-      description: '중앙 텍스트 보호 반경(px)',
+      description: 'Protected radius for the center text (px)',
     },
   },
 };

@@ -2,8 +2,8 @@ import { useEffect, useState } from 'react';
 import { supabase } from '../../lib/supabase';
 
 /**
- * 현재 로그인 세션과 user 를 구독하는 훅.
- * 앱 최상단에서 1회 사용 권장 (Context 와 조합).
+ * Hook that subscribes to the current login session and user.
+ * Recommended to use once at the top of the app (combined with Context).
  *
  * @returns {{ user: object|null, session: object|null, loading: boolean }}
  */

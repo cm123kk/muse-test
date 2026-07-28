@@ -9,18 +9,18 @@ import { TokenListItem } from './TokenListItem.jsx';
 import { TokenDecisionTracePanel } from './TokenDecisionTracePanel.jsx';
 
 /**
- * ColorSwatchList 컴포넌트
+ * ColorSwatchList component
  *
- * 컬러 레이어의 토큰 목록을 TokenListItem으로 렌더링한다.
- * 선택적으로 `groupBy`를 지정하면 그룹 헤더와 함께 섹션을 나눈다.
+ * Renders the token list of the color layer with TokenListItem.
+ * Optionally, specifying `groupBy` splits the list into sections with group headers.
  *
  * Props:
  * @param {array} tokens - [{ id, label, hex, role?, group?, isEnabled, decisionRationale? }] [Required]
  * @param {function} onChange - (id, patch) => void [Optional]
- * @param {boolean} isGrouped - group 필드 기준으로 섹션 분리 [Optional, 기본값: false]
- * @param {array} references - TP6 출처 썸네일용 reference 풀 [Optional]
- * @param {string} defaultExpandedId - 마운트 시점에 자동으로 펼쳐진 토큰 id [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {boolean} isGrouped - Split into sections based on the group field [Optional, default: false]
+ * @param {array} references - Reference pool for TP6 source thumbnails [Optional]
+ * @param {string} defaultExpandedId - Token id automatically expanded on mount [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <ColorSwatchList
@@ -56,7 +56,7 @@ export function ColorSwatchList({ tokens, onChange, isGrouped = false, reference
           trailing={ hasRationale ? (
             <IconButton
               size="small"
-              aria-label={ isExpanded ? '결정 근거 닫기' : '결정 근거 보기' }
+              aria-label={ isExpanded ? 'Hide rationale' : 'Show rationale' }
               onClick={ () => setExpandedId(isExpanded ? null : token.id) }
               sx={ {
                 transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',
@@ -73,7 +73,7 @@ export function ColorSwatchList({ tokens, onChange, isGrouped = false, reference
             decisionRationale={ token.decisionRationale || (token.sourceReferenceIds ? {
               whichReferences: token.sourceReferenceIds,
               whichLayers: ['color'],
-              whyChosen: '(과거 데이터 — decisionRationale 없음, 출처만 표시)',
+              whyChosen: '(Legacy data: no decisionRationale, showing sources only)',
             } : null) }
             references={ references }
             sx={ { mx: 2, mb: 1 } }
@@ -93,7 +93,7 @@ export function ColorSwatchList({ tokens, onChange, isGrouped = false, reference
   }
 
   const groups = tokens.reduce((acc, token) => {
-    const key = token.group || '기타';
+    const key = token.group || 'Etc';
     (acc[key] = acc[key] || []).push(token);
     return acc;
   }, {});

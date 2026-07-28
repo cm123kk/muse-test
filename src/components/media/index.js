@@ -1,33 +1,33 @@
 /**
  * Media Components
  *
- * 미디어 관련 컴포넌트 모음
- * 이미지, 비디오 등 다양한 미디어 처리 컴포넌트를 제공
+ * Collection of media-related components
+ * Provides various components for handling media such as images and videos
  */
 
-// AspectMedia - 고정 비율 이미지/비디오
+// AspectMedia - fixed-ratio image/video
 export { default as AspectMedia } from './AspectMedia.jsx';
 
-// ImageTransition - 인덱스 기반 이미지 트랜지션
+// ImageTransition - index-based image transition
 export { ImageTransition } from './ImageTransition.jsx';
 
-// ImageCarousel - 이미지 캐러셀 + 인디케이터
+// ImageCarousel - image carousel + indicator
 export { ImageCarousel } from './ImageCarousel.jsx';
 
-// Indicator - 범용 인디케이터 (common/ui에서 재노출)
+// Indicator - general-purpose indicator (re-exported from common/ui)
 export { Indicator } from '../../common/ui/Indicator.jsx';
 
-// CarouselIndicator - 레거시 호환용 (Indicator 사용 권장)
+// CarouselIndicator - for legacy compatibility (use Indicator instead)
 export { CarouselIndicator } from './CarouselIndicator.jsx';
 
-// FloatingImageGallery - Three.js z-depth 무한 갤러리 (hero/배경용)
+// FloatingImageGallery - Three.js z-depth infinite gallery (for hero/background)
 export { FloatingImageGallery } from './FloatingImageGallery.jsx';
 
-// ScatterGallery - jittered grid 분포 + cursor parallax + scatter↔두 줄 flow 연속 lerp (hero용)
+// ScatterGallery - jittered grid distribution + cursor parallax + continuous scatter <-> two-row flow lerp (for hero)
 export { ScatterGallery } from './ScatterGallery.jsx';
 
-// ReferenceAnnotationOverlay - 레퍼런스 hover 시 코너 브래킷 + 스캔 + 가장자리 어노테이션
+// ReferenceAnnotationOverlay - corner brackets + scan + edge annotations on reference hover
 export { ReferenceAnnotationOverlay } from './ReferenceAnnotationOverlay.jsx';
 
-// RefImage - signed URL 만료 자동 재서명 이미지
+// RefImage - image with automatic re-signing on signed URL expiry
 export { RefImage } from './RefImage.jsx';

@@ -16,12 +16,12 @@ export default {
 };
 
 /**
- * ## 기본 사용법
- * 
- * SectionContainer는 페이지 내의 각 섹션을 구분하는 컨테이너입니다.
- * - 100% 너비로 확장되며 상하 여백(py) 제공
- * - section 태그로 시맨틱 마크업 적용
- * - 반응형 여백: 모바일(xs) py:4, 데스크탑(md) py:6
+ * ## Basic Usage
+ *
+ * SectionContainer is a container that separates each section within a page.
+ * - Expands to 100% width and provides vertical padding (py)
+ * - Applies semantic markup with the section tag
+ * - Responsive padding: mobile (xs) py:4, desktop (md) py:6
  */
 export const Default = {
   render: () => (
@@ -29,22 +29,22 @@ export const Default = {
       <DocumentTitle
         title="SectionContainer"
         status="Ready"
-        note="페이지 내 섹션을 구분하고 일관된 상하 여백을 제공하는 컨테이너"
+        note="A container that separates sections within a page and provides consistent vertical padding"
         brandName="Layout"
         systemName="Container"
         version="1.0"
       />
 
       <Box sx={{ py: 4 }}>
-        <SectionTitle>기본 사용법</SectionTitle>
+        <SectionTitle>Basic Usage</SectionTitle>
         <SectionContainer sx={{ bgcolor: 'grey.50', border: '2px dashed', borderColor: 'secondary.main' }}>
           <PageContainer>
             <Typography variant="h6" gutterBottom color="secondary">
               SectionContainer
             </Typography>
             <Typography color="text.secondary">
-              섹션 컨테이너는 100% 너비로 확장되며, 상하 여백이 자동으로 적용됩니다.
-              내부에 PageContainer를 사용하여 콘텐츠 너비를 제한할 수 있습니다.
+              The section container expands to 100% width, and vertical padding is applied automatically.
+              You can use a PageContainer inside to limit the content width.
             </Typography>
           </PageContainer>
         </SectionContainer>
@@ -54,59 +54,59 @@ export const Default = {
 };
 
 /**
- * ## variant — fluid / focus
+ * ## variant (fluid / focus)
  *
- * 섹션의 콘텐츠 폭 모드. fluid 는 100% 너비 (기본 동작),
- * focus 는 좁은 maxWidth 로 중앙 집중 (좁은 폼·설정 섹션).
+ * Content width mode of the section. fluid is 100% width (default behavior),
+ * focus is centered with a narrow maxWidth (narrow form or settings sections).
  */
 export const Variants = {
   name: 'variant (fluid / focus)',
   render: () => (
     <Box sx={{ py: 4, bgcolor: 'grey.100' }}>
-      <SectionTitle>variant 비교</SectionTitle>
+      <SectionTitle>variant comparison</SectionTitle>
 
       <SectionContainer variant="fluid" sx={{ bgcolor: 'background.paper', mb: 2 }}>
-        <Placeholder.Box label='variant="fluid" — 100% 너비 그리드/탐색 섹션' height={ 80 } />
+        <Placeholder.Box label='variant="fluid": 100% width grid/browse section' height={ 80 } />
       </SectionContainer>
 
       <SectionContainer variant="focus" sx={{ bgcolor: 'background.paper' }}>
-        <Placeholder.Box label='variant="focus" — focusMaxWidth 720px 중앙 폼 섹션' height={ 80 } />
+        <Placeholder.Box label='variant="focus": focusMaxWidth 720px centered form section' height={ 80 } />
       </SectionContainer>
     </Box>
   ),
 };
 
 /**
- * ## 여러 섹션 쌓기
+ * ## Stacking Multiple Sections
  *
- * SectionContainer를 연속으로 배치하여 섹션을 구분합니다.
+ * Place SectionContainers in sequence to separate sections.
  */
 export const StackingSections = {
   render: () => (
     <Box sx={{ py: 4 }}>
-      <SectionTitle>여러 섹션 쌓기</SectionTitle>
+      <SectionTitle>Stacking Multiple Sections</SectionTitle>
       <Typography variant="body2" color="text.secondary" sx={{ px: 2, mb: 2 }}>
-        SectionContainer를 연속으로 배치하면 자연스러운 섹션 구분이 가능합니다.
+        Placing SectionContainers in sequence creates natural section separation.
       </Typography>
-      
+
       <SectionContainer sx={{ bgcolor: 'grey.50' }}>
         <PageContainer>
-          <Typography variant="h5" gutterBottom>섹션 1: Hero</Typography>
-          <Typography>첫 번째 섹션 콘텐츠입니다. 배경색으로 구분됩니다.</Typography>
+          <Typography variant="h5" gutterBottom>Section 1: Hero</Typography>
+          <Typography>Content of the first section. Separated by background color.</Typography>
         </PageContainer>
       </SectionContainer>
 
       <SectionContainer sx={{ bgcolor: 'white' }}>
         <PageContainer>
-          <Typography variant="h5" gutterBottom>섹션 2: Features</Typography>
-          <Typography>두 번째 섹션 콘텐츠입니다. 흰색 배경입니다.</Typography>
+          <Typography variant="h5" gutterBottom>Section 2: Features</Typography>
+          <Typography>Content of the second section. White background.</Typography>
         </PageContainer>
       </SectionContainer>
 
       <SectionContainer sx={{ bgcolor: 'grey.100' }}>
         <PageContainer>
-          <Typography variant="h5" gutterBottom>섹션 3: Testimonials</Typography>
-          <Typography>세 번째 섹션 콘텐츠입니다. 회색 배경입니다.</Typography>
+          <Typography variant="h5" gutterBottom>Section 3: Testimonials</Typography>
+          <Typography>Content of the third section. Gray background.</Typography>
         </PageContainer>
       </SectionContainer>
     </Box>
@@ -114,27 +114,27 @@ export const StackingSections = {
 };
 
 /**
- * ## 반응형 여백
- * 
- * 기본 상하 여백은 반응형으로 적용됩니다.
+ * ## Responsive Spacing
+ *
+ * The default vertical padding is applied responsively.
  */
 export const ResponsiveSpacing = {
   render: () => (
     <Box sx={{ py: 4, bgcolor: 'grey.50' }}>
-      <SectionTitle>기본 여백 (py)</SectionTitle>
+      <SectionTitle>Default Spacing (py)</SectionTitle>
       <PageContainer>
         <Paper sx={{ p: 3 }}>
           <Typography variant="body2" paragraph>
-            SectionContainer의 상하 여백은 반응형으로 적용됩니다:
+            The vertical padding of SectionContainer is applied responsively:
           </Typography>
           <Box sx={{ display: 'flex', gap: 4 }}>
             <Box>
-              <Typography variant="subtitle2" color="primary">모바일 (xs)</Typography>
+              <Typography variant="subtitle2" color="primary">Mobile (xs)</Typography>
               <Typography variant="h4" sx={{ fontFamily: 'monospace' }}>py: 4</Typography>
               <Typography variant="caption" color="text.secondary">= 32px</Typography>
             </Box>
             <Box>
-              <Typography variant="subtitle2" color="primary">데스크탑 (md+)</Typography>
+              <Typography variant="subtitle2" color="primary">Desktop (md+)</Typography>
               <Typography variant="h4" sx={{ fontFamily: 'monospace' }}>py: 6</Typography>
               <Typography variant="caption" color="text.secondary">= 48px</Typography>
             </Box>
@@ -146,7 +146,7 @@ export const ResponsiveSpacing = {
 };
 
 /**
- * ## Props 문서
+ * ## Props Documentation
  */
 export const Props = {
   render: () => (
@@ -158,9 +158,9 @@ export const Props = {
             <thead>
               <tr>
                 <th><Typography variant="subtitle2">Prop</Typography></th>
-                <th><Typography variant="subtitle2">타입</Typography></th>
-                <th><Typography variant="subtitle2">기본값</Typography></th>
-                <th><Typography variant="subtitle2">설명</Typography></th>
+                <th><Typography variant="subtitle2">Type</Typography></th>
+                <th><Typography variant="subtitle2">Default</Typography></th>
+                <th><Typography variant="subtitle2">Description</Typography></th>
               </tr>
             </thead>
             <tbody>
@@ -168,25 +168,25 @@ export const Props = {
                 <td><Typography variant="body2" sx={{ fontFamily: 'monospace' }}>children</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">node</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">-</Typography></td>
-                <td><Typography variant="body2">섹션 내부 콘텐츠</Typography></td>
+                <td><Typography variant="body2">Content inside the section</Typography></td>
               </tr>
               <tr>
                 <td><Typography variant="body2" sx={{ fontFamily: 'monospace' }}>variant</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">'fluid' | 'focus'</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">-</Typography></td>
-                <td><Typography variant="body2">섹션 폭 모드. fluid=100% / focus=중앙 좁은 maxWidth</Typography></td>
+                <td><Typography variant="body2">Section width mode. fluid=100% / focus=centered narrow maxWidth</Typography></td>
               </tr>
               <tr>
                 <td><Typography variant="body2" sx={{ fontFamily: 'monospace' }}>focusMaxWidth</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">number</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">720</Typography></td>
-                <td><Typography variant="body2">focus variant 의 max-width(px)</Typography></td>
+                <td><Typography variant="body2">max-width (px) of the focus variant</Typography></td>
               </tr>
               <tr>
                 <td><Typography variant="body2" sx={{ fontFamily: 'monospace' }}>sx</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">object</Typography></td>
                 <td><Typography variant="body2" color="text.secondary">-</Typography></td>
-                <td><Typography variant="body2">추가 스타일 (bgcolor, border 등)</Typography></td>
+                <td><Typography variant="body2">Additional styles (bgcolor, border, etc.)</Typography></td>
               </tr>
             </tbody>
           </Box>
@@ -197,24 +197,24 @@ export const Props = {
 };
 
 /**
- * ## PageContainer와 조합 사용
- * 
- * SectionContainer와 PageContainer를 함께 사용하는 일반적인 패턴입니다.
+ * ## Combined Usage with PageContainer
+ *
+ * A common pattern of using SectionContainer together with PageContainer.
  */
 export const CombinedUsage = {
   render: () => (
     <Box>
-      <SectionTitle>조합 사용 예시</SectionTitle>
+      <SectionTitle>Combined Usage Example</SectionTitle>
       <Typography variant="body2" color="text.secondary" sx={{ px: 2, mb: 2 }}>
-        SectionContainer가 전체 너비 배경을, PageContainer가 콘텐츠 너비 제한을 담당합니다.
+        SectionContainer handles the full width background, while PageContainer limits the content width.
       </Typography>
 
       <SectionContainer sx={{ bgcolor: 'primary.main', color: 'white' }}>
         <PageContainer>
           <Typography variant="h3" gutterBottom>Hero Section</Typography>
           <Typography variant="h6" sx={{ opacity: 0.8 }}>
-            SectionContainer가 전체 너비 배경색을 제공하고,
-            PageContainer가 내부 콘텐츠 너비를 제한합니다.
+            SectionContainer provides the full width background color,
+            and PageContainer limits the inner content width.
           </Typography>
         </PageContainer>
       </SectionContainer>
@@ -233,7 +233,7 @@ export const CombinedUsage = {
       <SectionContainer sx={{ bgcolor: 'grey.900', color: 'white' }}>
         <PageContainer>
           <Typography variant="body2" align="center">
-            © 2024 Footer Section - 전체 너비 배경에 중앙 정렬 콘텐츠
+            © 2024 Footer Section - Full width background with centered content
           </Typography>
         </PageContainer>
       </SectionContainer>

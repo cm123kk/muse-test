@@ -39,7 +39,7 @@ export function ProjectCreateRoute() {
               const recItems = (references || []).filter((r) => ids.has(r.id)).map(toPickerItem);
               return { recommended: recItems, referenceLayer: result.referenceLayer || [] };
             } catch (e) {
-              console.warn('[T2 실패]', e);
+              console.warn('[T2 failed]', e);
               return [];
             }
           }}
@@ -68,9 +68,9 @@ export function ProjectCreateRoute() {
                 user_notes: form.userNotes || '',
                 reference_notes: form.referenceNotes || {},
               });
-              if (!ok || !project) throw new Error('프로젝트 저장 실패');
+              if (!ok || !project) throw new Error('Failed to save project');
 
-              // project_references 연결
+              // Link project_references
               if (referenceIds?.length) {
                 await supabase.from('project_references').insert(
                   referenceIds.map((rid) => ({
@@ -81,7 +81,7 @@ export function ProjectCreateRoute() {
                 );
               }
 
-              // 분석 결과 저장
+              // Save analysis result
               let layers;
               if (form.mode === 'concept') {
                 layers = {
@@ -107,8 +107,8 @@ export function ProjectCreateRoute() {
 
               navigate(`/projects/${project.id}`);
             } catch (e) {
-              console.error('[프로젝트 생성 실패]', e);
-              window.alert(`프로젝트 저장 중 에러: ${e?.message || e}`);
+              console.error('[Project creation failed]', e);
+              window.alert(`Error while saving project: ${e?.message || e}`);
             }
           }}
           onCancel={() => navigate('/')}

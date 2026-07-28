@@ -1,19 +1,19 @@
 import { Box, Typography } from '@mui/material';
 
 /**
- * InlineObject 컴포넌트 (하위 컴포넌트)
+ * InlineObject component (subcomponent)
  *
- * 텍스트 흐름 속에 이미지, 아이콘, 또는 다른 컴포넌트를 삽입하기 위한 래퍼.
- * 인라인 요소의 수직 정렬과 크기를 제어한다.
+ * A wrapper for inserting an image, icon, or another component into the text flow.
+ * Controls the vertical alignment and size of the inline element.
  *
  * Props:
- * @param {ReactNode} children - 삽입할 요소 (img, icon, component) [Required]
- * @param {number|string} size - 요소 크기 (em 단위 숫자 또는 CSS 값) [Optional, 기본값: 1]
- * @param {string} align - 수직 정렬 ('baseline' | 'middle' | 'top' | 'bottom') [Optional, 기본값: 'middle']
- * @param {boolean} rounded - 둥근 모서리 적용 [Optional, 기본값: false]
- * @param {boolean} hover - hover 효과 활성화 [Optional, 기본값: false]
- * @param {number} spacing - 좌우 간격 (em 단위) [Optional, 기본값: 0.2]
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {ReactNode} children - Element to insert (img, icon, component) [Required]
+ * @param {number|string} size - Element size (number in em units or a CSS value) [Optional, default: 1]
+ * @param {string} align - Vertical alignment ('baseline' | 'middle' | 'top' | 'bottom') [Optional, default: 'middle']
+ * @param {boolean} rounded - Apply rounded corners [Optional, default: false]
+ * @param {boolean} hover - Enable hover effect [Optional, default: false]
+ * @param {number} spacing - Horizontal spacing (em units) [Optional, default: 0.2]
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
  * <InlineObject size={1.2} rounded>
@@ -30,7 +30,7 @@ export function InlineObject({
   sx,
   ...props
 }) {
-  // 정렬 매핑
+  // Alignment mapping
   const alignMap = {
     baseline: 'baseline',
     middle: 'middle',
@@ -38,7 +38,7 @@ export function InlineObject({
     bottom: 'text-bottom',
   };
 
-  // 크기 처리 (숫자면 em 단위, 문자열이면 그대로 사용)
+  // Handle size (em units if a number, used as-is if a string)
   const sizeValue = typeof size === 'number' ? `${size}em` : size;
 
   return (
@@ -73,23 +73,23 @@ export function InlineObject({
 }
 
 /**
- * InlineTypography 컴포넌트
+ * InlineTypography component
  *
- * 텍스트 흐름 속에 이미지, 아이콘, 또는 다른 컴포넌트를 자연스럽게 삽입할 수 있는 컴포넌트.
- * Compound component 패턴으로 InlineObject와 함께 사용한다.
+ * A component that lets you naturally insert an image, icon, or another component into the text flow.
+ * Used together with InlineObject in a compound component pattern.
  *
- * 동작 방식:
- * 1. children으로 일반 텍스트와 InlineObject 컴포넌트를 조합하여 전달
- * 2. 텍스트와 인라인 요소가 자연스럽게 한 줄에 배치됨
- * 3. InlineObject의 align prop으로 수직 정렬 제어
- * 4. variant에 따라 적절한 폰트 스타일 적용
+ * How it works:
+ * 1. Pass a combination of plain text and InlineObject components as children
+ * 2. The text and inline elements are laid out naturally on a single line
+ * 3. The align prop of InlineObject controls the vertical alignment
+ * 4. An appropriate font style is applied based on variant
  *
  * Props:
- * @param {ReactNode} children - 텍스트와 InlineObject 조합 [Required]
- * @param {string} variant - 타이포그래피 variant ('body1' | 'body2' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') [Optional, 기본값: 'body1']
- * @param {string} component - HTML 태그 [Optional, 기본값: 'p']
- * @param {string} align - 텍스트 정렬 ('left' | 'center' | 'right' | 'justify') [Optional, 기본값: 'left']
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {ReactNode} children - Combination of text and InlineObject [Required]
+ * @param {string} variant - Typography variant ('body1' | 'body2' | 'h1' | 'h2' | 'h3' | 'h4' | 'h5' | 'h6') [Optional, default: 'body1']
+ * @param {string} component - HTML tag [Optional, default: 'p']
+ * @param {string} align - Text alignment ('left' | 'center' | 'right' | 'justify') [Optional, default: 'left']
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
  * <InlineTypography variant="h3">
@@ -112,7 +112,7 @@ export function InlineTypography({
         textAlign: align,
         lineHeight: 1.6,
         '& > span': {
-          // InlineObject의 기본 스타일 조정
+          // Adjust the default style of InlineObject
         },
         ...sx,
       }}
@@ -124,15 +124,15 @@ export function InlineTypography({
 }
 
 /**
- * InlineIcon 컴포넌트 (편의 컴포넌트)
+ * InlineIcon component (convenience component)
  *
- * MUI 아이콘을 인라인으로 삽입하기 위한 특화된 래퍼.
+ * A specialized wrapper for inserting a MUI icon inline.
  *
  * Props:
- * @param {ReactNode} icon - MUI Icon 컴포넌트 [Required]
- * @param {string} color - 아이콘 색상 [Optional, 기본값: 'inherit']
- * @param {number} size - 아이콘 크기 (em 단위) [Optional, 기본값: 1]
- * @param {string} align - 수직 정렬 [Optional, 기본값: 'middle']
+ * @param {ReactNode} icon - MUI Icon component [Required]
+ * @param {string} color - Icon color [Optional, default: 'inherit']
+ * @param {number} size - Icon size (em units) [Optional, default: 1]
+ * @param {string} align - Vertical alignment [Optional, default: 'middle']
  *
  * Example usage:
  * <InlineIcon icon={<StarIcon />} color="primary.main" size={1.2} />
@@ -176,18 +176,18 @@ export function InlineIcon({
 }
 
 /**
- * InlineImage 컴포넌트 (편의 컴포넌트)
+ * InlineImage component (convenience component)
  *
- * 이미지를 인라인으로 삽입하기 위한 특화된 래퍼.
+ * A specialized wrapper for inserting an image inline.
  *
  * Props:
- * @param {string} src - 이미지 URL [Required]
- * @param {string} alt - 이미지 alt 텍스트 [Required]
- * @param {number|string} size - 이미지 크기 [Optional, 기본값: 1.5]
- * @param {boolean} rounded - 둥근 모서리 [Optional, 기본값: false]
- * @param {boolean} circle - 원형 [Optional, 기본값: false]
- * @param {string} align - 수직 정렬 [Optional, 기본값: 'middle']
- * @param {boolean} hover - hover 효과 [Optional, 기본값: false]
+ * @param {string} src - Image URL [Required]
+ * @param {string} alt - Image alt text [Required]
+ * @param {number|string} size - Image size [Optional, default: 1.5]
+ * @param {boolean} rounded - Rounded corners [Optional, default: false]
+ * @param {boolean} circle - Circular shape [Optional, default: false]
+ * @param {string} align - Vertical alignment [Optional, default: 'middle']
+ * @param {boolean} hover - Hover effect [Optional, default: false]
  *
  * Example usage:
  * <InlineImage src="photo.jpg" alt="Photo" size={2} circle hover />
@@ -245,7 +245,7 @@ export function InlineImage({
   );
 }
 
-// Compound component 패턴을 위한 정적 할당
+// Static assignment for the compound component pattern
 InlineTypography.Object = InlineObject;
 InlineTypography.Icon = InlineIcon;
 InlineTypography.Image = InlineImage;

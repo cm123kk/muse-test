@@ -1,10 +1,10 @@
 /**
- * 벤토 그리드 프리셋 레이아웃
- * 자주 사용되는 레이아웃 패턴 정의
+ * Bento grid preset layouts
+ * Defines commonly used layout patterns
  */
 export const BENTO_PRESETS = {
   /**
-   * 2x2 + 1 레이아웃
+   * 2x2 + 1 layout
    * [2x2] [1x1]
    *       [1x1]
    */
@@ -15,7 +15,7 @@ export const BENTO_PRESETS = {
   ],
 
   /**
-   * 균등 분할 레이아웃
+   * Equal split layout
    * [1x1] [1x1] [1x1] [1x1]
    */
   equal: [
@@ -26,7 +26,7 @@ export const BENTO_PRESETS = {
   ],
 
   /**
-   * 히어로 레이아웃
+   * Hero layout
    * [4x1]
    * [1x1] [1x1] [2x1]
    */
@@ -38,7 +38,7 @@ export const BENTO_PRESETS = {
   ],
 
   /**
-   * 모자이크 레이아웃
+   * Mosaic layout
    * [2x2] [1x1] [1x1]
    *       [2x1]
    */

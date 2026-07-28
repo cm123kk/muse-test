@@ -1,30 +1,30 @@
 import { Box } from '@mui/material';
 
 /**
- * FullPageContainer 컴포넌트
+ * FullPageContainer component
  *
- * 100vh 또는 100svh 높이의 전체 화면 섹션 컨테이너.
- * Hero 섹션, 풀스크린 갤러리, 스크롤 스냅 레이아웃에 사용된다.
+ * A full-screen section container with a height of 100vh or 100svh.
+ * Used for hero sections, full-screen galleries, and scroll-snap layouts.
  *
- * 동작 방식:
- * 1. heightMode에 따라 vh, svh, dvh 중 선택하여 높이 설정
- * 2. 콘텐츠는 align, justify prop에 따라 정렬됨
- * 3. background로 배경 이미지, 그라데이션 적용 가능
- * 4. overlay로 어두운 오버레이 추가 가능
+ * How it works:
+ * 1. Sets the height by choosing among vh, svh, and dvh based on heightMode
+ * 2. Content is aligned according to the align and justify props
+ * 3. A background image or gradient can be applied via background
+ * 4. A dark overlay can be added via overlay
  *
  * Props:
- * @param {ReactNode} children - 섹션 콘텐츠 [Required]
- * @param {string} heightMode - 높이 모드 ('vh' | 'svh' | 'dvh') [Optional, 기본값: 'svh']
- * @param {number} heightRatio - 높이 비율 (0.5 = 50vh) [Optional, 기본값: 1]
- * @param {string} minHeight - 최소 높이 [Optional]
- * @param {string} maxHeight - 최대 높이 [Optional]
- * @param {string} align - 수직 정렬 ('start' | 'center' | 'end' | 'stretch') [Optional, 기본값: 'center']
- * @param {string} justify - 수평 정렬 ('start' | 'center' | 'end' | 'between' | 'around') [Optional, 기본값: 'center']
- * @param {string} background - 배경 이미지 URL 또는 CSS 값 [Optional]
- * @param {string|number} overlay - 오버레이 색상 또는 불투명도 [Optional]
- * @param {boolean} isContained - overflow hidden 적용 [Optional, 기본값: true]
- * @param {string} snap - 스크롤 스냅 정렬 ('start' | 'center' | 'end') [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {ReactNode} children - Section content [Required]
+ * @param {string} heightMode - Height mode ('vh' | 'svh' | 'dvh') [Optional, default: 'svh']
+ * @param {number} heightRatio - Height ratio (0.5 = 50vh) [Optional, default: 1]
+ * @param {string} minHeight - Minimum height [Optional]
+ * @param {string} maxHeight - Maximum height [Optional]
+ * @param {string} align - Vertical alignment ('start' | 'center' | 'end' | 'stretch') [Optional, default: 'center']
+ * @param {string} justify - Horizontal alignment ('start' | 'center' | 'end' | 'between' | 'around') [Optional, default: 'center']
+ * @param {string} background - Background image URL or CSS value [Optional]
+ * @param {string|number} overlay - Overlay color or opacity [Optional]
+ * @param {boolean} isContained - Apply overflow hidden [Optional, default: true]
+ * @param {string} snap - Scroll snap alignment ('start' | 'center' | 'end') [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <FullPageContainer background="hero.jpg" overlay={0.5}>
@@ -50,10 +50,10 @@ export function FullPageContainer({
   ...props
 }) {
   /**
-   * heightMode에 따른 높이 CSS 값 생성
-   * - vh: viewport height (주소바 포함)
-   * - svh: small viewport height (주소바 표시 시)
-   * - dvh: dynamic viewport height (주소바 동적)
+   * Generate the height CSS value based on heightMode
+   * - vh: viewport height (including the address bar)
+   * - svh: small viewport height (when the address bar is shown)
+   * - dvh: dynamic viewport height (address bar dynamic)
    */
   const getHeight = () => {
     const value = heightRatio * 100;
@@ -61,7 +61,7 @@ export function FullPageContainer({
   };
 
   /**
-   * align 값을 CSS align-items 값으로 변환
+   * Convert the align value to a CSS align-items value
    */
   const alignMap = {
     start: 'flex-start',
@@ -71,7 +71,7 @@ export function FullPageContainer({
   };
 
   /**
-   * justify 값을 CSS justify-content 값으로 변환
+   * Convert the justify value to a CSS justify-content value
    */
   const justifyMap = {
     start: 'flex-start',
@@ -82,14 +82,14 @@ export function FullPageContainer({
   };
 
   /**
-   * 배경 스타일 생성
-   * - URL: background-image로 처리
-   * - 기타: background로 처리 (색상, 그라데이션)
+   * Generate the background style
+   * - URL: handled as background-image
+   * - Otherwise: handled as background (color, gradient)
    */
   const getBackgroundStyle = () => {
     if (!background) return {};
 
-    // URL 패턴 감지
+    // Detect URL pattern
     if (background.startsWith('http') || background.startsWith('/') || background.startsWith('data:')) {
       return {
         backgroundImage: `url(${background})`,
@@ -103,9 +103,9 @@ export function FullPageContainer({
   };
 
   /**
-   * 오버레이 스타일 생성
-   * - 숫자: 검정색 불투명도
-   * - 문자열: CSS 색상
+   * Generate the overlay style
+   * - number: black opacity
+   * - string: CSS color
    */
   const getOverlayStyle = () => {
     if (!overlay) return null;
@@ -144,7 +144,7 @@ export function FullPageContainer({
         overflow: isContained ? 'hidden' : 'visible',
         scrollSnapAlign: snap,
         ...getBackgroundStyle(),
-        // 오버레이 pseudo element
+        // Overlay pseudo element
         ...(overlay && {
           '&::before': getOverlayStyle(),
         }),
@@ -152,7 +152,7 @@ export function FullPageContainer({
       } }
       { ...props }
     >
-      { /* 콘텐츠를 오버레이 위에 배치 */ }
+      { /* Place content above the overlay */ }
       <Box sx={ { position: 'relative', zIndex: 1, width: '100%', height: '100%', display: 'contents' } }>
         { children }
       </Box>
@@ -161,13 +161,13 @@ export function FullPageContainer({
 }
 
 /**
- * FullPageSection 컴포넌트
+ * FullPageSection component
  *
- * 스크롤 스냅 컨테이너 내에서 사용되는 개별 섹션.
- * FullPageContainer를 확장하여 스크롤 스냅 기능을 기본으로 포함.
+ * An individual section used within a scroll-snap container.
+ * Extends FullPageContainer to include scroll-snap functionality by default.
  *
  * Props:
- * 모든 FullPageContainer props를 상속
+ * Inherits all FullPageContainer props
  *
  * Example usage:
  * <FullPageSnap>
@@ -184,15 +184,15 @@ export function FullPageSection(props) {
 }
 
 /**
- * FullPageSnap 컴포넌트
+ * FullPageSnap component
  *
- * 스크롤 스냅이 적용된 전체 화면 섹션 컨테이너.
- * 내부에 FullPageSection들을 배치하여 풀페이지 스크롤 효과를 구현.
+ * A full-screen section container with scroll snap applied.
+ * Arrange FullPageSection components inside it to implement a full-page scroll effect.
  *
  * Props:
- * @param {ReactNode} children - FullPageSection 컴포넌트들 [Required]
- * @param {string} snapType - 스냅 타입 ('mandatory' | 'proximity') [Optional, 기본값: 'mandatory']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {ReactNode} children - FullPageSection components [Required]
+ * @param {string} snapType - Snap type ('mandatory' | 'proximity') [Optional, default: 'mandatory']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <FullPageSnap>

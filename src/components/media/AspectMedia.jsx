@@ -4,39 +4,39 @@ import Box from '@mui/material/Box';
 /**
  * AspectMedia Component
  *
- * 이미지 또는 비디오를 지정된 비율로 표시하는 범용 미디어 컴포넌트입니다.
- * CSS aspect-ratio 속성을 사용하여 반응형 비율을 유지합니다.
+ * A general-purpose media component that displays an image or video at a fixed ratio.
+ * Uses the CSS aspect-ratio property to maintain a responsive ratio.
  *
- * ## 동작 방식
- * 1. type prop으로 이미지/비디오 렌더링 방식 결정
- * 2. aspectRatio prop으로 고정 비율 유지 (예: '16/9', '4/3', '1/1')
- * 3. objectFit prop으로 미디어가 컨테이너에 맞춰지는 방식 결정
- * 4. 비디오의 경우 autoPlay, muted, loop, controls 등 제어 가능
+ * ## How it works
+ * 1. The type prop determines whether an image or video is rendered
+ * 2. The aspectRatio prop keeps a fixed ratio (e.g. '16/9', '4/3', '1/1')
+ * 3. The objectFit prop controls how the media fits within the container
+ * 4. For videos, autoPlay, muted, loop, controls, and more can be controlled
  *
  * Props:
- * @param {string} src - 미디어 소스 URL [Required]
- * @param {string} alt - 대체 텍스트 (이미지용) [Optional, 기본값: '']
- * @param {string} type - 미디어 타입 ('image' | 'video') [Optional, 기본값: 'image']
- * @param {string} aspectRatio - CSS aspect-ratio 값 [Optional, 기본값: '16/9']
- * @param {string} objectFit - CSS object-fit 값 [Optional, 기본값: 'cover']
- * @param {boolean} isLazy - 지연 로딩 활성화 [Optional, 기본값: true]
- * @param {string} poster - 비디오 포스터 이미지 URL [Optional]
- * @param {boolean} isAutoPlay - 비디오 자동 재생 [Optional, 기본값: false]
- * @param {boolean} isMuted - 비디오 음소거 [Optional, 기본값: true]
- * @param {boolean} isLoop - 비디오 반복 재생 [Optional, 기본값: false]
- * @param {boolean} hasControls - 비디오 컨트롤 표시 [Optional, 기본값: false]
- * @param {boolean} isPlaysInline - 인라인 재생 (모바일) [Optional, 기본값: true]
- * @param {Object} sx - 추가 MUI sx 스타일 [Optional]
+ * @param {string} src - Media source URL [Required]
+ * @param {string} alt - Alternative text (for images) [Optional, default: '']
+ * @param {string} type - Media type ('image' | 'video') [Optional, default: 'image']
+ * @param {string} aspectRatio - CSS aspect-ratio value [Optional, default: '16/9']
+ * @param {string} objectFit - CSS object-fit value [Optional, default: 'cover']
+ * @param {boolean} isLazy - Enable lazy loading [Optional, default: true]
+ * @param {string} poster - Video poster image URL [Optional]
+ * @param {boolean} isAutoPlay - Autoplay video [Optional, default: false]
+ * @param {boolean} isMuted - Mute video [Optional, default: true]
+ * @param {boolean} isLoop - Loop video [Optional, default: false]
+ * @param {boolean} hasControls - Show video controls [Optional, default: false]
+ * @param {boolean} isPlaysInline - Inline playback (mobile) [Optional, default: true]
+ * @param {Object} sx - Additional MUI sx styles [Optional]
  *
  * Example usage:
- * // 이미지
+ * // Image
  * <AspectMedia
  *   src="/photo.jpg"
  *   alt="Photo description"
  *   aspectRatio="4/3"
  * />
  *
- * // 비디오
+ * // Video
  * <AspectMedia
  *   type="video"
  *   src="/video.mp4"
@@ -65,7 +65,7 @@ const AspectMedia = forwardRef(function AspectMedia(
   },
   ref
 ) {
-  // 공통 스타일
+  // Shared styles
   const commonStyles = {
     width: '100%',
     height: 'auto',
@@ -75,7 +75,7 @@ const AspectMedia = forwardRef(function AspectMedia(
     ...sx,
   };
 
-  // 이미지 렌더링
+  // Image rendering
   if (type === 'image') {
     return (
       <Box
@@ -90,7 +90,7 @@ const AspectMedia = forwardRef(function AspectMedia(
     );
   }
 
-  // 비디오 렌더링
+  // Video rendering
   if (type === 'video') {
     return (
       <Box

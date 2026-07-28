@@ -1,27 +1,27 @@
 import Box from '@mui/material/Box';
 
 /**
- * CarouselIndicator 컴포넌트
+ * CarouselIndicator component
  *
- * 캐러셀, 슬라이더 등에서 현재 위치를 표시하는 인디케이터 컴포넌트.
- * dot, line, fraction 등 다양한 스타일을 지원한다.
+ * An indicator component that shows the current position in a carousel, slider, and so on.
+ * Supports various styles such as dot, line, and fraction.
  *
- * 동작 방식:
- * 1. total과 current로 전체 개수와 현재 위치 표시
- * 2. type에 따라 다른 시각적 스타일 적용
- * 3. onClick으로 특정 인덱스 클릭 시 이동 가능
+ * How it works:
+ * 1. total and current show the total count and the current position
+ * 2. A different visual style is applied depending on type
+ * 3. onClick lets you jump to a specific index when clicked
  *
  * Props:
- * @param {number} total - 전체 아이템 개수 [Required]
- * @param {number} current - 현재 활성 인덱스 (0-based) [Required]
- * @param {string} type - 인디케이터 타입 ('dot' | 'line' | 'fraction' | 'progress') [Optional, 기본값: 'dot']
- * @param {string} direction - 배치 방향 ('horizontal' | 'vertical') [Optional, 기본값: 'horizontal']
- * @param {string} size - 크기 ('sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {string} activeColor - 활성 색상 [Optional, 기본값: 'primary.main']
- * @param {string} inactiveColor - 비활성 색상 [Optional, 기본값: 'grey.400']
- * @param {number} gap - 아이템 간 간격 [Optional, 기본값: 1]
- * @param {function} onClick - 클릭 핸들러 (index) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {number} total - Total number of items [Required]
+ * @param {number} current - Current active index (0-based) [Required]
+ * @param {string} type - Indicator type ('dot' | 'line' | 'fraction' | 'progress') [Optional, default: 'dot']
+ * @param {string} direction - Layout direction ('horizontal' | 'vertical') [Optional, default: 'horizontal']
+ * @param {string} size - Size ('sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {string} activeColor - Active color [Optional, default: 'primary.main']
+ * @param {string} inactiveColor - Inactive color [Optional, default: 'grey.400']
+ * @param {number} gap - Spacing between items [Optional, default: 1]
+ * @param {function} onClick - Click handler (index) => void [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <CarouselIndicator
@@ -45,7 +45,7 @@ export function CarouselIndicator({
   ...props
 }) {
   /**
-   * 크기별 치수 정의
+   * Dimensions per size
    */
   const sizes = {
     sm: { dot: 6, line: { width: 16, height: 2 } },
@@ -56,7 +56,7 @@ export function CarouselIndicator({
   const currentSize = sizes[size] || sizes.md;
 
   /**
-   * Fraction 타입 렌더링 (예: "2 / 5")
+   * Fraction type rendering (e.g. "2 / 5")
    */
   if (type === 'fraction') {
     return (
@@ -81,7 +81,7 @@ export function CarouselIndicator({
   }
 
   /**
-   * Progress 타입 렌더링 (진행 바)
+   * Progress type rendering (progress bar)
    */
   if (type === 'progress') {
     const progressPercent = ((current + 1) / total) * 100;
@@ -112,7 +112,7 @@ export function CarouselIndicator({
   }
 
   /**
-   * Dot / Line 타입 렌더링
+   * Dot / Line type rendering
    */
   const items = Array.from({ length: total }, (_, index) => index);
   const isVertical = direction === 'vertical';

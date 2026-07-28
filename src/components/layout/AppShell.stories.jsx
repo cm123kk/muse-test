@@ -28,10 +28,10 @@ export default {
 };
 
 /**
- * ## 기본 사용법
- * 
- * 반응형 애플리케이션 쉘입니다.
- * 모바일에서는 자동으로 드로어 메뉴로 전환됩니다.
+ * ## Basic Usage
+ *
+ * A responsive application shell.
+ * On mobile it automatically switches to a drawer menu.
  */
 export const Default = {
   render: () => (
@@ -39,7 +39,7 @@ export const Default = {
       <DocumentTitle
         title="AppShell"
         status="Ready"
-        note="반응형 애플리케이션 쉘 컴포넌트"
+        note="Responsive application shell component"
         brandName="Navigation"
         systemName="AppShell"
         version="1.0"
@@ -70,7 +70,7 @@ export const Default = {
                 Welcome to Dashboard
               </Typography>
               <Typography color="text.secondary">
-                화면 크기를 조절해보세요. 모바일에서는 네비게이션이 드로어 메뉴로 전환됩니다.
+                Try resizing the screen. On mobile, the navigation switches to a drawer menu.
               </Typography>
             </Box>
           </AppShell>
@@ -81,9 +81,9 @@ export const Default = {
 };
 
 /**
- * ## 다양한 기능 조합
- * 
- * 검색, CTA 버튼, 드로어 푸터 등을 포함한 전체 기능 예시입니다.
+ * ## Combined Features
+ *
+ * A full feature example including search, CTA button, drawer footer, and more.
  */
 export const FullFeatured = {
   render: () => (
@@ -91,7 +91,7 @@ export const FullFeatured = {
       <DocumentTitle
         title="AppShell - Full Featured"
         status="Ready"
-        note="다양한 기능이 포함된 전체 구성 예시"
+        note="Full configuration example with various features"
         brandName="Navigation"
         systemName="AppShell"
         version="1.0"
@@ -160,7 +160,7 @@ export const FullFeatured = {
                   Home Page
                 </Typography>
                 <Typography color="text.secondary" sx={{ maxWidth: 400 }}>
-                  메인 콘텐츠 영역입니다. AppShell이 반응형 헤더와 자동 드로어 변환을 제공합니다.
+                  This is the main content area. AppShell provides a responsive header and automatic drawer conversion.
                 </Typography>
               </Box>
             </Box>
@@ -172,9 +172,9 @@ export const FullFeatured = {
 };
 
 /**
- * ## 투명 헤더
- * 
- * Hero 섹션에 적합한 투명 헤더 모드입니다.
+ * ## Transparent Header
+ *
+ * A transparent header mode suitable for Hero sections.
  */
 export const TransparentHeader = {
   render: () => (
@@ -182,7 +182,7 @@ export const TransparentHeader = {
       <DocumentTitle
         title="AppShell - Transparent Header"
         status="Ready"
-        note="Hero 섹션에 적합한 투명 헤더 모드"
+        note="Transparent header mode suitable for Hero sections"
         brandName="Navigation"
         systemName="AppShell"
         version="1.0"

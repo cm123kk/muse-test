@@ -1,76 +1,76 @@
 # appendix. RLS Policies (MUSE)
 
-> Phase 3 산출물. 모든 테이블 RLS 정책.
-> 마이그레이션: `supabase/migrations/20260520120200_rls_policies.sql`
+> Phase 3 deliverable. RLS policies for all tables.
+> Migration: `supabase/migrations/20260520120200_rls_policies.sql`
 
-## 기본 원칙
+## Core Principles
 
-- 모든 public 테이블 `ENABLE ROW LEVEL SECURITY`
-- 정책 없음 = DENY by default
-- `anon` (비로그인) 은 어떤 데이터도 접근 불가
+- `ENABLE ROW LEVEL SECURITY` on all public tables
+- No policy = DENY by default
+- `anon` (not logged in) cannot access any data
 
-## 정책 매트릭스
+## Policy Matrix
 
-| 테이블 | SELECT | INSERT | UPDATE | DELETE | 패턴 |
+| Table | SELECT | INSERT | UPDATE | DELETE | Pattern |
 |---|---|---|---|---|---|
-| `profiles` | 전체 | 트리거 전용 | 본인만 | 불가 (cascade) | G |
-| `user_settings` | 본인만 | 트리거 전용 | 본인만 | 불가 (cascade) | A |
-| `reference_items` | 본인만 | 본인만 | 본인만 | 본인만 | A |
-| `projects` | 본인만 | 본인만 | 본인만 | 본인만 | A |
-| `project_references` | 프로젝트 소유자 | 프로젝트 소유자 | 프로젝트 소유자 | 프로젝트 소유자 | owner-via-join |
-| `analysis_results` | 프로젝트 소유자 | 프로젝트 소유자 | 프로젝트 소유자 | 프로젝트 소유자 | owner-via-join |
+| `profiles` | All | Trigger only | Self only | Not allowed (cascade) | G |
+| `user_settings` | Self only | Trigger only | Self only | Not allowed (cascade) | A |
+| `reference_items` | Self only | Self only | Self only | Self only | A |
+| `projects` | Self only | Self only | Self only | Self only | A |
+| `project_references` | Project owner | Project owner | Project owner | Project owner | owner-via-join |
+| `analysis_results` | Project owner | Project owner | Project owner | Project owner | owner-via-join |
 
-## 테이블별 정책 상세
+## Policy Details per Table
 
 ### `profiles`
 
 ```sql
--- SELECT: 누구나 (GNB 표시 이름 등 공개)
--- INSERT: 없음 (handle_new_user 트리거 전용)
--- UPDATE: 본인만
--- DELETE: 없음 (auth.users ON DELETE CASCADE 로 삭제)
+-- SELECT: anyone (display name in the GNB and similar public fields)
+-- INSERT: none (handle_new_user trigger only)
+-- UPDATE: self only
+-- DELETE: none (deleted via auth.users ON DELETE CASCADE)
 ```
 
 ### `user_settings`
 
 ```sql
--- SELECT: 본인만
--- INSERT: 없음 (handle_new_user 트리거 전용)
--- UPDATE: 본인만
--- DELETE: 없음 (auth.users ON DELETE CASCADE 로 삭제)
+-- SELECT: self only
+-- INSERT: none (handle_new_user trigger only)
+-- UPDATE: self only
+-- DELETE: none (deleted via auth.users ON DELETE CASCADE)
 ```
 
 ### `reference_items`
 
 ```sql
--- 본인 소유(owner_id = auth.uid()) 만 SELECT / INSERT / UPDATE / DELETE
+-- Only the owner (owner_id = auth.uid()) can SELECT / INSERT / UPDATE / DELETE
 ```
 
 ### `projects`
 
 ```sql
--- 본인 소유(owner_id = auth.uid()) 만 SELECT / INSERT / UPDATE / DELETE
+-- Only the owner (owner_id = auth.uid()) can SELECT / INSERT / UPDATE / DELETE
 ```
 
 ### `project_references`
 
 ```sql
--- owner_id 없음. projects.owner_id 를 JOIN 으로 확인
--- SELECT / INSERT / UPDATE / DELETE 모두: owns_project(project_id) 확인
+-- No owner_id. Verify via a JOIN on projects.owner_id
+-- SELECT / INSERT / UPDATE / DELETE all: check owns_project(project_id)
 ```
 
 ### `analysis_results`
 
 ```sql
--- owner_id 없음. projects.owner_id 를 JOIN 으로 확인
--- SELECT / INSERT / UPDATE / DELETE 모두: owns_project(project_id) 확인
+-- No owner_id. Verify via a JOIN on projects.owner_id
+-- SELECT / INSERT / UPDATE / DELETE all: check owns_project(project_id)
 ```
 
-## 헬퍼 함수
+## Helper Function
 
 ```sql
--- project_references / analysis_results 의 owner-via-join 검증
--- security definer + stable: RLS 재귀 방지 + 쿼리 플래너 최적화
+-- owner-via-join verification for project_references / analysis_results
+-- security definer + stable: prevents RLS recursion + optimizes the query planner
 create or replace function public.owns_project(pid uuid)
 returns boolean
 language sql security definer stable
@@ -82,14 +82,14 @@ as $$
 $$;
 ```
 
-## 검증 쿼리 (Phase 5 적용 후 실행)
+## Verification Queries (run after Phase 5 is applied)
 
 ```sql
--- RLS 비활성 public 테이블 (반드시 0건)
+-- public tables with RLS disabled (must be 0 rows)
 select tablename from pg_tables
 where schemaname = 'public' and rowsecurity = false;
 
--- 정책 없는 RLS 활성 테이블 (0건 목표)
+-- RLS enabled tables with no policy (target 0 rows)
 select c.relname
 from pg_class c
 left join pg_policy p on p.polrelid = c.oid
@@ -98,12 +98,12 @@ where c.relnamespace = 'public'::regnamespace
   and p.polname is null;
 ```
 
-## 예상 검증 결과
+## Expected Verification Results
 
-| 시나리오 | 기대 결과 |
+| Scenario | Expected Result |
 |---|---|
-| 비로그인 `reference_items` SELECT | ✅ 0건 반환 |
-| 사용자 A가 사용자 B의 `projects` SELECT | ✅ 0건 반환 |
-| 사용자 A가 자기 `projects` SELECT | ✅ 정상 반환 |
-| 사용자 A가 B의 `project_references` INSERT | ✅ 차단 |
-| 사용자 A가 자기 프로젝트의 `analysis_results` UPDATE | ✅ 허용 |
+| Not logged in, SELECT on `reference_items` | ✅ Returns 0 rows |
+| User A runs SELECT on User B's `projects` | ✅ Returns 0 rows |
+| User A runs SELECT on their own `projects` | ✅ Returns normally |
+| User A runs INSERT on User B's `project_references` | ✅ Blocked |
+| User A runs UPDATE on their own project's `analysis_results` | ✅ Allowed |

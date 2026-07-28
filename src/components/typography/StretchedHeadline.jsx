@@ -2,29 +2,29 @@ import { useEffect, useRef, useState } from 'react';
 import { Box } from '@mui/material';
 
 /**
- * StretchedHeadline 컴포넌트
+ * StretchedHeadline component
  *
- * 단어 간격을 동적으로 늘려 컨테이너 전체 너비를 채우는 히어로 타이포그래피 컴포넌트.
- * 각 단어를 개별 span으로 분리하고 flexbox의 space-between으로 배치한다.
+ * A hero typography component that dynamically stretches word spacing to fill the entire container width.
+ * Splits each word into an individual span and lays them out with flexbox space-between.
  *
- * 동작 방식:
- * 1. 텍스트를 공백 기준으로 단어 단위로 분리
- * 2. 각 단어를 개별 span 요소로 래핑
- * 3. flexbox justify-content: space-between으로 전체 너비에 균등 배치
- * 4. ResizeObserver로 컨테이너 크기 변화 감지하여 반응형 대응
- * 5. fillWidth가 false면 일반 word-spacing으로 간격 조절
+ * How it works:
+ * 1. Splits the text into words by whitespace
+ * 2. Wraps each word in an individual span element
+ * 3. Distributes them evenly across the full width with flexbox justify-content: space-between
+ * 4. Detects container size changes with ResizeObserver for a responsive layout
+ * 5. When fillWidth is false, adjusts spacing with regular word-spacing
  *
  * Props:
- * @param {string} text - 표시할 텍스트 [Required]
- * @param {string} variant - 'static' | 'animated' [Optional, 기본값: 'static']
- * @param {boolean} fillWidth - 전체 너비 채우기 [Optional, 기본값: true]
- * @param {number} minWordSpacing - fillWidth가 false일 때 최소 단어 간격 (em) [Optional, 기본값: 0.5]
- * @param {string} fontFamily - 폰트 패밀리 [Optional, 기본값: 'Outfit']
- * @param {number} fontSize - 폰트 크기 (px 또는 rem) [Optional, 기본값: 'clamp(2rem, 8vw, 6rem)']
- * @param {number} fontWeight - 폰트 굵기 [Optional, 기본값: 900]
- * @param {number} lineHeight - 줄 높이 [Optional, 기본값: 1]
- * @param {string} textTransform - 텍스트 변환 ('none' | 'uppercase' | 'lowercase') [Optional, 기본값: 'uppercase']
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {string} text - Text to display [Required]
+ * @param {string} variant - 'static' | 'animated' [Optional, default: 'static']
+ * @param {boolean} fillWidth - Fill the full width [Optional, default: true]
+ * @param {number} minWordSpacing - Minimum word spacing when fillWidth is false (em) [Optional, default: 0.5]
+ * @param {string} fontFamily - Font family [Optional, default: 'Outfit']
+ * @param {number} fontSize - Font size (px or rem) [Optional, default: 'clamp(2rem, 8vw, 6rem)']
+ * @param {number} fontWeight - Font weight [Optional, default: 900]
+ * @param {number} lineHeight - Line height [Optional, default: 1]
+ * @param {string} textTransform - Text transform ('none' | 'uppercase' | 'lowercase') [Optional, default: 'uppercase']
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
  * <StretchedHeadline text="DESIGN SYSTEM" />
@@ -46,10 +46,10 @@ export function StretchedHeadline({
   const containerRef = useRef(null);
   const [isAnimated, setIsAnimated] = useState(false);
 
-  // 단어 분리
+  // Split into words
   const words = text.trim().split(/\s+/);
 
-  // 애니메이션 트리거 (viewport 진입 시)
+  // Animation trigger (upon entering the viewport)
   useEffect(() => {
     if (variant !== 'animated') return;
 
@@ -71,7 +71,7 @@ export function StretchedHeadline({
     return () => observer.disconnect();
   }, [variant]);
 
-  // fillWidth가 true일 때 - space-between 방식
+  // When fillWidth is true - space-between approach
   if (fillWidth) {
     return (
       <Box
@@ -113,7 +113,7 @@ export function StretchedHeadline({
     );
   }
 
-  // fillWidth가 false일 때 - word-spacing 방식
+  // When fillWidth is false - word-spacing approach
   return (
     <Box
       ref={containerRef}
@@ -156,16 +156,16 @@ export function StretchedHeadline({
 }
 
 /**
- * StretchedHeadlineMultiline 컴포넌트
+ * StretchedHeadlineMultiline component
  *
- * 여러 줄의 StretchedHeadline을 세로로 배치하는 래퍼 컴포넌트.
- * 각 줄이 독립적으로 전체 너비를 채운다.
+ * A wrapper component that stacks multiple StretchedHeadline lines vertically.
+ * Each line independently fills the full width.
  *
  * Props:
- * @param {string[]} lines - 각 줄의 텍스트 배열 [Required]
- * @param {number} gap - 줄 간격 [Optional, 기본값: 0]
- * @param {object} headlineProps - 각 StretchedHeadline에 전달할 props [Optional]
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {string[]} lines - Array of text for each line [Required]
+ * @param {number} gap - Line spacing [Optional, default: 0]
+ * @param {object} headlineProps - Props to pass to each StretchedHeadline [Optional]
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
  * <StretchedHeadlineMultiline

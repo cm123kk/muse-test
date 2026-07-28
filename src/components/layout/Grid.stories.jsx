@@ -13,32 +13,32 @@ export default {
         component: `
 ## Grid [MUI]
 
-MUI Grid v7 컴포넌트입니다.
+The MUI Grid v7 component.
 
-\`size\` prop을 사용하여 반응형 레이아웃을 구성합니다. **12컬럼 시스템**을 기반으로 합니다.
+Use the \`size\` prop to build a responsive layout. It is based on a **12 column system**.
 
-### 12컬럼 시스템
-- 한 row의 컬럼 합은 항상 **12**입니다.
-- 합이 12를 초과하면 자동으로 다음 줄로 넘어갑니다.
-- 예: \`size={6}\` 2개 = 12 (한 줄), \`size={6}\` 3개 = 18 (두 줄로 분리)
+### 12 Column System
+- The sum of columns in a row is always **12**.
+- When the sum exceeds 12, items automatically wrap to the next line.
+- Example: two \`size={6}\` = 12 (one line), three \`size={6}\` = 18 (split into two lines)
 
-| 배치 | size 값 | 합계 |
+| Layout | size value | Total |
 |------|---------|------|
-| 2등분 | 6 + 6 | 12 |
-| 3등분 | 4 + 4 + 4 | 12 |
-| 4등분 | 3 + 3 + 3 + 3 | 12 |
-| 사이드바 | 3 + 9 | 12 |
+| Halves | 6 + 6 | 12 |
+| Thirds | 4 + 4 + 4 | 12 |
+| Quarters | 3 + 3 + 3 + 3 | 12 |
+| Sidebar | 3 + 9 | 12 |
 
-### 주요 변경사항 (v7)
-- \`xs\`, \`sm\`, \`md\` 등의 props 대신 \`size\` prop 사용
-- \`size={{ xs: 12, md: 6 }}\` 형태로 반응형 지정
+### Key Changes (v7)
+- Use the \`size\` prop instead of \`xs\`, \`sm\`, \`md\`, and similar props
+- Specify responsive values as \`size={{ xs: 12, md: 6 }}\`
 
-### 사용 패턴
-| 패턴 | 설명 | 예시 |
+### Usage Patterns
+| Pattern | Description | Example |
 |------|------|------|
-| 고정 크기 | 숫자로 컬럼 지정 | \`size={6}\` |
-| 반응형 | 브레이크포인트별 지정 | \`size={{ xs: 12, md: 6 }}\` |
-| 자동 확장 | 남은 공간 채움 | \`size="grow"\` |
+| Fixed size | Set columns with a number | \`size={6}\` |
+| Responsive | Set per breakpoint | \`size={{ xs: 12, md: 6 }}\` |
+| Auto expand | Fill remaining space | \`size="grow"\` |
         `,
       },
     },
@@ -47,7 +47,7 @@ MUI Grid v7 컴포넌트입니다.
     spacing: {
       control: 'select',
       options: [0, 1, 2, 3, 4, 5, 6, 7, 8],
-      description: 'Grid 아이템 간의 간격을 지정합니다. (8px 단위)',
+      description: 'Sets the spacing between Grid items. (in units of 8px)',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '0' },
@@ -56,7 +56,7 @@ MUI Grid v7 컴포넌트입니다.
   },
 };
 
-/** 기본 그리드 - spacing 조절 가능 */
+/** Basic grid: spacing is adjustable */
 export const Default = {
   args: {
     spacing: 2,
@@ -81,7 +81,7 @@ export const Default = {
   ),
 };
 
-/** 균등 컬럼 - 3등분 */
+/** Equal columns: thirds */
 export const EqualColumns = {
   args: {
     spacing: 2,
@@ -103,7 +103,7 @@ export const EqualColumns = {
   ),
 };
 
-/** 반응형 그리드 - 브레이크포인트별 다른 크기 */
+/** Responsive grid: different size per breakpoint */
 export const Responsive = {
   args: {
     spacing: 2,
@@ -125,7 +125,7 @@ export const Responsive = {
   ),
 };
 
-/** 자동 레이아웃 - grow 사용 */
+/** Auto layout: using grow */
 export const AutoLayout = {
   args: {
     spacing: 2,
@@ -147,7 +147,7 @@ export const AutoLayout = {
   ),
 };
 
-/** 중첩 그리드 */
+/** Nested grid */
 export const NestedGrid = {
   args: {
     spacing: 2,
@@ -171,7 +171,7 @@ export const NestedGrid = {
   ),
 };
 
-/** Spacing 비교 - 다양한 간격 한눈에 보기 */
+/** Spacing comparison: view various spacings at a glance */
 export const SpacingComparison = {
   render: () => (
     <Box sx={ { flexGrow: 1 } }>

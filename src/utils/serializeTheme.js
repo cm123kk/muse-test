@@ -1,15 +1,15 @@
 /**
  * serializeTheme
  *
- * theme-like 객체를 MUI `createTheme` 용 JS 소스 문자열로 직렬화.
- * - 함수, Symbol, undefined는 제외
- * - 문자열은 single quote, 숫자/불리언은 그대로
- * - key가 JS 식별자로 유효하면 따옴표 없이, 아니면 quoted
+ * Serialize a theme-like object into a JS source string for MUI `createTheme`.
+ * - Excludes functions, Symbols, and undefined
+ * - Strings use single quotes, numbers/booleans stay as-is
+ * - Keys are unquoted if valid JS identifiers, otherwise quoted
  *
- * @param {object} themeObject - 직렬화할 theme 객체
+ * @param {object} themeObject - The theme object to serialize
  * @param {object} options
- * @param {boolean} options.asCreateThemeCall - createTheme(...) 호출 형태로 감쌀지 [기본값: true]
- * @returns {string} JS 소스 문자열
+ * @param {boolean} options.asCreateThemeCall - Whether to wrap in a createTheme(...) call [default: true]
+ * @returns {string} JS source string
  */
 export function serializeTheme(themeObject, { asCreateThemeCall = true } = {}) {
   const body = stringifyValue(themeObject, 0);
@@ -41,7 +41,7 @@ function stringifyValue(value, depth) {
 }
 
 function stringifyString(s) {
-  // single quote 기반, 내부 single quote는 escape
+  // Single-quote based, escape inner single quotes
   return `'${s.replace(/\\/g, '\\\\').replace(/'/g, "\\'")}'`;
 }
 

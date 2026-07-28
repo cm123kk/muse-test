@@ -1,16 +1,16 @@
 /**
- * MUSE AI 클라이언트 헬퍼 (Supabase Edge Function 프록시 버전)
+ * MUSE AI client helper (Supabase Edge Function proxy version)
  *
- * Anthropic API 를 Supabase Edge Function (anthropic-proxy) 을 통해 호출한다.
- * API 키는 서버 사이드 Supabase Secrets 에서만 관리.
+ * Calls the Anthropic API through a Supabase Edge Function (anthropic-proxy).
+ * The API key is managed only in server-side Supabase Secrets.
  *
  * Edge Function: supabase/functions/anthropic-proxy/index.ts
- * 키 등록: supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
+ * Key registration: supabase secrets set ANTHROPIC_API_KEY=sk-ant-...
  */
 
 import { supabase } from '../lib/supabase';
 
-/** 헬스 체크 — Supabase Edge Function 연결 여부 확인 */
+/** Health check - verifies the Supabase Edge Function connection */
 export async function checkAnthropicHealth() {
   return {
     ok: true,
@@ -20,17 +20,17 @@ export async function checkAnthropicHealth() {
 }
 
 /**
- * Anthropic messages.create 호출 (Supabase Edge Function 프록시).
+ * Anthropic messages.create call (Supabase Edge Function proxy).
  *
  * @param {object} params
- * @param {string} params.model - 예: 'claude-haiku-4-5-20251001'
- * @param {string} [params.system] - 시스템 프롬프트
+ * @param {string} params.model - e.g. 'claude-haiku-4-5-20251001'
+ * @param {string} [params.system] - System prompt
  * @param {Array}  params.messages - [{ role: 'user'|'assistant', content: ... }]
- * @param {Array}  [params.tools]  - Tool 정의 배열
- * @param {object} [params.tool_choice] - { type: 'tool', name: '...' } 등
+ * @param {Array}  [params.tools]  - Array of tool definitions
+ * @param {object} [params.tool_choice] - e.g. { type: 'tool', name: '...' }
  * @param {number} [params.max_tokens]
  * @param {number} [params.temperature]
- * @returns {Promise<object>} Anthropic API 응답 원본
+ * @returns {Promise<object>} Raw Anthropic API response
  */
 export async function callAnthropic(params) {
   const { data, error } = await supabase.functions.invoke('anthropic-proxy', {
@@ -51,9 +51,9 @@ export async function callAnthropic(params) {
 }
 
 /**
- * 응답 content blocks에서 첫 tool_use 블록의 input 객체 추출.
- * @param {object} response - Anthropic messages 응답
- * @param {string} [toolName] - 특정 tool 이름으로 필터링
+ * Extract the input object of the first tool_use block from the response content blocks.
+ * @param {object} response - Anthropic messages response
+ * @param {string} [toolName] - Filter by a specific tool name
  * @returns {object|null}
  */
 export function extractToolInput(response, toolName) {
@@ -66,7 +66,7 @@ export function extractToolInput(response, toolName) {
 }
 
 /**
- * 응답에서 text 블록을 합쳐 평문으로 반환 (폴백/디버그용)
+ * Combine text blocks from the response and return as plain text (for fallback/debug)
  */
 export function extractText(response) {
   const blocks = response?.content;
@@ -75,15 +75,15 @@ export function extractText(response) {
 }
 
 /**
- * 동일 tool 이 여러 번 호출됐을 때 input 들을 머지.
- *  - 배열 필드: concat (중복 토큰은 id 기준 dedupe)
- *  - 객체 필드: shallow merge (later wins)
- *  - 스칼라: later wins (모델이 후속 호출에서 refine 한다고 가정)
+ * Merge inputs when the same tool is called multiple times.
+ *  - Array fields: concat (duplicate tokens deduped by id)
+ *  - Object fields: shallow merge (later wins)
+ *  - Scalars: later wins (assumes the model refines in later calls)
  *
- * Haiku 4.5 가 tool_choice='any' 에서 submit_tokens 를
- * 레이어별로 분할 호출하는 경우(예: color → typography → layout → gradient
- * 각각 1번씩) 마지막 input 만 살아남으면 다른 레이어가 빈 배열로 사라진다.
- * 이를 방지하기 위해 merge.
+ * When Haiku 4.5 splits submit_tokens per layer under tool_choice='any'
+ * (e.g. color -> typography -> layout -> gradient, one each), keeping only the
+ * last input would make the other layers disappear as empty arrays.
+ * Merge to prevent this.
  */
 function mergeToolInputs(prev, next) {
   if (!prev) return next;
@@ -114,8 +114,8 @@ function mergeToolInputs(prev, next) {
 }
 
 /**
- * 모든 tool_use 블록의 input을 이름별 map으로 추출.
- * 동일 tool 이름 중복 호출 시 input merge (덮어쓰기 X).
+ * Extract the input of all tool_use blocks into a map keyed by name.
+ * When the same tool name is called multiple times, inputs are merged (not overwritten).
  * @param {object} response
  * @returns {Record<string, object>} { [toolName]: mergedInput }
  */
@@ -132,9 +132,9 @@ export function extractAllToolInputs(response) {
 }
 
 /**
- * 이미지 URL(dataURL 또는 http)을 Anthropic messages content의 image block으로 변환.
- * - data URL이면 base64 + media_type 추출
- * - http URL이면 { type: 'image', source: { type: 'url', url } } 사용 (2025+ 지원)
+ * Convert an image URL (dataURL or http) into an image block for Anthropic messages content.
+ * - For a data URL, extract base64 + media_type
+ * - For an http URL, use { type: 'image', source: { type: 'url', url } } (supported 2025+)
  */
 export function toImageBlock(src) {
   if (!src) return null;
@@ -150,8 +150,8 @@ export function toImageBlock(src) {
 }
 
 /**
- * Vite import된 이미지 URL을 base64 data URL로 fetch & 변환.
- * Storybook iframe 내부에서 fetch → Blob → FileReader.
+ * Fetch a Vite-imported image URL and convert it into a base64 data URL.
+ * Inside the Storybook iframe: fetch -> Blob -> FileReader.
  */
 export async function imageUrlToBase64DataUrl(url) {
   const res = await fetch(url);
@@ -166,7 +166,7 @@ export async function imageUrlToBase64DataUrl(url) {
 }
 
 /**
- * File 객체 → base64 data URL 변환 (업로드 flow 전용)
+ * Convert a File object -> base64 data URL (for the upload flow only)
  */
 export function fileToDataUrl(file) {
   return new Promise((resolve, reject) => {
@@ -178,10 +178,10 @@ export function fileToDataUrl(file) {
 }
 
 /**
- * Canvas 리사이즈 — 긴 변을 maxDim 이하로 (AI payload 절감).
+ * Canvas resize - scale the longer side down to maxDim or less (reduces AI payload).
  * @param {string} dataUrl - data:image/...;base64,...
- * @param {number} maxDim - 기본 1024
- * @returns {Promise<string>} 리사이즈된 JPEG data URL (품질 0.85)
+ * @param {number} maxDim - Default 1024
+ * @returns {Promise<string>} Resized JPEG data URL (quality 0.85)
  */
 export function resizeDataUrl(dataUrl, maxDim = 1024) {
   return new Promise((resolve, reject) => {

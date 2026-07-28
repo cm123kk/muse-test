@@ -1,8 +1,8 @@
 /**
- * MUSE Data — barrel export
+ * MUSE Data - barrel export
  *
- * 모든 스토리/페이지 템플릿은 여기서 import해서 더미 데이터를 사용한다.
- * 실제 이미지/데이터 교체는 각 파일(references.js, projects.js …)에서 진행.
+ * All story/page templates import their dummy data from here.
+ * Replace actual images/data in each file (references.js, projects.js, etc.).
  */
 
 export {
@@ -15,7 +15,7 @@ export { projects, projectsById, projectsWithThumbnails } from './projects.js';
 export { analysisResultsByProjectId, getAnalysisResult } from './analysisResults.js';
 export { defaultUserSettings } from './userSettings.js';
 
-// AI 태스크 정의
+// AI task definitions
 export {
   TASK_AUTO_TAG,
   TASK_RECOMMEND,
@@ -26,7 +26,7 @@ export {
   AI_WORKFLOW_DIAGRAM,
 } from './aiTasks.js';
 
-// 태그 preset helper
+// Tag preset helper
 export {
   MUSE_TAGS_PRESET,
   TOKEN_LAYERS,

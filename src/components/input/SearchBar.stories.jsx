@@ -14,12 +14,12 @@ export default {
         component: `
 ## SearchBar
 
-키워드 검색 입력 필드 컴포넌트.
+Keyword search input field component.
 
-### 기능
-- outlined, filled, minimal 변형 지원
-- 필터 토글 버튼 옵션
-- 전체 너비 모드 지원
+### Features
+- Supports outlined, filled, and minimal variants
+- Optional filter toggle button
+- Full width mode support
         `,
       },
     },
@@ -27,7 +27,7 @@ export default {
 };
 
 /**
- * SearchBar 기본 사용 예시
+ * SearchBar basic usage example
  */
 export const Default = {
   render: () => {
@@ -46,7 +46,7 @@ export const Default = {
 };
 
 /**
- * SearchBar 변형 비교
+ * SearchBar variant comparison
  */
 export const Variants = {
   render: () => {

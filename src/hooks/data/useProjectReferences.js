@@ -3,7 +3,7 @@ import { supabase as defaultClient } from '../../lib/supabase';
 import { normalizeSupabaseError } from '../../utils/supabaseError';
 
 /**
- * 특정 프로젝트의 project_references 목록 조회
+ * Fetch the project_references list for a specific project
  *
  * @param {{ projectId: string, client?: object }} options
  * @returns {{ data: import('../../types/database').ProjectReference[]|null, loading: boolean, error: object|null, refetch: () => void }}
@@ -37,7 +37,7 @@ export function useProjectReferences({ projectId, client = defaultClient }) {
 }
 
 /**
- * project_references upsert (레이어 chip 토글)
+ * Upsert project_references (layer chip toggle)
  *
  * @param {{ client?: object }} [options]
  * @returns {{ upsertProjectReference: (payload: { project_id: string, reference_id: string, use_layers?: string[] }) => Promise<{ ok: boolean, data?: object }>, loading: boolean, error: object|null }}

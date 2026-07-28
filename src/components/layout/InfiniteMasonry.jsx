@@ -5,23 +5,23 @@ import Typography from '@mui/material/Typography';
 import { useInfiniteScroll } from './useInfiniteScroll.js';
 
 /**
- * InfiniteMasonry 컴포넌트
+ * InfiniteMasonry component
  *
- * MUI Masonry를 기반으로 한 인피니트 스크롤 그리드.
- * 하단 sentinel이 뷰포트에 들어오면 `onLoadMore`가 호출되어 추가 아이템을 요청한다.
- * 기본적으로 반응형 컬럼을 지원하며, MUSE의 아카이브/레퍼런스 선택 UI에 사용된다.
+ * An infinite scroll grid based on MUI Masonry.
+ * When the bottom sentinel enters the viewport, `onLoadMore` is called to request more items.
+ * Supports responsive columns by default and is used in MUSE's archive/reference selection UI.
  *
  * Props:
- * @param {array} items - 렌더링할 아이템 배열 [Required]
- * @param {function} renderItem - (item, index) => ReactNode, 각 아이템 렌더 함수 [Required]
- * @param {function} onLoadMore - 다음 페이지 요청 콜백 [Optional]
- * @param {boolean} hasMore - 추가 로드 가능 여부 [Optional, 기본값: false]
- * @param {boolean} isLoading - 현재 로딩 중인지 (중복 호출 방지) [Optional, 기본값: false]
- * @param {number|object} columns - Masonry 컬럼 수 또는 반응형 객체 [Optional, 기본값: { xs: 2, sm: 3, md: 4 }]
- * @param {number} spacing - 아이템 간 간격 (8px 단위) [Optional, 기본값: 2]
- * @param {string} keyExtractor - 아이템에서 key를 뽑을 필드명 (없으면 index 사용) [Optional, 기본값: 'id']
- * @param {node} emptyContent - items 비어있을 때 표시할 콘텐츠 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {array} items - Array of items to render [Required]
+ * @param {function} renderItem - (item, index) => ReactNode, render function for each item [Required]
+ * @param {function} onLoadMore - Callback to request the next page [Optional]
+ * @param {boolean} hasMore - Whether more items can be loaded [Optional, default: false]
+ * @param {boolean} isLoading - Whether it is currently loading (prevents duplicate calls) [Optional, default: false]
+ * @param {number|object} columns - Number of Masonry columns or a responsive object [Optional, default: { xs: 2, sm: 3, md: 4 }]
+ * @param {number} spacing - Gap between items (in 8px units) [Optional, default: 2]
+ * @param {string} keyExtractor - Field name to extract the key from an item (falls back to index) [Optional, default: 'id']
+ * @param {node} emptyContent - Content to display when items is empty [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <InfiniteMasonry
@@ -55,7 +55,7 @@ export function InfiniteMasonry({
       <Box sx={ { py: 8, textAlign: 'center', ...sx } }>
         { emptyContent || (
           <Typography variant="body2" color="text.secondary">
-            표시할 항목이 없습니다
+            No items to display
           </Typography>
         ) }
       </Box>
@@ -71,7 +71,7 @@ export function InfiniteMasonry({
         }) }
       </Masonry>
 
-      {/* Sentinel — Masonry 바깥에 두어 컬럼 계산에 간섭 없음 */}
+      {/* Sentinel: placed outside Masonry so it does not interfere with column calculation */}
       <Box
         ref={ sentinelRef }
         sx={ {
@@ -94,7 +94,7 @@ export function InfiniteMasonry({
         >
           <CircularProgress size={ 20 } thickness={ 4 } />
           <Typography variant="body2" color="text.secondary">
-            불러오는 중
+            Loading
           </Typography>
         </Box>
       ) }
@@ -102,7 +102,7 @@ export function InfiniteMasonry({
       { !hasMore && items?.length > 0 && !isLoading && (
         <Box sx={ { py: 4, textAlign: 'center' } }>
           <Typography variant="caption" color="text.secondary">
-            모든 항목을 불러왔습니다
+            All items loaded
           </Typography>
         </Box>
       ) }

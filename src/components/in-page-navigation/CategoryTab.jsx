@@ -3,15 +3,15 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 
 /**
- * CategoryTab 컴포넌트
+ * CategoryTab component
  *
- * 카테고리 필터링을 위한 탭 메뉴.
+ * A tab menu for category filtering.
  *
  * Props:
- * @param {Array} categories - 카테고리 목록 [{ id, label }] [Required]
- * @param {string} selected - 현재 선택된 카테고리 ID [Required]
- * @param {function} onChange - 변경 핸들러 (id) => void [Required]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {Array} categories - list of categories [{ id, label }] [Required]
+ * @param {string} selected - currently selected category ID [Required]
+ * @param {function} onChange - change handler (id) => void [Required]
+ * @param {object} sx - additional styles [Optional]
  */
 export function CategoryTab({ categories = [], selected, onChange, sx }) {
   return (

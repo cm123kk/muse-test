@@ -3,24 +3,24 @@ import Snackbar from '@mui/material/Snackbar';
 import Alert from '@mui/material/Alert';
 
 /**
- * useSnackbar 커스텀 훅
+ * useSnackbar custom hook
  *
- * 스낵바 알림 상태를 관리하는 재사용 가능한 훅.
- * 성공, 에러, 정보 등 다양한 알림을 간편하게 표시.
+ * A reusable hook that manages snackbar notification state.
+ * Easily display various notifications such as success, error, and info.
  *
- * 동작 방식:
- * 1. notify() 호출 시 스낵바 표시
- * 2. 3초 후 자동으로 닫힘
- * 3. SnackbarComponent를 렌더링하여 UI에 표시
+ * How it works:
+ * 1. Show the snackbar when notify() is called
+ * 2. Automatically closes after 3 seconds
+ * 3. Render SnackbarComponent to display it in the UI
  *
  * Example usage:
  * const { notify, SnackbarComponent } = useSnackbar();
  *
- * // 알림 표시
- * notify('업로드 완료!', 'success');
- * notify('오류가 발생했습니다', 'error');
+ * // Show a notification
+ * notify('Upload complete!', 'success');
+ * notify('An error occurred', 'error');
  *
- * // 렌더링
+ * // Render
  * return (
  *   <>
  *     <Content />
@@ -28,9 +28,9 @@ import Alert from '@mui/material/Alert';
  *   </>
  * );
  *
- * @param {object} options - 옵션
- * @param {number} options.autoHideDuration - 자동 닫힘 시간 (ms) [기본값: 3000]
- * @param {object} options.anchorOrigin - 위치 [기본값: { vertical: 'bottom', horizontal: 'center' }]
+ * @param {object} options - options
+ * @param {number} options.autoHideDuration - auto-close time (ms) [default: 3000]
+ * @param {object} options.anchorOrigin - position [default: { vertical: 'bottom', horizontal: 'center' }]
  * @returns {object} { notify, close, SnackbarComponent }
  */
 export function useSnackbar(options = {}) {
@@ -46,9 +46,9 @@ export function useSnackbar(options = {}) {
   });
 
   /**
-   * 스낵바 알림 표시
-   * @param {string} message - 표시할 메시지
-   * @param {string} severity - 알림 유형 ('success' | 'error' | 'warning' | 'info')
+   * Show a snackbar notification
+   * @param {string} message - the message to display
+   * @param {string} severity - notification type ('success' | 'error' | 'warning' | 'info')
    */
   const notify = useCallback((message, severity = 'success') => {
     setState({
@@ -59,15 +59,15 @@ export function useSnackbar(options = {}) {
   }, []);
 
   /**
-   * 스낵바 닫기
+   * Close the snackbar
    */
   const close = useCallback(() => {
     setState((prev) => ({ ...prev, open: false }));
   }, []);
 
   /**
-   * 스낵바 컴포넌트
-   * 페이지 하단에 렌더링
+   * Snackbar component
+   * Rendered at the bottom of the page
    */
   const SnackbarComponent = useCallback(
     () => (

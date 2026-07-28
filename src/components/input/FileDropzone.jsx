@@ -9,29 +9,29 @@ import CloseIcon from '@mui/icons-material/Close';
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 
 /**
- * FileDropzone 컴포넌트
+ * FileDropzone component
  *
- * 드래그 앤 드롭 또는 클릭으로 파일을 업로드하는 영역.
- * 미리보기, 업로드 진행률, 파일 정보 표시 기능 제공.
+ * An area for uploading files via drag and drop or click.
+ * Provides preview, upload progress, and file info display.
  *
- * 동작 방식:
- * 1. 드래그 앤 드롭 또는 클릭으로 파일 선택
- * 2. 선택된 파일의 썸네일 미리보기 표시
- * 3. 업로드 진행률 표시 (isUploading 상태)
- * 4. 업로드 완료 후 성공 상태 표시
+ * Behavior:
+ * 1. Select a file via drag and drop or click
+ * 2. Show a thumbnail preview of the selected file
+ * 3. Show upload progress (isUploading state)
+ * 4. Show the success state after the upload completes
  *
  * Props:
- * @param {function} onFileSelect - 파일 선택 핸들러 (file) => void [Required]
- * @param {function} onFileRemove - 파일 제거 핸들러 [Optional]
- * @param {File} selectedFile - 현재 선택된 파일 [Optional]
- * @param {string} previewUrl - 미리보기 이미지 URL [Optional]
- * @param {boolean} isUploading - 업로드 중 상태 [Optional, 기본값: false]
- * @param {number} uploadProgress - 업로드 진행률 (0-100) [Optional, 기본값: 0]
- * @param {boolean} isComplete - 업로드 완료 상태 [Optional, 기본값: false]
- * @param {string} accept - 허용 파일 형식 [Optional, 기본값: 'image/*,video/*']
- * @param {number} maxSize - 최대 파일 크기 (bytes) [Optional, 기본값: 50MB]
- * @param {string} variant - 스타일 변형 ('default' | 'compact' | 'minimal') [Optional, 기본값: 'default']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {function} onFileSelect - file select handler (file) => void [Required]
+ * @param {function} onFileRemove - file remove handler [Optional]
+ * @param {File} selectedFile - currently selected file [Optional]
+ * @param {string} previewUrl - preview image URL [Optional]
+ * @param {boolean} isUploading - uploading state [Optional, default: false]
+ * @param {number} uploadProgress - upload progress (0-100) [Optional, default: 0]
+ * @param {boolean} isComplete - upload complete state [Optional, default: false]
+ * @param {string} accept - allowed file types [Optional, default: 'image/*,video/*']
+ * @param {number} maxSize - maximum file size (bytes) [Optional, default: 50MB]
+ * @param {string} variant - style variant ('default' | 'compact' | 'minimal') [Optional, default: 'default']
+ * @param {object} sx - additional styles [Optional]
  *
  * Example usage:
  * <FileDropzone
@@ -62,7 +62,7 @@ export function FileDropzone({
   const fileInputRef = useRef(null);
 
   /**
-   * 파일 유효성 검사
+   * File validation
    */
   const validateFile = useCallback(
     (file) => {
@@ -76,7 +76,7 @@ export function FileDropzone({
   );
 
   /**
-   * 파일 처리
+   * File handling
    */
   const handleFile = useCallback(
     (file) => {
@@ -92,7 +92,7 @@ export function FileDropzone({
   );
 
   /**
-   * 드래그 이벤트 핸들러
+   * Drag event handlers
    */
   const handleDragEnter = useCallback((e) => {
     e.preventDefault();
@@ -115,7 +115,7 @@ export function FileDropzone({
     (files) => {
       const list = Array.from(files || []);
       if (!list.length) return;
-      // 크기 검증
+      // Validate size
       for (const f of list) {
         const err = validateFile(f);
         if (err) { setError(err); return; }
@@ -143,7 +143,7 @@ export function FileDropzone({
   );
 
   /**
-   * 클릭으로 파일 선택
+   * Select a file via click
    */
   const handleClick = useCallback(() => {
     if (!isUploading && !isComplete) {
@@ -152,7 +152,7 @@ export function FileDropzone({
   }, [isUploading, isComplete]);
 
   /**
-   * 파일 입력 변경 핸들러
+   * File input change handler
    */
   const handleInputChange = useCallback(
     (e) => {
@@ -167,7 +167,7 @@ export function FileDropzone({
   );
 
   /**
-   * 파일 제거
+   * File removal
    */
   const handleRemove = useCallback(
     (e) => {
@@ -179,7 +179,7 @@ export function FileDropzone({
   );
 
   /**
-   * 변형별 높이
+   * Height per variant
    */
   const variantHeight = {
     default: 240,
@@ -188,7 +188,7 @@ export function FileDropzone({
   };
 
   /**
-   * 파일 크기 포맷팅
+   * File size formatting
    */
   const formatFileSize = (bytes) => {
     if (bytes < 1024) return `${bytes} B`;
@@ -197,7 +197,7 @@ export function FileDropzone({
   };
 
   /**
-   * 미리보기가 있는 경우의 렌더링
+   * Rendering when a preview is present
    */
   if (previewUrl || selectedFile) {
     return (
@@ -213,7 +213,7 @@ export function FileDropzone({
           ...sx,
         }}
       >
-        {/* 미리보기 이미지 */}
+        {/* Preview image */}
         {previewUrl && (
           <Box
             component="img"
@@ -227,7 +227,7 @@ export function FileDropzone({
           />
         )}
 
-        {/* 업로드 진행률 오버레이 */}
+        {/* Upload progress overlay */}
         {isUploading && (
           <Box
             sx={{
@@ -251,7 +251,7 @@ export function FileDropzone({
           </Box>
         )}
 
-        {/* 완료 상태 오버레이 */}
+        {/* Complete state overlay */}
         {isComplete && !isUploading && (
           <Box
             sx={{
@@ -275,7 +275,7 @@ export function FileDropzone({
           </Box>
         )}
 
-        {/* 파일 정보 */}
+        {/* File info */}
         {selectedFile && (
           <Box
             sx={{
@@ -305,7 +305,7 @@ export function FileDropzone({
           </Box>
         )}
 
-        {/* 삭제 버튼 */}
+        {/* Delete button */}
         {!isUploading && onFileRemove && (
           <IconButton
             size="small"
@@ -329,7 +329,7 @@ export function FileDropzone({
   }
 
   /**
-   * 드롭존 기본 상태 렌더링
+   * Rendering the default dropzone state
    */
   return (
     <Box
@@ -367,7 +367,7 @@ export function FileDropzone({
         style={{ display: 'none' }}
       />
 
-      {/* 아이콘 */}
+      {/* Icon */}
       <Box
         sx={{
           width: 56,
@@ -388,7 +388,7 @@ export function FileDropzone({
         )}
       </Box>
 
-      {/* 안내 텍스트 */}
+      {/* Guidance text */}
       <Box sx={{ textAlign: 'center' }}>
         {variant !== 'minimal' && (
           <Typography
@@ -408,7 +408,7 @@ export function FileDropzone({
         )}
       </Box>
 
-      {/* 에러 메시지 */}
+      {/* Error message */}
       {error && (
         <Typography variant="caption" color="error" sx={{ mt: 1 }}>
           {error}

@@ -17,18 +17,18 @@ export default {
         component: `
 ## AspectMedia
 
-이미지 또는 비디오를 지정된 비율로 표시하는 범용 미디어 컴포넌트입니다.
+General-purpose media Component that displays an image or video at a specified ratio.
 
-### 핵심 기능
-- **CSS aspect-ratio**: 네이티브 비율 유지 (96%+ 브라우저 지원)
-- **이미지/비디오 통합**: type prop으로 전환
-- **Lazy Loading**: 기본 활성화
-- **비디오 제어**: autoPlay, muted, loop, controls 지원
+### Key features
+- **CSS aspect-ratio**: keeps the native ratio (96%+ browser support)
+- **Image/video unified**: switch via the type prop
+- **Lazy Loading**: enabled by Default
+- **Video controls**: supports autoPlay, muted, loop, controls
 
-### 용도
-- 반응형 이미지 갤러리
-- 비디오 썸네일/배경
-- 제품 이미지 카드
+### Use cases
+- Responsive image galleries
+- Video thumbnails/backgrounds
+- Product image cards
         `,
       },
     },
@@ -37,7 +37,7 @@ export default {
     type: {
       control: 'radio',
       options: ['image', 'video'],
-      description: '미디어 타입',
+      description: 'Media type',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'image' },
@@ -46,7 +46,7 @@ export default {
     aspectRatio: {
       control: 'select',
       options: ['1/1', '4/3', '3/4', '16/9', '9/16', '21/9'],
-      description: 'CSS aspect-ratio 값',
+      description: 'CSS aspect-ratio value',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: '16/9' },
@@ -55,7 +55,7 @@ export default {
     objectFit: {
       control: 'select',
       options: ['cover', 'contain', 'fill', 'none', 'scale-down'],
-      description: 'CSS object-fit 값',
+      description: 'CSS object-fit value',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'cover' },
@@ -63,7 +63,7 @@ export default {
     },
     isLazy: {
       control: 'boolean',
-      description: '지연 로딩 활성화',
+      description: 'Enable lazy loading',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'true' },
@@ -72,7 +72,7 @@ export default {
   },
 };
 
-/** 기본 이미지 */
+/** Basic image */
 export const Default = {
   args: {
     src: placeholderSvg(400, 225),
@@ -88,7 +88,7 @@ export const Default = {
   ),
 };
 
-/** 다양한 비율 */
+/** Various ratios */
 export const AspectRatios = {
   render: () => (
     <Grid container spacing={ 3 } sx={ { width: 800 } }>
@@ -110,7 +110,7 @@ export const AspectRatios = {
   ),
 };
 
-/** Object Fit 비교 */
+/** Object Fit comparison */
 export const ObjectFitOptions = {
   render: () => (
     <Grid container spacing={ 3 } sx={ { width: 800 } }>
@@ -135,7 +135,7 @@ export const ObjectFitOptions = {
   ),
 };
 
-/** 비디오 */
+/** Video */
 export const Video = {
   args: {
     type: 'video',
@@ -153,7 +153,7 @@ export const Video = {
   ),
 };
 
-/** 비디오 with Controls */
+/** Video with Controls */
 export const VideoWithControls = {
   render: () => (
     <Box sx={ { width: 500 } }>
@@ -169,7 +169,7 @@ export const VideoWithControls = {
   ),
 };
 
-/** 이미지 갤러리 */
+/** Image gallery */
 export const ImageGallery = {
   render: () => (
     <Stack spacing={ 4 } sx={ { width: 800 } }>

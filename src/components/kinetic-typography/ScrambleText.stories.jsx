@@ -11,27 +11,27 @@ export default {
   argTypes: {
     text: {
       control: 'text',
-      description: '표시할 텍스트',
+      description: 'Text to display',
     },
     duration: {
       control: { type: 'number', min: 100, max: 3000, step: 100 },
-      description: '스크램블 애니메이션 소요 시간 (ms)',
+      description: 'Scramble animation duration (ms)',
     },
     isTrigger: {
       control: 'boolean',
-      description: '애니메이션 트리거 여부',
+      description: 'Animation trigger',
     },
     isInitialScramble: {
       control: 'boolean',
-      description: '최초 마운트 시 스크램블 효과 여부',
+      description: 'Scramble effect on initial mount',
     },
     initialCharset: {
       control: 'text',
-      description: '최초 등장 스크램블에 사용할 특수기호 문자 집합',
+      description: 'Special symbol character set used for the initial reveal scramble',
     },
     charset: {
       control: 'text',
-      description: '텍스트 전환 스크램블에 사용할 문자 집합',
+      description: 'Character set used for the text transition scramble',
     },
     variant: {
       control: 'select',
@@ -51,7 +51,7 @@ export const Default = {
   },
 };
 
-/** 텍스트 전환 데모 */
+/** Text transition demo */
 const words = ['TYPOGRAPHY', 'LAYOUT', 'MOTION', 'COLOR', 'SPACING'];
 
 const TextSwitchDemo = () => {
@@ -80,7 +80,7 @@ export const TextSwitch = {
   render: () => <TextSwitchDemo />,
 };
 
-/** 최초 등장 스크램블 데모 */
+/** Initial reveal scramble demo */
 const InitialScrambleDemo = () => {
   const [key, setKey] = useState(0);
 
@@ -144,7 +144,7 @@ export const InitialScramble = {
   render: () => <InitialScrambleDemo />,
 };
 
-/** duration · charset 변형 비교 */
+/** duration and charset variation comparison */
 const VariantsDemo = () => {
   const [key, setKey] = useState(0);
 
@@ -188,7 +188,7 @@ const VariantsDemo = () => {
 
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          Custom Charset (숫자)
+          Custom Charset (numbers)
         </Typography>
         <ScrambleText
           key={ `num-${key}` }

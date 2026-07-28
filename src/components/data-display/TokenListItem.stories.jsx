@@ -15,43 +15,43 @@ export default {
         component: `
 ## TokenListItem
 
-MUSE 프로젝트 상세의 레이어별 토큰 편집 UI에서 **공통으로 쓰이는 행 컴포넌트**.
+The **shared row Component** used across the per-Layer Token editing UI in MUSE Project detail.
 
-- 좌측 48x48 **Preview 슬롯**에 컬러 스와치, 타이포 샘플, 그라디언트 등 임의 노드 주입
-- \`isEnabled=false\`면 preview/label/value가 40% 투명도로 dimmed, 조작은 그대로 가능
-- **emphasis 토글은 항상 활성** — 비활성 토큰도 강조값은 편집 가능 (나중에 다시 켰을 때 보존)
-- Switch는 MUI default pill 스타일
+- Inject any node (Color swatch, Typography sample, Gradient, etc.) into the left 48x48 **Preview slot**
+- When \`isEnabled=false\`, preview/label/value are dimmed to 40% opacity while controls stay usable
+- **The emphasis toggle is always active**: disabled Tokens can still have their emphasis edited (preserved when re-enabled later)
+- Switch uses the MUI Default pill style
 
-### 구성
+### Structure
 \`\`\`
 [preview 48x48] [label + value] [Low | Mid | High] [on/off]
 \`\`\`
 
-### 용도 (MUSE Phase 3 레이어별 프리뷰)
-- ColorSwatchList — preview: 컬러 스와치
-- TypographyPreview — preview: 샘플 문자
-- LayoutTokenPreview — preview: 그리드/스페이싱 다이어그램
-- GradientPreview — preview: 그라디언트 박스
+### Usage (MUSE Phase 3 per-Layer preview)
+- ColorSwatchList: preview: Color swatch
+- TypographyPreview: preview: sample glyph
+- LayoutTokenPreview: preview: grid/spacing diagram
+- GradientPreview: preview: Gradient box
         `,
       },
     },
   },
   argTypes: {
-    preview: { control: false, description: '좌측 48x48 프리뷰 슬롯 (ReactNode)' },
-    label: { control: 'text', description: '토큰 이름/역할' },
-    value: { control: 'text', description: '토큰 값 (HEX/px/폰트명 등)' },
-    isEnabled: { control: 'boolean', description: '토큰 활성화 상태' },
+    preview: { control: false, description: 'Left 48x48 preview slot (ReactNode)' },
+    label: { control: 'text', description: 'Token name/role' },
+    value: { control: 'text', description: 'Token value (HEX/px/font name, etc.)' },
+    isEnabled: { control: 'boolean', description: 'Token enabled State' },
     emphasis: {
       control: { type: 'select' },
       options: [0, 1, 2],
-      description: '강조도 (Low/Mid/High)',
+      description: 'Emphasis level (Low/Mid/High)',
     },
     onToggleEnabled: { action: 'toggleEnabled' },
     onChangeEmphasis: { action: 'changeEmphasis' },
   },
 };
 
-/** 컬러 스와치 preview */
+/** Color swatch preview */
 const ColorSwatch = ({ color }) => (
   <Box
     sx={ {
@@ -65,7 +65,7 @@ const ColorSwatch = ({ color }) => (
   />
 );
 
-/** 타이포 샘플 preview */
+/** Typography sample preview */
 const TypoSample = ({ family, weight }) => (
   <Typography
     sx={ {
@@ -79,7 +79,7 @@ const TypoSample = ({ family, weight }) => (
   </Typography>
 );
 
-/** 그라디언트 preview */
+/** Gradient preview */
 const GradientSwatch = ({ gradient }) => (
   <Box
     sx={ {
@@ -91,7 +91,7 @@ const GradientSwatch = ({ gradient }) => (
   />
 );
 
-/** 기본 — 컬러 토큰 예시 */
+/** Default: color token example */
 export const Default = {
   render: (args) => {
     const [isEnabled, setEnabled] = useState(args.isEnabled ?? true);
@@ -119,7 +119,7 @@ export const Default = {
   },
 };
 
-/** 비활성 상태 */
+/** Disabled state */
 export const Disabled = {
   render: () => (
     <Box sx={ { maxWidth: 640 } }>
@@ -134,7 +134,7 @@ export const Disabled = {
   ),
 };
 
-/** 컬러 레이어 목록 — 실제 사용 패턴 프리뷰 */
+/** Color layer list: preview of the real usage pattern */
 export const ColorLayer = {
   render: () => {
     const [tokens, setTokens] = useState([
@@ -168,7 +168,7 @@ export const ColorLayer = {
   },
 };
 
-/** 타이포 레이어 목록 */
+/** Typography layer list */
 export const TypographyLayer = {
   render: () => {
     const [tokens, setTokens] = useState([
@@ -201,7 +201,7 @@ export const TypographyLayer = {
   },
 };
 
-/** 그라디언트 레이어 목록 */
+/** Gradient layer list */
 export const GradientLayer = {
   render: () => {
     const [tokens, setTokens] = useState([

@@ -11,15 +11,15 @@ export default {
   argTypes: {
     text: {
       control: 'text',
-      description: '표시할 텍스트',
+      description: 'Text to display',
     },
     delay: {
       control: { type: 'number', min: 0, max: 2000, step: 100 },
-      description: '애니메이션 시작 지연 시간 (ms)',
+      description: 'Animation start delay (ms)',
     },
     stagger: {
       control: { type: 'number', min: 10, max: 200, step: 10 },
-      description: '글자 간 reveal 간격 (ms)',
+      description: 'Reveal interval between characters (ms)',
     },
     variant: {
       control: 'select',
@@ -38,7 +38,7 @@ export const Default = {
   },
 };
 
-/** 리마운트로 애니메이션 반복 재생 */
+/** Replay the animation by remounting */
 const ReplayDemo = () => {
   const [key, setKey] = useState(0);
 
@@ -71,7 +71,7 @@ export const Variants = {
     <Box sx={ { display: 'flex', flexDirection: 'column', gap: 6 } }>
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          Headline (h2) — slow reveal
+          Headline (h2): slow reveal
         </Typography>
         <RandomRevealText
           text="LESS IS MORE"
@@ -84,7 +84,7 @@ export const Variants = {
 
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          Body (body1) — fast reveal
+          Body (body1): fast reveal
         </Typography>
         <RandomRevealText
           text="The details are not the details. They make the design."
@@ -96,7 +96,7 @@ export const Variants = {
 
       <Box>
         <Typography variant="overline" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          Caption (body2) — default timing
+          Caption (body2): default timing
         </Typography>
         <RandomRevealText
           text="Good design is obvious. Great design is transparent."

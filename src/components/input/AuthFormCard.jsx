@@ -2,16 +2,16 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 /**
- * 인증 폼 공통 래퍼 카드
+ * Shared wrapper card for auth forms
  *
  * Props:
- * @param {string} title - 폼 제목 (예: '로그인') [Required]
- * @param {string} subtitle - 폼 부제목 [Optional]
- * @param {React.ReactNode} children - 폼 내용 [Required]
- * @param {React.ReactNode} footer - 하단 링크/텍스트 슬롯 [Optional]
+ * @param {string} title - form title (e.g. 'Sign in') [Required]
+ * @param {string} subtitle - form subtitle [Optional]
+ * @param {React.ReactNode} children - form content [Required]
+ * @param {React.ReactNode} footer - slot for bottom link/text [Optional]
  *
  * Example usage:
- * <AuthFormCard title="로그인" subtitle="MUSE에 오신 것을 환영합니다">
+ * <AuthFormCard title="Sign in" subtitle="Welcome to MUSE">
  *   <LoginForm />
  * </AuthFormCard>
  */

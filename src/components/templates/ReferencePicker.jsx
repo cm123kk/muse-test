@@ -13,26 +13,26 @@ import { useInfiniteScroll } from '../layout/useInfiniteScroll.js';
 import { flattenTags } from '../../data/muse';
 
 /**
- * ReferencePicker 컴포넌트
+ * ReferencePicker component
  *
- * 프로젝트 생성 Step 2에서 사용. 추천 레퍼런스와 전체 아카이브를 탭으로 구분해
- * 다중 선택할 수 있다. 태그 칩 필터 지원.
+ * Used in project creation Step 2. Separates recommended references and the full
+ * archive into tabs so you can multi-select. Supports tag chip filtering.
  *
  * Props:
- * @param {array} recommended - 추천 레퍼런스 [{ id, src, title?, tags? }] [Optional]
- * @param {array} archive - 전체 아카이브 [{ id, src, title?, tags? }] [Required]
- * @param {string[]} selectedIds - 현재 선택된 id 배열 [Required]
+ * @param {array} recommended - recommended references [{ id, src, title?, tags? }] [Optional]
+ * @param {array} archive - full archive [{ id, src, title?, tags? }] [Required]
+ * @param {string[]} selectedIds - currently selected id array [Required]
  * @param {function} onChange - (nextIds) => void [Required]
- * @param {string[]} tagFilter - 활성화된 태그 배열 [Optional, 기본값: []]
+ * @param {string[]} tagFilter - active tag array [Optional, default: []]
  * @param {function} onTagFilterChange - (nextTags) => void [Optional]
- * @param {function} onLoadMore - 아카이브 더 불러오기 [Optional]
- * @param {boolean} hasMore - 아카이브 추가 로드 가능 여부 [Optional, 기본값: false]
- * @param {boolean} isLoading - 로딩 중 [Optional, 기본값: false]
- * @param {object} referenceLayerMap - TP4 자동: { [refId]: layers[] } [Optional]
- * @param {Array} selectedRefs - TP4 사용자 큐레이션: [{id, useLayers}] [Optional]
+ * @param {function} onLoadMore - load more from the archive [Optional]
+ * @param {boolean} hasMore - whether more archive items can be loaded [Optional, default: false]
+ * @param {boolean} isLoading - loading in progress [Optional, default: false]
+ * @param {object} referenceLayerMap - TP4 auto: { [refId]: layers[] } [Optional]
+ * @param {Array} selectedRefs - TP4 user curation: [{id, useLayers}] [Optional]
  * @param {function} onUseLayersChange - TP4 (id, layers) => void [Optional]
- * @param {'concept'|'system'} mode - 추천/큐레이션 chip 셋 결정 (system 이면 components chip 추가) [Optional, 기본값: 'system']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {'concept'|'system'} mode - determines the recommendation/curation chip set (system adds a components chip) [Optional, default: 'system']
+ * @param {object} sx - additional styles [Optional]
  *
  * Example usage:
  * <ReferencePicker
@@ -94,7 +94,7 @@ export function ReferencePicker({
 
   const currentList = tab === 'recommended' ? recommended : visibleArchive;
 
-  /** 선택된 id → archive ∪ recommended 에서 메타 조회 (썸네일 스트립용) */
+  /** selected id -> look up metadata from archive union recommended (for the thumbnail strip) */
   const selectedItems = useMemo(() => {
     const map = new Map();
     archive.forEach((r) => map.set(r.id, r));
@@ -104,14 +104,14 @@ export function ReferencePicker({
 
   return (
     <Box sx={ { width: '100%', ...sx } }>
-      {/* 선택된 레퍼런스 — 우하단 viewport-fixed 플로팅 스트립 (바톰 네비 위)
-          상시 보이도록 fixed, 선택 0개면 미렌더 */}
+      {/* Selected references: bottom-right viewport-fixed floating strip (above the bottom nav)
+          Fixed so it stays visible at all times; not rendered when nothing is selected. */}
       { selectedItems.length > 0 && (
         <Box
           sx={ {
             position: 'fixed',
             right: { xs: 16, md: 24, lg: 40 },
-            // 바톰 네비(BOTTOM_BAR_HEIGHT=88) 위에 16px 띄움
+            // Floats 16px above the bottom nav (BOTTOM_BAR_HEIGHT=88)
             bottom: { xs: 96, md: 104 },
             zIndex: (theme) => theme.zIndex.appBar - 1,
             maxWidth: { xs: 'calc(100vw - 32px)', md: '60vw', lg: 720 },
@@ -155,7 +155,7 @@ export function ReferencePicker({
               />
               <IconButton
                 size="small"
-                aria-label="선택 해제"
+                aria-label="Deselect"
                 onClick={ () => toggleId(item.id, false) }
                 sx={ {
                   position: 'absolute',
@@ -175,7 +175,7 @@ export function ReferencePicker({
         </Box>
       ) }
 
-      {/* Header: 탭 + 선택 카운터 */}
+      {/* Header: tabs + selection counter */}
       <Box
         sx={ {
           display: 'flex',
@@ -192,17 +192,17 @@ export function ReferencePicker({
           indicatorColor="primary"
         >
           { recommended.length > 0 && (
-            <Tab value="recommended" label={ `추천 (${recommended.length})` } />
+            <Tab value="recommended" label={ `Recommended (${recommended.length})` } />
           ) }
-          <Tab value="archive" label={ `아카이브 (${archive.length})` } />
+          <Tab value="archive" label={ `Archive (${archive.length})` } />
         </Tabs>
 
         <Typography variant="body2" color="text.secondary">
-          { selectedIds.length }개 선택됨
+          { selectedIds.length } selected
         </Typography>
       </Box>
 
-      {/* Tag filter (archive 탭에서만) */}
+      {/* Tag filter (archive tab only) */}
       { tab === 'archive' && allTags.length > 0 && (
         <Box
           sx={ {
@@ -214,7 +214,7 @@ export function ReferencePicker({
           } }
         >
           <Typography variant="caption" color="text.secondary" sx={ { mr: 0.5 } }>
-            태그
+            Tags
           </Typography>
           { allTags.map((tag) => {
             const isActive = tagFilter.includes(tag);
@@ -236,22 +236,22 @@ export function ReferencePicker({
               onClick={ () => onTagFilterChange?.([]) }
               sx={ { ml: 1 } }
             >
-              초기화
+              Reset
             </Button>
           ) }
         </Box>
       ) }
 
-      {/* Grid — 고정 aspect-ratio CSS Grid 로 Masonry 의 측정 jitter 제거.
-          각 셀의 미디어 영역은 mediaRatio 4/5 로 잠겨 이미지 load 와 무관하게 높이 고정 */}
+      {/* Grid: a fixed aspect-ratio CSS Grid removes Masonry's measurement jitter.
+          Each cell's media area is locked to mediaRatio 4/5 so the height stays fixed regardless of image load. */}
       { currentList.length === 0 ? (
         <Box sx={ { py: 6, textAlign: 'center' } }>
           <Typography color="text.secondary" variant="body2">
             { tab === 'recommended'
-              ? '추천 레퍼런스가 없습니다. 프로젝트 의도를 더 자세히 입력해보세요.'
+              ? 'No recommended references yet. Try describing your project intent in more detail.'
               : tagFilter.length > 0
-                ? '선택한 태그와 일치하는 항목이 없습니다.'
-                : '아카이브에 레퍼런스가 없습니다.' }
+                ? 'No items match the selected tags.'
+                : 'No references in the archive.' }
           </Typography>
         </Box>
       ) : (
@@ -299,7 +299,7 @@ export function ReferencePicker({
         </Box>
       ) }
 
-      {/* 무한 스크롤 sentinel — archive 탭에서만 활성 */}
+      {/* Infinite scroll sentinel: active on the archive tab only */}
       <InfiniteScrollSentinel
         onLoadMore={ onLoadMore }
         hasMore={ tab === 'archive' && hasMore }
@@ -309,7 +309,7 @@ export function ReferencePicker({
   );
 }
 
-/** 무한 스크롤 sentinel — IntersectionObserver 진입 시 onLoadMore */
+/** Infinite scroll sentinel: calls onLoadMore when the IntersectionObserver enters view */
 function InfiniteScrollSentinel({ onLoadMore, hasMore, isLoading }) {
   const sentinelRef = useInfiniteScroll({
     onLoadMore,
@@ -321,7 +321,7 @@ function InfiniteScrollSentinel({ onLoadMore, hasMore, isLoading }) {
     <Box ref={ sentinelRef } sx={ { height: 32, mt: 2 } }>
       { isLoading && (
         <Typography variant="caption" color="text.secondary" sx={ { display: 'block', textAlign: 'center' } }>
-          더 불러오는 중…
+          Loading more…
         </Typography>
       ) }
     </Box>

@@ -12,9 +12,9 @@ export default {
         component: `
 ## Button [MUI]
 
-MUI Button 컴포넌트의 다양한 변형을 보여줍니다.
+Showcases the various variants of the MUI Button component.
 
-variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 수 있습니다.
+Combine props such as variant, color, and size to build the style you want.
         `,
       },
     },
@@ -23,7 +23,7 @@ variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 
     variant: {
       control: 'select',
       options: ['text', 'contained', 'outlined'],
-      description: '버튼의 시각적 스타일을 결정합니다.',
+      description: 'Determines the visual style of the button.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'text' },
@@ -32,7 +32,7 @@ variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 
     color: {
       control: 'select',
       options: ['primary', 'secondary', 'success', 'error', 'info', 'warning'],
-      description: '버튼의 색상 테마를 지정합니다.',
+      description: 'Sets the color theme of the button.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
@@ -41,7 +41,7 @@ variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 
     size: {
       control: 'select',
       options: ['small', 'medium', 'large'],
-      description: '버튼의 크기를 지정합니다.',
+      description: 'Sets the size of the button.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'medium' },
@@ -49,7 +49,7 @@ variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 
     },
     disabled: {
       control: 'boolean',
-      description: '버튼의 비활성화 상태를 지정합니다.',
+      description: 'Sets the disabled state of the button.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -57,7 +57,7 @@ variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 
     },
     fullWidth: {
       control: 'boolean',
-      description: '버튼을 부모 요소의 전체 너비로 확장합니다.',
+      description: 'Expands the button to the full width of its parent element.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -65,7 +65,7 @@ variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 
     },
     children: {
       control: 'text',
-      description: '버튼 내부에 표시될 텍스트 또는 요소입니다.',
+      description: 'Text or element displayed inside the button.',
       table: {
         type: { summary: 'ReactNode' },
       },
@@ -73,7 +73,7 @@ variant, color, size 등의 props를 조합하여 원하는 스타일을 만들 
   },
 };
 
-/** 기본 버튼 */
+/** Basic button */
 export const Default = {
   args: {
     variant: 'contained',
@@ -81,7 +81,7 @@ export const Default = {
   },
 };
 
-/** Contained 버튼 - 강조가 필요한 주요 액션에 사용 */
+/** Contained button: used for primary actions that need emphasis */
 export const Contained = {
   args: {
     variant: 'contained',
@@ -89,7 +89,7 @@ export const Contained = {
   },
 };
 
-/** Outlined 버튼 - 보조 액션에 사용 */
+/** Outlined button: used for secondary actions */
 export const Outlined = {
   args: {
     variant: 'outlined',
@@ -97,7 +97,7 @@ export const Outlined = {
   },
 };
 
-/** Text 버튼 - 가장 낮은 강조 수준의 액션에 사용 */
+/** Text button: used for the lowest emphasis actions */
 export const Text = {
   args: {
     variant: 'text',
@@ -105,7 +105,7 @@ export const Text = {
   },
 };
 
-/** 모든 Variant 비교 */
+/** Comparison of all variants */
 export const AllVariants = {
   render: () => (
     <Stack spacing={ 2 } direction="row">
@@ -116,7 +116,7 @@ export const AllVariants = {
   ),
 };
 
-/** 색상 변형 - Primary, Secondary, Success, Error, Info, Warning */
+/** Color variants: Primary, Secondary, Success, Error, Info, Warning */
 export const Colors = {
   render: () => (
     <Stack spacing={ 2 } direction="row" flexWrap="wrap" useFlexGap>
@@ -130,7 +130,7 @@ export const Colors = {
   ),
 };
 
-/** 크기 변형 - Small, Medium, Large */
+/** Size variants: Small, Medium, Large */
 export const Sizes = {
   render: () => (
     <Stack spacing={ 2 } direction="row" alignItems="center">
@@ -141,7 +141,7 @@ export const Sizes = {
   ),
 };
 
-/** 비활성화 상태 */
+/** Disabled state */
 export const Disabled = {
   render: () => (
     <Stack spacing={ 2 } direction="row">

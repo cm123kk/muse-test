@@ -3,20 +3,20 @@ import Container from '@mui/material/Container';
 /**
  * PageContainer
  *
- * 페이지의 메인 콘텐츠를 감싸는 컨테이너.
+ * A container that wraps a page's main content.
  *
- * variant 로 fluid / focus 두 가지 페이지 폭 모드를 선택한다.
- * - fluid: 뷰포트 전체 폭을 사용 (이미지 퍼스트 / 탐색 페이지). 좌우 padding 만 clamp 로 적용.
- * - focus: 좁은 maxWidth 로 중앙 집중 (생성/입력/설정 등 좁은 폼 페이지).
- * 둘 다 미지정 시 기존 동작(`maxWidth='xl'` MUI Container) 유지.
+ * Use variant to choose one of two page width modes: fluid or focus.
+ * - fluid: uses the full viewport width (image-first / browsing pages). Only the horizontal padding is applied via clamp.
+ * - focus: centers content with a narrow maxWidth (narrow form pages such as create/input/settings).
+ * When neither is specified, the existing behavior (MUI Container with `maxWidth='xl'`) is preserved.
  *
  * Props:
- * @param {node} children - 콘텐츠 [Required]
- * @param {'fluid'|'focus'} [variant] - 페이지 폭 모드 [Optional]
- * @param {number} [focusMaxWidth] - focus variant 일 때 사용할 max-width(px) [Optional, 기본값: 720]
- * @param {string|bool} [maxWidth] - MUI Container maxWidth (variant 미지정 시 호환용) [Optional, 기본값: 'xl']
- * @param {boolean} [disableGutters] - 좌우 패딩 비활성화 [Optional, 기본값: false]
- * @param {object} [sx] - 추가 스타일 [Optional]
+ * @param {node} children - Content [Required]
+ * @param {'fluid'|'focus'} [variant] - Page width mode [Optional]
+ * @param {number} [focusMaxWidth] - max-width (px) used when variant is focus [Optional, default: 720]
+ * @param {string|bool} [maxWidth] - MUI Container maxWidth (for compatibility when variant is unspecified) [Optional, default: 'xl']
+ * @param {boolean} [disableGutters] - Disable horizontal padding [Optional, default: false]
+ * @param {object} [sx] - Additional styles [Optional]
  *
  * Example usage:
  * <PageContainer variant="fluid"> ... </PageContainer>

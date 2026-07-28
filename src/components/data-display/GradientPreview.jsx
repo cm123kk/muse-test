@@ -8,17 +8,17 @@ import { TokenListItem } from './TokenListItem.jsx';
 import { TokenDecisionTracePanel } from './TokenDecisionTracePanel.jsx';
 
 /**
- * GradientPreview 컴포넌트
+ * GradientPreview component
  *
- * 그라디언트 토큰 목록을 TokenListItem으로 렌더링.
- * Preview 슬롯에 실제 gradient CSS를 적용한 스와치를 표시한다.
+ * Renders the gradient token list with TokenListItem.
+ * Displays a swatch with the actual gradient CSS applied in the preview slot.
  *
  * Props:
  * @param {array} tokens - [{ id, label, gradient, stops?, isEnabled, emphasis }] [Required]
- *   - `gradient`: CSS gradient 문자열 (e.g. 'linear-gradient(135deg, #FEE2F5, #FEF9C3)')
- *   - `stops`: (선택) [{ offset, color }] 배열 — value 슬롯에 요약 표시
+ *   - `gradient`: CSS gradient string (e.g. 'linear-gradient(135deg, #FEE2F5, #FEF9C3)')
+ *   - `stops`: (optional) [{ offset, color }] array, shown as a summary in the value slot
  * @param {function} onChange - (id, patch) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <GradientPreview
@@ -71,7 +71,7 @@ export function GradientPreview({ tokens, onChange, references = [], sx }) {
               trailing={ hasRationale ? (
                 <IconButton
                   size="small"
-                  aria-label={ isExpanded ? '결정 근거 닫기' : '결정 근거 보기' }
+                  aria-label={ isExpanded ? 'Hide rationale' : 'Show rationale' }
                   onClick={ () => setExpandedId(isExpanded ? null : token.id) }
                   sx={ {
                     transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',

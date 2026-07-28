@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import { keyframes } from '@mui/material/styles';
 
 /**
- * 활성 인디케이터 펄스 애니메이션
+ * Active indicator pulse animation
  */
 const pulseKeyframe = keyframes`
   0%, 100% { opacity: 1; }
@@ -12,7 +12,7 @@ const pulseKeyframe = keyframes`
 `;
 
 /**
- * 프로그레스 바 shimmer 효과
+ * Progress bar shimmer effect
  */
 const shimmerKeyframe = keyframes`
   0% { background-position: -200% 0; }
@@ -20,31 +20,31 @@ const shimmerKeyframe = keyframes`
 `;
 
 /**
- * Indicator 컴포넌트
+ * Indicator component
  *
- * 캐러셀, 슬라이더, 페이지네이션 등에서 현재 위치를 표시하는 인디케이터.
- * 다양한 시각적 스타일과 인터랙션을 지원한다.
+ * An indicator that shows the current position in carousels, sliders, pagination, and similar UI.
+ * Supports a variety of visual styles and interactions.
  *
- * 동작 방식:
- * 1. total과 current로 전체 개수와 현재 위치 표시
- * 2. variant에 따라 다른 시각적 스타일 적용 (dot, line, dash, fraction, progress)
- * 3. onClick으로 특정 인덱스 클릭 시 이동 가능
- * 4. 키보드 접근성 지원 (화살표 키로 탐색)
+ * How it works:
+ * 1. Displays the total count and current position via total and current
+ * 2. Applies different visual styles based on variant (dot, line, dash, fraction, progress)
+ * 3. Allows navigating to a specific index via onClick
+ * 4. Supports keyboard accessibility (arrow keys for navigation)
  *
  * Props:
- * @param {number} total - 전체 아이템 개수 [Required]
- * @param {number} current - 현재 활성 인덱스 (0-based) [Required]
- * @param {string} variant - 인디케이터 스타일 ('dot' | 'line' | 'dash' | 'fraction' | 'progress') [Optional, 기본값: 'dot']
- * @param {string} direction - 배치 방향 ('horizontal' | 'vertical') [Optional, 기본값: 'horizontal']
- * @param {string} size - 크기 ('sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {string} activeColor - 활성 색상 [Optional, 기본값: 'common.white']
- * @param {string} inactiveColor - 비활성 색상 [Optional, 기본값: 'rgba(255,255,255,0.4)']
- * @param {number} gap - 아이템 간 간격 (spacing unit) [Optional, 기본값: 1]
- * @param {boolean} hasAnimation - 애니메이션 활성화 [Optional, 기본값: true]
- * @param {boolean} hasHoverEffect - 호버 효과 활성화 [Optional, 기본값: true]
- * @param {function} onClick - 클릭 핸들러 (index) => void [Optional]
- * @param {function} onKeyNavigate - 키보드 탐색 핸들러 (direction: 'prev' | 'next') => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {number} total - Total number of items [Required]
+ * @param {number} current - Current active index (0-based) [Required]
+ * @param {string} variant - Indicator style ('dot' | 'line' | 'dash' | 'fraction' | 'progress') [Optional, default: 'dot']
+ * @param {string} direction - Layout direction ('horizontal' | 'vertical') [Optional, default: 'horizontal']
+ * @param {string} size - Size ('sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {string} activeColor - Active color [Optional, default: 'common.white']
+ * @param {string} inactiveColor - Inactive color [Optional, default: 'rgba(255,255,255,0.4)']
+ * @param {number} gap - Spacing between items (spacing unit) [Optional, default: 1]
+ * @param {boolean} hasAnimation - Enable animation [Optional, default: true]
+ * @param {boolean} hasHoverEffect - Enable hover effect [Optional, default: true]
+ * @param {function} onClick - Click handler (index) => void [Optional]
+ * @param {function} onKeyNavigate - Keyboard navigation handler (direction: 'prev' | 'next') => void [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Indicator
@@ -71,7 +71,7 @@ const Indicator = forwardRef(function Indicator({
   ...props
 }, ref) {
   /**
-   * 크기별 치수 정의
+   * Dimension definitions per size
    */
   const sizeMap = {
     sm: {
@@ -102,7 +102,7 @@ const Indicator = forwardRef(function Indicator({
   const isInteractive = Boolean(onClick);
 
   /**
-   * 키보드 네비게이션 핸들러
+   * Keyboard navigation handler
    */
   const handleKeyDown = useCallback((e) => {
     if (!onKeyNavigate) return;
@@ -120,7 +120,7 @@ const Indicator = forwardRef(function Indicator({
   }, [isVertical, onKeyNavigate]);
 
   /**
-   * 공통 인터랙션 스타일
+   * Shared interaction styles
    */
   const getInteractionStyles = (isActive) => {
     if (!isInteractive) return {};
@@ -140,7 +140,7 @@ const Indicator = forwardRef(function Indicator({
   };
 
   /**
-   * Fraction 타입 렌더링 (예: "02 / 05")
+   * Fraction type rendering (e.g. "02 / 05")
    */
   if (variant === 'fraction') {
     const formatNumber = (n) => String(n).padStart(2, '0');
@@ -200,7 +200,7 @@ const Indicator = forwardRef(function Indicator({
   }
 
   /**
-   * Progress 타입 렌더링 (진행 바)
+   * Progress type rendering (progress bar)
    */
   if (variant === 'progress') {
     const progressPercent = ((current + 1) / total) * 100;
@@ -235,7 +235,7 @@ const Indicator = forwardRef(function Indicator({
             backgroundColor: activeColor,
             borderRadius: 'inherit',
             transition: hasAnimation ? 'width 0.4s cubic-bezier(0.4, 0, 0.2, 1)' : 'none',
-            // Shimmer 효과
+            // Shimmer effect
             '&::after': hasAnimation ? {
               content: '""',
               position: 'absolute',
@@ -259,7 +259,7 @@ const Indicator = forwardRef(function Indicator({
   }
 
   /**
-   * Dot / Line / Dash 타입 렌더링
+   * Dot / Line / Dash type rendering
    */
   const items = Array.from({ length: total }, (_, index) => index);
 
@@ -341,7 +341,7 @@ const Indicator = forwardRef(function Indicator({
           );
         }
 
-        // Dash variant (활성 시 확장)
+        // Dash variant (expands when active)
         if (variant === 'dash') {
           const baseWidth = isVertical ? dimensions.dash.height : dimensions.dash.width;
           const activeWidth = isVertical ? dimensions.dash.height : dimensions.dash.activeWidth;

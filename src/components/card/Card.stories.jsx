@@ -24,17 +24,17 @@ export default {
         component: `
 ## Card [MUI]
 
-관련 콘텐츠를 그룹화하여 표시하는 카드 컴포넌트입니다.
+A card component that groups and displays related content.
 
-### 구성 요소
+### Composition
 
-| 컴포넌트 | 설명 | 예시 |
+| Component | Description | Example |
 |----------|------|------|
-| Card | 카드 컨테이너 | \`<Card>...</Card>\` |
-| CardHeader | 제목, 부제목, 아바타 | 작성자 정보 |
-| CardMedia | 이미지, 비디오 | 썸네일 |
-| CardContent | 주요 콘텐츠 | 텍스트, 설명 |
-| CardActions | 액션 버튼 | 좋아요, 공유 |
+| Card | Card container | \`<Card>...</Card>\` |
+| CardHeader | Title, subtitle, avatar | Author info |
+| CardMedia | Image, video | Thumbnail |
+| CardContent | Main content | Text, description |
+| CardActions | Action buttons | Like, share |
         `,
       },
     },
@@ -42,7 +42,7 @@ export default {
   argTypes: {
     elevation: {
       control: { type: 'range', min: 0, max: 24 },
-      description: '카드의 그림자 깊이를 설정합니다.',
+      description: 'Sets the shadow depth of the card.',
       table: {
         type: { summary: 'number' },
         defaultValue: { summary: '1' },
@@ -51,7 +51,7 @@ export default {
     variant: {
       control: 'select',
       options: ['elevation', 'outlined'],
-      description: '카드의 스타일 변형을 설정합니다.',
+      description: 'Sets the style variant of the card.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'elevation' },
@@ -60,7 +60,7 @@ export default {
   },
 };
 
-/** 기본 카드 */
+/** Default card */
 export const Default = {
   args: {
     elevation: 1,
@@ -70,22 +70,22 @@ export const Default = {
     <Card sx={ { maxWidth: 345 } } elevation={ args.elevation } variant={ args.variant }>
       <CardContent>
         <Typography variant="h5" component="div" gutterBottom>
-          카드 제목
+          Card Title
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          카드는 관련된 콘텐츠를 그룹화하여 표시하는 컴포넌트입니다.
-          다양한 정보를 구조화된 형태로 보여줄 수 있습니다.
+          A card is a component that groups and displays related content.
+          It can present various information in a structured form.
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">더 보기</Button>
-        <Button size="small">공유</Button>
+        <Button size="small">Learn More</Button>
+        <Button size="small">Share</Button>
       </CardActions>
     </Card>
   ),
 };
 
-/** 이미지가 있는 카드 */
+/** Card with media */
 export const WithMedia = {
   render: () => (
     <Card sx={ { maxWidth: 345 } }>
@@ -93,26 +93,26 @@ export const WithMedia = {
         component="img"
         height="140"
         image={ placeholderSvg(345, 140) }
-        alt="카드 이미지"
+        alt="Card image"
       />
       <CardContent>
         <Typography variant="h6" gutterBottom>
-          이미지 카드
+          Image Card
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          CardMedia 컴포넌트를 사용하여 이미지를 표시할 수 있습니다.
+          You can display images using the CardMedia component.
         </Typography>
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">
-          자세히 보기
+          View Details
         </Button>
       </CardActions>
     </Card>
   ),
 };
 
-/** 헤더가 있는 카드 */
+/** Card with header */
 export const WithHeader = {
   render: () => (
     <Card sx={ { maxWidth: 345 } }>
@@ -127,18 +127,18 @@ export const WithHeader = {
             <Box component="span" sx={ { fontSize: 20 } }>⋮</Box>
           </IconButton>
         }
-        title="김철수"
-        subheader="2024년 1월 15일"
+        title="John Doe"
+        subheader="January 15, 2024"
       />
       <CardMedia
         component="img"
         height="194"
         image={ placeholderSvg(345, 194) }
-        alt="게시물 이미지"
+        alt="Post image"
       />
       <CardContent>
         <Typography variant="body2" color="text.secondary">
-          오늘 멋진 경험을 했습니다. 새로운 프로젝트를 시작하게 되어 정말 기쁩니다.
+          I had a wonderful experience today. I am really glad to be starting a new project.
         </Typography>
       </CardContent>
       <CardActions disableSpacing>
@@ -156,7 +156,7 @@ export const WithHeader = {
   ),
 };
 
-/** Outlined 카드 */
+/** Outlined card */
 export const Outlined = {
   render: () => (
     <Card variant="outlined" sx={ { maxWidth: 345 } }>
@@ -165,21 +165,21 @@ export const Outlined = {
           OUTLINED
         </Typography>
         <Typography variant="h5" component="div" sx={ { mb: 1.5 } }>
-          Outlined 카드
+          Outlined Card
         </Typography>
         <Typography variant="body2" color="text.secondary">
-          variant="outlined"를 사용하면 테두리만 있는 카드를 만들 수 있습니다.
-          그림자 대신 보더로 영역을 구분합니다.
+          Using variant="outlined" creates a card with only a border.
+          The border defines the area instead of a shadow.
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size="small">확인</Button>
+        <Button size="small">Confirm</Button>
       </CardActions>
     </Card>
   ),
 };
 
-/** Elevation 비교 */
+/** Elevation comparison */
 export const Elevations = {
   render: () => (
     <Stack direction="row" spacing={ 2 } flexWrap="wrap" useFlexGap>
@@ -197,7 +197,7 @@ export const Elevations = {
   ),
 };
 
-/** 상품 카드 */
+/** Product card */
 export const ProductCard = {
   render: () => (
     <Card sx={ { maxWidth: 280 } }>
@@ -205,17 +205,17 @@ export const ProductCard = {
         component="img"
         height="200"
         image={ placeholderSvg(280, 200) }
-        alt="상품 이미지"
+        alt="Product image"
       />
       <CardContent>
         <Box sx={ { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 } }>
           <Typography variant="subtitle1" sx={ { fontWeight: 600 } }>
-            프리미엄 무선 이어폰
+            Premium Wireless Earbuds
           </Typography>
           <Chip label="NEW" size="small" color="primary" />
         </Box>
         <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-          고품질 사운드와 편안한 착용감
+          High-quality sound and comfortable fit
         </Typography>
         <Box sx={ { display: 'flex', alignItems: 'baseline', gap: 1 } }>
           <Typography variant="h6" color="primary" sx={ { fontWeight: 700 } }>
@@ -232,14 +232,14 @@ export const ProductCard = {
       </CardContent>
       <CardActions>
         <Button variant="contained" fullWidth>
-          장바구니 담기
+          Add to Cart
         </Button>
       </CardActions>
     </Card>
   ),
 };
 
-/** 블로그 포스트 카드 */
+/** Blog post card */
 export const BlogPostCard = {
   render: () => (
     <Card sx={ { maxWidth: 400 } }>
@@ -247,7 +247,7 @@ export const BlogPostCard = {
         component="img"
         height="180"
         image={ placeholderSvg(400, 180) }
-        alt="블로그 썸네일"
+        alt="Blog thumbnail"
       />
       <CardContent>
         <Stack direction="row" spacing={ 1 } sx={ { mb: 1 } }>
@@ -255,20 +255,20 @@ export const BlogPostCard = {
           <Chip label="TypeScript" size="small" variant="outlined" />
         </Stack>
         <Typography variant="h6" gutterBottom sx={ { fontWeight: 600 } }>
-          React 19의 새로운 기능 살펴보기
+          Exploring the New Features of React 19
         </Typography>
         <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-          React 19에서 추가된 새로운 기능들과 성능 개선 사항에 대해 알아봅니다.
-          Actions, use(), 그리고 새로운 훅들...
+          Learn about the new features and performance improvements added in React 19.
+          Actions, use(), and the new hooks...
         </Typography>
         <Box sx={ { display: 'flex', alignItems: 'center', gap: 2 } }>
           <Avatar sx={ { width: 32, height: 32, bgcolor: 'secondary.main' } }>D</Avatar>
           <Box>
             <Typography variant="caption" sx={ { fontWeight: 500 } }>
-              개발자 김
+              Developer Kim
             </Typography>
             <Typography variant="caption" color="text.secondary" display="block">
-              2024.01.15 · 5분 읽기
+              2024.01.15 · 5 min read
             </Typography>
           </Box>
         </Box>
@@ -277,7 +277,7 @@ export const BlogPostCard = {
   ),
 };
 
-/** 프로필 카드 */
+/** Profile card */
 export const ProfileCard = {
   render: () => (
     <Card sx={ { maxWidth: 300, textAlign: 'center' } }>
@@ -296,7 +296,7 @@ export const ProfileCard = {
       </Box>
       <CardContent>
         <Typography variant="h6" sx={ { fontWeight: 600 } }>
-          정수민
+          Sumin Jung
         </Typography>
         <Typography variant="body2" color="text.secondary" gutterBottom>
           Frontend Developer
@@ -309,56 +309,56 @@ export const ProfileCard = {
       </CardContent>
       <CardActions sx={ { justifyContent: 'center', pb: 2 } }>
         <Button variant="outlined" size="small">
-          프로필 보기
+          View Profile
         </Button>
         <Button variant="contained" size="small">
-          팔로우
+          Follow
         </Button>
       </CardActions>
     </Card>
   ),
 };
 
-/** 통계 카드 */
+/** Stat card */
 export const StatCard = {
   render: () => (
     <Stack direction="row" spacing={ 2 }>
       <Card sx={ { minWidth: 180 } }>
         <CardContent>
           <Typography variant="overline" color="text.secondary">
-            총 방문자
+            Total Visitors
           </Typography>
           <Typography variant="h4" sx={ { fontWeight: 700 } }>
             12,543
           </Typography>
           <Typography variant="caption" color="success.main">
-            +12.5% 지난 주 대비
+            +12.5% vs last week
           </Typography>
         </CardContent>
       </Card>
       <Card sx={ { minWidth: 180 } }>
         <CardContent>
           <Typography variant="overline" color="text.secondary">
-            신규 가입
+            New Signups
           </Typography>
           <Typography variant="h4" sx={ { fontWeight: 700 } }>
             847
           </Typography>
           <Typography variant="caption" color="error.main">
-            -3.2% 지난 주 대비
+            -3.2% vs last week
           </Typography>
         </CardContent>
       </Card>
       <Card sx={ { minWidth: 180 } }>
         <CardContent>
           <Typography variant="overline" color="text.secondary">
-            전환율
+            Conversion Rate
           </Typography>
           <Typography variant="h4" sx={ { fontWeight: 700 } }>
             4.8%
           </Typography>
           <Typography variant="caption" color="success.main">
-            +0.8% 지난 주 대비
+            +0.8% vs last week
           </Typography>
         </CardContent>
       </Card>
@@ -366,7 +366,7 @@ export const StatCard = {
   ),
 };
 
-/** 카드 그리드 */
+/** Card grid */
 export const CardGrid = {
   render: () => (
     <Box sx={ { width: 800 } }>
@@ -378,14 +378,14 @@ export const CardGrid = {
                 component="img"
                 height="120"
                 image={ placeholderSvg(300, 120) }
-                alt={ `이미지 ${item}` }
+                alt={ `Image ${item}` }
               />
               <CardContent>
                 <Typography variant="subtitle1" sx={ { fontWeight: 600 } }>
-                  카드 제목 { item }
+                  Card Title { item }
                 </Typography>
                 <Typography variant="body2" color="text.secondary">
-                  카드 설명 텍스트입니다.
+                  This is card description text.
                 </Typography>
               </CardContent>
             </Card>

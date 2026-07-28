@@ -7,30 +7,30 @@ import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 
 /**
- * CarouselContainer 컴포넌트
+ * CarouselContainer component
  *
- * 반응형 멀티 아이템 캐러셀 컨테이너.
- * 브레이크포인트별로 동시에 보이는 아이템 수를 조절하고,
- * 좌우 네비게이션으로 아이템을 탐색한다.
+ * Responsive multi-item carousel container.
+ * Adjusts the number of items visible at once per breakpoint,
+ * and navigates through items with left/right controls.
  *
- * 동작 방식:
- * 1. visible prop에 따라 브레이크포인트별 노출 개수 결정
- * 2. 컨테이너 너비를 자동 감지하여 아이템 너비 계산
- * 3. 좌우 화살표 클릭 시 step 단위로 슬라이드 이동
- * 4. transform translate로 부드러운 애니메이션 적용
+ * How it works:
+ * 1. Determines the number of visible items per breakpoint based on the visible prop
+ * 2. Automatically detects the container width to calculate item width
+ * 3. Slides by step units when the left/right arrows are clicked
+ * 4. Applies smooth animation via transform translate
  *
  * Props:
- * @param {Array} items - 렌더링할 아이템 배열 [Required]
- * @param {function} renderItem - 아이템 렌더러 (item, index) => ReactNode [Required]
- * @param {object} visible - 브레이크포인트별 노출 개수 {xs, sm, md, lg, xl} [Optional, 기본값: {xs:1, sm:2, md:3, lg:4}]
- * @param {number} gap - 아이템 간 간격 (px) [Optional, 기본값: 16]
- * @param {number} step - 한 번에 이동할 아이템 수 [Optional, 기본값: 1]
- * @param {boolean} hasNavigation - 네비게이션 버튼 표시 여부 [Optional, 기본값: true]
- * @param {boolean} hasDivider - 아이템 사이 구분선 표시 [Optional, 기본값: false]
- * @param {string} dividerColor - 구분선 색상 [Optional, 기본값: 'divider']
- * @param {string} navPosition - 네비게이션 위치 ('inside' | 'outside') [Optional, 기본값: 'inside']
- * @param {function} onIndexChange - 인덱스 변경 콜백 (index) => void [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {Array} items - Array of items to render [Required]
+ * @param {function} renderItem - Item renderer (item, index) => ReactNode [Required]
+ * @param {object} visible - Number of items visible per breakpoint {xs, sm, md, lg, xl} [Optional, default: {xs:1, sm:2, md:3, lg:4}]
+ * @param {number} gap - Gap between items (px) [Optional, default: 16]
+ * @param {number} step - Number of items to move at once [Optional, default: 1]
+ * @param {boolean} hasNavigation - Whether to show navigation buttons [Optional, default: true]
+ * @param {boolean} hasDivider - Whether to show a divider between items [Optional, default: false]
+ * @param {string} dividerColor - Divider color [Optional, default: 'divider']
+ * @param {string} navPosition - Navigation position ('inside' | 'outside') [Optional, default: 'inside']
+ * @param {function} onIndexChange - Index change callback (index) => void [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <CarouselContainer
@@ -65,7 +65,7 @@ const CarouselContainer = forwardRef(function CarouselContainer({
   const [currentIndex, setCurrentIndex] = useState(0);
 
   /**
-   * 현재 브레이크포인트에서 보이는 아이템 수 계산
+   * Calculate the number of items visible at the current breakpoint
    */
   const visibleCount = useMemo(() => {
     if (isLgUp) return visible.lg ?? visible.xl ?? 4;
@@ -75,18 +75,18 @@ const CarouselContainer = forwardRef(function CarouselContainer({
   }, [isSm, isMd, isLgUp, visible]);
 
   /**
-   * 최대 이동 가능 인덱스
+   * Maximum movable index
    */
   const maxIndex = Math.max(0, (items.length || 0) - visibleCount);
 
   /**
-   * 브레이크포인트 변경 시 인덱스 범위 보정
-   * maxIndex가 줄어들면 currentIndex를 자동 조정
+   * Clamp the index range when the breakpoint changes
+   * Automatically adjusts currentIndex when maxIndex shrinks
    */
   const clampedIndex = Math.min(currentIndex, maxIndex);
 
   /**
-   * 컨테이너 너비 감지 (ResizeObserver)
+   * Detect container width (ResizeObserver)
    */
   useEffect(() => {
     if (!containerRef.current) return;
@@ -110,8 +110,8 @@ const CarouselContainer = forwardRef(function CarouselContainer({
   }, []);
 
   /**
-   * 아이템 너비 계산
-   * 컨테이너 너비에서 gap을 제외한 후 visibleCount로 나눔
+   * Calculate item width
+   * Subtract the gap from the container width, then divide by visibleCount
    */
   const itemWidth = useMemo(() => {
     if (containerWidth <= 0 || visibleCount <= 0) return 0;
@@ -124,7 +124,7 @@ const CarouselContainer = forwardRef(function CarouselContainer({
   }, [containerWidth, visibleCount, gap]);
 
   /**
-   * 이전 슬라이드로 이동
+   * Move to the previous slide
    */
   const handlePrev = useCallback(() => {
     const newIndex = Math.max(0, clampedIndex - step);
@@ -133,7 +133,7 @@ const CarouselContainer = forwardRef(function CarouselContainer({
   }, [clampedIndex, step, onIndexChange]);
 
   /**
-   * 다음 슬라이드로 이동
+   * Move to the next slide
    */
   const handleNext = useCallback(() => {
     const newIndex = Math.min(maxIndex, clampedIndex + step);
@@ -142,18 +142,18 @@ const CarouselContainer = forwardRef(function CarouselContainer({
   }, [clampedIndex, maxIndex, step, onIndexChange]);
 
   /**
-   * 트랙 이동 거리 계산
+   * Calculate track travel distance
    */
   const translateX = -(clampedIndex * (itemWidth + gap));
 
   /**
-   * 이전/다음 버튼 비활성화 상태
+   * Disabled state of the previous/next buttons
    */
   const isPrevDisabled = clampedIndex <= 0;
   const isNextDisabled = clampedIndex >= maxIndex;
 
   /**
-   * 네비게이션 버튼 공통 스타일
+   * Shared navigation button styles
    */
   const getNavButtonStyles = (isDisabled) => ({
     position: 'absolute',
@@ -182,14 +182,14 @@ const CarouselContainer = forwardRef(function CarouselContainer({
   });
 
   /**
-   * 네비게이션 버튼 위치 (inside/outside)
+   * Navigation button position (inside/outside)
    */
   const navOffset = navPosition === 'inside'
     ? { xs: 8, sm: 12, md: 16 }
     : { xs: -40, sm: -48, md: -56 };
 
   /**
-   * 아이콘 크기 (반응형)
+   * Icon size (responsive)
    */
   const iconSize = isXs ? 18 : isSm ? 20 : isMd ? 22 : 24;
 
@@ -206,7 +206,7 @@ const CarouselContainer = forwardRef(function CarouselContainer({
       }}
       {...props}
     >
-      {/* 슬라이드 트랙 영역 */}
+      {/* Slide track area */}
       <Box
         ref={containerRef}
         sx={{
@@ -242,7 +242,7 @@ const CarouselContainer = forwardRef(function CarouselContainer({
                   minWidth: itemWidth,
                   position: 'relative',
                   overflow: 'hidden',
-                  // 구분선 (Divider)
+                  // Divider
                   '&::after': hasDivider && !isLastVisible ? {
                     content: '""',
                     position: 'absolute',
@@ -261,7 +261,7 @@ const CarouselContainer = forwardRef(function CarouselContainer({
         </Box>
       </Box>
 
-      {/* 네비게이션 버튼 */}
+      {/* Navigation buttons */}
       {hasNavigation && items.length > visibleCount && (
         <>
           <IconButton

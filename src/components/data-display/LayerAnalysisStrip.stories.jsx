@@ -12,11 +12,11 @@ export default {
         component: `
 ## LayerAnalysisStrip
 
-레퍼런스 / 미디어 카드 하단에 부착되는 가벼운 진행 strip. \`AnalysisProgress\` 의 풀스크린 변형이
-부담스러운 자리(카드 footer / inline 데모) 에서 사용. **overlay 가 아닌 일반 stack 흐름** 이라
-카드 위에 떠있지 않고 자연스럽게 따라 붙는다.
+A lightweight progress strip attached below a Reference or media card. Used where the fullscreen
+Variant of \`AnalysisProgress\` feels too heavy (card footer, inline demo). Because it follows a
+**normal stack flow rather than an overlay**, it sits naturally beneath the card instead of floating on top.
 
-### 구성
+### Structure
 \`\`\`
 ANALYZING n/N
 [━━━━━━━━━━] LinearProgress 2px
@@ -27,10 +27,10 @@ ANALYZING n/N
 ○ Visual Direction
 \`\`\`
 
-### 사용처
+### Usage
 - \`ReferenceCard\` (state=1, analyzingVariant='strip')
-- 랜딩 Solution Stage 1
-- T1 진행 표시가 필요한 모든 위치
+- Landing Solution Stage 1
+- Any location that needs a T1 progress indicator
         `,
       },
     },
@@ -38,15 +38,15 @@ ANALYZING n/N
   argTypes: {
     layerStatuses: {
       control: 'object',
-      description: "('pending'|'running'|'done')[] 레이어별 상태",
+      description: "('pending'|'running'|'done')[] status per Layer",
     },
     layerLabels: {
       control: 'object',
-      description: '레이어 라벨 배열',
+      description: 'Layer label array',
     },
     headerLabel: {
       control: 'text',
-      description: '상단 monospace 라벨',
+      description: 'Top monospace label',
     },
   },
 };
@@ -55,7 +55,7 @@ const Wrap = ({ children }) => (
   <Box sx={ { width: 320, maxWidth: '100%' } }>{ children }</Box>
 );
 
-/** 모든 layer pending — 진입 전 */
+/** All layers pending, before entering */
 export const Docs = {
   args: {
     layerStatuses: ['pending', 'pending', 'pending', 'pending', 'pending'],
@@ -63,7 +63,7 @@ export const Docs = {
   render: (args) => <Wrap><LayerAnalysisStrip { ...args } /></Wrap>,
 };
 
-/** 첫 layer 만 running */
+/** Only the first layer running */
 export const Starting = {
   args: {
     layerStatuses: ['running', 'pending', 'pending', 'pending', 'pending'],
@@ -71,7 +71,7 @@ export const Starting = {
   render: (args) => <Wrap><LayerAnalysisStrip { ...args } /></Wrap>,
 };
 
-/** 절반 정도 진행 — 3 done / 1 running / 1 pending */
+/** About halfway through: 3 done / 1 running / 1 pending */
 export const HalfDone = {
   args: {
     layerStatuses: ['done', 'done', 'done', 'running', 'pending'],
@@ -79,7 +79,7 @@ export const HalfDone = {
   render: (args) => <Wrap><LayerAnalysisStrip { ...args } /></Wrap>,
 };
 
-/** 모두 완료 */
+/** All complete */
 export const Complete = {
   args: {
     layerStatuses: ['done', 'done', 'done', 'done', 'done'],
@@ -87,7 +87,7 @@ export const Complete = {
   render: (args) => <Wrap><LayerAnalysisStrip { ...args } /></Wrap>,
 };
 
-/** 커스텀 라벨 — typography / spacing / rounded 만 */
+/** Custom labels: typography / spacing / rounded only */
 export const CustomLabels = {
   args: {
     layerStatuses: ['done', 'running', 'pending'],

@@ -1,284 +1,284 @@
 # MUSE. UX Flow
 
-> **문서 성격**: 프로젝트 초반 가이드. "이 프로젝트에서 어떤 데이터를 어떻게 다루는지" 처음 이해하는 단계.
-> **데이터 모델 활용**: 본 문서 § 데이터 모델 활용이 단일 진실 원천. 컬럼·SQL·제약은 `appendix-db-schema.md` (`/supabase-integration` 산출).
-> **부록**: 컴포넌트별 상세 → [appendix-screen-component-map.md](./appendix-screen-component-map.md).
+> **Document nature**: An early-project guide. The stage for first understanding "what data this project handles and how."
+> **Data model usage**: The § Data Model Usage section of this document is the single source of truth. Columns, SQL, and constraints live in `appendix-db-schema.md` (produced by `/supabase-integration`).
+> **Appendix**: For per-component detail, see [appendix-screen-component-map.md](./appendix-screen-component-map.md).
 
-## 유저 시나리오
+## User Scenarios
 
-### 시나리오 1. 레퍼런스 수시 아카이빙
+### Scenario 1. Ongoing reference archiving
 
-- **사용자**: 디자이너 / 바이브 코딩 유저
-- **목표**: 영감 이미지를 모아두고 자동 태깅된 상태로 보관
-- **흐름**: Archive 진입 → 드래그앤드롭/URL 로 업로드 → AI 가 자동 태깅 → 그리드에 추가
-- **다루는 데이터**: `Reference` (W, 업로드)
+- **User**: Designer / vibe-coding user
+- **Goal**: Collect inspiration images and keep them auto-tagged.
+- **Flow**: Enter Archive -> upload via drag-and-drop / URL -> AI auto-tags -> added to the grid.
+- **Data involved**: `Reference` (W, upload)
 
-### 시나리오 2. 프로젝트 생성 (5-step 위자드)
+### Scenario 2. Project creation (5-step wizard)
 
-- **사용자**: 디자이너 / PM / 엔지니어
-- **목표**: 모드·의도·레퍼런스·활용 노트로 좁혀가며 디자인 결정. "내가 단계마다 결정했다"
-- **흐름**: ProjectCreate 진입 → 모드 선택 → 의도 입력 → 레퍼런스 + layer chip 큐레이션 → 활용 노트 작성 → AI 분석
-- **다루는 데이터**: `Project` (W, 생성), `ProjectReference` (W, chip 토글), `AnalysisResult` (W, 분석), `Reference` (R)
+- **User**: Designer / PM / engineer
+- **Goal**: Make design decisions by narrowing down through mode, intent, references, and usage notes. "I decided at each step."
+- **Flow**: Enter ProjectCreate -> select mode -> enter intent -> curate references + layer chips -> write usage notes -> AI analysis.
+- **Data involved**: `Project` (W, create), `ProjectReference` (W, chip toggle), `AnalysisResult` (W, analysis), `Reference` (R)
 
-### 시나리오 3. 토큰 확인 + 결정 추적
+### Scenario 3. Token review + decision tracing
 
-- **사용자**: 디자이너 / 엔지니어
-- **목표**: AI 가 만든 토큰의 출처·이유를 검증하고 의도에 맞게 다듬기
-- **흐름**: ProjectDetail 진입 → 레이어 탭 전환 → 토큰 카드 펼침 (출처 + 이유 + 노트 + 탈락 후보) → on/off + emphasis 편집
-- **다루는 데이터**: `AnalysisResult` (R, 편집은 D), `Reference` (R)
+- **User**: Designer / engineer
+- **Goal**: Verify the source and reasoning of AI-generated tokens and refine them to match intent.
+- **Flow**: Enter ProjectDetail -> switch layer tabs -> expand token card (source + reasoning + notes + rejected candidates) -> edit on/off + emphasis.
+- **Data involved**: `AnalysisResult` (R, editing is D), `Reference` (R)
 
-### 시나리오 4. 모드별 Export
+### Scenario 4. Mode-based export
 
-- **사용자**: 바이브 코딩 유저 / 디자인 시스템 엔지니어
-- **목표**: 토큰 + 결정 로그를 외부 도구로 가져가기
-- **흐름**: ProjectDetail Export → 모드별 default 산출물 자동 선택 → 복사 / 다운로드 / ZIP 번들
-- **다루는 데이터**: `AnalysisResult` (R), `Project` (R), `Reference` (R)
+- **User**: Vibe-coding user / design system engineer
+- **Goal**: Take tokens + decision log into external tools.
+- **Flow**: ProjectDetail Export -> mode-based default deliverable auto-selected -> copy / download / ZIP bundle.
+- **Data involved**: `AnalysisResult` (R), `Project` (R), `Reference` (R)
 
-## 데이터 모델
+## Data Model
 
-#### 📦 레퍼런스 `Reference`
+#### 📦 Reference `Reference`
 
-> 사용자가 모은 영감 이미지. 자동 태깅으로 색·타이포·레이아웃 정보가 함께 보관됨.
+> Inspiration images the user collected. Color, typography, and layout information are stored alongside via auto-tagging.
 
-- **보이는 페이지**: Archive, ProjectCreate, ProjectDetail
-- **만드는 사람**: 사용자
-- **만드는 곳**: Archive
-- **필드**:
+- **Visible on pages**: Archive, ProjectCreate, ProjectDetail
+- **Created by**: User
+- **Created at**: Archive
+- **Fields**:
 
-  | 필드명 | 타입 | 설명 | 필수 |
+  | Field | Type | Description | Required |
   |---|---|---|---|
-  | `source` | 문자열 (file / url) | 입력 소스 유형 | ✅ |
-  | `thumbnailUrl` | 이미지 URL | 썸네일 URL 또는 data URI | ✅ |
-  | `title` | 문자열 | 사용자 지정 제목 | ⬜ |
-  | `tags` | 객체 (레이어별 태그 묶음) | 색·타이포·레이아웃·그라디언트·비주얼디렉션 태그. 자동 태깅으로 채움 | ⬜ |
-  | `dominantColors` | 목록 (문자열 HEX) | 대표 색 1~5개 | ⬜ |
-  | `extracted` | 객체 (관찰 값 묶음) | T1 자동 태깅이 추출한 팔레트·타이포·레이아웃·그라디언트 관찰 값 | ⬜ |
+  | `source` | string (file / url) | Input source type | ✅ |
+  | `thumbnailUrl` | image URL | Thumbnail URL or data URI | ✅ |
+  | `title` | string | User-specified title | ⬜ |
+  | `tags` | object (per-layer tag bundle) | Color / typography / layout / gradient / visual-direction tags. Filled by auto-tagging | ⬜ |
+  | `dominantColors` | list (string HEX) | 1-5 dominant colors | ⬜ |
+  | `extracted` | object (observation bundle) | Palette / typography / layout / gradient observations extracted by T1 auto-tagging | ⬜ |
 
-  자동: id, 생성일
+  Automatic: id, created date
 
-#### 📦 프로젝트 `Project`
+#### 📦 Project `Project`
 
-> 의도와 모드, 레퍼런스 큐레이션을 묶는 단위. 5-step 위자드의 산출물.
+> The unit that ties together intent, mode, and reference curation. The output of the 5-step wizard.
 
-- **보이는 페이지**: ProjectList, ProjectCreate, ProjectDetail
-- **만드는 사람**: 사용자
-- **만드는 곳**: ProjectCreate
-- **필드**:
+- **Visible on pages**: ProjectList, ProjectCreate, ProjectDetail
+- **Created by**: User
+- **Created at**: ProjectCreate
+- **Fields**:
 
-  | 필드명 | 타입 | 설명 | 필수 |
+  | Field | Type | Description | Required |
   |---|---|---|---|
-  | `name` | 문자열 | 프로젝트 이름 | ✅ |
-  | `mode` | 문자열 (concept / system) | 위자드 모드 (Step 0) | ✅ |
-  | `intent` | 문자열 | 한 줄 의도 (Step 1) | ⬜ |
-  | `referenceIds` | 목록 (참조 Reference) | 큐레이션된 레퍼런스 묶음 | ⬜ |
-  | `userNotes` | 문자열 | Step 3 활용 노트 (T3 합성에 우선 적용) | ⬜ |
-  | `referenceNotes` | 객체 (refId → 텍스트) | 레퍼런스별 자유 노트 (≤100자) | ⬜ |
+  | `name` | string | Project name | ✅ |
+  | `mode` | string (concept / system) | Wizard mode (Step 0) | ✅ |
+  | `intent` | string | One-line intent (Step 1) | ⬜ |
+  | `referenceIds` | list (Reference refs) | Curated reference bundle | ⬜ |
+  | `userNotes` | string | Step 3 usage notes (applied with priority in T3 synthesis) | ⬜ |
+  | `referenceNotes` | object (refId -> text) | Free-form note per reference (≤100 chars) | ⬜ |
 
-  자동: id, 생성일
+  Automatic: id, created date
 
-#### 📦 프로젝트-레퍼런스 매핑 `ProjectReference`
+#### 📦 Project-Reference mapping `ProjectReference`
 
-> 한 프로젝트가 어떤 레퍼런스를 어떤 레이어 (색·타이포·레이아웃 등) 로 활용할지 표시.
+> Indicates which layers (color, typography, layout, etc.) a project uses from a given reference.
 
-- **보이는 페이지**: ProjectCreate, ProjectDetail
-- **만드는 사람**: 사용자
-- **만드는 곳**: ProjectCreate
-- **필드**:
+- **Visible on pages**: ProjectCreate, ProjectDetail
+- **Created by**: User
+- **Created at**: ProjectCreate
+- **Fields**:
 
-  | 필드명 | 타입 | 설명 | 필수 |
+  | Field | Type | Description | Required |
   |---|---|---|---|
-  | `projectId` | 참조 (Project) | 소속 프로젝트 | ✅ |
-  | `referenceId` | 참조 (Reference) | 큐레이션된 레퍼런스 | ✅ |
-  | `useLayers` | 목록 (문자열: color / typography / layout / gradient / visualDirection) | 이 레퍼런스에서 사용할 레이어. 빈 목록이면 자동 (T2 추천) | ⬜ |
+  | `projectId` | ref (Project) | Owning project | ✅ |
+  | `referenceId` | ref (Reference) | Curated reference | ✅ |
+  | `useLayers` | list (string: color / typography / layout / gradient / visualDirection) | Layers to use from this reference. An empty list means automatic (T2 recommendation) | ⬜ |
 
-  자동: id
+  Automatic: id
 
-#### 📦 분석 결과 `AnalysisResult`
+#### 📦 Analysis Result `AnalysisResult`
 
-> AI 가 만든 디자인 토큰 묶음. 각 토큰의 출처·이유·탈락 후보 동봉.
+> The bundle of design tokens the AI produced. Each token includes its source, reasoning, and rejected candidates.
 
-- **보이는 페이지**: ProjectDetail
-- **만드는 사람**: AI
-- **만드는 곳**: ProjectCreate
-- **필드**:
+- **Visible on pages**: ProjectDetail
+- **Created by**: AI
+- **Created at**: ProjectCreate
+- **Fields**:
 
-  | 필드명 | 타입 | 설명 | 필수 |
+  | Field | Type | Description | Required |
   |---|---|---|---|
-  | `projectId` | 참조 (Project) | 소속 프로젝트 | ✅ |
-  | `status` | 문자열 (pending / running / done / error) | 분석 진행 상태 | ✅ |
-  | `layers` | 객체 (5 레이어 토큰 묶음) | 색·타이포·레이아웃·그라디언트·비주얼디렉션 토큰 | ✅ |
+  | `projectId` | ref (Project) | Owning project | ✅ |
+  | `status` | string (pending / running / done / error) | Analysis progress state | ✅ |
+  | `layers` | object (5-layer token bundle) | Color / typography / layout / gradient / visual-direction tokens | ✅ |
 
-  각 토큰 (`color` / `typography` / `layout` / `gradient` 의 행) 공통 필드:
+  Common fields for each token (rows of `color` / `typography` / `layout` / `gradient`):
 
-  | 필드명 | 타입 | 설명 | 필수 |
+  | Field | Type | Description | Required |
   |---|---|---|---|
-  | `label` | 문자열 | 토큰 이름 | ✅ |
-  | `isEnabled` | 불리언 | 사용자 on/off 토글 | ✅ |
-  | `emphasis` | 숫자 (0 / 1 / 2) | 강조도 슬라이더 | ✅ |
-  | `sourceReferenceIds` | 목록 (참조 Reference) | 출처 레퍼런스 | ⬜ |
-  | `decisionRationale` | 객체 (출처·이유·사용자노트·탈락 후보) | 결정 추적 정보 | ⬜ |
+  | `label` | string | Token name | ✅ |
+  | `isEnabled` | boolean | User on/off toggle | ✅ |
+  | `emphasis` | number (0 / 1 / 2) | Emphasis slider | ✅ |
+  | `sourceReferenceIds` | list (Reference refs) | Source references | ⬜ |
+  | `decisionRationale` | object (source / reasoning / user notes / rejected candidates) | Decision-tracing info | ⬜ |
 
-  자동: id, 수정일 (각 토큰도 id 자동)
+  Automatic: id, modified date (each token also gets an automatic id)
 
-#### 📦 사용자 설정 `UserSettings`
+#### 📦 User Settings `UserSettings`
 
-> 사용자별 AI 모델 / 스토리지 / 테마 설정. 사용자당 1 row.
+> Per-user AI model / storage / theme settings. One row per user.
 
-- **보이는 페이지**: Settings
-- **만드는 사람**: 시스템
-- **만드는 곳**: Settings
-- **필드**:
+- **Visible on pages**: Settings
+- **Created by**: System
+- **Created at**: Settings
+- **Fields**:
 
-  | 필드명 | 타입 | 설명 | 필수 |
+  | Field | Type | Description | Required |
   |---|---|---|---|
-  | `aiModel` | 문자열 | T1/T2/T3 호출에 쓰는 AI 모델명 | ✅ |
-  | `storageMode` | 문자열 (local / cloud) | 데이터 저장 위치 | ✅ |
-  | `themeMode` | 문자열 (light / dark / system) | 화면 테마 | ✅ |
-  | `isAutoTagEnabled` | 불리언 | 업로드 시 자동 태깅 동작 여부 | ✅ |
+  | `aiModel` | string | AI model name used for T1/T2/T3 calls | ✅ |
+  | `storageMode` | string (local / cloud) | Data storage location | ✅ |
+  | `themeMode` | string (light / dark / system) | Screen theme | ✅ |
+  | `isAutoTagEnabled` | boolean | Whether auto-tagging runs on upload | ✅ |
 
-  자동: id (= 사용자 1:1)
+  Automatic: id (= 1:1 with user)
 
-#### 📦 사용자 `User`
+#### 📦 User `User`
 
-> 가입한 사용자. 모든 데이터의 소유자.
+> A registered user. The owner of all data.
 
-- **보이는 페이지**: Auth, GNB
-- **만드는 사람**: 사용자
-- **만드는 곳**: Auth
-- **필드**:
+- **Visible on pages**: Auth, GNB
+- **Created by**: User
+- **Created at**: Auth
+- **Fields**:
 
-  | 필드명 | 타입 | 설명 | 필수 |
+  | Field | Type | Description | Required |
   |---|---|---|---|
-  | `email` | 문자열 | 로그인 이메일 | ✅ |
-  | `displayName` | 문자열 | GNB 에 노출되는 표시 이름 | ⬜ |
-  | `avatarUrl` | 이미지 URL | 프로필 이미지 | ⬜ |
+  | `email` | string | Login email | ✅ |
+  | `displayName` | string | Display name shown in the GNB | ⬜ |
+  | `avatarUrl` | image URL | Profile image | ⬜ |
 
-  자동: id, 가입일
+  Automatic: id, signup date
 
-## UX-flow
+## UX Flow
 
-> 위 시나리오를 데이터 관점에서 단계별로 쪼갠 서사. 각 단계의 페이지·사용자 행동·발생 데이터·결과.
+> A narrative that breaks the scenarios above into steps from a data perspective. For each step: page, user action, data produced, and result.
 
-### 시나리오 1 단계별. 레퍼런스 아카이빙
+### Scenario 1 by step. Reference archiving
 
-1. **Archive 진입** (Archive)
-   - 사용자 행동: 영감 이미지 그리드를 둘러본다
-   - 발생하는 데이터: `Reference` R (기존 그리드 표시)
-   - 결과: 업로드 영역 (드래그앤드롭 / URL 입력) 노출
+1. **Enter Archive** (Archive)
+   - User action: browses the inspiration image grid
+   - Data produced: `Reference` R (displays the existing grid)
+   - Result: upload area (drag-and-drop / URL input) is shown
 
-2. **이미지 업로드** (Archive)
-   - 사용자 행동: 이미지를 드래그앤드롭하거나 URL 을 붙여넣는다
-   - 발생하는 데이터: `Reference` W (썸네일·소스 URL 보관)
-   - 결과: 그리드에 빈 카드 즉시 추가, 자동 태깅 시작
+2. **Upload image** (Archive)
+   - User action: drags and drops an image or pastes a URL
+   - Data produced: `Reference` W (stores thumbnail / source URL)
+   - Result: an empty card is added to the grid immediately; auto-tagging begins
 
-3. **자동 태깅** (Archive)
-   - 사용자 행동: (대기) 카드의 태그 배지·대표 색상이 비동기로 채워짐
-   - 발생하는 데이터: `Reference` D (태그·색·타이포·레이아웃 정보 보강)
-   - 결과: 카드 완성. 검색·필터에서 발견 가능해짐
+3. **Auto-tagging** (Archive)
+   - User action: (waiting) the card's tag badges / dominant colors fill in asynchronously
+   - Data produced: `Reference` D (enriches tag / color / typography / layout info)
+   - Result: card completed. Becomes discoverable in search / filter
 
-### 시나리오 2 단계별. 프로젝트 생성 5-step
+### Scenario 2 by step. Project creation 5-step
 
-1. **모드 선택 (Step 0)** (ProjectCreate)
-   - 사용자 행동: concept / system 카드 중 하나 선택
-   - 발생하는 데이터: `Project` W (mode 필드 저장)
-   - 결과: 다음 step 의 가이드·minLength 분기
+1. **Mode selection (Step 0)** (ProjectCreate)
+   - User action: selects one of the concept / system cards
+   - Data produced: `Project` W (saves the mode field)
+   - Result: branches the guidance / minLength of the next step
 
-2. **제목 + 의도 (Step 1)** (ProjectCreate)
-   - 사용자 행동: 프로젝트명 + 한 줄 의도 입력
-   - 발생하는 데이터: `Project` W (name + intent 필드)
-   - 결과: AI 가 의도 기반 레퍼런스 추천 시작
+2. **Title + intent (Step 1)** (ProjectCreate)
+   - User action: enters project name + one-line intent
+   - Data produced: `Project` W (name + intent fields)
+   - Result: AI begins intent-based reference recommendations
 
-3. **레퍼런스 + layer chip (Step 2)** (ProjectCreate)
-   - 사용자 행동: 추천 레퍼런스에서 골라 카드별 layer chip (색·타이포·레이아웃) 토글
-   - 발생하는 데이터: `Reference` R (선택), `ProjectReference` W (id + useLayers 매핑)
-   - 결과: 큐레이션 완료. 다음 step 의 가이드 표시
+3. **References + layer chip (Step 2)** (ProjectCreate)
+   - User action: picks from recommended references and toggles per-card layer chips (color / typography / layout)
+   - Data produced: `Reference` R (selection), `ProjectReference` W (id + useLayers mapping)
+   - Result: curation complete. Guidance for the next step is shown
 
-4. **활용 노트 (Step 3)** (ProjectCreate)
-   - 사용자 행동: 레퍼런스 본 후 활용 지점을 자유 텍스트로 명시
-   - 발생하는 데이터: `Project` D (userNotes 필드 추가)
-   - 결과: [분석 시작] 버튼 활성화
+4. **Usage notes (Step 3)** (ProjectCreate)
+   - User action: after viewing references, spells out usage points in free text
+   - Data produced: `Project` D (adds the userNotes field)
+   - Result: [Start analysis] button becomes active
 
-5. **AI 분석 (Step 4)** (ProjectCreate)
-   - 사용자 행동: 분석 시작 클릭 후 진행 인디케이터 관찰
-   - 발생하는 데이터: `AnalysisResult` W (4~8축 토큰 + 출처 + 이유 + 탈락 후보)
-   - 결과: ProjectDetail 로 자동 이동
+5. **AI analysis (Step 4)** (ProjectCreate)
+   - User action: clicks Start analysis and watches the progress indicator
+   - Data produced: `AnalysisResult` W (4-8 axis tokens + source + reasoning + rejected candidates)
+   - Result: automatically moves to ProjectDetail
 
-### 시나리오 3 단계별. 토큰 확인 + 결정 추적
+### Scenario 3 by step. Token review + decision tracing
 
-1. **ProjectDetail 진입** (ProjectDetail)
-   - 사용자 행동: 프로젝트 카드 클릭
-   - 발생하는 데이터: `Project` R, `AnalysisResult` R, `Reference` R (사용된 ref strip)
-   - 결과: 레이어 탭 (색·타이포·레이아웃·그라디언트·비주얼 디렉션) 노출
+1. **Enter ProjectDetail** (ProjectDetail)
+   - User action: clicks a project card
+   - Data produced: `Project` R, `AnalysisResult` R, `Reference` R (used-ref strip)
+   - Result: layer tabs (color / typography / layout / gradient / visual direction) are shown
 
-2. **토큰 카드 펼침** (ProjectDetail)
-   - 사용자 행동: 토큰 카드의 ❓ 인디케이터 클릭
-   - 발생하는 데이터: `AnalysisResult` R (decisionRationale 인용)
-   - 결과: 출처 ref + 의도 매칭 + 사용자 노트 적용 표시 + 탈락 후보 표시
+2. **Expand token card** (ProjectDetail)
+   - User action: clicks the ❓ indicator on a token card
+   - Data produced: `AnalysisResult` R (cites decisionRationale)
+   - Result: shows source ref + intent match + user-note application + rejected candidates
 
-3. **on/off + emphasis 편집** (ProjectDetail)
-   - 사용자 행동: 불필요 토큰 토글 off, 중요 토큰 emphasis 상승
-   - 발생하는 데이터: `AnalysisResult` D (isEnabled / emphasis 필드)
-   - 결과: 실시간 프리뷰 갱신
+3. **Edit on/off + emphasis** (ProjectDetail)
+   - User action: toggles off unneeded tokens, raises emphasis on important ones
+   - Data produced: `AnalysisResult` D (isEnabled / emphasis fields)
+   - Result: real-time preview updates
 
-### 시나리오 4 단계별. Export
+### Scenario 4 by step. Export
 
-1. **Export 클릭** (ProjectDetail)
-   - 사용자 행동: 우상단 Export 버튼 클릭
-   - 발생하는 데이터: `Project` R (mode 확인), `AnalysisResult` R (전체 토큰)
-   - 결과: 모드별 default 산출물 다이얼로그
+1. **Click Export** (ProjectDetail)
+   - User action: clicks the Export button in the top-right
+   - Data produced: `Project` R (checks mode), `AnalysisResult` R (all tokens)
+   - Result: mode-based default deliverable dialog
 
-2. **모드별 산출물 선택** (ProjectDetail)
-   - 사용자 행동: concept = conceptPrompt + 이미지 ZIP / system = ZIP 번들 (DESIGN.md + DTCG + decision-trace + refs) 중 default 확인
-   - 발생하는 데이터: `Reference` R (refs 이미지 묶기)
-   - 결과: 복사 / 다운로드 / ZIP 번들 완성
+2. **Select mode-based deliverable** (ProjectDetail)
+   - User action: confirms the default among concept = conceptPrompt + image ZIP / system = ZIP bundle (DESIGN.md + DTCG + decision-trace + refs)
+   - Data produced: `Reference` R (bundles the ref images)
+   - Result: copy / download / ZIP bundle complete
 
-## 페이지 리스트
+## Page List
 
-| 페이지 | 경로 | 한 줄 설명 | 다루는 데이터 |
+| Page | Path | One-line description | Data involved |
 |---|---|---|---|
-| Auth | `/auth` | 가입 / 로그인 | User |
-| Archive | `/` | 레퍼런스 그리드 + 업로드 + 검색·필터 | Reference |
-| ProjectList | `/projects` | 프로젝트 카드 목록 | Project |
-| ProjectCreate | `/projects/new` | 5-step 위자드 (모드 → 의도 → 레퍼런스 → 활용 노트 → 분석) | Project, ProjectReference, AnalysisResult, Reference |
-| ProjectDetail | `/projects/:id` | 레이어 탭 + 토큰 편집 + Export | AnalysisResult, Reference, Project |
-| Settings | `/settings` | AI 모델 / 스토리지 / 테마 | UserSettings |
+| Auth | `/auth` | Sign up / log in | User |
+| Archive | `/` | Reference grid + upload + search/filter | Reference |
+| ProjectList | `/projects` | Project card list | Project |
+| ProjectCreate | `/projects/new` | 5-step wizard (mode -> intent -> references -> usage notes -> analysis) | Project, ProjectReference, AnalysisResult, Reference |
+| ProjectDetail | `/projects/:id` | Layer tabs + token editing + Export | AnalysisResult, Reference, Project |
+| Settings | `/settings` | AI model / storage / theme | UserSettings |
 
-## 데이터 모델 활용
+## Data Model Usage
 
-> 이 표는 `/supabase-integration` 의 유일한 입력. 데이터명 ↔ 테이블명 1:1 매핑은 변경 시 반드시 이 표를 먼저 갱신.
+> This table is the sole input for `/supabase-integration`. When the data-name to table-name 1:1 mapping changes, always update this table first.
 
-| 데이터명 | 한국어 | 코드 식별자 | 예상 테이블명 | 생성 책임 페이지 |
+| Data name | Description | Code identifier | Expected table name | Page responsible for creation |
 |---|---|---|---|---|
-| `Reference` | 레퍼런스 | `reference` | `reference_items` | Archive |
-| `Project` | 프로젝트 | `project` | `projects` | ProjectCreate |
-| `ProjectReference` | 프로젝트-레퍼런스 매핑 | `projectReference` | `project_references` | ProjectCreate |
-| `AnalysisResult` | 분석 결과 | `analysisResult` | `analysis_results` | ProjectCreate |
-| `UserSettings` | 사용자 설정 | `userSettings` | `user_settings` | Settings |
-| `User` | 사용자 | `user` | `auth.users` (Supabase 내장) | Auth |
+| `Reference` | Reference | `reference` | `reference_items` | Archive |
+| `Project` | Project | `project` | `projects` | ProjectCreate |
+| `ProjectReference` | Project-Reference mapping | `projectReference` | `project_references` | ProjectCreate |
+| `AnalysisResult` | Analysis result | `analysisResult` | `analysis_results` | ProjectCreate |
+| `UserSettings` | User settings | `userSettings` | `user_settings` | Settings |
+| `User` | User | `user` | `auth.users` (Supabase built-in) | Auth |
 
-## 컴포넌트 리스트
+## Component List
 
-> 신규 컴포넌트만 본문. 기존 디자인 시스템에 없어 새로 만들어야 할 것. 재활용/수정 컴포넌트는 [appendix-screen-component-map.md](./appendix-screen-component-map.md) 부록.
+> Only new components are in the main text: those not present in the existing design system that must be built new. Reused / modified components are in the [appendix-screen-component-map.md](./appendix-screen-component-map.md) appendix.
 
-| 컴포넌트 | 카테고리 | 한 줄 용도 |
+| Component | Category | One-line purpose |
 |---|---|---|
-| `ProjectCreateWizard` | templates | 5-step 위자드 셸 (Step 0~4) |
-| `ReferencePicker` | templates | 추천 + 아카이브 다중 선택 패널 |
-| `AnalysisProgress` | overlay-feedback | 분석 진행 인디케이터 (레이어별 단계) |
-| `ThemeExportDialog` | overlay-feedback | 모드별 Export 다이얼로그 |
-| `TokenListItem` | data-display | 토큰 행 (on/off + emphasis 슬라이더) |
-| `ColorSwatchList` | data-display | 컬러 토큰 스와치 + HEX + 토글 |
-| `TypographyPreview` | data-display | 타이포 샘플 텍스트 + 속성 |
-| `LayoutTokenPreview` | data-display | 그리드/스페이싱 다이어그램 |
-| `GradientPreview` | data-display | 그라디언트 토큰 스와치 |
-| `TokenDecisionTracePanel` | data-display | 토큰 출처·이유·탈락 후보 펼침 |
-| `DesignMdPreview` | data-display | DESIGN.md alpha spec 결과 화면 |
-| `LoginForm` | input | 이메일 + 비밀번호 입력 |
-| `SignUpForm` | input | 회원가입 입력 |
-| `AuthGuard` | layout | 로그인 가드 라우트 |
+| `ProjectCreateWizard` | templates | 5-step wizard shell (Step 0-4) |
+| `ReferencePicker` | templates | Recommendation + archive multi-select panel |
+| `AnalysisProgress` | overlay-feedback | Analysis progress indicator (per-layer steps) |
+| `ThemeExportDialog` | overlay-feedback | Mode-based export dialog |
+| `TokenListItem` | data-display | Token row (on/off + emphasis slider) |
+| `ColorSwatchList` | data-display | Color token swatch + HEX + toggle |
+| `TypographyPreview` | data-display | Typography sample text + properties |
+| `LayoutTokenPreview` | data-display | Grid / spacing diagram |
+| `GradientPreview` | data-display | Gradient token swatch |
+| `TokenDecisionTracePanel` | data-display | Expandable token source / reasoning / rejected candidates |
+| `DesignMdPreview` | data-display | DESIGN.md alpha spec result screen |
+| `LoginForm` | input | Email + password input |
+| `SignUpForm` | input | Sign-up input |
+| `AuthGuard` | layout | Login-guarded route |
 
-## 참조
+## References
 
-- [01-project-summary.md](./01-project-summary.md). 페인포인트 → 기능 매핑
-- [appendix-screen-component-map.md](./appendix-screen-component-map.md). 화면 ↔ 컴포넌트 상세 (재활용/수정/신규 전체)
-- [docs/research/04-ux-intervention-roadmap.md](../research/04-ux-intervention-roadmap.md). 입력 지점 구현 명세
+- [01-project-summary.md](./01-project-summary.md). Pain point -> feature mapping
+- [appendix-screen-component-map.md](./appendix-screen-component-map.md). Screen <-> component detail (all reused / modified / new)
+- [docs/research/04-ux-intervention-roadmap.md](../research/04-ux-intervention-roadmap.md). Input-point implementation spec

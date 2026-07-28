@@ -1,33 +1,33 @@
 import { Box } from '@mui/material';
 
 /**
- * 황금비율 상수
+ * Golden ratio constant
  */
 const PHI = 1.618033988749895;
 
 /**
- * PhiSplit 컴포넌트
+ * PhiSplit component
  *
- * 황금비율(φ = 1.618)을 기반으로 두 영역을 분할하는 레이아웃 컴포넌트.
- * CSS Flexbox를 활용하여 약 61.8% : 38.2% 비율로 콘텐츠를 배치한다.
+ * A layout component that splits two regions based on the golden ratio (phi = 1.618).
+ * Uses CSS Flexbox to arrange content at roughly a 61.8% : 38.2% ratio.
  *
- * 동작 방식:
- * 1. direction prop에 따라 가로(row) 또는 세로(column) 분할 결정
- * 2. primary와 secondary 영역이 황금비율로 배치됨
- * 3. reversed가 true면 비율이 반전되어 작은 영역이 먼저 옴
- * 4. 반응형 브레이크포인트에서 자동으로 스택 레이아웃으로 전환
+ * How it works:
+ * 1. direction prop determines a horizontal (row) or vertical (column) split
+ * 2. The primary and secondary regions are arranged by the golden ratio
+ * 3. When reversed is true, the ratio is inverted so the smaller region comes first
+ * 4. Automatically switches to a stacked layout at responsive breakpoints
  *
  * Props:
- * @param {ReactNode} primary - 황금비율의 큰 영역에 배치될 콘텐츠 [Required]
- * @param {ReactNode} secondary - 황금비율의 작은 영역에 배치될 콘텐츠 [Required]
- * @param {string} direction - 분할 방향 ('row' | 'column') [Optional, 기본값: 'row']
- * @param {boolean} isReversed - 비율 반전 (작은 영역이 먼저) [Optional, 기본값: false]
- * @param {number} gap - 영역 간 간격 (theme spacing 단위) [Optional, 기본값: 0]
- * @param {string} stackAt - 스택으로 전환되는 브레이크포인트 ('xs' | 'sm' | 'md' | 'lg' | 'none') [Optional, 기본값: 'sm']
- * @param {string} minHeight - 컨테이너 최소 높이 [Optional]
- * @param {object} primarySx - primary 영역 추가 스타일 [Optional]
- * @param {object} secondarySx - secondary 영역 추가 스타일 [Optional]
- * @param {object} sx - 컨테이너 추가 스타일 [Optional]
+ * @param {ReactNode} primary - Content placed in the larger region of the golden ratio [Required]
+ * @param {ReactNode} secondary - Content placed in the smaller region of the golden ratio [Required]
+ * @param {string} direction - Split direction ('row' | 'column') [Optional, default: 'row']
+ * @param {boolean} isReversed - Invert the ratio (smaller region first) [Optional, default: false]
+ * @param {number} gap - Gap between regions (theme spacing units) [Optional, default: 0]
+ * @param {string} stackAt - Breakpoint at which it switches to stacked ('xs' | 'sm' | 'md' | 'lg' | 'none') [Optional, default: 'sm']
+ * @param {string} minHeight - Minimum container height [Optional]
+ * @param {object} primarySx - Additional styles for the primary region [Optional]
+ * @param {object} secondarySx - Additional styles for the secondary region [Optional]
+ * @param {object} sx - Additional container styles [Optional]
  *
  * Example usage:
  * <PhiSplit
@@ -56,16 +56,16 @@ export function PhiSplit({
   ...props
 }) {
   /**
-   * 황금비율 계산
-   * - 큰 영역: φ / (φ + 1) ≈ 61.8%
-   * - 작은 영역: 1 / (φ + 1) ≈ 38.2%
+   * Golden ratio calculation
+   * - Larger region: phi / (phi + 1) ~= 61.8%
+   * - Smaller region: 1 / (phi + 1) ~= 38.2%
    */
-  const primaryRatio = PHI / (PHI + 1); // ≈ 0.618
-  const secondaryRatio = 1 / (PHI + 1); // ≈ 0.382
+  const primaryRatio = PHI / (PHI + 1); // ~= 0.618
+  const secondaryRatio = 1 / (PHI + 1); // ~= 0.382
 
   /**
-   * 브레이크포인트별 flex-direction 설정
-   * stackAt 값에 따라 해당 브레이크포인트 이하에서 column으로 전환
+   * Set flex-direction per breakpoint
+   * Switches to column at and below the breakpoint given by stackAt
    */
   const getResponsiveDirection = () => {
     if (stackAt === 'none') {
@@ -83,8 +83,8 @@ export function PhiSplit({
   };
 
   /**
-   * 스택 모드에서 flex-basis 조정
-   * 스택(column) 상태에서는 각 영역이 auto로 전환
+   * Adjust flex-basis in stacked mode
+   * In the stacked (column) state, each region switches to auto
    */
   const getResponsiveFlex = (ratio) => {
     if (stackAt === 'none') {
@@ -104,7 +104,7 @@ export function PhiSplit({
     return breakpoints[stackAt] || normalValue;
   };
 
-  // 실제 배치 순서 결정
+  // Determine the actual placement order
   const firstContent = isReversed ? secondary : primary;
   const secondContent = isReversed ? primary : secondary;
   const firstRatio = isReversed ? secondaryRatio : primaryRatio;
@@ -127,7 +127,7 @@ export function PhiSplit({
       <Box
         sx={ {
           flex: getResponsiveFlex(firstRatio),
-          minWidth: 0, // flex item 오버플로우 방지
+          minWidth: 0, // prevent flex item overflow
           ...firstSx,
         } }
       >
@@ -147,6 +147,6 @@ export function PhiSplit({
 }
 
 /**
- * 황금비율 상수 export (다른 컴포넌트에서 사용)
+ * Export the golden ratio constant (for use in other components)
  */
 export { PHI };

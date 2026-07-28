@@ -3,27 +3,27 @@ import { Box, Typography, useTheme } from '@mui/material';
 import { keyframes } from '@mui/material/styles';
 
 /**
- * 색상 밝기 계산 함수
- * WCAG 상대 휘도 공식 사용
- * @param {string} hexColor - HEX 색상 코드 (#RRGGBB)
- * @returns {number} 0-255 범위의 밝기 값
+ * Color brightness calculation function
+ * Uses the WCAG relative luminance formula
+ * @param {string} hexColor - HEX color code (#RRGGBB)
+ * @returns {number} Brightness value in the 0-255 range
  */
 const getColorBrightness = (hexColor) => {
-  // HEX를 RGB로 변환
+  // Convert HEX to RGB
   const hex = hexColor.replace('#', '');
   const r = parseInt(hex.substring(0, 2), 16);
   const g = parseInt(hex.substring(2, 4), 16);
   const b = parseInt(hex.substring(4, 6), 16);
 
-  // 상대 휘도 계산 (WCAG 공식)
+  // Calculate relative luminance (WCAG formula)
   return (r * 299 + g * 587 + b * 114) / 1000;
 };
 
 /**
- * 테마 색상 경로에서 실제 색상값 추출
- * @param {object} theme - MUI 테마 객체
- * @param {string} colorPath - 'primary.main' 형식의 색상 경로
- * @returns {string} HEX 색상 코드
+ * Resolve the actual color value from a theme color path
+ * @param {object} theme - MUI theme object
+ * @param {string} colorPath - Color path in 'primary.main' format
+ * @returns {string} HEX color code
  */
 const resolveThemeColor = (theme, colorPath) => {
   if (!colorPath) return theme.palette.primary.main;
@@ -38,7 +38,7 @@ const resolveThemeColor = (theme, colorPath) => {
 };
 
 /**
- * 애니메이션 키프레임 정의
+ * Animation keyframe definitions
  */
 const drawUnderline = keyframes`
   from {
@@ -77,23 +77,23 @@ const drawCircle = keyframes`
 `;
 
 /**
- * Highlight 컴포넌트 (하위 컴포넌트)
+ * Highlight component (subcomponent)
  *
- * 텍스트의 특정 부분을 강조하는 스타일을 적용.
- * background 타입의 경우 배경색 밝기에 따라 텍스트 색상 자동 결정.
+ * Applies a style that emphasizes a specific portion of text.
+ * For the background type, the text color is automatically determined by the background brightness.
  *
  * Props:
- * @param {ReactNode} children - 강조할 텍스트 [Required]
- * @param {string} type - 강조 유형 ('underline' | 'background' | 'marker' | 'circle') [Required]
- * @param {string} color - 강조 색상 ('primary.main', 'secondary.main', '#FF0000' 등) [Optional, 기본값: 'primary.main']
- * @param {boolean} animated - draw 애니메이션 활성화 [Optional, 기본값: false]
- * @param {number} delay - 애니메이션 지연 (ms) [Optional, 기본값: 0]
- * @param {number} duration - 애니메이션 지속 시간 (ms) [Optional, 기본값: 600]
- * @param {string} textColor - 텍스트 색상 강제 지정 ('auto' | 'white' | 'inherit' 등) [Optional, 기본값: 'auto']
+ * @param {ReactNode} children - Text to emphasize [Required]
+ * @param {string} type - Emphasis type ('underline' | 'background' | 'marker' | 'circle') [Required]
+ * @param {string} color - Emphasis color ('primary.main', 'secondary.main', '#FF0000', etc.) [Optional, default: 'primary.main']
+ * @param {boolean} animated - Enable the draw animation [Optional, default: false]
+ * @param {number} delay - Animation delay (ms) [Optional, default: 0]
+ * @param {number} duration - Animation duration (ms) [Optional, default: 600]
+ * @param {string} textColor - Force the text color ('auto' | 'white' | 'inherit', etc.) [Optional, default: 'auto']
  *
  * Example usage:
- * <Highlight type="background" color="primary.main">자동 색상</Highlight>
- * <Highlight type="background" color="#000000" textColor="white">흰색 강제</Highlight>
+ * <Highlight type="background" color="primary.main">Automatic color</Highlight>
+ * <Highlight type="background" color="#000000" textColor="white">Forced white</Highlight>
  */
 export function Highlight({
   children,
@@ -109,30 +109,30 @@ export function Highlight({
   const ref = useRef(null);
   const [circleLength, setCircleLength] = useState(300);
 
-  // 실제 색상값 추출
+  // Resolve the actual color value
   const resolvedColor = resolveThemeColor(theme, color);
 
-  // 배경색 밝기에 따른 텍스트 색상 결정
+  // Determine the text color based on the background brightness
   const getTextColor = () => {
     if (textColor !== 'auto') return textColor;
 
-    // background 타입만 텍스트 색상 변경 (불투명한 배경)
+    // Only the background type changes the text color (opaque background)
     if (type === 'background') {
       const brightness = getColorBrightness(resolvedColor);
-      // 밝기 임계값: 128 (0-255 중간값)
-      // 어두운 배경 → 흰색 텍스트, 밝은 배경 → 기본 텍스트
+      // Brightness threshold: 128 (midpoint of 0-255)
+      // Dark background -> white text, light background -> default text
       return brightness < 128 ? '#FFFFFF' : 'inherit';
     }
 
     return 'inherit';
   };
 
-  // Circle SVG 길이 계산
+  // Calculate the Circle SVG length
   useEffect(() => {
     if (type === 'circle' && ref.current) {
       const width = ref.current.offsetWidth;
       const height = ref.current.offsetHeight;
-      // 타원 둘레 근사값
+      // Approximate ellipse perimeter
       const a = width / 2 + 8;
       const b = height / 2 + 6;
       const perimeter = Math.PI * (3 * (a + b) - Math.sqrt((3 * a + b) * (a + 3 * b)));
@@ -142,7 +142,7 @@ export function Highlight({
 
   const shouldAnimate = animated && isVisible;
 
-  // Underline 스타일
+  // Underline style
   if (type === 'underline') {
     return (
       <Box
@@ -165,7 +165,7 @@ export function Highlight({
     );
   }
 
-  // Background 스타일
+  // Background style
   if (type === 'background') {
     return (
       <Box
@@ -187,7 +187,7 @@ export function Highlight({
     );
   }
 
-  // Marker 스타일 (형광펜 효과 - 반투명)
+  // Marker style (highlighter effect - semi-transparent)
   if (type === 'marker') {
     return (
       <Box
@@ -209,7 +209,7 @@ export function Highlight({
     );
   }
 
-  // Circle 스타일 (손으로 그린 원)
+  // Circle style (hand-drawn circle)
   if (type === 'circle') {
     return (
       <Box
@@ -266,24 +266,24 @@ export function Highlight({
 }
 
 /**
- * HighlightedTypography 컴포넌트
+ * HighlightedTypography component
  *
- * 텍스트 내 특정 단어나 구문을 다양한 스타일로 강조할 수 있는 컴포넌트.
- * Compound component 패턴으로 Highlight 컴포넌트와 함께 사용.
+ * A component that lets you emphasize specific words or phrases within text using various styles.
+ * Used together with the Highlight component in a compound component pattern.
  *
- * 동작 방식:
- * 1. children으로 일반 텍스트와 Highlight 컴포넌트를 조합하여 전달
- * 2. Highlight 컴포넌트가 있는 부분에 강조 스타일이 적용됨
- * 3. animated가 true이면 viewport 진입 시 draw 애니메이션 실행
- * 4. 각 Highlight에 개별 delay를 설정하여 순차 애니메이션 가능
+ * How it works:
+ * 1. Pass a combination of plain text and Highlight components as children
+ * 2. Emphasis styles are applied to the parts wrapped in Highlight components
+ * 3. When animated is true, the draw animation runs upon entering the viewport
+ * 4. Setting an individual delay on each Highlight enables sequential animation
  *
  * Props:
- * @param {ReactNode} children - 텍스트와 Highlight 컴포넌트 조합 [Required]
- * @param {string} variant - 타이포그래피 variant ('body1' | 'body2' | 'h1' | 'h2' | 'h3' | 'h4') [Optional, 기본값: 'body1']
- * @param {string} component - HTML 태그 [Optional, 기본값: 'p']
- * @param {boolean} animated - 전체 애니메이션 활성화 [Optional, 기본값: false]
- * @param {number} threshold - Intersection Observer threshold [Optional, 기본값: 0.5]
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {ReactNode} children - Combination of text and Highlight components [Required]
+ * @param {string} variant - Typography variant ('body1' | 'body2' | 'h1' | 'h2' | 'h3' | 'h4') [Optional, default: 'body1']
+ * @param {string} component - HTML tag [Optional, default: 'p']
+ * @param {boolean} animated - Enable the overall animation [Optional, default: false]
+ * @param {number} threshold - Intersection Observer threshold [Optional, default: 0.5]
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
  * <HighlightedTypography animated>
@@ -303,7 +303,7 @@ export function HighlightedTypography({
   const containerRef = useRef(null);
   const [isVisible, setIsVisible] = useState(!animated);
 
-  // Intersection Observer로 viewport 진입 감지
+  // Detect viewport entry with Intersection Observer
   useEffect(() => {
     if (!animated) return;
 
@@ -325,7 +325,7 @@ export function HighlightedTypography({
     return () => observer.disconnect();
   }, [animated, threshold]);
 
-  // children에 isVisible prop 전달
+  // Pass the isVisible prop to children
   const enhancedChildren = Children.map(children, (child) => {
     if (isValidElement(child) && child.type === Highlight) {
       return cloneElement(child, { isVisible });
@@ -348,5 +348,5 @@ export function HighlightedTypography({
   );
 }
 
-// Compound component 패턴을 위한 정적 할당
+// Static assignment for the compound component pattern
 HighlightedTypography.Highlight = Highlight;

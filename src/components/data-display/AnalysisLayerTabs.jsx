@@ -10,22 +10,22 @@ import { DesignMdPreview } from './DesignMdPreview.jsx';
 import { ANALYSIS_LAYERS_WITH_DESIGN_MD } from '../../data/muse/layers.js';
 
 /**
- * AnalysisLayerTabs 컴포넌트
+ * AnalysisLayerTabs component
  *
- * T3 (디자인 시스템 모드) 분석 결과를 레이어 탭으로 보여주는 합성 컴포넌트.
- * CategoryTab(레이어 탭) + activeLayer 상태 + 레이어별 편집/프리뷰 패널 5종
- * (color / typography / layout / gradient / visualDirection + designMd) 전환을 캡슐화한다.
- * ProjectDetailPage 의 system 모드 우측 영역에서 인라인이던 로직을 추출한 것.
+ * A composite component that displays T3 (design system mode) analysis results as layer tabs.
+ * It encapsulates CategoryTab (layer tabs) + activeLayer state + switching between the 5 per-layer
+ * edit/preview panels (color / typography / layout / gradient / visualDirection + designMd).
+ * This extracts the logic that used to be inline in the right-hand area of ProjectDetailPage's system mode.
  *
  * Props:
- * @param {object} analysis - 레이어별 토큰 묶음 { color, typography, layout, gradient, visualDirection } [Required]
- * @param {object} project - DesignMdPreview 에 전달할 프로젝트 메타 [Optional]
- * @param {array} references - 결정 추적(출처 썸네일)용 전체 레퍼런스 목록 [Optional, 기본값: []]
- * @param {function} onUpdateToken - (layerKey, tokenId, patch) => void 토큰 편집 콜백 [Optional]
- * @param {array} categories - 탭 카테고리 [{ id, label }] [Optional, 기본값: ANALYSIS_LAYERS_WITH_DESIGN_MD]
- * @param {string} defaultLayer - 초기 활성 레이어 키 [Optional, 기본값: 'color']
- * @param {object} renderOverride - 레이어 키 → () => ReactNode. 있으면 기본 렌더러 대신 호출됨 [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {object} analysis - Per-layer token bundle { color, typography, layout, gradient, visualDirection } [Required]
+ * @param {object} project - Project metadata to pass to DesignMdPreview [Optional]
+ * @param {array} references - Full reference list for decision tracing (source thumbnails) [Optional, default: []]
+ * @param {function} onUpdateToken - (layerKey, tokenId, patch) => void token edit callback [Optional]
+ * @param {array} categories - Tab categories [{ id, label }] [Optional, default: ANALYSIS_LAYERS_WITH_DESIGN_MD]
+ * @param {string} defaultLayer - Initial active layer key [Optional, default: 'color']
+ * @param {object} renderOverride - layer key -> () => ReactNode. When present, called instead of the default renderer [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <AnalysisLayerTabs
@@ -98,7 +98,7 @@ export function AnalysisLayerTabs({
         const vd = analysis.visualDirection || { markdown: '', tags: { genre: [], style: [], subject: [] } };
         return (
           <Box sx={ { bgcolor: 'background.paper', borderRadius: 3, p: 4 } }>
-            {/* 태그 칩 */}
+            {/* Tag chips */}
             { vd.tags && (
               <Box sx={ { display: 'flex', flexDirection: 'column', gap: 1, mb: 3 } }>
                 { Object.entries(vd.tags).map(([category, list]) => (
@@ -117,7 +117,7 @@ export function AnalysisLayerTabs({
                 )) }
               </Box>
             ) }
-            {/* Markdown 본문 — 단순 pre 렌더 (추후 react-markdown 도입 가능) */}
+            {/* Markdown body: simple pre render (react-markdown can be added later) */}
             <Box
               component="pre"
               sx={ {
@@ -136,7 +136,7 @@ export function AnalysisLayerTabs({
                 overflow: 'auto',
               } }
             >
-              { vd.markdown || '# Visual Direction\n\n(아직 생성되지 않았습니다)' }
+              { vd.markdown || '# Visual Direction\n\n(Not generated yet)' }
             </Box>
           </Box>
         );

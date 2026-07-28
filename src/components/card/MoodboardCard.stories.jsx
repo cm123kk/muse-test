@@ -5,7 +5,7 @@ import Masonry from '@mui/lab/Masonry';
 import { MoodboardCard } from './MoodboardCard';
 import Placeholder, { placeholderSvg } from '../../common/ui/Placeholder';
 
-// 테스트용 에셋 데이터 생성 (Placeholder SVG 사용)
+// Generate test asset data (using Placeholder SVG)
 const createMockAssets = (category, count = 4) => {
   const labels = {
     abstract: ['Abstract Flow', 'Geometric Pattern', 'Color Study', 'Form Exploration', 'Shape Play', 'Texture Map', 'Wave Motion', 'Grid System'],
@@ -28,7 +28,7 @@ const createMockAssets = (category, count = 4) => {
   }));
 };
 
-// 샘플 무드보드 데이터
+// Sample moodboard data
 const sampleMoodboards = [
   {
     id: 'board-1',
@@ -78,22 +78,22 @@ export default {
         component: `
 ## MoodboardCard
 
-무드보드 컬렉션을 표시하는 카드 컴포넌트입니다.
+A card component that displays a moodboard collection.
 
-### ImageCard와의 차이점
+### Differences from ImageCard
 
-| 요소 | ImageCard | MoodboardCard |
+| Element | ImageCard | MoodboardCard |
 |------|-----------|---------------|
-| **썸네일** | 단일 이미지 | 2×2 그리드 (4개 이미지) |
-| **타이틀** | body2 (14px) | subtitle1 (16px), bold |
-| **메타데이터** | 태그 칩 | 설명, 아이템 수, 생성일 |
+| **Thumbnail** | Single image | 2×2 grid (4 images) |
+| **Title** | body2 (14px) | subtitle1 (16px), bold |
+| **Metadata** | Tag chips | Description, item count, created date |
 
-### 주요 기능
-- **2×2 썸네일 그리드**: 기본 상태에서 컬렉션 미리보기
-- **Hover 이미지 순환**: 마우스 hover 시 0.3초 간격으로 이미지가 fade 트랜지션
-- **반응형 메타데이터**: 이름, 설명, 아이템 수, 생성일
-- **Hover 인터랙션**: 편집/삭제 버튼 표시
-- **빈 상태 처리**: 이미지가 없을 때 placeholder 표시
+### Key features
+- **2×2 thumbnail grid**: Collection preview in the default state
+- **Hover image cycling**: On mouse hover, images fade-transition at 0.3s intervals
+- **Responsive metadata**: Name, description, item count, created date
+- **Hover interaction**: Shows edit/delete buttons
+- **Empty state handling**: Shows a placeholder when there are no images
         `,
       },
     },
@@ -101,49 +101,49 @@ export default {
   argTypes: {
     name: {
       control: 'text',
-      description: '무드보드 이름',
+      description: 'Moodboard name',
       table: {
         type: { summary: 'string' },
       },
     },
     description: {
       control: 'text',
-      description: '무드보드 설명 (최대 2줄 표시)',
+      description: 'Moodboard description (shows up to 2 lines)',
       table: {
         type: { summary: 'string' },
       },
     },
     items: {
       control: 'object',
-      description: '무드보드 내 아이템 배열 (thumbnail 필드 필요)',
+      description: 'Array of items in the moodboard (requires a thumbnail field)',
       table: {
         type: { summary: 'Array<{id, title, thumbnail}>' },
       },
     },
     createdAt: {
       control: 'text',
-      description: '생성 날짜 (YYYY-MM-DD 형식)',
+      description: 'Created date (YYYY-MM-DD format)',
       table: {
         type: { summary: 'string' },
       },
     },
     onClick: {
       action: 'clicked',
-      description: '카드 클릭 핸들러',
+      description: 'Card click handler',
       table: {
         type: { summary: 'function' },
       },
     },
     onEdit: {
       action: 'edit',
-      description: '편집 버튼 클릭 핸들러',
+      description: 'Edit button click handler',
       table: {
         type: { summary: 'function' },
       },
     },
     onDelete: {
       action: 'delete',
-      description: '삭제 버튼 클릭 핸들러',
+      description: 'Delete button click handler',
       table: {
         type: { summary: 'function' },
       },
@@ -151,7 +151,7 @@ export default {
   },
 };
 
-/** 기본 MoodboardCard */
+/** Default MoodboardCard */
 export const Default = {
   args: {
     id: 'board-1',
@@ -167,7 +167,7 @@ export const Default = {
   ),
 };
 
-/** 이미지 개수별 상태 */
+/** States by image count */
 export const ItemCounts = {
   render: () => (
     <Box sx={ { display: 'flex', gap: 3, flexWrap: 'wrap' } }>
@@ -191,13 +191,13 @@ export const ItemCounts = {
   ),
 };
 
-/** 긴 텍스트 처리 */
+/** Long text handling */
 export const LongText = {
   render: () => (
     <Box sx={ { display: 'flex', gap: 3 } }>
       <Box sx={ { width: 280 } }>
         <Typography variant="caption" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          긴 제목
+          Long title
         </Typography>
         <MoodboardCard
           id="board-long-title"
@@ -210,7 +210,7 @@ export const LongText = {
       </Box>
       <Box sx={ { width: 280 } }>
         <Typography variant="caption" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          긴 설명
+          Long description
         </Typography>
         <MoodboardCard
           id="board-long-desc"
@@ -225,7 +225,7 @@ export const LongText = {
   ),
 };
 
-/** Masonry 그리드 레이아웃 */
+/** Masonry grid layout */
 export const MasonryGrid = {
   render: () => (
     <Box sx={ { width: '100%', maxWidth: 1200 } }>
@@ -250,7 +250,7 @@ export const MasonryGrid = {
   },
 };
 
-/** Grid 레이아웃 (균등 높이) */
+/** Grid layout (equal height) */
 export const GridLayout = {
   render: () => (
     <Box sx={ { width: '100%', maxWidth: 1200 } }>
@@ -275,7 +275,7 @@ export const GridLayout = {
   },
 };
 
-/** 액션 버튼 없음 (읽기 전용) */
+/** No action buttons (read only) */
 export const ReadOnly = {
   args: {
     id: 'board-readonly',
@@ -291,13 +291,13 @@ export const ReadOnly = {
   ),
 };
 
-/** Hover 이미지 순환 (많은 이미지) */
+/** Hover image cycling (many images) */
 export const HoverTransition = {
   render: () => (
     <Box sx={ { display: 'flex', gap: 3 } }>
       <Box sx={ { width: 280 } }>
         <Typography variant="caption" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          8개 이미지 (Hover하여 순환 확인)
+          8 images (hover to see cycling)
         </Typography>
         <MoodboardCard
           id="board-many"
@@ -313,7 +313,7 @@ export const HoverTransition = {
       </Box>
       <Box sx={ { width: 280 } }>
         <Typography variant="caption" color="text.secondary" sx={ { mb: 1, display: 'block' } }>
-          1개 이미지 (순환 없음)
+          1 image (no cycling)
         </Typography>
         <MoodboardCard
           id="board-single"

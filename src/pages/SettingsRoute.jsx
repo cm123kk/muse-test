@@ -7,10 +7,10 @@ export function SettingsRoute() {
   const { data: dbSettings, loading } = useUserSettings();
   const { updateUserSettings } = useUpdateUserSettings();
 
-  // Zustand 설정과 DB 설정을 동기화 (테마 모드 등 즉시 반영 필요한 항목)
+  // Sync Zustand settings with DB settings (items that need immediate reflection, such as theme mode)
   const { settings: localSettings, updateSettings } = useSettingsSlice();
 
-  // DB 로드 완료 시 로컬 설정에 반영
+  // Reflect into local settings once the DB load completes
   useEffect(() => {
     if (dbSettings) {
       updateSettings({
@@ -32,10 +32,10 @@ export function SettingsRoute() {
     : localSettings;
 
   const handleChange = async (patch) => {
-    // 즉시 로컬 반영 (테마 등 UI 즉각 반응)
+    // Apply locally immediately (instant UI response for theme, etc.)
     updateSettings(patch);
 
-    // DB 키 변환 후 저장
+    // Convert to DB keys, then save
     const dbPatch = {};
     if ('themeMode' in patch) dbPatch.theme_mode = patch.themeMode;
     if ('isAutoTagEnabled' in patch) dbPatch.is_auto_tag_enabled = patch.isAutoTagEnabled;

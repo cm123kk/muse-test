@@ -21,12 +21,12 @@ export default {
         component: `
 ## Title
 
-섹션/아이템의 계층적 타이틀 시스템을 제공하는 컴포넌트.
+A component that provides a hierarchical title system for sections and items.
 
-### 용도
-- 페이지 섹션의 제목 표시
-- Overline + Title + Subtitle 조합으로 정보 계층 구성
-- 다양한 레이아웃 옵션으로 유연한 배치
+### Use Cases
+- Display titles for page sections
+- Build an information hierarchy with an Overline + Title + Subtitle combination
+- Flexible placement with various layout options
         `,
       },
     },
@@ -34,44 +34,44 @@ export default {
   argTypes: {
     title: {
       control: 'text',
-      description: '메인 타이틀 텍스트',
+      description: 'Main title text',
     },
     overline: {
       control: 'text',
-      description: '상단 작은 레이블',
+      description: 'Small label above',
     },
     subtitle: {
       control: 'text',
-      description: '하단 서브타이틀',
+      description: 'Subtitle below',
     },
     level: {
       control: 'select',
       options: ['h1', 'h2', 'h3', 'h4'],
-      description: '시맨틱 HTML 레벨',
+      description: 'Semantic HTML level',
     },
     align: {
       control: 'select',
       options: ['left', 'center', 'right'],
-      description: '텍스트 정렬',
+      description: 'Text alignment',
     },
     layout: {
       control: 'select',
       options: ['stack', 'inline', 'split'],
-      description: '레이아웃 방식',
+      description: 'Layout method',
     },
     divider: {
       control: 'boolean',
-      description: '하단 구분선 표시',
+      description: 'Show bottom divider',
     },
     dividerStyle: {
       control: 'select',
       options: ['line', 'dot', 'gradient'],
-      description: '구분선 스타일',
+      description: 'Divider style',
     },
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     title: 'Section Title',
@@ -84,7 +84,7 @@ export const Default = {
   },
 };
 
-/** 모든 레이아웃 비교 */
+/** All layouts comparison */
 export const Layouts = {
   render: () => (
     <>
@@ -101,10 +101,10 @@ export const Layouts = {
           Title Component
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          Overline, 메인 타이틀, 서브타이틀의 조합으로 명확한 정보 계층을 구성합니다.
+          Build a clear information hierarchy with a combination of Overline, main title, and subtitle.
         </Typography>
 
-        <SectionTitle title="Props" description="Title 컴포넌트의 Props 목록입니다." />
+        <SectionTitle title="Props" description="List of props for the Title component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -120,59 +120,59 @@ export const Layouts = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>title</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>메인 타이틀 텍스트 (필수)</TableCell>
+                <TableCell>Main title text (required)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>overline</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>상단 작은 레이블</TableCell>
+                <TableCell>Small label above</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>subtitle</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>하단 서브타이틀</TableCell>
+                <TableCell>Subtitle below</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>level</TableCell>
                 <TableCell>&apos;h1&apos; | &apos;h2&apos; | &apos;h3&apos; | &apos;h4&apos;</TableCell>
                 <TableCell>&apos;h2&apos;</TableCell>
-                <TableCell>시맨틱 HTML 레벨</TableCell>
+                <TableCell>Semantic HTML level</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>align</TableCell>
                 <TableCell>&apos;left&apos; | &apos;center&apos; | &apos;right&apos;</TableCell>
                 <TableCell>&apos;left&apos;</TableCell>
-                <TableCell>텍스트 정렬</TableCell>
+                <TableCell>Text alignment</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>layout</TableCell>
                 <TableCell>&apos;stack&apos; | &apos;inline&apos; | &apos;split&apos;</TableCell>
                 <TableCell>&apos;stack&apos;</TableCell>
-                <TableCell>레이아웃 방식</TableCell>
+                <TableCell>Layout method</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>divider</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>하단 구분선 표시</TableCell>
+                <TableCell>Show bottom divider</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>dividerStyle</TableCell>
                 <TableCell>&apos;line&apos; | &apos;dot&apos; | &apos;gradient&apos;</TableCell>
                 <TableCell>&apos;line&apos;</TableCell>
-                <TableCell>구분선 스타일</TableCell>
+                <TableCell>Divider style</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Layout Variants" description="세 가지 레이아웃 옵션을 제공합니다." />
+        <SectionTitle title="Layout Variants" description="Provides three layout options." />
         <Stack spacing={ 6 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 2, color: 'text.secondary' } }>
-              Stack (기본) - 수직 배치
+              Stack (default) - vertical arrangement
             </Typography>
             <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
               <Title
@@ -186,7 +186,7 @@ export const Layouts = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 2, color: 'text.secondary' } }>
-              Inline - Overline과 Title 가로 배치
+              Inline - Overline and Title arranged horizontally
             </Typography>
             <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
               <Title
@@ -200,7 +200,7 @@ export const Layouts = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 2, color: 'text.secondary' } }>
-              Split - Title과 Subtitle 양쪽 분리
+              Split - Title and Subtitle separated on both sides
             </Typography>
             <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
               <Title
@@ -213,7 +213,7 @@ export const Layouts = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Heading Levels" description="시맨틱 HTML 레벨에 따른 크기 변화입니다." />
+        <SectionTitle title="Heading Levels" description="Size changes based on the semantic HTML level." />
         <Stack spacing={ 4 }>
           <Title title="Heading Level 1" level="h1" />
           <Title title="Heading Level 2" level="h2" />
@@ -221,12 +221,12 @@ export const Layouts = {
           <Title title="Heading Level 4" level="h4" />
         </Stack>
 
-        <SectionTitle title="Divider Styles" description="세 가지 구분선 스타일을 제공합니다." />
+        <SectionTitle title="Divider Styles" description="Provides three divider styles." />
         <Stack spacing={ 6 }>
           <Box>
             <Title
               title="Line Divider"
-              subtitle="기본 라인 스타일"
+              subtitle="Default line style"
               divider
               dividerStyle="line"
             />
@@ -234,7 +234,7 @@ export const Layouts = {
           <Box>
             <Title
               title="Dot Divider"
-              subtitle="점 3개로 구성된 장식적 스타일"
+              subtitle="Decorative style made of three dots"
               divider
               dividerStyle="dot"
             />
@@ -242,20 +242,20 @@ export const Layouts = {
           <Box>
             <Title
               title="Gradient Divider"
-              subtitle="가운데가 진하고 양 끝이 투명한 그라데이션"
+              subtitle="Gradient that is dark in the center and transparent at both ends"
               divider
               dividerStyle="gradient"
             />
           </Box>
         </Stack>
 
-        <SectionTitle title="Alignment" description="텍스트 정렬 옵션입니다." />
+        <SectionTitle title="Alignment" description="Text alignment options." />
         <Stack spacing={ 6 }>
           <Box sx={ { p: 3, border: '1px solid', borderColor: 'divider' } }>
             <Title
               title="Left Aligned"
               overline="Alignment"
-              subtitle="기본 좌측 정렬입니다."
+              subtitle="Default left alignment."
               align="left"
               divider
               dividerStyle="gradient"
@@ -265,7 +265,7 @@ export const Layouts = {
             <Title
               title="Center Aligned"
               overline="Alignment"
-              subtitle="중앙 정렬입니다."
+              subtitle="Center alignment."
               align="center"
               divider
               dividerStyle="gradient"
@@ -275,7 +275,7 @@ export const Layouts = {
             <Title
               title="Right Aligned"
               overline="Alignment"
-              subtitle="우측 정렬입니다."
+              subtitle="Right alignment."
               align="right"
               divider
               dividerStyle="gradient"

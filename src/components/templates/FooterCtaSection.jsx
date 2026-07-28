@@ -7,7 +7,7 @@ import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 const imageModules = import.meta.glob('/src/assets/example/*.{jpg,jpeg}', { eager: true });
 const EXAMPLE_IMAGES = Object.values(imageModules).map((m) => m.default);
 
-/* HeroSection 과 동일한 seeded RNG + scatter 생성 로직 */
+/* Same seeded RNG + scatter generation logic as HeroSection */
 function mulberry32(seed) {
   let t = seed >>> 0;
   return function rand() {
@@ -20,13 +20,13 @@ function mulberry32(seed) {
 
 function generatePositions(count, w, h) {
   const rng = mulberry32(99);
-  /* 이미지 크기: 모바일에서 화면 너비 비례로 축소 */
+  /* Image size: scale down proportionally to screen width on mobile */
   const SIZE_MIN = Math.min(60, Math.round(w * 0.1));
   const SIZE_MAX = Math.min(95, Math.round(w * 0.14));
   const PAD = 14;
   const PAD_TOP = 72;
-  /* 직사각형 keepout: 텍스트 블록 영역만 정확히 제외, 좌우에도 이미지 배치 가능 */
-  /* KEEPOUT_X/Y: 뷰포트 비례로 계산해 어떤 화면 크기에서도 균등 배치 보장 */
+  /* Rectangular keepout: exclude only the text block area exactly, still allowing images on both sides */
+  /* KEEPOUT_X/Y: computed proportionally to the viewport to guarantee even placement at any screen size */
   const KEEPOUT_X = Math.min(Math.round(w * 0.22), 320);
   const KEEPOUT_Y = Math.min(Math.round(h * 0.25), 195);
   const COLS = 8;
@@ -37,7 +37,7 @@ function generatePositions(count, w, h) {
   const cellW = (w - PAD * 2) / COLS;
   const cellH = (h - PAD_TOP - PAD) / ROWS;
 
-  /* keepout 제외 셀 수집 (raster 순서 유지 = 그리드 전체에 고르게 분포) */
+  /* Collect cells outside the keepout (preserving raster order = evenly distributed across the grid) */
   const cells = [];
   for (let row = 0; row < ROWS; row++) {
     for (let col = 0; col < COLS; col++) {
@@ -50,7 +50,7 @@ function generatePositions(count, w, h) {
     }
   }
 
-  /* 고른 배치: 전체 셀을 count 개 버킷으로 나눠 버킷당 1개 선택 */
+  /* Even placement: split all cells into count buckets and pick one per bucket */
   const total = Math.min(count, cells.length);
   const selected = [];
   for (let i = 0; i < total; i++) {
@@ -75,14 +75,14 @@ function generatePositions(count, w, h) {
 }
 
 /**
- * FooterCtaSection 컴포넌트
+ * FooterCtaSection component
  *
- * 랜딩페이지 최하단 CTA 섹션. HeroSection 이미지 scatter + 마우스 parallax 응용.
- * hover 배경 블러 없음. scrollProgress 없음(이미지가 scatter 위치에 고정).
+ * The bottommost CTA section of the landing page. An application of the HeroSection image scatter + mouse parallax.
+ * No hover background blur. No scrollProgress (images are fixed at their scatter positions).
  *
  * Props:
- * @param {function} onNavigateToSignUp - 지금 시작하기 버튼 콜백 [Optional]
- * @param {function} onNavigateToLogin - 이미 계정이 있나요 콜백 [Optional]
+ * @param {function} onNavigateToSignUp - Start now button callback [Optional]
+ * @param {function} onNavigateToLogin - Already have an account callback [Optional]
  *
  * Example usage:
  * <FooterCtaSection onNavigateToSignUp={openSignUp} onNavigateToLogin={openLogin} />
@@ -140,7 +140,7 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
       const dt = Math.min((now - lastTime) / 1000, 0.05);
       lastTime = now;
 
-      /* 마우스 속도 */
+      /* Mouse velocity */
       if (prevMouseX > -9000 && mouseX > -9000) {
         velX = velX * 0.55 + (mouseX - prevMouseX) * 0.45;
         velY = velY * 0.55 + (mouseY - prevMouseY) * 0.45;
@@ -157,7 +157,7 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
         const sPos = sPositions[i];
         if (!offsX[i]) { offsX[i] = 0; offsY[i] = 0; }
 
-        /* 마우스 proximity parallax */
+        /* Mouse proximity parallax */
         if (mouseSpeed > 0.4 && mouseX > -9000) {
           const imgCx = sPos.x + sPos.size / 2;
           const imgCy = sPos.y + sPos.size / 2;
@@ -195,7 +195,7 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
         bgcolor: 'background.default',
       }}
     >
-      {/* 이미지 scatter (마우스 parallax만, 배경 hover 없음) */}
+      {/* Image scatter (mouse parallax only, no background hover) */}
       {positions.map((pos, i) => (
         <Box
           key={i}
@@ -220,7 +220,7 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
         />
       ))}
 
-      {/* CTA 텍스트 + 버튼 */}
+      {/* CTA text + button */}
       <Box
         sx={{
           position: 'absolute',
@@ -244,14 +244,14 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
               color: 'text.primary',
             }}
           >
-            오늘 본 레퍼런스,<br />그대로 흘려보내지 마세요.
+            Don't let today's references<br />slip away.
           </Typography>
           <Typography
             variant="body1"
             color="text.secondary"
             sx={{ fontSize: { xs: '0.8rem', md: '0.95rem' }, mb: 5, maxWidth: 420, mx: 'auto', lineHeight: 1.7 }}
           >
-            이메일 하나면 충분합니다. 첫 프로젝트의 결정 로그까지 30 초 안에 받아보실 수 있어요.
+            All it takes is an email. Get your first project's decision log in under 30 seconds.
           </Typography>
           <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 1.5 }}>
             <Button
@@ -261,7 +261,7 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
               onClick={onNavigateToSignUp}
               sx={{ px: 5 }}
             >
-              지금 시작하기
+              Start Now
             </Button>
             <Button
               variant="text"
@@ -269,7 +269,7 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
               onClick={onNavigateToLogin}
               sx={{ color: 'text.secondary', '&:hover': { color: 'text.primary' } }}
             >
-              이미 계정이 있나요?
+              Already have an account?
             </Button>
           </Box>
         </Box>

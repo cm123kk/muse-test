@@ -4,15 +4,15 @@ import Typography from '@mui/material/Typography';
 import { testImages } from '../../utils/pexels-test-data';
 
 /**
- * Placeholder 컴포넌트 시스템
+ * Placeholder component system
  *
- * 스토리북 예제에서 실제 콘텐츠 대신 사용하는 FPO(For Position Only) 블록.
- * Semantic UI Placeholder의 조합형 서브컴포넌트 패턴을 차용.
+ * FPO (For Position Only) blocks used in place of real content in Storybook examples.
+ * Adopts the composable subcomponent pattern of Semantic UI Placeholder.
  *
- * 동작 방식:
- * 1. 서브컴포넌트(Box, Image, Text, Line, Paragraph, Card, Media)를 조합하여 사용
- * 2. 중립적 시각 톤(grey 계열, dashed border, grayscale)으로 컴포넌트 구조에 시선 집중
- * 3. label, ratio, length 등 props로 콘텐츠 유형을 선언적으로 표현
+ * How it works:
+ * 1. Compose subcomponents (Box, Image, Text, Line, Paragraph, Card, Media)
+ * 2. Uses a neutral visual tone (grey family, dashed border, grayscale) to keep attention on the component structure
+ * 3. Expresses content types declaratively via props such as label, ratio, and length
  *
  * Example usage:
  * <Placeholder.Box label="Sidebar" height={300} />
@@ -22,7 +22,7 @@ import { testImages } from '../../utils/pexels-test-data';
  * <Placeholder.Card ratio="4/3" lines={2} />
  */
 
-/** 공통 라벨 스타일 */
+/** Shared label style */
 const labelSx = {
   fontSize: '0.75rem',
   color: 'text.disabled',
@@ -32,15 +32,15 @@ const labelSx = {
 };
 
 // ============================================================
-// placeholderSvg — 점 패턴 SVG data URI 생성
+// placeholderSvg - Generate a dot pattern SVG data URI
 // ============================================================
 
 /**
- * 점 그리드로 가상 공간을 표현하는 SVG data URI를 생성한다.
- * 다른 컴포넌트에서 <img src={placeholderSvg(800, 450)} /> 형태로 사용 가능.
+ * Generates an SVG data URI that represents a placeholder space using a dot grid.
+ * Can be used in other components as <img src={placeholderSvg(800, 450)} />.
  *
- * @param {number} width - SVG 폭 [Optional, 기본값: 400]
- * @param {number} height - SVG 높이 [Optional, 기본값: 300]
+ * @param {number} width - SVG width [Optional, default: 400]
+ * @param {number} height - SVG height [Optional, default: 300]
  * @returns {string} data:image/svg+xml data URI
  *
  * Example usage:
@@ -62,20 +62,20 @@ function placeholderSvg(width = 400, height = 300) {
 }
 
 // ============================================================
-// Placeholder.Box — 범용 영역 블록
+// Placeholder.Box - General-purpose area block
 // ============================================================
 
 /**
  * Placeholder.Box
  *
- * 레이아웃 영역을 나타내는 범용 플레이스홀더 블록.
- * 그리드 셀, 사이드바, 패널 등 공간 데모에 사용.
+ * A general-purpose placeholder block representing a layout area.
+ * Used for space demos such as grid cells, sidebars, and panels.
  *
  * Props:
- * @param {string} label - 영역 라벨 텍스트 [Optional]
- * @param {number|string} width - 폭 [Optional, 기본값: '100%']
- * @param {number|string} height - 높이 [Optional, 기본값: 120]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} label - Area label text [Optional]
+ * @param {number|string} width - Width [Optional, default: '100%']
+ * @param {number|string} height - Height [Optional, default: 120]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Placeholder.Box label="Content Area" height={200} />
@@ -106,20 +106,20 @@ function PlaceholderBox({ label, width = '100%', height = 120, sx, ...props }) {
 }
 
 // ============================================================
-// Placeholder.Image — 점 패턴 SVG 이미지 슬롯
+// Placeholder.Image - Dot pattern SVG image slot
 // ============================================================
 
 /**
  * Placeholder.Image
  *
- * 점 그리드 SVG로 가상 공간을 표현하는 이미지 플레이스홀더.
- * aspect-ratio로 비율을 유지하며, <img> 태그 기반이라 다른 컴포넌트에서도 동일하게 사용 가능.
+ * An image placeholder that represents a placeholder space with a dot grid SVG.
+ * Maintains the ratio via aspect-ratio, and since it is based on the <img> tag it can be used the same way in other components.
  *
  * Props:
- * @param {string} ratio - 종횡비 ('16/9' | '4/3' | '1/1' | '3/4' | '9/16') [Optional, 기본값: '16/9']
- * @param {number|string} width - 폭 [Optional, 기본값: '100%']
- * @param {number|string} height - 높이 (ratio와 함께 사용 시 ratio 우선) [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} ratio - Aspect ratio ('16/9' | '4/3' | '1/1' | '3/4' | '9/16') [Optional, default: '16/9']
+ * @param {number|string} width - Width [Optional, default: '100%']
+ * @param {number|string} height - Height (when used with ratio, ratio takes precedence) [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Placeholder.Image ratio="16/9" />
@@ -145,10 +145,10 @@ function PlaceholderImage({ ratio = '16/9', width = '100%', height, sx, ...props
 }
 
 // ============================================================
-// Placeholder.Text — 텍스트 블록
+// Placeholder.Text - Text block
 // ============================================================
 
-/** 텍스트 variant별 크기 맵 */
+/** Size map per text variant */
 const textVariants = {
   heading: { height: 24, width: '60%' },
   body: { height: 14, width: '100%' },
@@ -158,13 +158,13 @@ const textVariants = {
 /**
  * Placeholder.Text
  *
- * 텍스트 한 줄을 나타내는 솔리드 바 플레이스홀더.
- * heading, body, caption 등 텍스트 유형별 크기 프리셋 제공.
+ * A solid bar placeholder representing a single line of text.
+ * Provides size presets per text type such as heading, body, and caption.
  *
  * Props:
- * @param {string} variant - 텍스트 유형 ('heading' | 'body' | 'caption') [Optional, 기본값: 'body']
- * @param {number|string} width - 폭 (variant 기본값 오버라이드) [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} variant - Text type ('heading' | 'body' | 'caption') [Optional, default: 'body']
+ * @param {number|string} width - Width (overrides the variant default) [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Placeholder.Text variant="heading" />
@@ -188,10 +188,10 @@ function PlaceholderText({ variant = 'body', width, sx, ...props }) {
 }
 
 // ============================================================
-// Placeholder.Line — 단일 라인
+// Placeholder.Line - Single line
 // ============================================================
 
-/** 길이 프리셋 */
+/** Length presets */
 const lengthMap = {
   full: '100%',
   long: '85%',
@@ -202,12 +202,12 @@ const lengthMap = {
 /**
  * Placeholder.Line
  *
- * Semantic UI Placeholder.Line과 동일한 패턴.
- * length prop으로 라인 폭을 선언적으로 제어.
+ * The same pattern as Semantic UI Placeholder.Line.
+ * Controls line width declaratively via the length prop.
  *
  * Props:
- * @param {string} length - 라인 길이 ('full' | 'long' | 'medium' | 'short') [Optional, 기본값: 'full']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} length - Line length ('full' | 'long' | 'medium' | 'short') [Optional, default: 'full']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Placeholder.Line length="long" />
@@ -228,22 +228,22 @@ function PlaceholderLine({ length = 'full', sx, ...props }) {
 }
 
 // ============================================================
-// Placeholder.Paragraph — 여러 줄 텍스트 블록
+// Placeholder.Paragraph - Multi-line text block
 // ============================================================
 
-/** 자연스러운 줄 길이 패턴 */
+/** Natural line-length pattern */
 const linePattern = ['full', 'long', 'full', 'long', 'full'];
 
 /**
  * Placeholder.Paragraph
  *
- * 여러 줄의 텍스트를 나타내는 플레이스홀더.
- * 마지막 줄은 자동으로 짧게 처리하여 자연스러운 문단 느낌.
+ * A placeholder representing multiple lines of text.
+ * The last line is automatically shortened for a natural paragraph feel.
  *
  * Props:
- * @param {number} lines - 줄 수 [Optional, 기본값: 3]
- * @param {number} gap - 줄 간격 (theme.spacing 단위) [Optional, 기본값: 1]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {number} lines - Number of lines [Optional, default: 3]
+ * @param {number} gap - Line spacing (theme.spacing unit) [Optional, default: 1]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Placeholder.Paragraph lines={4} />
@@ -261,33 +261,33 @@ function PlaceholderParagraph({ lines = 3, gap = 1, sx, ...props }) {
 }
 
 // ============================================================
-// Placeholder.Media — 실제 이미지 기반 미디어 플레이스홀더
+// Placeholder.Media - Media placeholder based on real images
 // ============================================================
 
-/** 전체 이미지 풀 (카테고리 무관, 인덱스로 접근) */
+/** Full image pool (category-agnostic, accessed by index) */
 const allImages = Object.values(testImages).flat();
 
 /**
  * Placeholder.Media
  *
- * 실제 스톡 이미지를 사용하는 미디어 플레이스홀더.
- * grayscale 필터로 중립 톤을 유지하며, 이미지가 필요한 데모에 사용.
- * index로 결정적(deterministic) 이미지를 선택하여 스토리 렌더링이 안정적.
+ * A media placeholder that uses real stock images.
+ * Keeps a neutral tone via a grayscale filter, used in demos that require images.
+ * Selects a deterministic image by index so that story rendering is stable.
  *
- * 동작 방식:
- * 1. index로 pexels 테스트 이미지 풀에서 이미지를 선택한다
- * 2. category를 지정하면 해당 카테고리 내에서 선택한다
- * 3. grayscale(1) 필터로 무채색 톤을 유지한다
- * 4. ratio로 aspect-ratio를 제어한다
+ * How it works:
+ * 1. Selects an image from the pexels test image pool by index
+ * 2. If category is specified, selects within that category
+ * 3. Maintains an achromatic tone via the grayscale(1) filter
+ * 4. Controls aspect-ratio via ratio
  *
  * Props:
- * @param {number} index - 이미지 인덱스 (같은 index = 같은 이미지) [Optional, 기본값: 0]
- * @param {string} category - 이미지 카테고리 ('abstract' | 'fineart' | 'illustration' | 'poster' | 'gradient' | 'photography' | 'portrait' | 'spatial') [Optional]
- * @param {string} ratio - 종횡비 ('16/9' | '4/3' | '1/1' | '3/4' | '9/16') [Optional]
- * @param {string} size - 이미지 크기 ('small' | 'medium' | 'large') [Optional, 기본값: 'medium']
- * @param {number|string} width - 폭 [Optional, 기본값: '100%']
- * @param {number|string} height - 높이 (ratio 미지정 시 사용) [Optional]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {number} index - Image index (same index = same image) [Optional, default: 0]
+ * @param {string} category - Image category ('abstract' | 'fineart' | 'illustration' | 'poster' | 'gradient' | 'photography' | 'portrait' | 'spatial') [Optional]
+ * @param {string} ratio - Aspect ratio ('16/9' | '4/3' | '1/1' | '3/4' | '9/16') [Optional]
+ * @param {string} size - Image size ('small' | 'medium' | 'large') [Optional, default: 'medium']
+ * @param {number|string} width - Width [Optional, default: '100%']
+ * @param {number|string} height - Height (used when ratio is not specified) [Optional]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Placeholder.Media />
@@ -328,19 +328,19 @@ function PlaceholderMedia({
 }
 
 // ============================================================
-// Placeholder.Card — 이미지 + 텍스트 복합 블록
+// Placeholder.Card - Composite image + text block
 // ============================================================
 
 /**
  * Placeholder.Card
  *
- * 카드형 콘텐츠를 나타내는 복합 플레이스홀더.
- * Image + Paragraph를 조합하여 한 줄로 카드 슬롯 표현.
+ * A composite placeholder representing card-style content.
+ * Combines Image + Paragraph to express a card slot in a single line.
  *
  * Props:
- * @param {string} ratio - 이미지 종횡비 [Optional, 기본값: '16/9']
- * @param {number} lines - 본문 줄 수 [Optional, 기본값: 2]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} ratio - Image aspect ratio [Optional, default: '16/9']
+ * @param {number} lines - Number of body lines [Optional, default: 2]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <Placeholder.Card ratio="4/3" lines={3} />

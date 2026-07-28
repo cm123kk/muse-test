@@ -1,10 +1,10 @@
 import { getReferenceThumbnails } from './references.js';
 
 /**
- * MUSE — Projects 더미 데이터
+ * MUSE - Projects dummy data
  *
- * 각 프로젝트의 referenceIds는 `src/data/muse/dummyImage/` 이미지 풀(ref-001~ref-028)에서 고름.
- * 썸네일은 projectsWithThumbnails에서 references의 thumbnailUrl로 자동 파생.
+ * Each project's referenceIds are picked from the `src/data/muse/dummyImage/` image pool (ref-001 to ref-028).
+ * Thumbnails are auto-derived in projectsWithThumbnails from the references' thumbnailUrl.
  *
  * @type {import('./schemas.js').Project[]}
  */
@@ -12,7 +12,7 @@ export const projects = [
   {
     id: 'proj-001',
     name: 'Editorial Minimal',
-    intent: '흑백 대비 · 라지 타이포 · 넉넉한 여백의 매거진 톤',
+    intent: 'Black and white contrast, large typography, and generous whitespace in a magazine tone',
     mode: 'system',
     selectedRefs: [
       { id: 'ref-001', useLayers: ['color', 'typography'] },
@@ -25,7 +25,7 @@ export const projects = [
   {
     id: 'proj-002',
     name: 'Fintech Dashboard',
-    intent: '데이터 밀도 높은 대시보드, 차분한 블루 기조',
+    intent: 'A data-dense dashboard with a calm blue foundation',
     mode: 'system',
     selectedRefs: [
       { id: 'ref-007', useLayers: ['color'] },
@@ -38,7 +38,7 @@ export const projects = [
   {
     id: 'proj-003',
     name: 'Lifestyle App',
-    intent: '따뜻한 톤 모바일 앱, 일상적인 질감',
+    intent: 'A warm-toned mobile app with an everyday texture',
     mode: 'concept',
     selectedRefs: [
       { id: 'ref-012', useLayers: [] },
@@ -51,7 +51,7 @@ export const projects = [
   {
     id: 'proj-004',
     name: 'Studio Brand',
-    intent: '브랜딩 · 대담한 컬러 · 한정된 타이포',
+    intent: 'Branding with bold color and a limited typography set',
     mode: 'system',
     selectedRefs: [
       { id: 'ref-017', useLayers: ['color', 'gradient'] },
@@ -65,7 +65,7 @@ export const projects = [
 
 export const projectsById = Object.fromEntries(projects.map((p) => [p.id, p]));
 
-/** 프로젝트 카드에 꽂을 수 있도록 썸네일 URL까지 조립된 형태 */
+/** A form with thumbnail URLs assembled so it can drop straight into a project card */
 export const projectsWithThumbnails = projects.map((p) => ({
   ...p,
   thumbnails: getReferenceThumbnails(p.referenceIds, 4),

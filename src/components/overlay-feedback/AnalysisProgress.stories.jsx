@@ -16,46 +16,46 @@ export default {
 };
 
 const MUSE_LAYERS = [
-  { key: 'color', label: '컬러' },
-  { key: 'typography', label: '타이포그래피' },
-  { key: 'layout', label: '레이아웃' },
-  { key: 'gradient', label: '그라디언트' },
-  { key: 'visualDirection', label: '비주얼 디렉션' },
+  { key: 'color', label: 'Color' },
+  { key: 'typography', label: 'Typography' },
+  { key: 'layout', label: 'Layout' },
+  { key: 'gradient', label: 'Gradient' },
+  { key: 'visualDirection', label: 'Visual Direction' },
 ];
 
-/** 대기 상태 — 전부 pending */
+/** Waiting state: everything pending */
 export const AllPending = {
   args: {
     layers: MUSE_LAYERS.map((l) => ({ ...l, status: 'pending' })),
   },
 };
 
-/** 진행 중 — 일부 done, 하나 running */
+/** In progress: some done, one running */
 export const InProgress = {
   args: {
     layers: [
       { ...MUSE_LAYERS[0], status: 'done' },
       { ...MUSE_LAYERS[1], status: 'done' },
-      { ...MUSE_LAYERS[2], status: 'running', progress: 0.45, message: '8개 레이아웃 패턴을 분석하고 있습니다' },
+      { ...MUSE_LAYERS[2], status: 'running', progress: 0.45, message: 'Analyzing 8 layout patterns' },
       { ...MUSE_LAYERS[3], status: 'pending' },
       { ...MUSE_LAYERS[4], status: 'pending' },
     ],
   },
 };
 
-/** 완료 상태 */
+/** Completed state */
 export const AllDone = {
   args: {
     layers: MUSE_LAYERS.map((l) => ({ ...l, status: 'done' })),
   },
 };
 
-/** 오류 상태 — 재시도 액션 노출 */
+/** Error state: retry action shown */
 export const WithError = {
   args: {
     layers: [
       { ...MUSE_LAYERS[0], status: 'done' },
-      { ...MUSE_LAYERS[1], status: 'error', message: '타이포 분석 실패 — 이미지 해상도 부족' },
+      { ...MUSE_LAYERS[1], status: 'error', message: 'Typography analysis failed: insufficient image resolution' },
       { ...MUSE_LAYERS[2], status: 'done' },
       { ...MUSE_LAYERS[3], status: 'pending' },
       { ...MUSE_LAYERS[4], status: 'pending' },
@@ -63,7 +63,7 @@ export const WithError = {
   },
 };
 
-/** 시뮬레이션 — 자동 진행 (0.8s 간격으로 단계 전환) */
+/** Simulation: auto progression (steps advance at 0.8s intervals) */
 export const Simulation = {
   render: () => {
     const [layers, setLayers] = useState(
@@ -72,7 +72,7 @@ export const Simulation = {
 
     useEffect(() => {
       const timers = [];
-      // 각 레이어를 순차 진행
+      // Advance each layer sequentially
       for (let i = 0; i < MUSE_LAYERS.length; i += 1) {
         timers.push(
           setTimeout(() => {

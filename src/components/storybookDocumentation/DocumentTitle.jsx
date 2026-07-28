@@ -5,11 +5,11 @@ import Typography from '@mui/material/Typography';
 import { useTheme } from '@mui/material/styles';
 
 /**
- * Section 컴포넌트
+ * Section component
  *
  * Props:
- * @param {ReactNode} children - 섹션 내부 콘텐츠 [Required]
- * @param {boolean} isEnd - 마지막 섹션 여부 (우측 border 제거) [Optional, 기본값: false]
+ * @param {ReactNode} children - Content inside the section [Required]
+ * @param {boolean} isEnd - Whether this is the last section (removes right border) [Optional, default: false]
  *
  * Example usage:
  * <Section isEnd={ false }>
@@ -38,18 +38,18 @@ function Section({ children, isEnd = false }) {
 }
 
 /**
- * DocumentTitle 컴포넌트
+ * DocumentTitle component
  *
- * 스토리북 문서 상단에 표시되는 타이틀 바
- * 문서 제목, 상태, 노트, 브랜드 정보, 버전을 표시
+ * Title bar displayed at the top of a Storybook document.
+ * Shows the document title, status, note, brand information, and version.
  *
  * Props:
- * @param {string} title - 문서 제목 (예: Color System) [Required]
- * @param {string} status - 컴포넌트 상태 (예: Available, Disabled, Pending) [Optional, 기본값: 'Available']
- * @param {string} note - 문서 관련 노트 [Optional, 기본값: 'N/A']
- * @param {string} brandName - 브랜드명 라벨 [Optional]
- * @param {string} systemName - 디자인 시스템명 [Optional]
- * @param {string} version - 버전 정보 [Optional, 기본값: '1.0']
+ * @param {string} title - Document title (e.g. Color System) [Required]
+ * @param {string} status - Component status (e.g. Available, Disabled, Pending) [Optional, default: 'Available']
+ * @param {string} note - Note related to the document [Optional, default: 'N/A']
+ * @param {string} brandName - Brand name label [Optional]
+ * @param {string} systemName - Design system name [Optional]
+ * @param {string} version - Version information [Optional, default: '1.0']
  *
  * Example usage:
  * <DocumentTitle

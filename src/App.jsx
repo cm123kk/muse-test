@@ -19,7 +19,7 @@ import {
   SignUpRoute,
 } from './pages';
 
-/** settings.themeMode 구독해서 light/dark/system 테마 선택 (system: OS prefers-color-scheme 추종) */
+/** Subscribes to settings.themeMode to select the light/dark/system theme (system: follows the OS prefers-color-scheme) */
 function ThemedApp({ children }) {
   const { settings } = useSettingsSlice();
   const prefersDark = useMediaQuery('(prefers-color-scheme: dark)');
@@ -41,15 +41,15 @@ function App() {
         <BrowserRouter>
           <AuthProvider>
             <Routes>
-              {/* 공개 라우트 (인증 불필요) */}
+              {/* Public routes (no authentication required) */}
               <Route path="/" element={<LandingRoute />} />
               <Route path="/login" element={<LoginRoute />} />
               <Route path="/signup" element={<SignUpRoute />} />
 
-              {/* 보호 라우트 (로그인 필요) */}
+              {/* Protected routes (login required) */}
               <Route element={<AuthGuard />}>
                 <Route element={<AppShellLayout />}>
-                  {/* /archive, /projects 는 AppShellLayout 안에서 keep-alive 마운트되므로 여기서 element 미지정 */}
+                  {/* /archive and /projects are keep-alive mounted inside AppShellLayout, so no element is specified here */}
                   <Route path="/archive" element={null} />
                   <Route path="/projects" element={null} />
                   <Route path="/projects/new" element={<ProjectCreateRoute />} />

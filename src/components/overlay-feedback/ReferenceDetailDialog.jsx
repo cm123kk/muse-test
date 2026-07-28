@@ -9,18 +9,18 @@ import CloseIcon from '@mui/icons-material/Close';
 import { RefImage } from '../media/RefImage.jsx';
 
 const TAG_GROUPS = [
-  { key: 'color', label: '색상' },
-  { key: 'typography', label: '타이포' },
-  { key: 'layout', label: '레이아웃' },
-  { key: 'gradient', label: '그라디언트' },
+  { key: 'color', label: 'Color' },
+  { key: 'typography', label: 'Typography' },
+  { key: 'layout', label: 'Layout' },
+  { key: 'gradient', label: 'Gradient' },
 ];
 const VD_GROUPS = [
-  { key: 'genre', label: '장르' },
-  { key: 'style', label: '스타일' },
-  { key: 'subject', label: '주제' },
+  { key: 'genre', label: 'Genre' },
+  { key: 'style', label: 'Style' },
+  { key: 'subject', label: 'Subject' },
 ];
 
-/** 한 그룹의 태그 칩 행 — 라벨 + Chip 리스트. 비어있으면 렌더 X */
+/** A row of tag chips for one group: label plus Chip list. Not rendered when empty */
 function TagRow({ label, tags, activeTags = [] }) {
   if (!tags || tags.length === 0) return null;
   return (
@@ -47,22 +47,22 @@ function TagRow({ label, tags, activeTags = [] }) {
 }
 
 /**
- * ReferenceDetailDialog 컴포넌트
+ * ReferenceDetailDialog component
  *
- * 아카이브 카드 클릭 시 나타나는 상세 모달.
- * 카드 UI에서 잘려나간 메타데이터(전체 태그, 대표 색상, 출처 등)를 한 번에 보여준다.
+ * Detail modal shown when an archive card is clicked.
+ * Displays all the metadata that gets cut off in the card UI (full tags, dominant colors, source, etc.) at once.
  *
- * 동작 흐름:
- * 1. `reference`가 truthy이면 열림, null이면 닫힘
- * 2. 좌측엔 큰 이미지(원본 비율 유지), 우측엔 메타 정보 패널
- * 3. 태그는 레이어별로 그룹화. 현재 active 필터에 들어있는 태그는 primary 칩으로 강조
- * 4. ESC / 백드롭 / X 버튼으로 닫힘
+ * Flow:
+ * 1. Opens when `reference` is truthy, closes when null
+ * 2. A large image on the left (keeps the original aspect ratio), a meta info panel on the right
+ * 3. Tags are grouped by layer. Tags included in the current active filter are highlighted as primary chips
+ * 4. Closes via ESC, backdrop, or the X button
  *
  * Props:
- * @param {object|null} reference - 표시할 레퍼런스 객체 (null이면 닫힘) [Required]
- * @param {function} onClose - () => void 닫기 콜백 [Required]
- * @param {string[]} activeTags - 현재 활성 태그 (강조 표시용) [Optional, 기본값: []]
- * @param {string[]} activeColors - 현재 활성 대표 색상 (강조 표시용) [Optional, 기본값: []]
+ * @param {object|null} reference - Reference object to display (closed when null) [Required]
+ * @param {function} onClose - () => void close callback [Required]
+ * @param {string[]} activeTags - Currently active tags (for highlighting) [Optional, default: []]
+ * @param {string[]} activeColors - Currently active dominant colors (for highlighting) [Optional, default: []]
  *
  * Example usage:
  * <ReferenceDetailDialog
@@ -93,7 +93,7 @@ export function ReferenceDetailDialog({
     >
       <IconButton
         onClick={ onClose }
-        aria-label="닫기"
+        aria-label="Close"
         sx={ {
           position: 'absolute',
           top: 8,
@@ -109,7 +109,7 @@ export function ReferenceDetailDialog({
       </IconButton>
 
       <DialogContent sx={ { p: 0, height: '100vh', overflow: 'hidden', position: 'relative' } }>
-        { /* 이미지 — 데스크탑에선 viewport 정중앙 (사이드바 폭 무시) */ }
+        { /* Image: centered in the viewport on desktop (ignores the sidebar width) */ }
         { reference && (
           <Box
             sx={ {
@@ -150,11 +150,11 @@ export function ReferenceDetailDialog({
             zIndex: 1,
           } }
         >
-          { /* 좌측 이미지 컬럼 — 자리만 차지, 실제 이미지는 위 absolute 레이어에 있음 */ }
+          { /* Left image column: takes up space only, the actual image lives in the absolute layer above */ }
           <Box sx={ { display: { xs: 'none', md: 'block' } } }>
           </Box>
 
-          { /* 우측 메타 사이드 */ }
+          { /* Right meta side */ }
           <Box
             sx={ {
               p: { xs: 4, md: 8 },
@@ -169,13 +169,13 @@ export function ReferenceDetailDialog({
           >
             <Box>
               <Typography variant="h3" sx={ { fontWeight: 700, letterSpacing: '-0.02em', lineHeight: 1.15 } }>
-                { reference?.title || '(제목 없음)' }
+                { reference?.title || '(Untitled)' }
               </Typography>
               { (reference?.createdAt || (reference?.source && reference.source !== 'unknown')) && (
                 <Typography variant="body2" color="text.secondary" sx={ { display: 'block', mt: 2, fontSize: '0.95rem' } }>
                   { [
-                    reference?.createdAt && `수집일 ${reference.createdAt}`,
-                    reference?.source && reference.source !== 'unknown' && `출처 ${reference.source}`,
+                    reference?.createdAt && `Collected ${reference.createdAt}`,
+                    reference?.source && reference.source !== 'unknown' && `Source ${reference.source}`,
                   ].filter(Boolean).join(' · ') }
                 </Typography>
               ) }
@@ -184,7 +184,7 @@ export function ReferenceDetailDialog({
             { dominantColors.length > 0 && (
               <Box>
                 <Typography variant="overline" sx={ { fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.08em' } }>
-                  대표 색상
+                  Dominant colors
                 </Typography>
                 <Box sx={ { display: 'flex', flexWrap: 'wrap', gap: 2, mt: 2 } }>
                   { dominantColors.map((hex, i) => {
@@ -223,7 +223,7 @@ export function ReferenceDetailDialog({
 
             <Box>
               <Typography variant="overline" sx={ { fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.08em' } }>
-                레이어 태그
+                Layer tags
               </Typography>
               <Box sx={ { mt: 1.5 } }>
                 { TAG_GROUPS.map(({ key, label }) => (
@@ -234,7 +234,7 @@ export function ReferenceDetailDialog({
 
             <Box>
               <Typography variant="overline" sx={ { fontSize: '0.85rem', fontWeight: 600, letterSpacing: '0.08em' } }>
-                비주얼 디렉션
+                Visual Direction
               </Typography>
               <Box sx={ { mt: 1.5 } }>
                 { VD_GROUPS.map(({ key, label }) => (

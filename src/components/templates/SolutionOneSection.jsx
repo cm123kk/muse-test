@@ -9,10 +9,10 @@ import img2 from '../../assets/example/55f247b3e73bb80f77bbde407a6c4bce.jpg';
 import img3 from '../../assets/example/6f6f57df5a7e220ec1c9dd5faee279e4.jpg';
 
 const LAYER_LABELS = ['Color', 'Typography', 'Layout', 'Gradient', 'Visual Direction'];
-/* 레이어 하나가 done 으로 바뀌는 간격 (ms) */
+/* Interval between each layer flipping to done (ms) */
 const LAYER_MS = 600;
 
-/* 미리 준비된 T1 분석 결과 픽스처 — 랜딩 페이지 데모용 */
+/* Pre-built T1 analysis result fixtures, for the landing page demo */
 const FIXTURES = [
   {
     src: img1,
@@ -34,7 +34,7 @@ const FIXTURES = [
   },
 ];
 
-/** layerDoneCount(0~5)로부터 layerStatuses 배열 생성 */
+/** Build the layerStatuses array from layerDoneCount (0-5) */
 function toLayerStatuses(doneCount) {
   return LAYER_LABELS.map((_, i) => {
     if (i < doneCount) return 'done';
@@ -44,12 +44,12 @@ function toLayerStatuses(doneCount) {
 }
 
 /**
- * SolutionOneSection 컴포넌트
+ * SolutionOneSection component
  *
- * 랜딩페이지의 솔루션 1 섹션. 뷰포트 진입 시 미리 준비된 T1 픽스처 데이터로
- * 레이어 분석 애니메이션(loading → 태그)을 보여준다.
+ * The Solution 1 section of the landing page. On viewport entry, it plays a layer
+ * analysis animation (loading -> tags) using the pre-built T1 fixture data.
  *
- * Props: 없음
+ * Props: none
  *
  * Example usage:
  * <SolutionOneSection />
@@ -74,7 +74,7 @@ function SolutionOneSection() {
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          /* 진입: 기존 타이머 취소 후 애니메이션 시작 */
+          /* Entry: cancel existing timers, then start the animation */
           clearAllTimers();
           setCards(FIXTURES.map(() => ({ state: 1, layerDoneCount: 0 })));
 
@@ -102,7 +102,7 @@ function SolutionOneSection() {
             timerRefs.current.push(setTimeout(advance, LAYER_MS));
           });
         } else {
-          /* 이탈: 타이머 취소 + 상태 초기화 (다음 진입 시 재생) */
+          /* Exit: cancel timers + reset state (replays on next entry) */
           clearAllTimers();
           setCards(FIXTURES.map(() => ({ state: 0, layerDoneCount: 0 })));
         }
@@ -131,10 +131,10 @@ function SolutionOneSection() {
           variant="h3"
           sx={{ fontWeight: 800, letterSpacing: '-0.02em', mb: 2, lineHeight: 1.2 }}
         >
-          정확한 분류 체계로 레퍼런스를 관리하세요
+          Organize your references with a precise taxonomy
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ lineHeight: 1.8 }}>
-          업로드 한 장이 들어오면 같은 5 layer 격자 (color, typography, layout, gradient, visual direction) 로 자동 분류됩니다. 분류가 같아야 비교, 합성, 추적이 가능합니다.
+          Every upload is automatically sorted into the same 5 layer grid (color, typography, layout, gradient, visual direction). A shared taxonomy is what makes references comparable, composable, and traceable.
         </Typography>
       </Box>
 

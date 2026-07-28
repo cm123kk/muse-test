@@ -27,12 +27,12 @@ export default {
         component: `
 ## FullPageContainer
 
-100vh/svh 높이의 전체 화면 섹션 컨테이너.
+A full screen section container with 100vh/svh height.
 
-### 용도
-- Hero 섹션
-- 풀스크린 갤러리
-- 스크롤 스냅 레이아웃
+### Use Cases
+- Hero sections
+- Full screen galleries
+- Scroll snap layouts
         `,
       },
     },
@@ -41,26 +41,26 @@ export default {
     heightMode: {
       control: 'select',
       options: ['vh', 'svh', 'dvh'],
-      description: '높이 단위',
+      description: 'Height unit',
     },
     heightRatio: {
       control: { type: 'range', min: 0.3, max: 1, step: 0.1 },
-      description: '높이 비율',
+      description: 'Height ratio',
     },
     align: {
       control: 'select',
       options: ['start', 'center', 'end', 'stretch'],
-      description: '수직 정렬',
+      description: 'Vertical alignment',
     },
     justify: {
       control: 'select',
       options: ['start', 'center', 'end', 'between', 'around'],
-      description: '수평 정렬',
+      description: 'Horizontal alignment',
     },
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     heightMode: 'svh',
@@ -78,7 +78,7 @@ export const Default = {
   ),
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   parameters: {
     layout: 'padded',
@@ -98,11 +98,11 @@ export const Documentation = {
           FullPageContainer
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          100vh, 100svh, 100dvh 높이의 전체 화면 섹션 컨테이너입니다.
-          Hero 섹션, 풀스크린 갤러리, 스크롤 스냅 레이아웃에 사용됩니다.
+          A full screen section container with 100vh, 100svh, or 100dvh height.
+          Used for Hero sections, full screen galleries, and scroll snap layouts.
         </Typography>
 
-        <SectionTitle title="Height Modes" description="다양한 뷰포트 높이 단위를 지원합니다." />
+        <SectionTitle title="Height Modes" description="Supports various viewport height units." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -116,23 +116,23 @@ export const Documentation = {
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>vh</TableCell>
                 <TableCell>100vh</TableCell>
-                <TableCell>기본 뷰포트 높이 (주소바 포함)</TableCell>
+                <TableCell>Default viewport height (includes address bar)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>svh</TableCell>
                 <TableCell>100svh</TableCell>
-                <TableCell>Small viewport height (주소바 표시 시 높이)</TableCell>
+                <TableCell>Small viewport height (height when address bar is shown)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>dvh</TableCell>
                 <TableCell>100dvh</TableCell>
-                <TableCell>Dynamic viewport height (주소바에 따라 동적 변화)</TableCell>
+                <TableCell>Dynamic viewport height (changes dynamically with the address bar)</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Props" description="FullPageContainer 컴포넌트의 Props입니다." />
+        <SectionTitle title="Props" description="Props of the FullPageContainer component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -148,49 +148,49 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>heightMode</TableCell>
                 <TableCell>&apos;vh&apos; | &apos;svh&apos; | &apos;dvh&apos;</TableCell>
                 <TableCell>&apos;svh&apos;</TableCell>
-                <TableCell>높이 단위</TableCell>
+                <TableCell>Height unit</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>heightRatio</TableCell>
                 <TableCell>number</TableCell>
                 <TableCell>1</TableCell>
-                <TableCell>높이 비율 (0.5 = 50vh)</TableCell>
+                <TableCell>Height ratio (0.5 = 50vh)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>align</TableCell>
                 <TableCell>&apos;start&apos; | &apos;center&apos; | &apos;end&apos; | &apos;stretch&apos;</TableCell>
                 <TableCell>&apos;center&apos;</TableCell>
-                <TableCell>수직 정렬</TableCell>
+                <TableCell>Vertical alignment</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>justify</TableCell>
                 <TableCell>&apos;start&apos; | &apos;center&apos; | &apos;end&apos; | &apos;between&apos; | &apos;around&apos;</TableCell>
                 <TableCell>&apos;center&apos;</TableCell>
-                <TableCell>수평 정렬</TableCell>
+                <TableCell>Horizontal alignment</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>background</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>배경 이미지 URL 또는 CSS 값</TableCell>
+                <TableCell>Background image URL or CSS value</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>overlay</TableCell>
                 <TableCell>number | string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>오버레이 (숫자: 불투명도, 문자열: 색상)</TableCell>
+                <TableCell>Overlay (number: opacity, string: color)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>snap</TableCell>
                 <TableCell>&apos;start&apos; | &apos;center&apos; | &apos;end&apos;</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>스크롤 스냅 정렬</TableCell>
+                <TableCell>Scroll snap alignment</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Height Ratio Examples" description="다양한 높이 비율입니다." />
+        <SectionTitle title="Height Ratio Examples" description="Various height ratios." />
         <Stack spacing={ 2 }>
           <Box sx={ { border: '1px solid', borderColor: 'divider', overflow: 'hidden' } }>
             <Typography variant="caption" sx={ { p: 1, display: 'block', backgroundColor: 'grey.100' } }>
@@ -217,7 +217,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Sub Components" description="함께 사용하는 컴포넌트들입니다." />
+        <SectionTitle title="Sub Components" description="Components used together." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -229,17 +229,17 @@ export const Documentation = {
             <TableBody>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>FullPageSection</TableCell>
-                <TableCell>스크롤 스냅이 기본 적용된 섹션 (snap=&quot;start&quot;)</TableCell>
+                <TableCell>Section with scroll snap applied by default (snap=&quot;start&quot;)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>FullPageSnap</TableCell>
-                <TableCell>스크롤 스냅 컨테이너</TableCell>
+                <TableCell>Scroll snap container</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -251,7 +251,7 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          { `// Hero 섹션
+          { `// Hero section
 <FullPageContainer
   background="https://example.com/hero.jpg"
   overlay={0.4}
@@ -264,12 +264,12 @@ export const Documentation = {
   <Button variant="contained">Get Started</Button>
 </FullPageContainer>
 
-// 절반 높이 섹션
+// Half height section
 <FullPageContainer heightRatio={0.5} align="end">
   <CtaSection />
 </FullPageContainer>
 
-// 스크롤 스냅 페이지
+// Scroll snap page
 <FullPageSnap>
   <FullPageSection background="section1.jpg">
     <Section1 />
@@ -287,7 +287,7 @@ export const Documentation = {
   ),
 };
 
-/** Hero 섹션 예시 */
+/** Hero section example */
 export const HeroExample = {
   render: () => (
     <FullPageContainer
@@ -334,7 +334,7 @@ export const HeroExample = {
   ),
 };
 
-/** 스크롤 스냅 예시 */
+/** Scroll snap example */
 export const ScrollSnapExample = {
   render: () => (
     <FullPageSnap>

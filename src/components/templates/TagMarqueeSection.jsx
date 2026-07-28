@@ -3,8 +3,8 @@ import Chip from '@mui/material/Chip';
 import MarqueeContainer from '../motion/MarqueeContainer';
 
 /*
- * T1 자동 태깅에서 사용하는 태그 어휘 (SolutionOneSection FIXTURES 기반).
- * 3 행으로 나눠 서로 교차 방향으로 흐른다.
+ * The tag vocabulary used by T1 auto-tagging (based on the SolutionOneSection FIXTURES).
+ * Split into 3 rows that flow in alternating directions.
  */
 const TAG_ROWS = [
   ['Brutalist', 'High-contrast', 'Typography-Hero', 'Full-bleed', 'All-caps', 'Display'],
@@ -12,18 +12,18 @@ const TAG_ROWS = [
   ['Risograph', 'Editorial', 'Serif', 'Asymmetric', 'Faded', 'Earth', 'Condensed', 'Vivid'],
 ];
 
-/* 1,2,3 행 방향 교차 (좌 / 우 / 좌) */
+/* Alternating direction for rows 1, 2, 3 (left / right / left) */
 const ROW_DIRECTIONS = ['left', 'right', 'left'];
-/* 행별 한 사이클 시간(초). 클수록 느림 */
+/* One-cycle duration per row (seconds). Larger is slower. */
 const ROW_SPEEDS = [64, 76, 56];
 
 /**
- * TagPill 컴포넌트
+ * TagPill component
  *
- * 마퀴 안에 흐르는 초대형 라운드 칩 태그 1개. 배경 없이 outlined 만.
+ * A single oversized rounded chip tag flowing inside the marquee. Outlined only, no background.
  *
  * Props:
- * @param {string} label - 태그 텍스트 [Required]
+ * @param {string} label - tag text [Required]
  */
 function TagPill({ label }) {
   return (
@@ -31,8 +31,8 @@ function TagPill({ label }) {
       label={label}
       variant="outlined"
       sx={{
-        /* borderRadius 는 테마 MuiChip(999px)이 이미 round 처리.
-           sx 에서 숫자로 다시 주면 shape.borderRadius(0) 와 곱해져 0px 가 되므로 건드리지 않는다. */
+        /* borderRadius is already rounded by the theme MuiChip (999px).
+           Passing a number again in sx would multiply with shape.borderRadius(0) to become 0px, so leave it untouched. */
         height: 'auto',
         borderColor: 'divider',
         bgcolor: 'transparent',
@@ -43,7 +43,7 @@ function TagPill({ label }) {
           px: { xs: 0.5, sm: 1, md: 2 },
           fontWeight: 500,
           fontSize: { xs: '1rem', sm: '2rem', md: '4rem' },
-          /* 큰 폰트에서 descender(g, p, y) 세로 잘림 방지: 넉넉한 lineHeight + overflow 해제 */
+          /* Prevent vertical clipping of descenders (g, p, y) at large font sizes: generous lineHeight + released overflow */
           lineHeight: 1.3,
           letterSpacing: '-0.02em',
           overflow: 'visible',
@@ -55,13 +55,13 @@ function TagPill({ label }) {
 }
 
 /**
- * TagMarqueeSection 컴포넌트
+ * TagMarqueeSection component
  *
- * 랜딩페이지 솔루션 1 ↔ 솔루션 2 사이 구간.
- * T1 분석 태그들을 3 행 마퀴로 흐르게 한다. 행마다 방향이 교차되고(좌/우/좌)
- * 태그는 초대형으로 렌더링되어 풀블리드로 화면을 가로지른다.
+ * The section between Solution 1 and Solution 2 on the landing page.
+ * Flows the T1 analysis tags through a 3-row marquee. Each row alternates direction (left/right/left)
+ * and the tags render oversized, crossing the screen full-bleed.
  *
- * Props: 없음
+ * Props: none
  *
  * Example usage:
  * <TagMarqueeSection />

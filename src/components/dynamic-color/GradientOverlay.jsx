@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import Box from '@mui/material/Box';
 import { useTheme } from '@mui/material/styles';
 
-/** GLSL vertex shader — UV 좌표 전달 */
+/** GLSL vertex shader: pass UV coordinates */
 const vertexShader = `
   varying vec2 vUv;
   void main() {
@@ -12,7 +12,7 @@ const vertexShader = `
   }
 `;
 
-/** GLSL fragment shader — Simplex Noise 그라데이션 + 필름 그레인 */
+/** GLSL fragment shader: Simplex Noise gradient + film grain */
 const fragmentShader = `
   uniform float uTime;
   uniform float uScrollIn;
@@ -60,12 +60,12 @@ const fragmentShader = `
     float wave = snoise(vec2(vUv.x * 0.8, uTime * 0.25)) * 0.04;
     float distortedY = vUv.y + wave;
 
-    // Phase 1: 어두운색이 아래에서 올라옴
+    // Phase 1: dark color rises up from the bottom
     float progressIn = uScrollIn * 1.2 + 0.15;
     float maskIn = smoothstep(progressIn - 0.2, progressIn + 0.2, distortedY);
     float darkFromIn = 1.0 - maskIn;
 
-    // Outro: 밝은색이 아래에서 올라옴, 상단 엣지는 어둡게 유지
+    // Outro: light color rises up from the bottom, top edge stays dark
     float topEdge = smoothstep(0.85, 1.0, distortedY);
     float lightReach = uScrollOut * 0.85;
     float isLight = smoothstep(lightReach + 0.15, lightReach - 0.15, distortedY);
@@ -75,7 +75,7 @@ const fragmentShader = `
 
     vec3 color = mix(uColorLight, uColorDark, darkAmount);
 
-    // 필름 그레인
+    // Film grain
     float grain = random(vUv * uResolution + uTime) * uGrainIntensity;
     color += grain;
 
@@ -84,9 +84,9 @@ const fragmentShader = `
 `;
 
 /**
- * Hex 색상을 0-1 범위 RGB 배열로 변환
- * @param {string} hex - '#RRGGBB' 형식 hex 색상
- * @returns {number[]} [r, g, b] (0-1 범위)
+ * Convert a hex color to an RGB array in the 0-1 range
+ * @param {string} hex - hex color in '#RRGGBB' format
+ * @returns {number[]} [r, g, b] (0-1 range)
  */
 function hexToRgb(hex) {
   const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -101,25 +101,25 @@ function hexToRgb(hex) {
 }
 
 /**
- * GradientOverlay 컴포넌트
+ * GradientOverlay component
  *
- * Three.js WebGL 기반 스크롤 반응형 그라데이션 배경 오버레이.
- * Simplex Noise로 경계면이 유기적으로 일렁이며, 스크롤에 따라 색상이 전환된다.
+ * A scroll-reactive gradient background overlay built on Three.js WebGL.
+ * The boundary ripples organically via Simplex Noise, and colors transition as the user scrolls.
  *
- * 동작 흐름:
- * 1. 전체 화면을 덮는 WebGL 캔버스가 생성된다
- * 2. 스크롤하면 어두운색이 아래에서 위로 올라오며 밝은색을 덮는다
- * 3. scrollOutRef 요소가 뷰포트에 진입하면 밝은색이 다시 올라온다
- * 4. 경계면은 Simplex Noise로 시간에 따라 물결치듯 변형된다
- * 5. 필름 그레인 텍스처가 전체 위에 오버레이된다
+ * Behavior:
+ * 1. A WebGL canvas that covers the entire screen is created
+ * 2. On scroll, the dark color rises from bottom to top and covers the light color
+ * 3. When the scrollOutRef element enters the viewport, the light color rises again
+ * 4. The boundary deforms over time like waves via Simplex Noise
+ * 5. A film grain texture is overlaid on top of everything
  *
  * Props:
- * @param {string} colorLight - 밝은 영역 hex 색상 [Optional, 기본값: theme.palette.grey[200]]
- * @param {string} colorDark - 어두운 영역 hex 색상 [Optional, 기본값: theme.palette.secondary.main]
- * @param {object} scrollOutRef - outro 구간 기준 요소의 React ref [Optional]
- * @param {boolean} isGrain - 필름 그레인 효과 여부 [Optional, 기본값: true]
- * @param {number} grainIntensity - 필름 그레인 강도 (0~0.1) [Optional, 기본값: 0.035]
- * @param {object} sx - MUI sx 스타일 [Optional]
+ * @param {string} colorLight - hex color for the light region [Optional, default: theme.palette.grey[200]]
+ * @param {string} colorDark - hex color for the dark region [Optional, default: theme.palette.secondary.main]
+ * @param {object} scrollOutRef - React ref for the element that anchors the outro section [Optional]
+ * @param {boolean} isGrain - whether to apply the film grain effect [Optional, default: true]
+ * @param {number} grainIntensity - film grain intensity (0 to 0.1) [Optional, default: 0.035]
+ * @param {object} sx - MUI sx style [Optional]
  *
  * Example usage:
  * <GradientOverlay />
@@ -137,7 +137,7 @@ function GradientOverlay({
   const containerRef = useRef(null);
   const animationIdRef = useRef(0);
 
-  /** 테마 기반 기본 색상 해석 */
+  /** Resolve default colors based on the theme */
   const resolvedLight = colorLight || theme.palette.grey[200];
   const resolvedDark = colorDark || theme.palette.secondary.main;
 
@@ -146,7 +146,7 @@ function GradientOverlay({
 
     const container = containerRef.current;
 
-    /** Three.js 씬 초기화 */
+    /** Initialize the Three.js scene */
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
@@ -155,7 +155,7 @@ function GradientOverlay({
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
     container.appendChild(renderer.domElement);
 
-    /** 색상 변환 및 uniform 설정 */
+    /** Color conversion and uniform setup */
     const rgbLight = hexToRgb(resolvedLight);
     const rgbDark = hexToRgb(resolvedDark);
 
@@ -169,7 +169,7 @@ function GradientOverlay({
       uGrainIntensity: { value: isGrain ? grainIntensity : 0 },
     };
 
-    /** 셰이더 머티리얼 생성 */
+    /** Create the shader material */
     const material = new THREE.ShaderMaterial({
       vertexShader,
       fragmentShader,
@@ -179,7 +179,7 @@ function GradientOverlay({
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    /** 스크롤 진행률 추적 (lerp 보간) */
+    /** Track scroll progress (lerp interpolation) */
     let targetScrollIn = 0;
     let targetScrollOut = 0;
     let currentScrollIn = 0;
@@ -198,7 +198,7 @@ function GradientOverlay({
       }
     };
 
-    /** 리사이즈 대응 */
+    /** Handle resize */
     const handleResize = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
       uniforms.uResolution.value.set(window.innerWidth, window.innerHeight);
@@ -207,7 +207,7 @@ function GradientOverlay({
     window.addEventListener('scroll', updateScrollTarget, { passive: true });
     window.addEventListener('resize', handleResize);
 
-    /** 렌더 루프 */
+    /** Render loop */
     const clock = new THREE.Clock();
 
     const animate = () => {
@@ -226,7 +226,7 @@ function GradientOverlay({
 
     animate();
 
-    /** 리소스 정리 */
+    /** Clean up resources */
     return () => {
       cancelAnimationFrame(animationIdRef.current);
       window.removeEventListener('scroll', updateScrollTarget);

@@ -1,32 +1,32 @@
 import { Box, Typography } from '@mui/material';
 
 /**
- * Title 컴포넌트
+ * Title component
  *
- * 섹션/아이템의 계층적 타이틀 시스템을 제공하는 컴포넌트.
- * Overline, 메인 타이틀, 서브타이틀의 조합으로 명확한 정보 계층을 구성한다.
+ * A component that provides a hierarchical title system for sections/items.
+ * Builds a clear information hierarchy from a combination of overline, main title, and subtitle.
  *
- * 동작 방식:
- * 1. level prop에 따라 적절한 시맨틱 HTML 태그 (h1~h4)가 자동 적용됨
- * 2. overline이 있으면 메인 타이틀 위에 작은 레이블로 표시됨
- * 3. subtitle이 있으면 메인 타이틀 아래에 부연 설명으로 표시됨
- * 4. layout에 따라 요소들의 배치 방식이 달라짐
- * 5. divider가 true면 하단에 시각적 구분선이 추가됨
+ * How it works:
+ * 1. An appropriate semantic HTML tag (h1-h4) is applied automatically based on the level prop
+ * 2. If overline is provided, it appears as a small label above the main title
+ * 3. If subtitle is provided, it appears as supporting text below the main title
+ * 4. The arrangement of the elements changes depending on layout
+ * 5. When divider is true, a visual divider is added at the bottom
  *
  * Props:
- * @param {string} title - 메인 타이틀 텍스트 [Required]
- * @param {string} overline - 상단 작은 레이블 텍스트 [Optional]
- * @param {string} subtitle - 하단 서브타이틀 텍스트 [Optional]
- * @param {string} level - 시맨틱 레벨 ('h1' | 'h2' | 'h3' | 'h4') [Optional, 기본값: 'h2']
- * @param {string} align - 텍스트 정렬 ('left' | 'center' | 'right') [Optional, 기본값: 'left']
- * @param {string} layout - 레이아웃 방식 ('stack' | 'inline' | 'split') [Optional, 기본값: 'stack']
- * @param {boolean} divider - 하단 구분선 표시 여부 [Optional, 기본값: false]
- * @param {string} dividerStyle - 구분선 스타일 ('line' | 'dot' | 'gradient') [Optional, 기본값: 'line']
- * @param {object} sx - 추가 스타일 오버라이드 [Optional]
+ * @param {string} title - Main title text [Required]
+ * @param {string} overline - Small label text above [Optional]
+ * @param {string} subtitle - Subtitle text below [Optional]
+ * @param {string} level - Semantic level ('h1' | 'h2' | 'h3' | 'h4') [Optional, default: 'h2']
+ * @param {string} align - Text alignment ('left' | 'center' | 'right') [Optional, default: 'left']
+ * @param {string} layout - Layout mode ('stack' | 'inline' | 'split') [Optional, default: 'stack']
+ * @param {boolean} divider - Whether to show a bottom divider [Optional, default: false]
+ * @param {string} dividerStyle - Divider style ('line' | 'dot' | 'gradient') [Optional, default: 'line']
+ * @param {object} sx - Additional style overrides [Optional]
  *
  * Example usage:
- * <Title title="섹션 제목" />
- * <Title title="About Us" overline="Company" subtitle="우리의 이야기" />
+ * <Title title="Section Heading" />
+ * <Title title="About Us" overline="Company" subtitle="Our story" />
  * <Title title="Features" layout="inline" divider dividerStyle="gradient" />
  */
 export function Title({
@@ -41,7 +41,7 @@ export function Title({
   sx,
   ...props
 }) {
-  // 레벨에 따른 타이포그래피 variant 매핑
+  // Typography variant mapping by level
   const variantMap = {
     h1: 'h1',
     h2: 'h2',
@@ -49,7 +49,7 @@ export function Title({
     h4: 'h4',
   };
 
-  // 레벨에 따른 서브타이틀 variant 매핑
+  // Subtitle variant mapping by level
   const subtitleVariantMap = {
     h1: 'subtitle1',
     h2: 'subtitle1',
@@ -57,14 +57,14 @@ export function Title({
     h4: 'body2',
   };
 
-  // 정렬에 따른 flexbox 정렬
+  // Flexbox alignment based on text alignment
   const alignmentMap = {
     left: 'flex-start',
     center: 'center',
     right: 'flex-end',
   };
 
-  // 구분선 스타일 정의
+  // Divider style definitions
   const dividerStyles = {
     line: {
       width: '100%',
@@ -95,7 +95,7 @@ export function Title({
     },
   };
 
-  // Stack 레이아웃 (기본 - 수직 배치)
+  // Stack layout (default - vertical arrangement)
   if (layout === 'stack') {
     return (
       <Box
@@ -162,7 +162,7 @@ export function Title({
     );
   }
 
-  // Inline 레이아웃 (overline과 title이 가로 배치)
+  // Inline layout (overline and title arranged horizontally)
   if (layout === 'inline') {
     return (
       <Box
@@ -237,7 +237,7 @@ export function Title({
     );
   }
 
-  // Split 레이아웃 (타이틀과 서브타이틀이 양쪽으로 분리)
+  // Split layout (title and subtitle separated to opposite sides)
   if (layout === 'split') {
     return (
       <Box

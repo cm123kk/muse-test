@@ -12,14 +12,14 @@ if (typeof document !== 'undefined' && !document.querySelector('meta[name="darkr
   document.head.appendChild(darkreaderLock);
 }
 
-// Google Fonts 로드 (Material Symbols + 기본 폰트)
+// Google Fonts 로드 (Material Symbols 아이콘 전용)
+// 본문/헤딩 폰트는 앱과 동일하게 OS 시스템 폰트를 사용하므로 웹폰트를 로드하지 않는다.
+// (앱은 웹폰트를 로드하지 않는데 스토리북만 Outfit 을 로드하면 폰트가 서로 달라 보였음)
 const googleFonts = [
   // Material Symbols
   'Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
   'Material+Symbols+Rounded:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
   'Material+Symbols+Sharp:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200',
-  // Default Theme Font
-  'Outfit:wght@300;400;500;600;700;800;900',
 ];
 
 googleFonts.forEach((font) => {

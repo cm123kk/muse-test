@@ -9,12 +9,12 @@ export default {
     indicator: {
       control: 'radio',
       options: ['background', 'underline'],
-      description: '인디케이터 스타일',
+      description: 'Indicator style',
     },
     direction: {
       control: 'radio',
       options: ['horizontal', 'vertical'],
-      description: '메뉴 방향',
+      description: 'Menu direction',
     },
   },
 };

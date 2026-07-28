@@ -1,12 +1,12 @@
 /**
- * Dark Theme — MUSE Visual Direction (dark variant)
+ * Dark Theme - MUSE Visual Direction (dark variant)
  *
- * default.js 의 palette 와 동일한 철학 유지하되 bg/text 반전.
- *   - Image-First Neutral: Primary 는 여전히 near-black 축이지만 dark 모드에선 밝은 쪽 (#F3F3F9)
- *   - Background: near-black ink 기반
- *   - Accent (violet) 는 그대로 유지 — 강조용
+ * Keeps the same philosophy as default.js palette, but inverts bg/text.
+ *   - Image-First Neutral: Primary is still on the near-black axis, but in dark mode it is the light side (#F3F3F9)
+ *   - Background: near-black ink based
+ *   - Accent (violet) is kept as-is, for emphasis
  *
- * typography / spacing / shape / breakpoints / components 오버라이드는 default 재사용.
+ * typography / spacing / shape / breakpoints / components overrides are reused from default.
  */
 
 import { createTheme } from '@mui/material/styles';
@@ -93,7 +93,7 @@ const darkTheme = createTheme({
   components,
 });
 
-// 커스텀 필드 상속
+// Inherit custom fields
 darkTheme.customShadows = defaultTheme.customShadows;
 darkTheme.dashboard = {
   ...defaultTheme.dashboard,

@@ -5,8 +5,8 @@ import { createMockClient } from '../../lib/supabaseMock';
 import { withAppShell } from './_appShellDecorator.jsx';
 
 /**
- * Storybook 전용 mock Supabase 클라이언트.
- * useStoreMode=true 일 때 실제 DB 대신 fixture 데이터를 반환한다.
+ * Storybook-only mock Supabase client.
+ * When useStoreMode=true, it returns fixture data instead of hitting the real DB.
  */
 const mockClient = createMockClient({
   reference_items: allReferences.slice(0, 18).map((r) => ({
@@ -32,7 +32,7 @@ export default {
   decorators: [withAppShell],
 };
 
-/** Store Mode: mock client 기반 쇼케이스. 실제 Supabase 호출 없음 */
+/** Store Mode: showcase based on the mock client. No real Supabase calls */
 export const StoreMode = {
   render: () => (
     <ArchivePage
@@ -43,7 +43,7 @@ export const StoreMode = {
   ),
 };
 
-/** 외부 주입 — 기존 스토리 호환 */
+/** External injection: compatible with existing stories */
 export const Default = {
   render: () => {
     const [items, setItems] = useState(() => allReferences.slice(0, 18));

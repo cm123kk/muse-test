@@ -9,15 +9,15 @@ export default {
   argTypes: {
     scaleFrom: {
       control: { type: 'range', min: 0.5, max: 1, step: 0.05 },
-      description: '최소 스케일 (뷰포트 밖)',
+      description: 'Minimum scale (outside the viewport)',
     },
     scaleTo: {
       control: { type: 'range', min: 0.8, max: 1.2, step: 0.05 },
-      description: '최대 스케일 (뷰포트 완전 노출)',
+      description: 'Maximum scale (fully exposed in the viewport)',
     },
     transformOrigin: {
       control: 'text',
-      description: '스케일 기준점',
+      description: 'Scale origin point',
     },
   },
   parameters: {

@@ -6,7 +6,7 @@ import Placeholder from '../../common/ui/Placeholder';
 import { CarouselContainer } from './CarouselContainer';
 
 /**
- * 데모용 샘플 아이템 생성
+ * Create sample items for the demo
  */
 const createSampleItems = (count) =>
   Array.from({ length: count }, (_, i) => ({
@@ -17,27 +17,27 @@ const createSampleItems = (count) =>
 const sampleItems = createSampleItems(8);
 
 /**
- * 기본 아이템 렌더러 — Placeholder.Box 기반
+ * Default item renderer, based on Placeholder.Box
  */
 const DefaultItemRenderer = (item) => (
   <Placeholder.Box label={ item.title } height={ 180 } />
 );
 
 /**
- * 카드 스타일 아이템 렌더러 — Placeholder.Card 기반
+ * Card style item renderer, based on Placeholder.Card
  */
 const CardItemRenderer = (item) => (
   <Placeholder.Card ratio="16/9" lines={ 2 } />
 );
 
 /**
- * Story 컴포넌트: ResponsiveDemo
+ * Story component: ResponsiveDemo
  */
 function ResponsiveDemo() {
   return (
     <Box sx={{ width: '100%', maxWidth: 1200 }}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        화면 크기에 따라 보이는 아이템 수가 변경됩니다. (xs:1, sm:2, md:3, lg:4)
+        The number of visible items changes with screen size. (xs:1, sm:2, md:3, lg:4)
       </Typography>
       <CarouselContainer
         items={sampleItems}
@@ -50,13 +50,13 @@ function ResponsiveDemo() {
 }
 
 /**
- * Story 컴포넌트: WithDividerDemo
+ * Story component: WithDividerDemo
  */
 function WithDividerDemo() {
   return (
     <Box sx={{ width: '100%', maxWidth: 1000 }}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        아이템 사이에 구분선이 표시됩니다.
+        Dividers are shown between items.
       </Typography>
       <CarouselContainer
         items={sampleItems}
@@ -71,13 +71,13 @@ function WithDividerDemo() {
 }
 
 /**
- * Story 컴포넌트: OutsideNavigationDemo
+ * Story component: OutsideNavigationDemo
  */
 function OutsideNavigationDemo() {
   return (
     <Box sx={{ width: '100%', maxWidth: 900, px: 8 }}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        네비게이션 버튼이 컨테이너 바깥에 위치합니다.
+        The navigation buttons are positioned outside the container.
       </Typography>
       <CarouselContainer
         items={sampleItems}
@@ -91,7 +91,7 @@ function OutsideNavigationDemo() {
 }
 
 /**
- * Story 컴포넌트: IndexChangeDemo
+ * Story component: IndexChangeDemo
  */
 function IndexChangeDemo() {
   const [index, setIndex] = useState(0);
@@ -100,7 +100,7 @@ function IndexChangeDemo() {
     <Box sx={{ width: '100%', maxWidth: 1000 }}>
       <Stack direction="row" spacing={2} alignItems="center" sx={{ mb: 2 }}>
         <Typography variant="body2" color="text.secondary">
-          현재 인덱스:
+          Current index:
         </Typography>
         <Typography variant="h6" sx={{ fontWeight: 600, color: 'primary.main' }}>
           {index}
@@ -118,13 +118,13 @@ function IndexChangeDemo() {
 }
 
 /**
- * Story 컴포넌트: StepDemo
+ * Story component: StepDemo
  */
 function StepDemo() {
   return (
     <Box sx={{ width: '100%', maxWidth: 1000 }}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        step=2: 한 번에 2개씩 이동합니다.
+        step=2: moves 2 items at a time.
       </Typography>
       <CarouselContainer
         items={createSampleItems(12)}
@@ -138,13 +138,13 @@ function StepDemo() {
 }
 
 /**
- * Story 컴포넌트: NoNavigationDemo
+ * Story component: NoNavigationDemo
  */
 function NoNavigationDemo() {
   return (
     <Box sx={{ width: '100%', maxWidth: 1000 }}>
       <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-        네비게이션 버튼이 숨겨진 상태입니다. 터치 스와이프 등 다른 방식으로 제어할 때 사용합니다.
+        The navigation buttons are hidden. Use this when controlling the carousel by other means such as touch swipe.
       </Typography>
       <CarouselContainer
         items={sampleItems.slice(0, 4)}
@@ -168,33 +168,33 @@ export default {
         component: `
 ## CarouselContainer
 
-반응형 멀티 아이템 캐러셀 컨테이너 컴포넌트입니다.
+A responsive multi-item carousel container component.
 
-### 특징
-- 브레이크포인트별 노출 개수 설정
-- 부드러운 슬라이드 애니메이션
-- 아이템 간 구분선 지원
-- 네비게이션 버튼 위치 커스터마이징
-- 인덱스 변경 콜백 지원
+### Features
+- Configure visible count per breakpoint
+- Smooth slide animation
+- Divider support between items
+- Customizable navigation button position
+- Index change callback support
         `,
       },
     },
   },
   argTypes: {
     items: {
-      description: '렌더링할 아이템 배열',
+      description: 'Array of items to render',
       table: {
         type: { summary: 'Array' },
       },
     },
     renderItem: {
-      description: '아이템 렌더러 함수 (item, index) => ReactNode',
+      description: 'Item renderer function (item, index) => ReactNode',
       table: {
         type: { summary: 'function' },
       },
     },
     visible: {
-      description: '브레이크포인트별 노출 개수 {xs, sm, md, lg, xl}',
+      description: 'Visible count per breakpoint {xs, sm, md, lg, xl}',
       control: 'object',
       table: {
         type: { summary: 'object' },
@@ -202,7 +202,7 @@ export default {
       },
     },
     gap: {
-      description: '아이템 간 간격 (px)',
+      description: 'Spacing between items (px)',
       control: { type: 'number', min: 0, max: 48 },
       table: {
         type: { summary: 'number' },
@@ -210,7 +210,7 @@ export default {
       },
     },
     step: {
-      description: '한 번에 이동할 아이템 수',
+      description: 'Number of items to move at once',
       control: { type: 'number', min: 1, max: 5 },
       table: {
         type: { summary: 'number' },
@@ -218,7 +218,7 @@ export default {
       },
     },
     hasNavigation: {
-      description: '네비게이션 버튼 표시 여부',
+      description: 'Show navigation buttons',
       control: 'boolean',
       table: {
         type: { summary: 'boolean' },
@@ -226,7 +226,7 @@ export default {
       },
     },
     hasDivider: {
-      description: '아이템 사이 구분선 표시 여부',
+      description: 'Show dividers between items',
       control: 'boolean',
       table: {
         type: { summary: 'boolean' },
@@ -234,7 +234,7 @@ export default {
       },
     },
     dividerColor: {
-      description: '구분선 색상',
+      description: 'Divider color',
       control: 'color',
       table: {
         type: { summary: 'string' },
@@ -242,7 +242,7 @@ export default {
       },
     },
     navPosition: {
-      description: '네비게이션 버튼 위치',
+      description: 'Navigation button position',
       control: 'radio',
       options: ['inside', 'outside'],
       table: {
@@ -251,7 +251,7 @@ export default {
       },
     },
     onIndexChange: {
-      description: '인덱스 변경 콜백 함수',
+      description: 'Index change callback function',
       table: {
         type: { summary: '(index: number) => void' },
       },
@@ -260,7 +260,7 @@ export default {
 };
 
 /**
- * 기본 캐러셀 - 반응형 아이템 노출
+ * Basic carousel with responsive item visibility
  */
 export const Default = {
   args: {
@@ -276,42 +276,42 @@ export const Default = {
 };
 
 /**
- * 반응형 데모 - 화면 크기에 따른 변화
+ * Responsive demo showing changes by screen size
  */
 export const Responsive = {
   render: () => <ResponsiveDemo />,
 };
 
 /**
- * 구분선이 있는 캐러셀
+ * Carousel with dividers
  */
 export const WithDivider = {
   render: () => <WithDividerDemo />,
 };
 
 /**
- * 외부 네비게이션 버튼
+ * Outside navigation buttons
  */
 export const OutsideNavigation = {
   render: () => <OutsideNavigationDemo />,
 };
 
 /**
- * 인덱스 변경 콜백 데모
+ * Index change callback demo
  */
 export const WithIndexChange = {
   render: () => <IndexChangeDemo />,
 };
 
 /**
- * Step 설정 데모 - 한 번에 여러 개 이동
+ * Step setting demo, moving several items at once
  */
 export const StepMovement = {
   render: () => <StepDemo />,
 };
 
 /**
- * 네비게이션 숨김
+ * Hidden navigation
  */
 export const NoNavigation = {
   render: () => <NoNavigationDemo />,

@@ -20,26 +20,26 @@ const GNBContext = createContext({
 export const useGNB = () => useContext(GNBContext);
 
 /**
- * GNB 컴포넌트
+ * GNB component
  *
- * 반응형 GNB (Global Navigation Bar).
- * 데스크탑에서는 헤더에 네비게이션을 표시하고,
- * 모바일에서는 햄버거 메뉴 + 드로어로 전환된다.
+ * Responsive GNB (Global Navigation Bar).
+ * On desktop it shows the navigation in the header,
+ * and on mobile it switches to a hamburger menu plus a drawer.
  *
  * Props:
- * @param {node} logo - 로고 영역 (항상 표시) [Optional]
- * @param {node} navContent - 네비게이션 콘텐츠 (반응형 전환 대상) [Optional]
- * @param {node} persistent - 헤더에 항상 표시될 요소 [Optional]
- * @param {node} drawerHeader - 드로어 상단 커스텀 요소 [Optional]
- * @param {node} drawerFooter - 드로어 하단 커스텀 요소 [Optional]
- * @param {string} breakpoint - 반응형 전환 브레이크포인트 ('sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {number} height - 헤더 높이 (px) [Optional, 기본값: 64]
- * @param {number} drawerWidth - 드로어 너비 (px) [Optional, 기본값: 280]
- * @param {boolean} hasBorder - 헤더 하단 보더 [Optional, 기본값: true]
- * @param {boolean} isSticky - 헤더 고정 [Optional, 기본값: true]
- * @param {boolean} isTransparent - 헤더 투명 배경 [Optional, 기본값: false]
- * @param {boolean} isGhost - ghost 모드 (배경/보더/blur 모두 제거 → 컨텐츠만 떠 있음) [Optional, 기본값: false]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {node} logo - Logo area (always visible) [Optional]
+ * @param {node} navContent - Navigation content (target of the responsive switch) [Optional]
+ * @param {node} persistent - Element that is always shown in the header [Optional]
+ * @param {node} drawerHeader - Custom element at the top of the drawer [Optional]
+ * @param {node} drawerFooter - Custom element at the bottom of the drawer [Optional]
+ * @param {string} breakpoint - Responsive switch breakpoint ('sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {number} height - Header height (px) [Optional, default: 64]
+ * @param {number} drawerWidth - Drawer width (px) [Optional, default: 280]
+ * @param {boolean} hasBorder - Header bottom border [Optional, default: true]
+ * @param {boolean} isSticky - Sticky header [Optional, default: true]
+ * @param {boolean} isTransparent - Transparent header background [Optional, default: false]
+ * @param {boolean} isGhost - Ghost mode (removes background, border, and blur so only the content floats) [Optional, default: false]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <GNB
@@ -72,7 +72,7 @@ const GNB = forwardRef(function GNB({
   const closeDrawer = () => setIsDrawerOpen(false);
 
   /**
-   * 헤더 스타일
+   * Header styles
    */
   const headerStyles = {
     position: isSticky ? 'sticky' : 'relative',
@@ -93,7 +93,7 @@ const GNB = forwardRef(function GNB({
   };
 
   /**
-   * 드로어 콘텐츠
+   * Drawer content
    */
   const renderDrawerContent = () => (
     <Box

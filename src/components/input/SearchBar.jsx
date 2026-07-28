@@ -7,30 +7,30 @@ import ClearIcon from '@mui/icons-material/Clear';
 import TuneIcon from '@mui/icons-material/Tune';
 
 /**
- * SearchBar 컴포넌트
+ * SearchBar component
  *
- * 키워드 검색을 위한 세련된 검색 입력 필드.
- * 실시간 검색, 클리어 버튼, 필터 토글 기능을 제공한다.
+ * A refined search input field for keyword search.
+ * Provides real-time search, a clear button, and a filter toggle.
  *
- * 동작 방식:
- * 1. 사용자가 텍스트를 입력하면 onChange 콜백 호출
- * 2. 입력값이 있으면 클리어(X) 버튼 표시
- * 3. Enter 키 또는 검색 아이콘 클릭 시 onSearch 콜백 호출
- * 4. 필터 아이콘 클릭 시 onFilterToggle 콜백 호출
+ * Behavior:
+ * 1. When the user types, the onChange callback is called
+ * 2. When there is an input value, the clear (X) button is shown
+ * 3. On Enter key or search icon click, the onSearch callback is called
+ * 4. On filter icon click, the onFilterToggle callback is called
  *
  * Props:
- * @param {string} value - 현재 검색어 값 [Optional, 기본값: '']
- * @param {string} placeholder - 플레이스홀더 텍스트 [Optional, 기본값: 'Search...']
- * @param {function} onChange - 입력 변경 핸들러 (value) => void [Optional]
- * @param {function} onSearch - 검색 실행 핸들러 (value) => void [Optional]
- * @param {function} onClear - 클리어 버튼 클릭 핸들러 [Optional]
- * @param {boolean} hasFilter - 필터 버튼 표시 여부 [Optional, 기본값: false]
- * @param {boolean} isFilterActive - 필터 활성화 상태 [Optional, 기본값: false]
- * @param {function} onFilterToggle - 필터 토글 핸들러 [Optional]
- * @param {string} variant - 스타일 변형 ('outlined' | 'filled' | 'minimal') [Optional, 기본값: 'outlined']
- * @param {string} size - 크기 ('sm' | 'md' | 'lg') [Optional, 기본값: 'md']
- * @param {boolean} isFullWidth - 전체 너비 사용 여부 [Optional, 기본값: false]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} value - current search term value [Optional, default: '']
+ * @param {string} placeholder - placeholder text [Optional, default: 'Search...']
+ * @param {function} onChange - input change handler (value) => void [Optional]
+ * @param {function} onSearch - search execution handler (value) => void [Optional]
+ * @param {function} onClear - clear button click handler [Optional]
+ * @param {boolean} hasFilter - whether to show the filter button [Optional, default: false]
+ * @param {boolean} isFilterActive - filter active state [Optional, default: false]
+ * @param {function} onFilterToggle - filter toggle handler [Optional]
+ * @param {string} variant - style variant ('outlined' | 'filled' | 'minimal') [Optional, default: 'outlined']
+ * @param {string} size - size ('sm' | 'md' | 'lg') [Optional, default: 'md']
+ * @param {boolean} isFullWidth - whether to use full width [Optional, default: false]
+ * @param {object} sx - additional styles [Optional]
  *
  * Example usage:
  * <SearchBar
@@ -58,7 +58,7 @@ export function SearchBar({
   const [isFocused, setIsFocused] = useState(false);
 
   /**
-   * 크기별 스타일 매핑
+   * Style mapping per size
    */
   const sizeStyles = {
     sm: { height: 36, fontSize: 13, px: 1.5, iconSize: 'small' },
@@ -69,7 +69,7 @@ export function SearchBar({
   const currentSize = sizeStyles[size] || sizeStyles.md;
 
   /**
-   * 변형별 컨테이너 스타일
+   * Container style per variant
    */
   const getVariantStyles = () => {
     const base = {
@@ -119,7 +119,7 @@ export function SearchBar({
   };
 
   /**
-   * 키보드 이벤트 핸들러
+   * Keyboard event handler
    */
   const handleKeyDown = useCallback(
     (e) => {
@@ -134,7 +134,7 @@ export function SearchBar({
   );
 
   /**
-   * 클리어 버튼 핸들러
+   * Clear button handler
    */
   const handleClear = useCallback(() => {
     if (onClear) {
@@ -145,7 +145,7 @@ export function SearchBar({
   }, [onClear, onChange]);
 
   /**
-   * 검색 버튼 핸들러
+   * Search button handler
    */
   const handleSearchClick = useCallback(() => {
     if (onSearch) {
@@ -162,7 +162,7 @@ export function SearchBar({
         ...sx,
       }}
     >
-      {/* 검색 아이콘 */}
+      {/* Search icon */}
       <IconButton
         size={currentSize.iconSize}
         onClick={handleSearchClick}
@@ -175,7 +175,7 @@ export function SearchBar({
         <SearchIcon fontSize={currentSize.iconSize} />
       </IconButton>
 
-      {/* 검색 입력 필드 */}
+      {/* Search input field */}
       <InputBase
         value={value}
         onChange={(e) => onChange?.(e.target.value)}
@@ -199,7 +199,7 @@ export function SearchBar({
         }}
       />
 
-      {/* 클리어 버튼 (값이 있을 때만 표시) */}
+      {/* Clear button (shown only when there is a value) */}
       {value && (
         <IconButton
           size={currentSize.iconSize}
@@ -216,7 +216,7 @@ export function SearchBar({
         </IconButton>
       )}
 
-      {/* 필터 버튼 (hasFilter가 true일 때만 표시) */}
+      {/* Filter button (shown only when hasFilter is true) */}
       {hasFilter && (
         <IconButton
           size={currentSize.iconSize}

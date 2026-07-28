@@ -8,19 +8,20 @@ import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
 const DEFAULT_LAYER_LABELS = ['Color', 'Typography', 'Layout', 'Gradient', 'Visual Direction'];
 
 /**
- * LayerAnalysisStrip 컴포넌트
+ * LayerAnalysisStrip component
  *
- * 레퍼런스 / 미디어 카드 하단에 부착되는 가벼운 진행 strip. AnalysisProgress 의 풀스크린
- * 변형이 부담스러운 자리(카드 footer / inline 데모) 에서 사용. overlay 가 아닌 일반 stack
- * 흐름이라 카드 위에 떠있지 않고 자연스럽게 따라 붙는다.
+ * A lightweight progress strip attached to the bottom of a reference / media card. Used in places
+ * where the full-screen variant of AnalysisProgress would be too heavy (card footer / inline demo).
+ * Because it is a normal stack flow rather than an overlay, it does not float over the card and
+ * follows along naturally.
  *
- * 레이아웃: ANALYZING n/N + 굵기 2px LinearProgress + per-layer 행 (status icon + 라벨)
+ * Layout: ANALYZING n/N + 2px-thick LinearProgress + per-layer rows (status icon + label)
  *
  * Props:
- * @param {('pending'|'running'|'done')[]} layerStatuses - 레이어별 상태 배열 [Required]
- * @param {string[]} layerLabels - 레이어 라벨 배열 (layerStatuses 와 길이 일치) [Optional, 기본값: ['Color', 'Typography', 'Layout', 'Gradient', 'Visual Direction']]
- * @param {string} headerLabel - 상단 monospace eyebrow 텍스트 [Optional, 기본값: 'ANALYZING']
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {('pending'|'running'|'done')[]} layerStatuses - Array of per-layer statuses [Required]
+ * @param {string[]} layerLabels - Array of layer labels (must match the length of layerStatuses) [Optional, default: ['Color', 'Typography', 'Layout', 'Gradient', 'Visual Direction']]
+ * @param {string} headerLabel - Top monospace eyebrow text [Optional, default: 'ANALYZING']
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <LayerAnalysisStrip

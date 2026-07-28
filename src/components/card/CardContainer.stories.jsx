@@ -17,14 +17,14 @@ export default {
         component: `
 ## CardContainer
 
-자주 사용되는 카드 스타일을 미리 정의한 래퍼 컴포넌트.
-CustomCard, ImageCard 등 다양한 카드 컴포넌트의 기반 컨테이너입니다.
+A wrapper component with commonly used card styles predefined.
+It is the base container for various card components such as CustomCard and ImageCard.
 
-### Variant 타입
-- **outlined**: 테두리가 있는 기본 스타일 (기본값)
-- **elevation**: 그림자가 있는 스타일
-- **ghost**: 배경/테두리 없는 투명 스타일
-- **filled**: 배경색이 채워진 스타일
+### Variant types
+- **outlined**: Default style with a border (default)
+- **elevation**: Style with a shadow
+- **ghost**: Transparent style with no background or border
+- **filled**: Style with a filled background color
         `,
       },
     },
@@ -33,31 +33,31 @@ CustomCard, ImageCard 등 다양한 카드 컴포넌트의 기반 컨테이너�
     variant: {
       control: 'select',
       options: ['outlined', 'elevation', 'ghost', 'filled'],
-      description: '카드 스타일 변형',
+      description: 'Card style variant',
     },
     padding: {
       control: 'select',
       options: ['none', 'sm', 'md', 'lg'],
-      description: '내부 패딩',
+      description: 'Inner padding',
     },
     radius: {
       control: 'select',
       options: ['none', 'sm', 'md', 'lg'],
-      description: '모서리 둥글기',
+      description: 'Corner radius',
     },
     isInteractive: {
       control: 'boolean',
-      description: '호버 효과 활성화',
+      description: 'Enable hover effect',
     },
     isSelected: {
       control: 'boolean',
-      description: '선택 상태 표시',
+      description: 'Show selected state',
     },
   },
 };
 
 /**
- * 기본 CardContainer
+ * Default CardContainer
  */
 export const Default = {
   args: {
@@ -70,17 +70,17 @@ export const Default = {
   render: (args) => (
     <CardContainer { ...args } sx={ { width: 320 } }>
       <Typography variant="h6" sx={ { fontWeight: 600, mb: 1 } }>
-        카드 제목
+        Card Title
       </Typography>
       <Typography variant="body2" color="text.secondary">
-        CardContainer는 다양한 variant를 지원하는 기본 카드 래퍼입니다.
+        CardContainer is a basic card wrapper that supports various variants.
       </Typography>
     </CardContainer>
   ),
 };
 
 /**
- * Variant 비교
+ * Variant comparison
  */
 export const Variants = {
   render: () => (
@@ -105,7 +105,7 @@ export const Variants = {
 };
 
 /**
- * Padding 비교
+ * Padding comparison
  */
 export const Paddings = {
   render: () => (
@@ -128,7 +128,7 @@ export const Paddings = {
 };
 
 /**
- * Radius 비교
+ * Radius comparison
  */
 export const RadiusOptions = {
   render: () => (
@@ -151,7 +151,7 @@ export const RadiusOptions = {
 };
 
 /**
- * Interactive 상태
+ * Interactive state
  */
 export const Interactive = {
   render: () => (
@@ -178,7 +178,7 @@ export const Interactive = {
 };
 
 /**
- * Selected 상태
+ * Selected state
  */
 export const Selected = {
   render: () => (
@@ -204,7 +204,7 @@ export const Selected = {
 };
 
 /**
- * 실제 사용 예시 - 상품 카드
+ * Real usage example: product card
  */
 export const ProductExample = {
   render: () => (
@@ -227,12 +227,12 @@ export const ProductExample = {
       />
       <Box sx={ { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 1 } }>
         <Typography variant="subtitle1" sx={ { fontWeight: 600 } }>
-          프리미엄 무선 이어폰
+          Premium Wireless Earbuds
         </Typography>
         <Chip label="NEW" size="small" color="primary" />
       </Box>
       <Typography variant="body2" color="text.secondary" sx={ { mb: 2 } }>
-        고품질 사운드와 편안한 착용감
+        High-quality sound and comfortable fit
       </Typography>
       <Box sx={ { display: 'flex', alignItems: 'baseline', gap: 1 } }>
         <Typography variant="h6" color="primary" sx={ { fontWeight: 700 } }>
@@ -247,31 +247,31 @@ export const ProductExample = {
 };
 
 /**
- * 실제 사용 예시 - 통계 카드
+ * Real usage example: stat card
  */
 export const StatExample = {
   render: () => (
     <Stack direction="row" spacing={ 2 }>
       <CardContainer variant="elevation" padding="md" sx={ { minWidth: 180 } }>
         <Typography variant="overline" color="text.secondary">
-          총 방문자
+          Total Visitors
         </Typography>
         <Typography variant="h4" sx={ { fontWeight: 700 } }>
           12,543
         </Typography>
         <Typography variant="caption" color="success.main">
-          +12.5% 지난 주 대비
+          +12.5% vs last week
         </Typography>
       </CardContainer>
       <CardContainer variant="elevation" padding="md" sx={ { minWidth: 180 } }>
         <Typography variant="overline" color="text.secondary">
-          신규 가입
+          New Signups
         </Typography>
         <Typography variant="h4" sx={ { fontWeight: 700 } }>
           847
         </Typography>
         <Typography variant="caption" color="error.main">
-          -3.2% 지난 주 대비
+          -3.2% vs last week
         </Typography>
       </CardContainer>
     </Stack>
@@ -279,7 +279,7 @@ export const StatExample = {
 };
 
 /**
- * 실제 사용 예시 - 선택 가능한 옵션
+ * Real usage example: selectable options
  */
 export const SelectableOptions = {
   render: () => (

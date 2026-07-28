@@ -1,5 +1,5 @@
 /**
- * MUSE — UserSettings 기본값
+ * MUSE - UserSettings defaults
  * @type {import('./schemas.js').UserSettings}
  */
 export const defaultUserSettings = {

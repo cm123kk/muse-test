@@ -14,12 +14,12 @@ export default {
         component: `
 ## TagInput
 
-태그 입력 및 관리 필드 컴포넌트.
+Tag input and management field component.
 
-### 기능
-- 태그 추가/삭제
-- 최대 태그 수 제한
-- 자동완성 제안 지원
+### Features
+- Add and remove tags
+- Maximum tag count limit
+- Autocomplete suggestion support
         `,
       },
     },
@@ -27,7 +27,7 @@ export default {
 };
 
 /**
- * TagInput 기본 사용 예시
+ * TagInput basic usage example
  */
 export const Default = {
   render: () => {

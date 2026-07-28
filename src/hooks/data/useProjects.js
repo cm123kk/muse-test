@@ -34,8 +34,8 @@ export function useProjects({ client = defaultClient } = {}) {
 }
 
 /**
- * 프로젝트 목록을 연결된 레퍼런스 썸네일과 함께 조회.
- * project_references → reference_items.thumbnail_url 조인.
+ * Fetch the project list along with the thumbnails of linked references.
+ * Joins project_references -> reference_items.thumbnail_url.
  *
  * @param {{ client?: object }} [options]
  * @returns {{ data: Array|null, loading: boolean, error: object|null, refetch: () => void }}

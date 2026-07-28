@@ -16,95 +16,95 @@ export default {
 const SUPER_THEMES = [
   {
     key: 'T1',
-    title: '왜 그랬는지 모름',
-    quote: '"DESIGN.md는 \'버튼은 테라코타 색\'이라고 기록하지만, 왜 테라코타를 골랐는지는 담지 않는다. 결과는 있지만 이유가 빠져 있는 구조."',
-    source: '김은수, IBM Research UX 엔지니어 (ZDNet Korea, 2026-04-26)',
+    title: 'No record of why',
+    quote: '"DESIGN.md records that \'the button is terracotta,\' but it does not capture why terracotta was chosen. A structure that has the result but is missing the reason."',
+    source: 'Kim Eun-su, IBM Research UX Engineer (ZDNet Korea, 2026-04-26)',
   },
   {
     key: 'T2',
-    title: '단일 입력의 단조로움',
+    title: 'Monotony of a single input',
     quote: '"Everything looks… the same."',
     source: 'Bitovi (Levi Myers, Google Stitch Review)',
   },
   {
     key: 'T3',
-    title: '통제권 상실',
+    title: 'Loss of control',
     quote: '"Two prompts for a 12-slide presentation and you are out."',
-    source: 'Pasquale Pillitteri / PCWorld (via 다수 KR 매체)',
+    source: 'Pasquale Pillitteri / PCWorld (via multiple KR outlets)',
   },
   {
     key: 'T4',
-    title: 'AI는 craft를 대체 못함',
-    quote: '"디자이너의 미래는 AI가 더 뛰어난 결과물을 만들 수 있도록 원칙과 시스템을 설계하는 것"',
-    source: '토스 디자인팀',
+    title: 'AI cannot replace craft',
+    quote: '"The future of designers is to design the principles and systems that let AI produce even better results"',
+    source: 'Toss Design Team',
   },
 ];
 
 const TOUCH_POINTS = [
   {
-    id: 'TP1 (폐기)', title: '~~레퍼런스 업로드 chip~~', where: '~~ArchivePage~~',
-    before: '드롭 → 자동 태깅',
-    after: '폐기 (2026-04-28) — T1은 이미지가 정보 원천. 사용자 chip이 태깅 정확도를 향상시키지 않음. TP4와 다운스트림 중복.',
-    pain: '—',
-    promptVar: '—',
+    id: 'TP1 (deprecated)', title: '~~Reference upload chip~~', where: '~~ArchivePage~~',
+    before: 'Drop → auto-tagging',
+    after: 'Deprecated (2026-04-28): for T1 the image is the source of information. User chips do not improve tagging accuracy. Redundant with TP4 downstream.',
+    pain: '-',
+    promptVar: '-',
   },
   {
-    id: 'TP2', title: '프로젝트 모드 선택', where: 'Wizard Step 0',
-    before: '바로 form',
-    after: '컨셉 / 시스템 카드 (모든 후속 분기 기준)',
+    id: 'TP2', title: 'Project mode selection', where: 'Wizard Step 0',
+    before: 'Straight to form',
+    after: 'Concept / System cards (basis for all downstream branching)',
     pain: 'T2, T3',
     promptVar: 'projectMode',
   },
   {
-    id: 'TP3', title: '제목 + 한 줄 의도', where: 'Wizard Step 1',
-    before: '빈 textarea',
-    after: 'IntentGuideField (placeholder + helperText 가이드만, maxLength 120)',
-    pain: 'T2 키워드 매칭',
-    promptVar: 'intent (T2/T3 입력)',
+    id: 'TP3', title: 'Title + one-line intent', where: 'Wizard Step 1',
+    before: 'Empty textarea',
+    after: 'IntentGuideField (placeholder + helperText guidance only, maxLength 120)',
+    pain: 'T2 keyword matching',
+    promptVar: 'intent (T2/T3 input)',
   },
   {
-    id: 'TP4', title: '카드 layer chip', where: 'ReferencePicker Step 2',
-    before: '추천 카드 add/remove',
-    after: '카드별 색 / 타이포 / 레이아웃 chip (T2 자동, 사용자 수동)',
-    pain: 'T3 합성',
+    id: 'TP4', title: 'Card layer chip', where: 'ReferencePicker Step 2',
+    before: 'Recommended card add/remove',
+    after: 'Per-card Color / Typography / Layout chip (T2 automatic, user manual)',
+    pain: 'T3 composition',
     promptVar: 'selectedRefs[].useLayers',
   },
   {
-    id: 'Step 3 (NEW)', title: '활용 노트 (필수)', where: 'Wizard Step 3 — RefinementNotesField',
-    before: '(없음 — TP5 확인 박스만 있었음)',
-    after: '레퍼런스 본 후 활용 지점 명시. 모드별 minLength 차등 (concept=0 / system=30). T3 합성 HIGHEST PRIORITY 입력',
-    pain: 'T3 정확도, craft 보존',
-    promptVar: 'userNotes (L4 우선)',
+    id: 'Step 3 (NEW)', title: 'Usage Notes (required)', where: 'Wizard Step 3: RefinementNotesField',
+    before: '(none: only the TP5 confirmation box existed)',
+    after: 'Specify how references will be used after viewing them. minLength varies by mode (concept=0 / system=30). HIGHEST PRIORITY input for T3 composition',
+    pain: 'T3 accuracy, craft preservation',
+    promptVar: 'userNotes (L4 priority)',
   },
   {
-    id: 'TP5 (폐기)', title: '~~분석 직전 확인 박스~~', where: '~~Wizard Step 3 AnalysisConfirmBox~~',
-    before: '별도 step',
-    after: 'Step 3 하단 [분석 시작 →] 버튼이 곧 confirm 으로 흡수. 별도 step 불필요.',
-    pain: '—',
-    promptVar: '—',
+    id: 'TP5 (deprecated)', title: '~~Pre-analysis confirmation box~~', where: '~~Wizard Step 3 AnalysisConfirmBox~~',
+    before: 'Separate step',
+    after: 'The [Start Analysis →] button at the bottom of Step 3 absorbs the confirm. No separate step needed.',
+    pain: '-',
+    promptVar: '-',
   },
   {
-    id: 'TP6', title: '토큰 카드 출처 펼침', where: 'ProjectDetailPage 4개 토큰 preview',
-    before: '값만 표시',
-    after: '? 클릭 시 출처 + 의도 매칭 + 사용자 노트 인용 + 탈락 후보. 4 layer (color/typo/layout/gradient) 모두 적용',
-    pain: 'T1 결정 추적',
+    id: 'TP6', title: 'Token card source expansion', where: 'ProjectDetailPage 4 token previews',
+    before: 'Shows value only',
+    after: 'On ? click: source + intent match + user note citation + rejected candidates. Applied to all 4 layers (color/typo/layout/gradient)',
+    pain: 'T1 decision tracing',
     promptVar: 'decisionRationale + appliedUserNotes',
   },
 ];
 
 const PERSONAS = [
-  { p: 'P1', label: '비디자이너 PM/창업자', need: '디자이너 없이 프로토타입', entry: 'TP2 컨셉 잡기' },
-  { p: 'P2', label: '시니어 디자이너', need: 'craft 보존하며 가속', entry: 'TP4 layer chip으로 큐레이션' },
-  { p: 'P3', label: '디자인 시스템 엔지니어', need: '토큰 코드로 30% 손실 회피', entry: 'TP2 시스템 + DTCG export' },
-  { p: 'P4', label: 'AI 코딩 헤비유저', need: 'DESIGN.md를 AI가 무시함', entry: 'TP6 결정 추적 + cursorrules' },
+  { p: 'P1', label: 'Non-designer PM/founder', need: 'Prototype without a designer', entry: 'TP2 shaping the concept' },
+  { p: 'P2', label: 'Senior designer', need: 'Accelerate while preserving craft', entry: 'Curate with TP4 layer chips' },
+  { p: 'P3', label: 'Design System engineer', need: 'Avoid 30% loss with token code', entry: 'TP2 System + DTCG export' },
+  { p: 'P4', label: 'AI coding heavy user', need: 'AI ignores DESIGN.md', entry: 'TP6 decision tracing + cursorrules' },
 ];
 
 const METRICS = [
-  { metric: '의도 입력 평균 길이', before: '<20자', after: '>40자' },
-  { metric: 'Step 2 layer 수동 변경률', before: '0%', after: '>30%' },
-  { metric: '토큰 카드 hover/click률', before: '미측정', after: '>60%' },
-  { metric: 'T3 결과 export 비율', before: '미측정', after: '↑ 10pp' },
-  { metric: '30일 재방문률', before: '미측정', after: '↑' },
+  { metric: 'Average intent input length', before: '<20 chars', after: '>40 chars' },
+  { metric: 'Step 2 layer manual change rate', before: '0%', after: '>30%' },
+  { metric: 'Token card hover/click rate', before: 'Not measured', after: '>60%' },
+  { metric: 'T3 result export rate', before: 'Not measured', after: '↑ 10pp' },
+  { metric: '30-day return rate', before: 'Not measured', after: '↑' },
 ];
 
 export const UXIntentMap = {
@@ -112,20 +112,20 @@ export const UXIntentMap = {
   render: () => (
     <>
       <DocumentTitle
-        title="UX Intent Map — 사용자 의도가 UX 자체에 박힌다"
+        title="UX Intent Map: user intent embedded into the UX itself"
         status="Draft"
-        note="TP1~TP6 + 시스템 프롬프트 변수 통합 narrative"
+        note="Integrated narrative of TP1~TP6 + system prompt variables"
         brandName="MUSE"
         systemName="UX Intervention"
         version="0.1"
       />
       <PageContainer>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 3 } }>
-          큰 화면 신규 X. 기존 6개 입력 지점에 "왜?" 질문을 끼워 넣어 사용자 의도를 UX 자체에 박는다.
-          답변은 T1/T2/T3 system prompt 변수로 흘러가 결과 디테일을 끌어올린다.
+          No new large screens. We insert a "why?" question into the 6 existing input points to embed user intent into the UX itself.
+          The answers flow into the T1/T2/T3 system prompt variables and raise the level of detail in the results.
         </Typography>
 
-        <SectionTitle title="검증된 4 super-theme" description="docs/research/02-painpoints-qualitative-analysis.md" />
+        <SectionTitle title="Four validated super-themes" description="docs/research/02-painpoints-qualitative-analysis.md" />
         <Box sx={ { display: 'grid', gridTemplateColumns: { xs: '1fr', md: '1fr 1fr' }, gap: 2, mb: 4 } }>
           { SUPER_THEMES.map((t) => (
             <Box
@@ -149,7 +149,7 @@ export const UXIntentMap = {
                 { t.quote }
               </Typography>
               <Typography variant="caption" sx={ { color: 'text.secondary' } }>
-                — { t.source }
+                Source: { t.source }
               </Typography>
             </Box>
           )) }
@@ -157,7 +157,7 @@ export const UXIntentMap = {
 
         <Divider sx={ { my: 4 } } />
 
-        <SectionTitle title="6개 터치포인트 (TP1~TP6)" description="UX 흐름 안에 사용자 의도를 끼워 넣는 자리" />
+        <SectionTitle title="6 touchpoints (TP1~TP6)" description="Places where user intent is inserted into the UX flow" />
         <Box sx={ { display: 'flex', flexDirection: 'column', gap: 2, mb: 4 } }>
           { TOUCH_POINTS.map((tp) => (
             <Box
@@ -191,11 +191,11 @@ export const UXIntentMap = {
                 </Box>
               </Box>
               <Box>
-                <Typography variant="caption" sx={ { color: 'text.secondary' } }>직격 페인</Typography>
+                <Typography variant="caption" sx={ { color: 'text.secondary' } }>Direct pain</Typography>
                 <Typography variant="body2">{ tp.pain }</Typography>
               </Box>
               <Box>
-                <Typography variant="caption" sx={ { color: 'text.secondary' } }>system prompt 변수</Typography>
+                <Typography variant="caption" sx={ { color: 'text.secondary' } }>system prompt variable</Typography>
                 <Typography variant="caption" sx={ { fontFamily: 'monospace', display: 'block', fontSize: 11 } }>
                   { tp.promptVar }
                 </Typography>
@@ -206,7 +206,7 @@ export const UXIntentMap = {
 
         <Divider sx={ { my: 4 } } />
 
-        <SectionTitle title="페르소나 진입 경로" description="P1~P4 각자 다른 TP에서 진가를 느낀다" />
+        <SectionTitle title="Persona entry paths" description="P1~P4 each feel the value at a different TP" />
         <Box sx={ { display: 'grid', gridTemplateColumns: { xs: '1fr', md: 'repeat(4, 1fr)' }, gap: 2, mb: 4 } }>
           { PERSONAS.map((p) => (
             <Box
@@ -222,7 +222,7 @@ export const UXIntentMap = {
               <Chip label={ p.p } size="small" sx={ { mb: 1, fontFamily: 'monospace' } } />
               <Typography variant="body2" sx={ { fontWeight: 600 } }>{ p.label }</Typography>
               <Typography variant="caption" sx={ { display: 'block', mt: 0.5, color: 'text.secondary' } }>
-                니즈: { p.need }
+                Needs: { p.need }
               </Typography>
               <Typography variant="caption" sx={ { display: 'block', mt: 1, color: 'primary.main', fontWeight: 600 } }>
                 ↳ { p.entry }
@@ -233,7 +233,7 @@ export const UXIntentMap = {
 
         <Divider sx={ { my: 4 } } />
 
-        <SectionTitle title="검증 가능 지표" description="3주 후 측정" />
+        <SectionTitle title="Verifiable metrics" description="Measured after 3 weeks" />
         <Box sx={ { mb: 4 } }>
           { METRICS.map((m, i) => (
             <Box
@@ -268,13 +268,13 @@ export const UXIntentMap = {
           } }
         >
           <Typography variant="h6" sx={ { fontWeight: 700, mb: 1 } }>
-            한 줄 메시지
+            One-line message
           </Typography>
           <Typography variant="body1">
-            <strong>"AI가 만든 디자인, 왜 그렇게 만들었는지 알려줘요."</strong>
+            <strong>"For an AI-made design, tell me why it was made that way."</strong>
           </Typography>
           <Typography variant="caption" sx={ { color: 'text.secondary', display: 'block', mt: 1 } }>
-            — 사진 5장 던지면, 디자인 시스템이 나옵니다. 근거까지.
+            Throw in 5 photos, and a design system comes out. With the rationale, too.
           </Typography>
         </Box>
       </PageContainer>

@@ -11,13 +11,13 @@ import LoginForm from '../input/LoginForm';
 import SignUpForm from '../input/SignUpForm';
 
 /**
- * AuthModal 컴포넌트
+ * AuthModal component
  *
  * Props:
- * @param {boolean} isOpen - 모달 열림 여부 [Required]
- * @param {string} initialTab - 초기 탭 ('signup' | 'login') [Optional, 기본값: 'signup']
- * @param {function} onClose - 모달 닫기 콜백 [Required]
- * @param {function} onSuccess - 인증 성공 시 콜백 [Optional]
+ * @param {boolean} isOpen - Whether the modal is open [Required]
+ * @param {string} initialTab - Initial tab ('signup' | 'login') [Optional, default: 'signup']
+ * @param {function} onClose - Modal close callback [Required]
+ * @param {function} onSuccess - Callback on successful authentication [Optional]
  *
  * Example usage:
  * <AuthModal isOpen={open} initialTab="signup" onClose={() => setOpen(false)} />
@@ -59,8 +59,8 @@ function AuthModal({ isOpen, initialTab = 'signup', onClose, onSuccess }) {
           centered
           sx={{ mb: 3, borderBottom: 1, borderColor: 'divider' }}
         >
-          <Tab label="가입하기" value="signup" sx={{ fontWeight: 600 }} />
-          <Tab label="로그인" value="login" sx={{ fontWeight: 600 }} />
+          <Tab label="Sign up" value="signup" sx={{ fontWeight: 600 }} />
+          <Tab label="Sign in" value="login" sx={{ fontWeight: 600 }} />
         </Tabs>
 
         <Box>

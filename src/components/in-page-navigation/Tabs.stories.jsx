@@ -15,16 +15,16 @@ export default {
         component: `
 ## Tabs [MUI]
 
-탭 네비게이션 컴포넌트입니다. 관련된 콘텐츠 그룹 간의 전환을 제공합니다.
+A tab navigation component. It provides switching between related groups of content.
 
-### 사용 패턴
+### Usage Patterns
 
-| 패턴 | 설명 | 예시 |
+| Pattern | Description | Example |
 |------|------|------|
-| Basic | 기본 탭 | \`<Tabs><Tab label="탭1" /></Tabs>\` |
-| Centered | 중앙 정렬 | \`centered\` prop |
-| Scrollable | 스크롤 가능 | \`variant="scrollable"\` |
-| Vertical | 세로 방향 | \`orientation="vertical"\` |
+| Basic | Basic tabs | \`<Tabs><Tab label="Tab 1" /></Tabs>\` |
+| Centered | Center aligned | \`centered\` prop |
+| Scrollable | Scrollable | \`variant="scrollable"\` |
+| Vertical | Vertical orientation | \`orientation="vertical"\` |
         `,
       },
     },
@@ -33,7 +33,7 @@ export default {
     orientation: {
       control: 'select',
       options: ['horizontal', 'vertical'],
-      description: '탭의 방향을 설정합니다.',
+      description: 'Sets the orientation of the tabs.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'horizontal' },
@@ -42,7 +42,7 @@ export default {
     variant: {
       control: 'select',
       options: ['standard', 'scrollable', 'fullWidth'],
-      description: '탭의 레이아웃 변형을 설정합니다.',
+      description: 'Sets the layout variant of the tabs.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'standard' },
@@ -50,7 +50,7 @@ export default {
     },
     centered: {
       control: 'boolean',
-      description: '탭을 중앙에 배치합니다.',
+      description: 'Centers the tabs.',
       table: {
         type: { summary: 'boolean' },
         defaultValue: { summary: 'false' },
@@ -59,7 +59,7 @@ export default {
     textColor: {
       control: 'select',
       options: ['inherit', 'primary', 'secondary'],
-      description: '탭 텍스트 색상을 설정합니다.',
+      description: 'Sets the tab text color.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
@@ -68,7 +68,7 @@ export default {
     indicatorColor: {
       control: 'select',
       options: ['primary', 'secondary'],
-      description: '탭 인디케이터 색상을 설정합니다.',
+      description: 'Sets the tab indicator color.',
       table: {
         type: { summary: 'string' },
         defaultValue: { summary: 'primary' },
@@ -77,7 +77,7 @@ export default {
   },
 };
 
-/** 탭 패널 컴포넌트 */
+/** Tab panel component */
 const TabPanel = ({ children, value, index, ...other }) => (
   <div
     role="tabpanel"
@@ -94,7 +94,7 @@ const TabPanel = ({ children, value, index, ...other }) => (
   </div>
 );
 
-/** 기본 탭 */
+/** Basic tabs */
 export const Default = {
   args: {
     orientation: 'horizontal',
@@ -122,26 +122,26 @@ export const Default = {
             textColor={ args.textColor }
             indicatorColor={ args.indicatorColor }
           >
-            <Tab label="탭 1" />
-            <Tab label="탭 2" />
-            <Tab label="탭 3" />
+            <Tab label="Tab 1" />
+            <Tab label="Tab 2" />
+            <Tab label="Tab 3" />
           </Tabs>
         </Box>
         <TabPanel value={ value } index={ 0 }>
-          첫 번째 탭의 콘텐츠입니다.
+          Content of the first tab.
         </TabPanel>
         <TabPanel value={ value } index={ 1 }>
-          두 번째 탭의 콘텐츠입니다.
+          Content of the second tab.
         </TabPanel>
         <TabPanel value={ value } index={ 2 }>
-          세 번째 탭의 콘텐츠입니다.
+          Content of the third tab.
         </TabPanel>
       </Box>
     );
   },
 };
 
-/** 중앙 정렬 탭 */
+/** Centered tabs */
 export const Centered = {
   render: () => {
     const [value, setValue] = useState(0);
@@ -153,16 +153,16 @@ export const Centered = {
           onChange={ (e, v) => setValue(v) }
           centered
         >
-          <Tab label="홈" />
-          <Tab label="프로필" />
-          <Tab label="설정" />
+          <Tab label="Home" />
+          <Tab label="Profile" />
+          <Tab label="Settings" />
         </Tabs>
       </Box>
     );
   },
 };
 
-/** 전체 너비 탭 */
+/** Full width tabs */
 export const FullWidth = {
   render: () => {
     const [value, setValue] = useState(0);
@@ -174,16 +174,16 @@ export const FullWidth = {
           onChange={ (e, v) => setValue(v) }
           variant="fullWidth"
         >
-          <Tab label="전화" />
-          <Tab label="즐겨찾기" />
-          <Tab label="최근" />
+          <Tab label="Calls" />
+          <Tab label="Favorites" />
+          <Tab label="Recents" />
         </Tabs>
       </Box>
     );
   },
 };
 
-/** 스크롤 가능한 탭 */
+/** Scrollable tabs */
 export const Scrollable = {
   render: () => {
     const [value, setValue] = useState(0);
@@ -196,20 +196,20 @@ export const Scrollable = {
           variant="scrollable"
           scrollButtons="auto"
         >
-          <Tab label="아이템 1" />
-          <Tab label="아이템 2" />
-          <Tab label="아이템 3" />
-          <Tab label="아이템 4" />
-          <Tab label="아이템 5" />
-          <Tab label="아이템 6" />
-          <Tab label="아이템 7" />
+          <Tab label="Item 1" />
+          <Tab label="Item 2" />
+          <Tab label="Item 3" />
+          <Tab label="Item 4" />
+          <Tab label="Item 5" />
+          <Tab label="Item 6" />
+          <Tab label="Item 7" />
         </Tabs>
       </Box>
     );
   },
 };
 
-/** 세로 방향 탭 */
+/** Vertical tabs */
 export const Vertical = {
   render: () => {
     const [value, setValue] = useState(0);
@@ -223,29 +223,29 @@ export const Vertical = {
           onChange={ (e, v) => setValue(v) }
           sx={ { borderRight: 1, borderColor: 'divider' } }
         >
-          <Tab label="아이템 1" />
-          <Tab label="아이템 2" />
-          <Tab label="아이템 3" />
-          <Tab label="아이템 4" />
+          <Tab label="Item 1" />
+          <Tab label="Item 2" />
+          <Tab label="Item 3" />
+          <Tab label="Item 4" />
         </Tabs>
         <TabPanel value={ value } index={ 0 }>
-          아이템 1의 내용
+          Content of Item 1
         </TabPanel>
         <TabPanel value={ value } index={ 1 }>
-          아이템 2의 내용
+          Content of Item 2
         </TabPanel>
         <TabPanel value={ value } index={ 2 }>
-          아이템 3의 내용
+          Content of Item 3
         </TabPanel>
         <TabPanel value={ value } index={ 3 }>
-          아이템 4의 내용
+          Content of Item 4
         </TabPanel>
       </Box>
     );
   },
 };
 
-/** 색상 변형 */
+/** Color variants */
 export const Colors = {
   render: () => {
     const [value1, setValue1] = useState(0);
@@ -254,16 +254,16 @@ export const Colors = {
     return (
       <Box sx={ { display: 'flex', flexDirection: 'column', gap: 4 } }>
         <Box>
-          <Typography variant="subtitle2" sx={ { mb: 1 } }>Primary (기본)</Typography>
+          <Typography variant="subtitle2" sx={ { mb: 1 } }>Primary (Default)</Typography>
           <Tabs
             value={ value1 }
             onChange={ (e, v) => setValue1(v) }
             textColor="primary"
             indicatorColor="primary"
           >
-            <Tab label="탭 1" />
-            <Tab label="탭 2" />
-            <Tab label="탭 3" />
+            <Tab label="Tab 1" />
+            <Tab label="Tab 2" />
+            <Tab label="Tab 3" />
           </Tabs>
         </Box>
         <Box>
@@ -274,9 +274,9 @@ export const Colors = {
             textColor="secondary"
             indicatorColor="secondary"
           >
-            <Tab label="탭 1" />
-            <Tab label="탭 2" />
-            <Tab label="탭 3" />
+            <Tab label="Tab 1" />
+            <Tab label="Tab 2" />
+            <Tab label="Tab 3" />
           </Tabs>
         </Box>
       </Box>
@@ -284,16 +284,16 @@ export const Colors = {
   },
 };
 
-/** 비활성화 탭 */
+/** Disabled tab */
 export const Disabled = {
   render: () => {
     const [value, setValue] = useState(0);
 
     return (
       <Tabs value={ value } onChange={ (e, v) => setValue(v) }>
-        <Tab label="활성" />
-        <Tab label="비활성" disabled />
-        <Tab label="활성" />
+        <Tab label="Active" />
+        <Tab label="Disabled" disabled />
+        <Tab label="Active" />
       </Tabs>
     );
   },

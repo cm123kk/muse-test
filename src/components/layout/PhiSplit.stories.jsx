@@ -22,12 +22,12 @@ export default {
         component: `
 ## PhiSplit
 
-황금비율(φ = 1.618)을 기반으로 두 영역을 분할하는 레이아웃 컴포넌트.
+Layout component that splits two areas based on the golden ratio (φ = 1.618).
 
-### 용도
-- Hero 섹션의 이미지/텍스트 분할
-- 사이드바와 메인 콘텐츠 레이아웃
-- 시각적으로 균형 잡힌 2분할 레이아웃
+### Use cases
+- Image/text split for Hero sections
+- Sidebar and main content Layout
+- Visually balanced two-column Layout
         `,
       },
     },
@@ -36,25 +36,25 @@ export default {
     direction: {
       control: 'select',
       options: ['row', 'column'],
-      description: '분할 방향',
+      description: 'Split Direction',
     },
     isReversed: {
       control: 'boolean',
-      description: '비율 반전',
+      description: 'Reverse the ratio',
     },
     gap: {
       control: { type: 'range', min: 0, max: 8 },
-      description: '영역 간 간격',
+      description: 'Spacing between areas',
     },
     stackAt: {
       control: 'select',
       options: ['xs', 'sm', 'md', 'lg', 'none'],
-      description: '스택 전환 브레이크포인트',
+      description: 'Stack Transition breakpoint',
     },
   },
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     direction: 'row',
@@ -75,7 +75,7 @@ export const Default = {
   ),
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -92,24 +92,24 @@ export const Documentation = {
           PhiSplit
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          황금비율(φ = 1.618)을 기반으로 두 영역을 분할하는 레이아웃 컴포넌트입니다.
-          약 61.8% : 38.2% 비율로 시각적 균형을 제공합니다.
+          Layout component that splits two areas based on the golden ratio (φ = 1.618).
+          It provides visual balance at roughly a 61.8% : 38.2% ratio.
         </Typography>
 
         <SectionTitle title="Golden Ratio" description={ `PHI = ${PHI.toFixed(6)}` } />
         <Box sx={ { p: 3, backgroundColor: 'grey.50', mb: 4 } }>
           <Typography variant="body2" sx={ { mb: 2 } }>
-            황금비율은 자연과 예술에서 발견되는 수학적 비율입니다:
+            The golden ratio is a mathematical proportion found in nature and art:
           </Typography>
           <Stack direction="row" spacing={ 4 }>
             <Box>
-              <Typography variant="caption" color="text.secondary">Primary 영역</Typography>
+              <Typography variant="caption" color="text.secondary">Primary area</Typography>
               <Typography variant="h6">
                 { ((PHI / (PHI + 1)) * 100).toFixed(1) }%
               </Typography>
             </Box>
             <Box>
-              <Typography variant="caption" color="text.secondary">Secondary 영역</Typography>
+              <Typography variant="caption" color="text.secondary">Secondary area</Typography>
               <Typography variant="h6">
                 { ((1 / (PHI + 1)) * 100).toFixed(1) }%
               </Typography>
@@ -117,7 +117,7 @@ export const Documentation = {
           </Stack>
         </Box>
 
-        <SectionTitle title="Props" description="PhiSplit 컴포넌트의 Props 목록입니다." />
+        <SectionTitle title="Props" description="List of Props for the PhiSplit Component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -133,59 +133,59 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>primary</TableCell>
                 <TableCell>ReactNode</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>큰 영역 (61.8%) 콘텐츠</TableCell>
+                <TableCell>Content for the larger area (61.8%)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>secondary</TableCell>
                 <TableCell>ReactNode</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>작은 영역 (38.2%) 콘텐츠</TableCell>
+                <TableCell>Content for the smaller area (38.2%)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>direction</TableCell>
                 <TableCell>&apos;row&apos; | &apos;column&apos;</TableCell>
                 <TableCell>&apos;row&apos;</TableCell>
-                <TableCell>분할 방향</TableCell>
+                <TableCell>Split Direction</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>isReversed</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>비율 반전 (작은 영역 먼저)</TableCell>
+                <TableCell>Reverse the ratio (smaller area first)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>gap</TableCell>
                 <TableCell>number</TableCell>
                 <TableCell>0</TableCell>
-                <TableCell>영역 간 간격 (spacing 단위)</TableCell>
+                <TableCell>Spacing between areas (spacing units)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>stackAt</TableCell>
                 <TableCell>&apos;xs&apos; | &apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;none&apos;</TableCell>
                 <TableCell>&apos;sm&apos;</TableCell>
-                <TableCell>스택 전환 브레이크포인트</TableCell>
+                <TableCell>Stack Transition breakpoint</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>primarySx</TableCell>
                 <TableCell>object</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>Primary 영역 추가 스타일</TableCell>
+                <TableCell>Additional styles for the Primary area</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>secondarySx</TableCell>
                 <TableCell>object</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>Secondary 영역 추가 스타일</TableCell>
+                <TableCell>Additional styles for the Secondary area</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Horizontal Split" description="가로 방향 분할 (기본)" />
+        <SectionTitle title="Horizontal Split" description="Horizontal split (Default)" />
         <Stack spacing={ 4 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              기본 - Primary가 왼쪽
+              Default: Primary on the left
             </Typography>
             <PhiSplit
               gap={ 2 }
@@ -200,7 +200,7 @@ export const Documentation = {
           </Box>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              isReversed - Secondary가 왼쪽
+              isReversed: Secondary on the left
             </Typography>
             <PhiSplit
               gap={ 2 }
@@ -216,7 +216,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Vertical Split" description="세로 방향 분할" />
+        <SectionTitle title="Vertical Split" description="Vertical split" />
         <Box sx={ { maxWidth: 400 } }>
           <PhiSplit
             direction="column"
@@ -231,11 +231,11 @@ export const Documentation = {
           />
         </Box>
 
-        <SectionTitle title="Real-World Examples" description="실제 사용 예시입니다." />
+        <SectionTitle title="Real-World Examples" description="Real usage examples." />
         <Stack spacing={ 5 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Hero Section - 이미지와 텍스트
+              Hero Section: image and text
             </Typography>
             <PhiSplit
               gap={ 4 }
@@ -259,7 +259,7 @@ export const Documentation = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Sidebar Layout - 콘텐츠와 사이드바
+              Sidebar Layout: content and sidebar
             </Typography>
             <PhiSplit
               gap={ 3 }
@@ -275,7 +275,7 @@ export const Documentation = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Reversed - 사이드바가 왼쪽
+              Reversed: sidebar on the left
             </Typography>
             <PhiSplit
               gap={ 3 }
@@ -291,7 +291,7 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+        <SectionTitle title="Usage Example" description="Code usage example." />
         <Box
           component="pre"
           sx={ {
@@ -303,14 +303,14 @@ export const Documentation = {
             lineHeight: 1.6,
           } }
         >
-          { `// 기본 가로 분할
+          { `// Default horizontal split
 <PhiSplit
   primary={<HeroImage />}
   secondary={<HeroText />}
   gap={4}
 />
 
-// 반전된 레이아웃 (사이드바 왼쪽)
+// Reversed layout (sidebar on the left)
 <PhiSplit
   isReversed
   primary={<MainContent />}
@@ -319,7 +319,7 @@ export const Documentation = {
   stackAt="md"
 />
 
-// 세로 분할
+// Vertical split
 <PhiSplit
   direction="column"
   primary={<MainSection />}

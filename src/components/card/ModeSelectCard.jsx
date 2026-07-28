@@ -2,31 +2,31 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 /**
- * ModeSelectCard 컴포넌트 (TP2)
+ * ModeSelectCard component (TP2)
  *
- * 프로젝트 생성 첫 화면에서 모드 3개 (컨셉/시스템/코드직행) 중 하나를 선택하는 카드.
- * 한 번의 모드 선택이 T2 추천 정렬 + T3 합성 톤 + Export default 모두 분기시킨다.
+ * A card for selecting one of three modes (concept/system/direct-to-code) on the first screen of project creation.
+ * A single mode selection branches T2 recommendation ordering + T3 synthesis tone + the Export default all at once.
  *
- * 동작 흐름:
- * 1. 카드 클릭 시 onSelect(mode) 호출
- * 2. selectedMode 와 일치하면 active 시각 (border + bg 강조)
- * 3. 호버 시 미세 lift 효과
+ * How it works:
+ * 1. Calls onSelect(mode) when the card is clicked
+ * 2. Shows the active visual (border + bg emphasis) when it matches selectedMode
+ * 3. Applies a subtle lift effect on hover
  *
  * Props:
  * @param {string} mode - 'concept' | 'system' [Required]
- * @param {string} title - 카드 제목 (예: "컨셉 잡기") [Required]
- * @param {string} subtitle - 카드 부제 (예: "감을 잡고 싶다") [Required]
- * @param {string} description - 카드 설명 (예: "빠른 다양성 우선") [Required]
- * @param {boolean} isSelected - 현재 선택 상태 [Optional, 기본값: false]
- * @param {function} onSelect - (mode) => void 클릭 콜백 [Required]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string} title - Card title (e.g. "Explore a concept") [Required]
+ * @param {string} subtitle - Card subtitle (e.g. "I want to find my direction") [Required]
+ * @param {string} description - Card description (e.g. "Fast variety first") [Required]
+ * @param {boolean} isSelected - Current selection state [Optional, default: false]
+ * @param {function} onSelect - (mode) => void click callback [Required]
+ * @param {object} sx - Additional styles [Optional]
  *
  * Example usage:
  * <ModeSelectCard
  *   mode="concept"
- *   title="컨셉 잡기"
- *   subtitle="감을 잡고 싶다"
- *   description="빠른 다양성 우선"
+ *   title="Explore a concept"
+ *   subtitle="I want to find my direction"
+ *   description="Fast variety first"
  *   isSelected={ mode === 'concept' }
  *   onSelect={ setMode }
  * />

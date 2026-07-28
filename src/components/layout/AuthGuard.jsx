@@ -4,11 +4,11 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { useAuthContext } from '../../contexts/AuthContext';
 
 /**
- * 인증 필요 라우트 보호 레이어
+ * Protection layer for routes that require authentication
  *
- * - 세션 확인 중: 전체화면 스피너
- * - 비로그인: /login 리다이렉트 (원래 경로를 state.from 에 보존)
- * - 로그인: Outlet 렌더
+ * - While checking the session: full-screen spinner
+ * - Not logged in: redirect to /login (preserving the original path in state.from)
+ * - Logged in: render the Outlet
  *
  * Example usage:
  * <Route element={<AuthGuard />}>

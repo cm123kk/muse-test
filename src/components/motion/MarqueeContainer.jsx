@@ -13,25 +13,25 @@ const scrollRightKf = keyframes`
 `;
 
 /**
- * MarqueeContainer 컴포넌트
+ * MarqueeContainer component
  *
- * 무한 루프 수평 흐름 애니메이션 컨테이너.
- * 텍스트, 이미지, 카드 등 자식 요소를 연속으로 흐르게 한다.
- * CSS keyframes 기반 GPU 가속(translateX).
+ * An infinite-loop horizontal flow animation container.
+ * Continuously flows child elements such as text, images, and cards.
+ * CSS keyframes-based GPU acceleration (translateX).
  *
- * 동작 흐름:
- * 1. 컨테이너 폭을 측정해 빈틈 없이 아이템을 반복 채운다
- * 2. translateX 애니메이션으로 무한 스크롤된다
- * 3. 복제된 요소로 끊김 없는 루프를 구현한다
- * 4. (선택) 호버 시 일시정지 / 스크롤 스크러빙 모드 전환
+ * How it works:
+ * 1. Measures the container width and repeatedly fills items with no gaps
+ * 2. Scrolls infinitely via a translateX animation
+ * 3. Implements a seamless loop with duplicated elements
+ * 4. (Optional) Pause on hover / switch to scroll scrubbing mode
  *
  * Props:
- * @param {React.ReactNode} children - 마퀴 안에 표시할 콘텐츠 [Required]
- * @param {number} speed - 한 사이클 완료 시간 (초, 클수록 느림) [Optional, 기본값: 20]
- * @param {string} direction - 스크롤 방향 ('left' | 'right') [Optional, 기본값: 'left']
- * @param {boolean} isPauseOnHover - 호버 시 일시정지 여부 [Optional, 기본값: true]
- * @param {number} gap - 아이템 간 간격 (theme.spacing 단위) [Optional, 기본값: 4]
- * @param {boolean} isScrollScrub - 스크롤 스크러빙 모드 [Optional, 기본값: false]
+ * @param {React.ReactNode} children - Content to display inside the marquee [Required]
+ * @param {number} speed - Time to complete one cycle (seconds, larger is slower) [Optional, default: 20]
+ * @param {string} direction - Scroll direction ('left' | 'right') [Optional, default: 'left']
+ * @param {boolean} isPauseOnHover - Whether to pause on hover [Optional, default: true]
+ * @param {number} gap - Spacing between items (theme.spacing units) [Optional, default: 4]
+ * @param {boolean} isScrollScrub - Scroll scrubbing mode [Optional, default: false]
  *
  * Example usage:
  * <MarqueeContainer speed={15} direction="left">
@@ -55,7 +55,7 @@ function MarqueeContainer({
   const items = React.Children.toArray(children);
   const animation = direction === 'left' ? scrollLeftKf : scrollRightKf;
 
-  /** 컨테이너 폭 대비 아이템 셋 반복 횟수 계산 */
+  /** Compute how many times the item set repeats relative to the container width */
   React.useEffect(() => {
     const container = containerRef.current;
     const measure = measureRef.current;
@@ -74,7 +74,7 @@ function MarqueeContainer({
     return () => ro.disconnect();
   }, [children, gap]);
 
-  /** 스크롤 스크러빙: 엘리먼트의 뷰포트 통과 진행률로 translateX 제어 */
+  /** Scroll scrubbing: control translateX by the element's viewport-pass progress */
   React.useEffect(() => {
     if (!isScrollScrub) return;
     const container = containerRef.current;
@@ -99,7 +99,7 @@ function MarqueeContainer({
     return () => window.removeEventListener('scroll', onScroll);
   }, [isScrollScrub, direction, fillCount]);
 
-  /** 아이템 셋 1벌 렌더링 (fillCount만큼 반복) */
+  /** Render one item set (repeated fillCount times) */
   const renderHalf = (prefix) =>
     Array.from({ length: fillCount }, (_, rep) =>
       items.map((child, i) => (
@@ -123,7 +123,7 @@ function MarqueeContainer({
         }),
       } }
     >
-      {/* 측정용 히든 엘리먼트: 아이템 1셋의 실제 폭 계산 */}
+      {/* Hidden element for measurement: computes the actual width of one item set */}
       <Box
         ref={ measureRef }
         aria-hidden="true"
@@ -139,7 +139,7 @@ function MarqueeContainer({
         )) }
       </Box>
 
-      {/* 트랙: 동일한 두 벌 → translateX(-50%)로 끊김 없는 루프 */}
+      {/* Track: two identical copies -> a seamless loop via translateX(-50%) */}
       <Box
         ref={ trackRef }
         data-marquee-track=""

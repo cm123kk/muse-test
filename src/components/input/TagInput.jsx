@@ -5,29 +5,29 @@ import InputBase from '@mui/material/InputBase';
 import Typography from '@mui/material/Typography';
 
 /**
- * TagInput 컴포넌트
+ * TagInput component
  *
- * 태그를 입력하고 Chip으로 변환하는 입력 필드.
- * 키워드 관리 및 필터링에 사용되는 핵심 컴포넌트.
+ * An input field that takes tag text and converts it into Chips.
+ * A core component used for keyword management and filtering.
  *
- * 동작 방식:
- * 1. 텍스트 입력 후 Enter 또는 쉼표로 태그 추가
- * 2. 추가된 태그는 Chip 형태로 표시
- * 3. Chip의 X 버튼 또는 Backspace로 태그 삭제
- * 4. 중복 태그 자동 필터링
+ * Behavior:
+ * 1. After typing text, add a tag with Enter or a comma
+ * 2. Added tags are displayed as Chips
+ * 3. Delete a tag with the Chip's X button or Backspace
+ * 4. Duplicate tags are filtered out automatically
  *
  * Props:
- * @param {string[]} tags - 현재 태그 목록 [Required]
- * @param {function} onChange - 태그 변경 핸들러 (tags[]) => void [Required]
- * @param {string} placeholder - 입력 플레이스홀더 [Optional, 기본값: 'Add tags...']
- * @param {number} maxTags - 최대 태그 개수 [Optional, 기본값: 10]
- * @param {string[]} suggestions - 자동완성 제안 목록 [Optional]
- * @param {string} variant - 스타일 변형 ('outlined' | 'filled') [Optional, 기본값: 'outlined']
- * @param {string} size - 크기 ('sm' | 'md') [Optional, 기본값: 'md']
- * @param {string} chipColor - 칩 색상 테마 [Optional, 기본값: 'default']
- * @param {string} label - 필드 레이블 [Optional]
- * @param {boolean} isDisabled - 비활성화 상태 [Optional, 기본값: false]
- * @param {object} sx - 추가 스타일 [Optional]
+ * @param {string[]} tags - current list of tags [Required]
+ * @param {function} onChange - tag change handler (tags[]) => void [Required]
+ * @param {string} placeholder - input placeholder [Optional, default: 'Add tags...']
+ * @param {number} maxTags - maximum number of tags [Optional, default: 10]
+ * @param {string[]} suggestions - list of autocomplete suggestions [Optional]
+ * @param {string} variant - style variant ('outlined' | 'filled') [Optional, default: 'outlined']
+ * @param {string} size - size ('sm' | 'md') [Optional, default: 'md']
+ * @param {string} chipColor - chip color theme [Optional, default: 'default']
+ * @param {string} label - field label [Optional]
+ * @param {boolean} isDisabled - disabled state [Optional, default: false]
+ * @param {object} sx - additional styles [Optional]
  *
  * Example usage:
  * <TagInput
@@ -56,7 +56,7 @@ export function TagInput({
   const inputRef = useRef(null);
 
   /**
-   * 크기별 스타일
+   * Style per size
    */
   const sizeStyles = {
     sm: { minHeight: 36, chipSize: 'small', fontSize: 13, gap: 0.5, px: 1 },
@@ -66,7 +66,7 @@ export function TagInput({
   const currentSize = sizeStyles[size] || sizeStyles.md;
 
   /**
-   * 태그 추가
+   * Add a tag
    */
   const addTag = useCallback(
     (tagText) => {
@@ -83,7 +83,7 @@ export function TagInput({
   );
 
   /**
-   * 태그 삭제
+   * Remove a tag
    */
   const removeTag = useCallback(
     (tagToRemove) => {
@@ -93,7 +93,7 @@ export function TagInput({
   );
 
   /**
-   * 키보드 이벤트 핸들러
+   * Keyboard event handler
    */
   const handleKeyDown = useCallback(
     (e) => {
@@ -111,12 +111,12 @@ export function TagInput({
   );
 
   /**
-   * 입력 변경 핸들러
+   * Input change handler
    */
   const handleInputChange = useCallback(
     (e) => {
       const value = e.target.value;
-      // 쉼표가 포함되면 태그로 추가
+      // If it contains a comma, add it as a tag
       if (value.includes(',')) {
         const parts = value.split(',');
         parts.forEach((part) => addTag(part));
@@ -129,7 +129,7 @@ export function TagInput({
   );
 
   /**
-   * 컨테이너 클릭 시 입력 포커스
+   * Focus the input when the container is clicked
    */
   const handleContainerClick = useCallback(() => {
     if (!isDisabled) {
@@ -138,7 +138,7 @@ export function TagInput({
   }, [isDisabled]);
 
   /**
-   * 필터링된 제안 목록
+   * Filtered suggestion list
    */
   const filteredSuggestions = suggestions.filter(
     (suggestion) =>
@@ -147,7 +147,7 @@ export function TagInput({
   );
 
   /**
-   * 컨테이너 스타일
+   * Container style
    */
   const getContainerStyles = () => {
     const base = {
@@ -186,7 +186,7 @@ export function TagInput({
 
   return (
     <Box sx={sx}>
-      {/* 레이블 */}
+      {/* Label */}
       {label && (
         <Typography
           variant="caption"
@@ -201,12 +201,12 @@ export function TagInput({
         </Typography>
       )}
 
-      {/* 태그 입력 컨테이너 */}
+      {/* Tag input container */}
       <Box
         onClick={handleContainerClick}
         sx={getContainerStyles()}
       >
-        {/* 태그 Chip 목록 */}
+        {/* Tag Chip list */}
         {tags.map((tag) => (
           <Chip
             key={tag}
@@ -223,7 +223,7 @@ export function TagInput({
           />
         ))}
 
-        {/* 입력 필드 */}
+        {/* Input field */}
         {tags.length < maxTags && (
           <InputBase
             ref={inputRef}
@@ -236,7 +236,7 @@ export function TagInput({
             }}
             onBlur={() => {
               setIsFocused(false);
-              // 딜레이를 두어 제안 클릭이 가능하도록
+              // Add a delay so suggestion clicks still register
               setTimeout(() => setShowSuggestions(false), 200);
             }}
             placeholder={tags.length === 0 ? placeholder : ''}
@@ -257,7 +257,7 @@ export function TagInput({
         )}
       </Box>
 
-      {/* 자동완성 제안 */}
+      {/* Autocomplete suggestions */}
       {showSuggestions && filteredSuggestions.length > 0 && (
         <Box
           sx={{
@@ -292,7 +292,7 @@ export function TagInput({
         </Box>
       )}
 
-      {/* 태그 개수 카운터 */}
+      {/* Tag count counter */}
       {maxTags && (
         <Typography
           variant="caption"

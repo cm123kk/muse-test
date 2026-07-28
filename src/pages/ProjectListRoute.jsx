@@ -13,7 +13,7 @@ export function ProjectListRoute() {
       onSelectProject={(id) => navigate(`/projects/${id}`)}
       onNewProject={() => navigate('/projects/new')}
       onDeleteProject={async (id) => {
-        if (window.confirm('이 프로젝트를 삭제할까요?')) {
+        if (window.confirm('Delete this project?')) {
           await deleteProject(id);
           refetch();
         }

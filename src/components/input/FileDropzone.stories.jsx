@@ -15,12 +15,12 @@ export default {
         component: `
 ## FileDropzone
 
-드래그 앤 드롭 파일 업로드 영역 컴포넌트.
+A drag and drop file upload area component.
 
-### 기능
-- 드래그 앤 드롭 파일 선택
-- default, compact, minimal 변형 지원
-- 파일 미리보기 및 업로드 진행률 표시
+### Features
+- Drag and drop file selection
+- Supports default, compact, and minimal variants
+- File preview and upload progress display
         `,
       },
     },
@@ -28,7 +28,7 @@ export default {
 };
 
 /**
- * FileDropzone 기본 사용 예시
+ * FileDropzone basic usage example
  */
 export const Default = {
   render: () => {
@@ -62,7 +62,7 @@ export const Default = {
 };
 
 /**
- * FileDropzone 변형
+ * FileDropzone variants
  */
 export const Variants = {
   render: () => (
@@ -90,7 +90,7 @@ export const Variants = {
 };
 
 /**
- * FileDropzone 업로드 상태
+ * FileDropzone uploading state
  */
 export const Uploading = {
   render: () => (

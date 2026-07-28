@@ -3,17 +3,17 @@ import { useEffect, useRef } from 'react';
 /**
  * useInfiniteScroll
  *
- * IntersectionObserver 기반 무한 스크롤 훅.
- * 반환된 `sentinelRef`를 리스트 마지막 요소 근처의 DOM 노드에 연결하면,
- * 해당 노드가 뷰포트에 들어올 때 `onLoadMore`가 호출된다.
+ * An infinite scroll hook based on IntersectionObserver.
+ * When you attach the returned `sentinelRef` to a DOM node near the last list element,
+ * `onLoadMore` is called when that node enters the viewport.
  *
  * Params:
  * @param {object} options
- * @param {function} options.onLoadMore - sentinel이 뷰포트에 들어왔을 때 호출 [Required]
- * @param {boolean} options.hasMore - 추가로 불러올 데이터가 있는지 [Optional, 기본값: true]
- * @param {boolean} options.isEnabled - 옵저버 활성화 여부 (로딩 중 일시 정지 등) [Optional, 기본값: true]
- * @param {string}  options.rootMargin - IntersectionObserver rootMargin [Optional, 기본값: '200px']
- * @returns {React.RefObject} sentinel DOM 노드에 연결할 ref
+ * @param {function} options.onLoadMore - Called when the sentinel enters the viewport [Required]
+ * @param {boolean} options.hasMore - Whether there is more data to load [Optional, default: true]
+ * @param {boolean} options.isEnabled - Whether the observer is enabled (e.g. paused while loading) [Optional, default: true]
+ * @param {string}  options.rootMargin - IntersectionObserver rootMargin [Optional, default: '200px']
+ * @returns {React.RefObject} ref to attach to the sentinel DOM node
  *
  * Example usage:
  * const sentinelRef = useInfiniteScroll({ onLoadMore: loadMore, hasMore });

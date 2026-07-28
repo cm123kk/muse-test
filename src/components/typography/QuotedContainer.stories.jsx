@@ -21,12 +21,12 @@ export default {
         component: `
 ## QuotedContainer
 
-인용 부호를 텍스트의 시작/끝 위치에 스마트하게 배치하는 컴포넌트.
+A component that smartly places quote marks at the start and end of text.
 
-### 용도
-- 인용문을 시각적으로 강조
-- Editorial 스타일의 큰 인용 부호 장식
-- 다양한 인용 부호 스타일 지원
+### Use Cases
+- Visually emphasize quotations
+- Editorial style large quote mark decoration
+- Support for various quote mark styles
         `,
       },
     },
@@ -34,40 +34,40 @@ export default {
   argTypes: {
     children: {
       control: { type: 'text' },
-      description: '인용할 텍스트',
+      description: 'Text to quote',
     },
     quoteSize: {
       control: { type: 'select' },
       options: ['sm', 'md', 'lg', 'xl'],
-      description: '인용 부호 크기',
+      description: 'Quote mark size',
     },
     quoteColor: {
       control: { type: 'select' },
       options: ['text.disabled', 'text.secondary', 'primary.main', 'secondary.main', '#000000', '#666666'],
-      description: '인용 부호 색상',
+      description: 'Quote mark color',
     },
     position: {
       control: { type: 'select' },
       options: ['outside', 'inside', 'overlay'],
-      description: '인용 부호 위치',
+      description: 'Quote mark position',
     },
     animated: {
       control: { type: 'boolean' },
-      description: '등장 애니메이션',
+      description: 'Appear animation',
     },
     author: {
       control: { type: 'text' },
-      description: '인용 출처/저자',
+      description: 'Quote source/author',
     },
     variant: {
       control: { type: 'select' },
       options: ['h3', 'h4', 'h5', 'h6', 'body1', 'body2'],
-      description: '타이포그래피 variant',
+      description: 'Typography variant',
     },
     align: {
       control: { type: 'select' },
       options: ['left', 'center', 'right'],
-      description: '텍스트 정렬',
+      description: 'Text alignment',
     },
   },
 };
@@ -76,10 +76,10 @@ const sampleQuotes = {
   short: 'Design is not just what it looks like. Design is how it works.',
   medium: 'The details are not the details. They make the design. A design is not complete until the user finds it obvious.',
   long: 'Good design is as little design as possible. Less, but better, because it concentrates on the essential aspects, and the products are not burdened with non-essentials. Back to purity, back to simplicity.',
-  korean: '디자인은 단순히 어떻게 보이고 느껴지는가가 아닙니다. 디자인은 어떻게 작동하는가입니다.',
+  korean: 'Design is not just how it looks and feels. Design is how it works.',
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   args: {
     children: sampleQuotes.short,
@@ -93,7 +93,7 @@ export const Default = {
   },
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: () => (
     <>
@@ -110,11 +110,11 @@ export const Documentation = {
           QuotedContainer
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          인용 부호를 텍스트의 시작/끝 위치에 스마트하게 배치하는 컴포넌트입니다.
-          대형 장식적 인용 부호로 인용문을 시각적으로 강조합니다.
+          A component that smartly places quote marks at the start and end of text.
+          Visually emphasizes quotations with large decorative quote marks.
         </Typography>
 
-        <SectionTitle title="Props" description="QuotedContainer 컴포넌트의 Props 목록입니다." />
+        <SectionTitle title="Props" description="List of props for the QuotedContainer component." />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -130,55 +130,55 @@ export const Documentation = {
                 <TableCell sx={ { fontFamily: 'monospace' } }>children</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>인용할 텍스트 (필수)</TableCell>
+                <TableCell>Text to quote (required)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>quoteSize</TableCell>
                 <TableCell>&apos;sm&apos; | &apos;md&apos; | &apos;lg&apos; | &apos;xl&apos;</TableCell>
                 <TableCell>&apos;lg&apos;</TableCell>
-                <TableCell>인용 부호 크기</TableCell>
+                <TableCell>Quote mark size</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>quoteColor</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>&apos;text.disabled&apos;</TableCell>
-                <TableCell>인용 부호 색상</TableCell>
+                <TableCell>Quote mark color</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>position</TableCell>
                 <TableCell>&apos;outside&apos; | &apos;inside&apos; | &apos;overlay&apos;</TableCell>
                 <TableCell>&apos;outside&apos;</TableCell>
-                <TableCell>인용 부호 위치</TableCell>
+                <TableCell>Quote mark position</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>animated</TableCell>
                 <TableCell>boolean</TableCell>
                 <TableCell>false</TableCell>
-                <TableCell>등장 애니메이션</TableCell>
+                <TableCell>Appear animation</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>author</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>-</TableCell>
-                <TableCell>인용 출처/저자</TableCell>
+                <TableCell>Quote source/author</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>variant</TableCell>
                 <TableCell>string</TableCell>
                 <TableCell>&apos;h4&apos;</TableCell>
-                <TableCell>타이포그래피 variant</TableCell>
+                <TableCell>Typography variant</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={ { fontFamily: 'monospace' } }>align</TableCell>
                 <TableCell>&apos;left&apos; | &apos;center&apos; | &apos;right&apos;</TableCell>
                 <TableCell>&apos;left&apos;</TableCell>
-                <TableCell>텍스트 정렬</TableCell>
+                <TableCell>Text alignment</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Quote Size" description="네 가지 인용 부호 크기입니다." />
+        <SectionTitle title="Quote Size" description="Four quote mark sizes." />
         <Stack spacing={ 4 }>
           <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
             <Typography variant="caption" sx={ { mb: 2, display: 'block', color: 'text.secondary' } }>
@@ -214,11 +214,11 @@ export const Documentation = {
           </Box>
         </Stack>
 
-        <SectionTitle title="Position Variants" description="세 가지 인용 부호 위치 옵션입니다." />
+        <SectionTitle title="Position Variants" description="Three quote mark position options." />
         <Stack spacing={ 5 }>
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Outside (기본) - 첫 글자 좌상단, 마지막 글자 우하단
+              Outside (default) - top left of first character, bottom right of last character
             </Typography>
             <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
               <QuotedContainer position="outside" author="Steve Jobs">
@@ -229,7 +229,7 @@ export const Documentation = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Inside - 더 작은 아이콘, 텍스트에 밀착
+              Inside - smaller icons placed close to the text
             </Typography>
             <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
               <QuotedContainer position="inside" author="Steve Jobs">
@@ -240,7 +240,7 @@ export const Documentation = {
 
           <Box>
             <Typography variant="subtitle2" sx={ { mb: 1, color: 'text.secondary' } }>
-              Overlay - 텍스트 뒤에 배경 장식
+              Overlay - background decoration behind the text
             </Typography>
             <Box sx={ { p: 4, border: '1px solid', borderColor: 'divider' } }>
               <QuotedContainer position="overlay" author="Dieter Rams">

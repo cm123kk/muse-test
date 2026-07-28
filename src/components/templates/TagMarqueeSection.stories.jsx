@@ -7,5 +7,5 @@ export default {
   parameters: { layout: 'fullscreen' },
 };
 
-/* T1 태그 3행 마퀴 — 행마다 방향 교차(좌/우/좌), 초대형 태그 */
+/* T1 tag 3-row marquee: direction alternates per row (left/right/left), oversized tags */
 export const Default = {};

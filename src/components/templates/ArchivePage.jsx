@@ -25,27 +25,27 @@ import { FilterPanel } from './FilterPanel.jsx';
 import { useReferenceArchive } from './useReferenceArchive';
 
 /**
- * ArchivePage 템플릿
+ * ArchivePage template
  *
- * MUSE 아카이브 화면. 업로드/필터링/상세 액션(삭제·재태깅)이 결합된 페이지 레벨 컴포넌트.
+ * MUSE archive screen. A page-level component that combines upload, filtering, and detail actions (delete, re-tag).
  *
- * 동작 흐름:
- * 1. 상단 히어로 아래 FileDropzone으로 이미지를 드래그 또는 선택해 업로드
- *    - `useStoreMode=true` 면 내부에서 Storage/DB 처리 + T1 자동 태깅
- *    - 아니면 `onUploadFile`로 호스트에 위임
- * 2. Sticky FilterPanel — 검색어, 대표 색상, 레이어별 태그로 다중 필터링
- * 3. InfiniteMasonry로 카드 렌더링. 호버 시 삭제 아이콘, 태깅 중·실패 상태 뱃지 표시
- * 4. 삭제 버튼 클릭 시 확인 Dialog 표시 → 승인하면 store에서 제거
+ * Flow:
+ * 1. Drag or pick an image to upload via the FileDropzone below the top hero
+ *    - When `useStoreMode=true`, it handles Storage/DB internally plus T1 auto-tagging
+ *    - Otherwise it delegates to the host via `onUploadFile`
+ * 2. Sticky FilterPanel: multi-filter by search term, representative color, and per-layer tags
+ * 3. Renders cards with InfiniteMasonry. Shows a delete icon on hover and status badges for tagging in progress or failure
+ * 4. Clicking the delete button shows a confirmation Dialog. On approval it is removed from the store
  *
  * Props:
- * @param {array}    [references] - 외부 주입 시 store 미사용 모드 [Optional]
- * @param {boolean}  [useStoreMode] - store 직접 사용 여부 [Optional, 기본값: false]
- * @param {function} [onUploadFile] - (file) => void, store 미사용 시 업로드 위임 [Optional]
- * @param {function} [onLoadMore] - 무한 스크롤 추가 로드 [Optional]
- * @param {boolean}  [hasMore] - 추가 로드 가능 여부 [Optional, 기본값: false]
- * @param {boolean}  [isLoading] - 추가 로드 중 여부 [Optional, 기본값: false]
- * @param {function} [onNewProject] - 새 프로젝트 버튼 클릭 콜백 [Optional]
- * @param {object}   [sx] - PageContainer 추가 스타일 [Optional]
+ * @param {array}    [references] - Store-less mode when injected externally [Optional]
+ * @param {boolean}  [useStoreMode] - Whether to use the store directly [Optional, default: false]
+ * @param {function} [onUploadFile] - (file) => void, delegates upload when the store is not used [Optional]
+ * @param {function} [onLoadMore] - Load more via infinite scroll [Optional]
+ * @param {boolean}  [hasMore] - Whether more can be loaded [Optional, default: false]
+ * @param {boolean}  [isLoading] - Whether more is currently loading [Optional, default: false]
+ * @param {function} [onNewProject] - New project button click callback [Optional]
+ * @param {object}   [sx] - Additional PageContainer styles [Optional]
  *
  * Example usage:
  * <ArchivePage useStoreMode onNewProject={ () => {} } />
@@ -102,7 +102,7 @@ export function ArchivePage({
         || refTags.some((t) => t.toLowerCase().includes(term));
       const matchesTags = !activeTags.length
         || activeTags.every((t) => refTags.includes(t));
-      // 색상 필터 = 대표 색상환 기반 유사도 매칭 (대표색 1개라도 주변색 포함 → OR)
+      // Color filter = similarity matching based on the representative color wheel (OR: a match if any surrounding shade of a single representative color is included)
       const refColors = r.dominantColors || [];
       const matchesColors = !activeColors.length
         || activeColors.some((repHex) => refColors.some((hex) => isSimilarColor(repHex, hex)));
@@ -154,7 +154,7 @@ export function ArchivePage({
             startIcon={<AddIcon />}
             onClick={() => setIsAddRefOpen(true)}
           >
-            레퍼런스 추가
+            Add Reference
           </Button>
         </Box>
 
@@ -167,11 +167,11 @@ export function ArchivePage({
             icon={<CircularProgress size={16} thickness={5} />}
             sx={{ mb: 2 }}
           >
-            {pendingCount}장 자동 태깅 중… 완료되면 카드에 태그가 자동으로 채워집니다
+            Auto-tagging {pendingCount} image(s). Tags will fill in on each card once it finishes.
           </Alert>
         )}
 
-        {/* 좌측 sticky 필터 사이드바 + 우측 fluid 그리드 */}
+        {/* Left sticky filter sidebar + right fluid grid */}
         <Box
           sx={{
             display: 'flex',
@@ -214,8 +214,8 @@ export function ArchivePage({
               spacing={4}
               emptyContent={
                 hasActiveFilters
-                  ? '조건에 맞는 레퍼런스가 없습니다.'
-                  : '아직 수집된 레퍼런스가 없습니다. 이미지를 드래그해서 추가해보세요.'
+                  ? 'No references match your filters.'
+                  : 'No references yet. Drag an image here to add one.'
               }
               renderItem={(item) => (
                 <ArchiveCard
@@ -223,7 +223,7 @@ export function ArchivePage({
                   useStoreMode={useStoreMode}
                   onOpenDetail={() => setDetailTarget(item)}
                   onRequestDelete={() =>
-                    setDeleteTarget({ id: item.id, title: item.title || '(제목 없음)' })
+                    setDeleteTarget({ id: item.id, title: item.title || '(Untitled)' })
                   }
                   onRetryTagging={() => retryTagging(item)}
                 />
@@ -238,7 +238,7 @@ export function ArchivePage({
       <Fab
         color="primary"
         variant="extended"
-        aria-label="레퍼런스 추가"
+        aria-label="Add Reference"
         onClick={() => setIsAddRefOpen(true)}
         sx={{
           position: 'fixed',
@@ -252,7 +252,7 @@ export function ArchivePage({
         }}
       >
         <AddIcon sx={{ mr: 1 }} />
-        레퍼런스 추가
+        Add Reference
       </Fab>
 
       <Dialog
@@ -261,13 +261,13 @@ export function ArchivePage({
         maxWidth="xs"
         fullWidth
       >
-        <DialogTitle>레퍼런스 삭제</DialogTitle>
+        <DialogTitle>Delete Reference</DialogTitle>
         <DialogContent>
           <Typography variant="body2">
-            <strong>{deleteTarget?.title}</strong> 을(를) 삭제할까요?
+            Delete <strong>{deleteTarget?.title}</strong>?
           </Typography>
           <Typography variant="caption" color="text.secondary" sx={{ mt: 1, display: 'block' }}>
-            이 작업은 되돌릴 수 없습니다. 원본 이미지 파일도 함께 삭제되며, 프로젝트에 연결된 경우 자동으로 해제됩니다.
+            This cannot be undone. The original image file is removed too, and it is automatically unlinked from any project it belongs to.
           </Typography>
           {deleteState.error && (
             <Alert severity="error" sx={{ mt: 2 }}>{deleteState.error}</Alert>
@@ -275,7 +275,7 @@ export function ArchivePage({
         </DialogContent>
         <DialogActions>
           <Button onClick={() => setDeleteTarget(null)} disabled={deleteState.isDeleting}>
-            취소
+            Cancel
           </Button>
           <Button
             onClick={handleConfirmDelete}
@@ -283,7 +283,7 @@ export function ArchivePage({
             variant="contained"
             disabled={deleteState.isDeleting}
           >
-            {deleteState.isDeleting ? '삭제 중...' : '삭제'}
+            {deleteState.isDeleting ? 'Deleting...' : 'Delete'}
           </Button>
         </DialogActions>
       </Dialog>
@@ -301,7 +301,7 @@ export function ArchivePage({
         maxWidth="sm"
         fullWidth
       >
-        <DialogTitle>레퍼런스 추가</DialogTitle>
+        <DialogTitle>Add Reference</DialogTitle>
         <DialogContent>
           <FileDropzone
             multiple
@@ -341,10 +341,10 @@ export function ArchivePage({
             startIcon={<UploadFileIcon />}
             onClick={() => fileInputRef.current?.click()}
           >
-            파일 업로드
+            Upload File
           </Button>
           <Button onClick={() => setIsAddRefOpen(false)}>
-            닫기
+            Close
           </Button>
         </DialogActions>
       </Dialog>
@@ -352,7 +352,7 @@ export function ArchivePage({
   );
 }
 
-/** 아카이브 그리드 내 단일 카드 — 호버 시 삭제, 태깅 상태 오버레이 포함 */
+/** A single card in the archive grid: includes delete on hover and a tagging status overlay */
 function ArchiveCard({ item, useStoreMode, onOpenDetail, onRequestDelete, onRetryTagging }) {
   return (
     <Box
@@ -376,7 +376,7 @@ function ArchiveCard({ item, useStoreMode, onOpenDetail, onRequestDelete, onRetr
         <IconButton
           className="muse-delete-btn"
           size="small"
-          aria-label="레퍼런스 삭제"
+          aria-label="Delete Reference"
           onClick={(e) => {
             e.stopPropagation();
             onRequestDelete();

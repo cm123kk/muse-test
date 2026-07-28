@@ -19,7 +19,7 @@ export default {
   parameters: { layout: 'padded' },
 };
 
-/** Docs — 전체 목록 + 스키마 설명 */
+/** Docs: full list + schema explanation */
 export const Docs = {
   render: () => (
     <>
@@ -36,11 +36,11 @@ export const Docs = {
           References Dataset
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          모든 MUSE 스토리와 페이지 템플릿이 공유하는 더미 레퍼런스 { references.length }건.
-          실제 이미지는 <code>src/data/muse/dummyImage/</code>에 있으며, 모든 스토리가 이 데이터셋에서 파생된다.
+          { references.length } dummy references shared by all MUSE stories and page templates.
+          The actual images live in <code>src/data/muse/dummyImage/</code>, and every story derives from this dataset.
         </Typography>
 
-        <SectionTitle title="스키마" description="docs/muse/02-ux-flow.md의 Reference 모델" />
+        <SectionTitle title="Schema" description="Reference model from docs/muse/02-ux-flow.md" />
         <TableContainer sx={ { mb: 4 } }>
           <Table size="small">
             <TableHead>
@@ -51,33 +51,33 @@ export const Docs = {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>id</TableCell><TableCell>string</TableCell><TableCell>고유 식별자 (ref-001 ~ ref-028)</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>source</TableCell><TableCell>'file' | 'url'</TableCell><TableCell>입력 소스 유형</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>thumbnailUrl</TableCell><TableCell>string</TableCell><TableCell>번들된 이미지 URL (Vite import)</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>id</TableCell><TableCell>string</TableCell><TableCell>Unique identifier (ref-001 to ref-028)</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>source</TableCell><TableCell>'file' | 'url'</TableCell><TableCell>Input source type</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>thumbnailUrl</TableCell><TableCell>string</TableCell><TableCell>Bundled image URL (Vite import)</TableCell></TableRow>
               <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>tags</TableCell><TableCell>ReferenceLayeredTags</TableCell><TableCell>{ '{ color[], typography[], layout[], gradient[], visualDirection: {genre[],style[],subject[]} }' }</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>dominantColors</TableCell><TableCell>string[]</TableCell><TableCell>대표 색 HEX 2개</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>createdAt</TableCell><TableCell>string (YYYY-MM-DD)</TableCell><TableCell>생성일</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>title</TableCell><TableCell>string</TableCell><TableCell>제목</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>extracted?</TableCell><TableCell>ExtractedValues</TableCell><TableCell>T1 가 추출한 palette/typography/layout/gradient (T3 합성 입력)</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>dominantColors</TableCell><TableCell>string[]</TableCell><TableCell>Two representative HEX colors</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>createdAt</TableCell><TableCell>string (YYYY-MM-DD)</TableCell><TableCell>Creation date</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>title</TableCell><TableCell>string</TableCell><TableCell>Title</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>extracted?</TableCell><TableCell>ExtractedValues</TableCell><TableCell>palette/typography/layout/gradient extracted by T1 (T3 synthesis input)</TableCell></TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Exports" description="src/data/muse/references.js에서 export하는 항목" />
+        <SectionTitle title="Exports" description="Items exported from src/data/muse/references.js" />
         <Box component="pre" sx={ { bgcolor: 'grey.100', p: 2, borderRadius: 2, fontSize: 12, overflow: 'auto', mb: 4 } }>
-{ `// 전체 배열
+{ `// Full array
 import { references } from 'src/data/muse';
 
-// id로 빠르게 찾기
+// Quick lookup by id
 import { referencesById } from 'src/data/muse';
 referencesById['ref-001']; // { id, thumbnailUrl, ... }
 
-// 프로젝트 썸네일용 — id 배열 → URL 배열
+// For project thumbnails: id array to URL array
 import { getReferenceThumbnails } from 'src/data/muse';
 getReferenceThumbnails(['ref-001','ref-002','ref-003'], 4);` }
         </Box>
 
-        <SectionTitle title={ `전체 목록 (${references.length}건)` } />
+        <SectionTitle title={ `Full list (${references.length} items)` } />
         <TableContainer>
           <Table size="small">
             <TableHead>
@@ -127,7 +127,7 @@ getReferenceThumbnails(['ref-001','ref-002','ref-003'], 4);` }
   ),
 };
 
-/** Grid — 썸네일 그리드 시각화 */
+/** Grid: thumbnail grid visualization */
 export const Grid = {
   render: () => (
     <PageContainer>
@@ -135,7 +135,7 @@ export const Grid = {
         References · Grid View
       </Typography>
       <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-        { references.length }건의 더미 이미지 썸네일
+        { references.length } dummy image thumbnails
       </Typography>
 
       <Box
@@ -181,7 +181,7 @@ export const Grid = {
   ),
 };
 
-/** ById — 개별 조회 예시 */
+/** ById: individual lookup example */
 export const ById = {
   render: () => {
     const samples = ['ref-001', 'ref-010', 'ref-018', 'ref-028'];
@@ -191,7 +191,7 @@ export const ById = {
           referencesById lookup
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          id로 직접 조회하는 예시
+          Example of direct lookup by id
         </Typography>
 
         { samples.map((id) => {

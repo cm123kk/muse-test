@@ -1,8 +1,8 @@
 /**
- * MUSE Supabase DB 타입 정의 (JSDoc)
- * 자동 생성 기준: appendix-db-schema.md
+ * MUSE Supabase DB type definitions (JSDoc)
+ * Auto-generation basis: appendix-db-schema.md
  *
- * 갱신 방법 (Supabase CLI 연동 후):
+ * How to update (after Supabase CLI integration):
  *   pnpm db:types
  */
 
@@ -33,9 +33,9 @@
  * @property {'file'|'url'} source
  * @property {string} thumbnail_url
  * @property {string|null} title
- * @property {Object|null} tags - 레이어별 태그 묶음
- * @property {string[]|null} dominant_colors - HEX 색상 배열
- * @property {Object|null} extracted - T1 추출 관찰 값
+ * @property {Object|null} tags - Tag groups per layer
+ * @property {string[]|null} dominant_colors - Array of HEX colors
+ * @property {Object|null} extracted - Observed values extracted by T1
  * @property {string} created_at
  */
 
@@ -47,7 +47,7 @@
  * @property {'concept'|'system'} mode
  * @property {string|null} intent
  * @property {string|null} user_notes
- * @property {Object|null} reference_notes - refId → 텍스트
+ * @property {Object|null} reference_notes - refId -> text
  * @property {string} created_at
  * @property {string} updated_at
  */
@@ -69,6 +69,6 @@
  * @property {string} id - uuid PK
  * @property {string} project_id - uuid FK → projects.id
  * @property {AnalysisStatus} status
- * @property {Object} layers - 5 레이어 토큰 전체
+ * @property {Object} layers - All 5-layer tokens
  * @property {string} updated_at
  */

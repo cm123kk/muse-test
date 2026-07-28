@@ -6,7 +6,7 @@ import Button from '@mui/material/Button';
 import { Indicator } from './Indicator';
 
 /**
- * Story 컴포넌트: AllVariants 데모
+ * Story component: AllVariants demo
  */
 function AllVariantsDemo() {
   const [current, setCurrent] = useState(1);
@@ -64,7 +64,7 @@ function AllVariantsDemo() {
 }
 
 /**
- * Story 컴포넌트: Vertical 데모
+ * Story component: Vertical demo
  */
 function VerticalDemo() {
   const [current, setCurrent] = useState(1);
@@ -94,7 +94,7 @@ function VerticalDemo() {
 }
 
 /**
- * Story 컴포넌트: DarkTheme 데모
+ * Story component: DarkTheme demo
  */
 function DarkThemeDemo() {
   const [current, setCurrent] = useState(2);
@@ -127,7 +127,7 @@ function DarkThemeDemo() {
 }
 
 /**
- * Story 컴포넌트: Interactive 데모
+ * Story component: Interactive demo
  */
 function InteractiveDemo() {
   const [current, setCurrent] = useState(0);

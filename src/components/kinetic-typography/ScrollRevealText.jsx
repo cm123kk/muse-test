@@ -3,26 +3,26 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
 /**
- * ScrollRevealText 컴포넌트
+ * ScrollRevealText component
  *
- * 스크롤 진행에 따라 텍스트의 각 글자가 순차적으로 드러나는 스크롤 리빌 효과.
- * 문장 단위로 분리하여 각 문장을 별도 블록으로 표시.
+ * A scroll reveal effect where each character of the text appears sequentially as the user scrolls.
+ * Splits the text into sentences and displays each sentence as a separate block.
  *
- * 동작 흐름:
- * 1. 컴포넌트가 뷰포트에 진입하면 스크롤 위치 추적을 시작한다
- * 2. 스크롤 진행률(0~1)에 따라 글자가 왼쪽부터 순차적으로 나타난다
- * 3. 비활성 글자는 투명도가 낮고, 활성 글자는 완전히 표시된다
- * 4. 뷰포트 중앙을 지나면 모든 글자가 활성화된다
+ * Behavior:
+ * 1. When the component enters the viewport, it starts tracking the scroll position
+ * 2. Based on the scroll progress (0 to 1), characters appear sequentially from the left
+ * 3. Inactive characters have lower opacity, and active characters are fully displayed
+ * 4. Once past the center of the viewport, all characters are active
  *
  * Props:
- * @param {string} text - 표시할 텍스트 [Required]
- * @param {string} activeColor - 활성화된 글자 색상 [Optional, 기본값: 'text.primary']
- * @param {string} inactiveColor - 비활성 글자 색상 [Optional, 기본값: 'text.disabled']
- * @param {string} variant - MUI Typography variant [Optional, 기본값: 'h4']
- * @param {object} sx - MUI sx 스타일 [Optional]
+ * @param {string} text - Text to display [Required]
+ * @param {string} activeColor - Color of active characters [Optional, default: 'text.primary']
+ * @param {string} inactiveColor - Color of inactive characters [Optional, default: 'text.disabled']
+ * @param {string} variant - MUI Typography variant [Optional, default: 'h4']
+ * @param {object} sx - MUI sx style [Optional]
  *
  * Example usage:
- * <ScrollRevealText text="스크롤하면 텍스트가 나타납니다. 문장 단위로 분리됩니다." />
+ * <ScrollRevealText text="Text appears as you scroll. It is split by sentence." />
  */
 function ScrollRevealText({
   text,
@@ -34,7 +34,7 @@ function ScrollRevealText({
   const containerRef = useRef(null);
   const [progress, setProgress] = useState(0);
 
-  /** 스크롤 위치 기반 진행률 계산 (requestAnimationFrame throttle) */
+  /** Calculate progress based on scroll position (throttled with requestAnimationFrame) */
   useEffect(() => {
     let ticking = false;
 
@@ -67,12 +67,12 @@ function ScrollRevealText({
     return () => window.removeEventListener('scroll', onScroll);
   }, []);
 
-  /** 문장 단위 분리 ('. ' 기준) */
+  /** Split into sentences (by '. ') */
   const sentences = text.split('. ').map((s, i, arr) =>
     i < arr.length - 1 ? s + '.' : s
   );
 
-  /** 전체 글자 수 계산 */
+  /** Calculate the total character count */
   const totalChars = sentences.reduce((sum, s) => sum + s.length, 0);
   const revealedCount = Math.floor(totalChars * progress);
 

@@ -26,12 +26,12 @@ export default {
         component: `
 ## VideoScrubbing
 
-스크롤 위치에 따라 비디오를 프레임 단위로 재생(스크러빙)하는 컴포넌트입니다.
+A Component that plays a video frame by frame (scrubbing) based on Scroll position.
 
-### 핵심 기능
-- 스크롤 기반 재생: 페이지 스크롤에 따라 비디오 프레임 이동
-- 성능 최적화: IntersectionObserver + requestAnimationFrame (~60fps)
-- 진행도 콜백: onProgressChange로 외부에서 진행도(0-1) 활용 가능
+### Key Features
+- Scroll-based playback: video frames move as the page scrolls
+- Performance optimization: IntersectionObserver + requestAnimationFrame (~60fps)
+- Progress callback: onProgressChange exposes the progress (0-1) to the outside
         `,
       },
     },
@@ -39,21 +39,21 @@ export default {
   argTypes: {
     src: {
       control: 'text',
-      description: '비디오 소스 경로',
+      description: 'Video source path',
       table: {
         type: { summary: 'string' },
       },
     },
     containerRef: {
       control: false,
-      description: '스크롤 추적용 컨테이너 요소',
+      description: 'Container element for Scroll tracking',
       table: {
         type: { summary: 'React.RefObject' },
       },
     },
     scrollRange: {
       control: 'object',
-      description: '스크롤 범위 매핑',
+      description: 'Scroll range mapping',
       table: {
         type: { summary: '{ start: number, end: number }' },
         defaultValue: { summary: '{ start: 0, end: 1 }' },
@@ -61,7 +61,7 @@ export default {
     },
     onProgressChange: {
       control: false,
-      description: '진행도 변경 콜백 (0-1)',
+      description: 'Progress change callback (0-1)',
       table: {
         type: { summary: 'function' },
       },
@@ -69,14 +69,14 @@ export default {
   },
 };
 
-/** 스크롤 영역 래퍼 */
+/** Scroll area wrapper */
 const ScrollArea = ({ children, height = '150vh' }) => (
   <Box sx={{ minHeight: height, pb: 8 }}>
     {children}
   </Box>
 );
 
-/** 진행도 콜백 데모 */
+/** Progress callback demo */
 const ProgressDemo = () => {
   const [progress, setProgress] = useState(0);
 
@@ -117,7 +117,7 @@ const ProgressDemo = () => {
   );
 };
 
-/** 컨테이너 Ref 데모 */
+/** Container Ref demo */
 const ContainerRefDemo = () => {
   const containerRef = useRef(null);
 
@@ -132,7 +132,7 @@ const ContainerRefDemo = () => {
         }}
       >
         <Typography variant="caption" color="text.secondary" sx={{ mb: 2, display: 'block' }}>
-          이 컨테이너 높이 기준으로 비디오 진행
+          Video progresses based on this container height
         </Typography>
         <Box sx={{ position: 'sticky', top: 16, maxWidth: 800 }}>
           <VideoScrubbing
@@ -145,7 +145,7 @@ const ContainerRefDemo = () => {
   );
 };
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   render: () => (
     <>
@@ -162,17 +162,17 @@ export const Default = {
           VideoScrubbing
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          스크롤 위치에 따라 비디오를 프레임 단위로 재생하는 컴포넌트입니다.
+          A Component that plays a video frame by frame based on Scroll position.
         </Typography>
 
-        <SectionTitle title="Demo" description="스크롤하여 비디오 재생 테스트" />
+        <SectionTitle title="Demo" description="Scroll to test video playback" />
         <ScrollArea>
           <Box sx={{ maxWidth: 800 }}>
             <VideoScrubbing src={TEST_VIDEO_URL} />
           </Box>
         </ScrollArea>
 
-        <SectionTitle title="Props" description="컴포넌트 속성" />
+        <SectionTitle title="Props" description="Component props" />
         <TableContainer sx={{ mb: 4 }}>
           <Table size="small">
             <TableHead>
@@ -188,37 +188,37 @@ export const Default = {
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>src</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>string</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>-</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>비디오 소스 경로 [Required]</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Video source path [Required]</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>containerRef</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>React.RefObject</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>null</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>스크롤 추적용 컨테이너 요소</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Container element for Scroll tracking</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>scrollRange</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>{'{ start, end }'}</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>{'{ 0, 1 }'}</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>스크롤 범위 매핑 (0-1)</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Scroll range mapping (0-1)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>onProgressChange</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>function</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>-</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>진행도 변경 콜백 (progress: 0-1)</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>Progress change callback (progress: 0-1)</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell sx={{ fontFamily: 'monospace', fontSize: 12 }}>sx</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>object</TableCell>
                 <TableCell sx={{ fontSize: 13 }}>{'{}'}</TableCell>
-                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>MUI sx 스타일 객체</TableCell>
+                <TableCell sx={{ color: 'text.secondary', fontSize: 13 }}>MUI sx style object</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="Usage" description="코드 예시" />
+        <SectionTitle title="Usage" description="Code example" />
         <Box
           component="pre"
           sx={{
@@ -232,17 +232,17 @@ export const Default = {
         >
 {`import VideoScrubbing from '@/components/media/VideoScrubbing';
 
-// 기본 사용
+// Basic usage
 <VideoScrubbing src="/video.mp4" />
 
-// 진행도 콜백 활용
+// Using the progress callback
 const [progress, setProgress] = useState(0);
 <VideoScrubbing
   src="/video.mp4"
   onProgressChange={setProgress}
 />
 
-// 컨테이너 기준 스크롤
+// Container-based scroll
 const containerRef = useRef(null);
 <Box ref={containerRef} sx={{ height: '200vh' }}>
   <VideoScrubbing
@@ -252,41 +252,41 @@ const containerRef = useRef(null);
 </Box>`}
         </Box>
 
-        <SectionTitle title="Video Encoding" description="스크러빙 최적화를 위한 비디오 인코딩" />
+        <SectionTitle title="Video Encoding" description="Video encoding for scrubbing optimization" />
         <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-          부드러운 스크러빙을 위해서는 비디오의 키프레임(I-frame) 설정이 중요합니다.
-          일반 비디오는 키프레임 간격이 2~10초로, seeking 시 가장 가까운 키프레임부터 디코딩해야 하므로 끊김이 발생합니다.
+          For smooth scrubbing, the video keyframe (I-frame) settings matter.
+          Regular video has keyframe intervals of 2 to 10 seconds, so seeking must decode from the nearest keyframe, which causes stutter.
         </Typography>
 
         <TableContainer sx={{ mb: 3 }}>
           <Table size="small">
             <TableHead>
               <TableRow>
-                <TableCell sx={{ fontWeight: 600 }}>비디오 타입</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>키프레임 간격</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>Seeking 속도</TableCell>
-                <TableCell sx={{ fontWeight: 600 }}>파일 크기</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Video Type</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Keyframe Interval</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>Seeking Speed</TableCell>
+                <TableCell sx={{ fontWeight: 600 }}>File Size</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               <TableRow>
-                <TableCell sx={{ fontSize: 13 }}>일반 MP4</TableCell>
-                <TableCell sx={{ fontSize: 13 }}>2~10초</TableCell>
-                <TableCell sx={{ color: 'error.main', fontSize: 13 }}>50~100ms (끊김)</TableCell>
-                <TableCell sx={{ fontSize: 13 }}>기본</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>Regular MP4</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>2 to 10s</TableCell>
+                <TableCell sx={{ color: 'error.main', fontSize: 13 }}>50 to 100ms (stutter)</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>Default</TableCell>
               </TableRow>
               <TableRow>
-                <TableCell sx={{ fontSize: 13 }}>스크러빙 최적화</TableCell>
-                <TableCell sx={{ fontSize: 13 }}>매 프레임</TableCell>
-                <TableCell sx={{ color: 'success.main', fontSize: 13 }}>1~5ms (즉시)</TableCell>
-                <TableCell sx={{ fontSize: 13 }}>2~3배</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>Scrubbing optimized</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>Every frame</TableCell>
+                <TableCell sx={{ color: 'success.main', fontSize: 13 }}>1 to 5ms (instant)</TableCell>
+                <TableCell sx={{ fontSize: 13 }}>2 to 3x</TableCell>
               </TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
         <Typography variant="subtitle2" sx={{ mb: 1 }}>
-          FFmpeg 인코딩 명령어
+          FFmpeg Encoding Command
         </Typography>
         <Box
           component="pre"
@@ -299,23 +299,23 @@ const containerRef = useRef(null);
             mb: 2,
           }}
         >
-{`# 모든 프레임을 키프레임으로 인코딩
+{`# Encode every frame as a keyframe
 ffmpeg -i input.mp4 -g 1 -keyint_min 1 -c:v libx264 -crf 23 output.mp4
 
-# 옵션 설명
-# -g 1          : GOP(Group of Pictures) 크기를 1로 설정
-# -keyint_min 1 : 최소 키프레임 간격 1
-# -crf 23       : 품질 설정 (낮을수록 고품질, 18~28 권장)`}
+# Option descriptions
+# -g 1          : Set GOP (Group of Pictures) size to 1
+# -keyint_min 1 : Minimum keyframe interval of 1
+# -crf 23       : Quality setting (lower is higher quality, 18 to 28 recommended)`}
         </Box>
         <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mb: 4 }}>
-          참고: 키프레임 최적화 비디오는 파일 크기가 증가하므로, 짧은 클립(30초 이내)에 적합합니다.
+          Note: keyframe-optimized video increases file size, so it suits short clips (under 30 seconds).
         </Typography>
       </PageContainer>
     </>
   ),
 };
 
-/** 진행도 콜백 */
+/** Progress callback */
 export const WithProgressCallback = {
   render: () => (
     <>
@@ -332,7 +332,7 @@ export const WithProgressCallback = {
           Progress Callback
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          onProgressChange 콜백으로 현재 진행도(0-1)를 외부에서 활용할 수 있습니다.
+          The onProgressChange callback exposes the current progress (0-1) to the outside.
         </Typography>
         <ProgressDemo />
       </PageContainer>
@@ -340,7 +340,7 @@ export const WithProgressCallback = {
   ),
 };
 
-/** 컨테이너 Ref */
+/** Container Ref */
 export const WithContainerRef = {
   render: () => (
     <>
@@ -357,7 +357,7 @@ export const WithContainerRef = {
           Container Reference
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          containerRef를 전달하면 해당 컨테이너 기준으로 스크롤 진행도를 계산합니다.
+          Passing containerRef calculates Scroll progress relative to that container.
         </Typography>
         <ContainerRefDemo />
       </PageContainer>
@@ -365,7 +365,7 @@ export const WithContainerRef = {
   ),
 };
 
-/** 다양한 비율 */
+/** Various ratios */
 export const AspectRatios = {
   render: () => (
     <>
@@ -382,7 +382,7 @@ export const AspectRatios = {
           Aspect Ratios
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 4 }}>
-          sx prop으로 다양한 비율을 적용할 수 있습니다.
+          You can apply various aspect ratios with the sx prop.
         </Typography>
 
         <ScrollArea height="300vh">

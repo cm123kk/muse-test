@@ -26,18 +26,18 @@ import {
 import { buildDesignMd } from '../../utils/tokenConverters.js';
 
 /**
- * ThemeExportDialog — Universal JSON 프리뷰 + ZIP 번들 / 단독 JSON 다운로드
+ * ThemeExportDialog - Universal JSON preview + ZIP bundle / standalone JSON download
  *
- * 이전 MUI createTheme 코드 출력에서 **범용 토큰 JSON**으로 전환.
- * ZIP 다운로드 시 muse.json + visual-direction.md + README.md + references/*.jpg 포함.
+ * Switched from the previous MUI createTheme code output to universal token JSON.
+ * A ZIP download includes muse.json + visual-direction.md + README.md + references/*.jpg.
  *
  * Props:
  * @param {boolean} open
  * @param {function} onClose
- * @param {object}   project      - Project 엔티티 (id/name/intent/type/referenceIds)
+ * @param {object}   project      - Project entity (id/name/intent/type/referenceIds)
  * @param {object}   analysis     - AnalysisLayers (color/typography/layout/gradient/visualDirection)
- * @param {array}    references   - 전체 store references (사용되는 것만 ZIP에 포함)
- * @param {string}   [title]      - 기본값 'Project Export'
+ * @param {array}    references   - All store references (only the used ones are included in the ZIP)
+ * @param {string}   [title]      - Default 'Project Export'
  */
 export function ThemeExportDialog({
   open,
@@ -77,14 +77,14 @@ export function ThemeExportDialog({
       setCopied(true);
       setTimeout(() => setCopied(false), 1800);
     } catch {
-      // clipboard 권한 없음 — 무음 실패
+      // No clipboard permission: fail silently
     }
   };
 
-  // mode 별 default exporter — concept 은 ThemeExportDialog 진입하지 않음 (별도 핸들러)
+  // Default exporter per mode: concept never enters ThemeExportDialog (separate handler)
   const mode = project?.mode || 'system';
   const primaryExporter = mode === 'system' ? exportSystemBundle : exportProjectAsZip;
-  const primaryLabel = mode === 'system' ? 'DESIGN.md ZIP 다운로드' : 'ZIP 번들 다운로드';
+  const primaryLabel = mode === 'system' ? 'Download DESIGN.md ZIP' : 'Download ZIP bundle';
 
   const handleDownloadZip = async () => {
     setError(null);
@@ -142,13 +142,13 @@ export function ThemeExportDialog({
         sx={ { display: 'flex', justifyContent: 'space-between', alignItems: 'center', pr: 1 } }
       >
         { title }
-        <IconButton onClick={ onClose } size="small" aria-label="닫기">
+        <IconButton onClick={ onClose } size="small" aria-label="Close">
           <CloseIcon fontSize="small" />
         </IconButton>
       </DialogTitle>
 
       <DialogContent dividers>
-        {/* 요약 */}
+        {/* Summary */}
         <Box sx={ { mb: 2, display: 'flex', flexWrap: 'wrap', gap: 1 } }>
           <Chip size="small" label={ `mode: ${mode}` } color="primary" variant="outlined" />
           <Chip size="small" label={ `color ${universal.color?.tokens?.length || 0}` } />
@@ -162,21 +162,21 @@ export function ThemeExportDialog({
           <Chip
             size="small"
             color={ universal.visualDirection?.markdown ? 'default' : 'warning' }
-            label={ `VD ${universal.visualDirection?.markdown ? 'OK' : '없음'}` }
+            label={ `VD ${universal.visualDirection?.markdown ? 'OK' : 'None'}` }
           />
           <Chip size="small" icon={ <FolderZipIcon sx={ { fontSize: 14 } } /> } label={ `references ${refCount}` } />
         </Box>
 
         { missingPrimary && (
           <Alert severity="warning" sx={ { mb: 2 } }>
-            활성화된 primary 컬러가 없습니다. 내보내기 전 프로젝트 상세에서 `role: primary` 토큰 하나는 활성화를 권장합니다.
+            No active primary color. We recommend activating at least one `role: primary` token in the project detail before exporting.
           </Alert>
         ) }
 
         { error && <Alert severity="error" sx={ { mb: 2 } }>{ error }</Alert> }
         { zipResult && (
           <Alert severity="success" sx={ { mb: 2 } }>
-            ZIP 다운로드 완료 — { zipResult.filename } ({ (zipResult.size / 1024).toFixed(1) } KB)
+            ZIP download complete: { zipResult.filename } ({ (zipResult.size / 1024).toFixed(1) } KB)
           </Alert>
         ) }
 
@@ -211,7 +211,7 @@ export function ThemeExportDialog({
             { jsonText }
           </Box>
 
-          <Tooltip title={ copied ? '복사됨' : 'JSON 복사' } arrow>
+          <Tooltip title={ copied ? 'Copied' : 'Copy JSON' } arrow>
             <IconButton
               onClick={ handleCopyJson }
               size="small"
@@ -224,7 +224,7 @@ export function ThemeExportDialog({
                 borderColor: 'divider',
                 '&:hover': { bgcolor: 'background.default' },
               } }
-              aria-label="JSON 클립보드 복사"
+              aria-label="Copy JSON to clipboard"
             >
               { copied
                 ? <CheckIcon fontSize="small" sx={ { color: 'success.main' } } />
@@ -234,7 +234,7 @@ export function ThemeExportDialog({
         </Box>
 
         <Typography variant="caption" color="text.secondary" sx={ { display: 'block', mt: 2 } }>
-          범용 JSON — MUI/Tailwind/Chakra 어디서든 `hex` · CSS 값을 그대로 사용 가능. 이미지 파일은 ZIP 번들에 포함됨.
+          Universal JSON : use `hex` and CSS values as-is anywhere (MUI/Tailwind/Chakra). Image files are included in the ZIP bundle.
         </Typography>
       </DialogContent>
 
@@ -247,7 +247,7 @@ export function ThemeExportDialog({
             onClick={ handleDownloadJson }
             disabled={ isZipping }
           >
-            muse.json만
+            muse.json only
           </Button>
           <Button
             variant="text"
@@ -255,12 +255,12 @@ export function ThemeExportDialog({
             onClick={ handleDownloadDesignMd }
             disabled={ isZipping }
           >
-            DESIGN.md만
+            DESIGN.md only
           </Button>
         </Box>
 
         <Box sx={ { display: 'flex', gap: 1 } }>
-          <Button onClick={ onClose } color="inherit" variant="text">닫기</Button>
+          <Button onClick={ onClose } color="inherit" variant="text">Close</Button>
           <Button
             onClick={ handleDownloadZip }
             variant="contained"
@@ -268,7 +268,7 @@ export function ThemeExportDialog({
             startIcon={ isZipping ? <CircularProgress size={ 16 } color="inherit" /> : <FolderZipIcon /> }
             disabled={ isZipping }
           >
-            { isZipping ? '패키징 중…' : primaryLabel }
+            { isZipping ? 'Packaging…' : primaryLabel }
           </Button>
         </Box>
       </DialogActions>

@@ -14,20 +14,20 @@ export default {
   argTypes: {
     centerSize: {
       control: { type: 'number', min: 4, max: 10, step: 2 },
-      description: '중앙 콘텐츠 그리드 크기 (1-12)',
+      description: 'Center content grid Size (1-12)',
     },
     stickyTop: {
       control: { type: 'number', min: 0, max: 200, step: 8 },
-      description: 'aside sticky 위치 (px)',
+      description: 'aside sticky position (px)',
     },
     spacing: {
       control: { type: 'number', min: 0, max: 8 },
-      description: '그리드 간격',
+      description: 'Grid Spacing',
     },
   },
 };
 
-/** 섹션 라벨 목록 */
+/** Section label list */
 const sectionLabels = [
   'Overview',
   'Getting Started',
@@ -37,7 +37,7 @@ const sectionLabels = [
   'Accessibility',
 ];
 
-/** 사이드바 네비게이션 — Placeholder 기반 */
+/** Sidebar navigation: Placeholder based */
 const AsideNav = () => (
   <Box sx={ { borderRight: '1px solid', borderColor: 'divider', pr: 2, py: 2 } }>
     <Placeholder.Text variant="caption" width="60%" sx={ { mb: 2, ml: 1 } } />
@@ -49,7 +49,7 @@ const AsideNav = () => (
   </Box>
 );
 
-/** 단일 섹션 블록 — 카드 그리드 + 텍스트로 충분한 높이 확보 */
+/** Single section block: card grid plus text to ensure sufficient height */
 const SectionBlock = ({ index }) => (
   <Box sx={ { mb: 6 } }>
     <Typography
@@ -83,7 +83,7 @@ const SectionBlock = ({ index }) => (
   </Box>
 );
 
-/** 메인 콘텐츠 — 6개 섹션으로 충분한 스크롤 거리 확보 */
+/** Main content: 6 sections to ensure sufficient scroll distance */
 const ContentSections = () => (
   <Box>
     { Array.from({ length: 6 }, (_, i) => (

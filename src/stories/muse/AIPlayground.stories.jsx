@@ -64,7 +64,7 @@ const CodeBlock = ({ children, tone = 'light', maxHeight }) => (
 );
 
 /* ============================================
- * Health Check — Phase A 연결 확인
+ * Health Check: Phase A connection verification
  * ============================================ */
 
 export const HealthCheck = {
@@ -104,14 +104,14 @@ export const HealthCheck = {
             Health Check
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 3 } }>
-            Supabase Edge Function <code>anthropic-messages</code> 를 호출할 수 있는 세션 상태를 확인한다.
+            Verifies the session state required to call the Supabase Edge Function <code>anthropic-messages</code>.
             <br />
-            실제 Anthropic 키는 Supabase secrets 에만 존재하며 브라우저에 노출되지 않는다.
+            The actual Anthropic key exists only in Supabase secrets and is never exposed to the browser.
           </Typography>
 
           <Box sx={ { display: 'flex', gap: 1, mb: 2 } }>
             <Button variant="contained" onClick={ run } disabled={ isLoading }>
-              { isLoading ? '확인 중…' : '재확인' }
+              { isLoading ? 'Checking…' : 'Recheck' }
             </Button>
           </Box>
 
@@ -121,14 +121,14 @@ export const HealthCheck = {
             <>
               { status.hasKey ? (
                 <Alert severity="success" sx={ { mb: 2 } }>
-                  API 키가 서버 측에 로드되었습니다. ({ status.keyPrefix })
+                  The API key is loaded on the server side. ({ status.keyPrefix })
                 </Alert>
               ) : (
                 <Alert severity="warning" sx={ { mb: 2 } }>
-                  API 키를 찾지 못했습니다. <code>.env.local</code>에 <code>ANTHROPIC_API_KEY</code>가 설정됐는지 확인 후 Storybook 재시작 필요.
+                  Could not find the API key. Check that <code>ANTHROPIC_API_KEY</code> is set in <code>.env.local</code>, then restart Storybook.
                 </Alert>
               ) }
-              <SectionTitle title="응답 원본" />
+              <SectionTitle title="Raw Response" />
               <CodeBlock>{ status }</CodeBlock>
             </>
           ) }
@@ -139,13 +139,13 @@ export const HealthCheck = {
 };
 
 /* ============================================
- * T1 · Auto Tag — 이미지 1장 태깅
+ * T1 · Auto Tag: tagging a single image
  * ============================================ */
 
 const MODEL_OPTIONS = [
-  { value: 'claude-haiku-4-5', label: 'Haiku 4.5 (저렴·빠름)' },
-  { value: 'claude-sonnet-4-6', label: 'Sonnet 4.6 (균형)' },
-  { value: 'claude-opus-4-7', label: 'Opus 4.7 (최고 품질)' },
+  { value: 'claude-haiku-4-5', label: 'Haiku 4.5 (cheap, fast)' },
+  { value: 'claude-sonnet-4-6', label: 'Sonnet 4.6 (balanced)' },
+  { value: 'claude-opus-4-7', label: 'Opus 4.7 (highest quality)' },
 ];
 
 export const T1AutoTag = {
@@ -170,10 +170,10 @@ export const T1AutoTag = {
       setElapsed(null);
       const start = performance.now();
       try {
-        // Vite import URL → base64 dataURL (Anthropic image 블록)
+        // Vite import URL to base64 dataURL (Anthropic image block)
         const dataUrl = await imageUrlToBase64DataUrl(selected.thumbnailUrl);
         const imageBlock = toImageBlock(dataUrl);
-        if (!imageBlock) throw new Error('이미지 블록 생성 실패');
+        if (!imageBlock) throw new Error('Failed to build image block');
 
         const response = await callAnthropic({
           model,
@@ -195,7 +195,7 @@ export const T1AutoTag = {
         setRaw(response);
         const toolInput = extractToolInput(response, TASK_AUTO_TAG.toolSchema.name);
         if (!toolInput) {
-          throw new Error(`Tool use 응답 없음. text: ${extractText(response) || '(empty)'}`);
+          throw new Error(`No tool use response. text: ${extractText(response) || '(empty)'}`);
         }
         setResult(toolInput);
       } catch (e) {
@@ -251,7 +251,7 @@ export const T1AutoTag = {
               </Select>
             </FormControl>
             <Button variant="contained" onClick={ run } disabled={ isLoading }>
-              { isLoading ? <><CircularProgress size={ 16 } sx={ { mr: 1 } } /> 분석 중… </> : '분석 실행' }
+              { isLoading ? <><CircularProgress size={ 16 } sx={ { mr: 1 } } /> Analyzing… </> : 'Run Analysis' }
             </Button>
             { elapsed != null && (
               <Typography variant="caption" color="text.secondary">
@@ -297,7 +297,7 @@ export const T1AutoTag = {
 
               { !result && !isLoading && (
                 <Typography variant="body2" color="text.secondary">
-                  분석 실행 버튼을 눌러주세요
+                  Press Run Analysis
                 </Typography>
               ) }
 
@@ -308,7 +308,7 @@ export const T1AutoTag = {
                     <Typography variant="h6" sx={ { fontWeight: 600 } }>{ result.title }</Typography>
                   </Box>
 
-                  {/* 5 레이어별 태그 */}
+                  {/* Tags per 5 layers */}
                   <Box sx={ { mb: 2, display: 'flex', flexDirection: 'column', gap: 1 } }>
                     <Typography variant="overline" color="text.secondary">Layered Tags</Typography>
                     { ['color', 'typography', 'layout', 'gradient'].map((layer) => {
@@ -375,13 +375,13 @@ export const T1AutoTag = {
           </Box>
 
           {/* Golden comparison */}
-          <SectionTitle title="Golden Example" description="aiTasks.js에 정의된 기대 출력 (참고용)" />
+          <SectionTitle title="Golden Example" description="Expected output defined in aiTasks.js (for reference)" />
           <CodeBlock>{ TASK_AUTO_TAG.goldenExample.expectedOutput }</CodeBlock>
 
           {/* Raw API response (debug) */}
           { raw && (
             <Box sx={ { mt: 3 } }>
-              <SectionTitle title="Raw API Response" description="디버그용 — content blocks 전체" />
+              <SectionTitle title="Raw API Response" description="For debugging: all content blocks" />
               <CodeBlock tone="dark" maxHeight={ 320 }>{ raw }</CodeBlock>
             </Box>
           ) }
@@ -392,10 +392,10 @@ export const T1AutoTag = {
 };
 
 /* ============================================
- * T2 · Recommend — 의도 문장 → top-N 레퍼런스 추천 (텍스트만, 저렴)
+ * T2 · Recommend: intent sentence to top-N reference recommendations (text only, cheap)
  * ============================================ */
 
-/** 아카이브 Reference를 T2 input 메타 형태로 압축 (이미지 없음) */
+/** Compresses an archive Reference into T2 input meta form (no images) */
 const toRecommendMeta = (r) => ({
   id: r.id,
   title: r.title,
@@ -406,7 +406,7 @@ const toRecommendMeta = (r) => ({
 export const T2Recommend = {
   name: 'T2 · Recommend',
   render: () => {
-    const [intent, setIntent] = useState('흑백 대비 매거진 톤, 라지 타이포 중심');
+    const [intent, setIntent] = useState('Black-and-white contrast magazine tone, large typography focused');
     const [n, setN] = useState(6);
     const [model, setModel] = useState(TASK_RECOMMEND.model);
     const [isLoading, setIsLoading] = useState(false);
@@ -438,7 +438,7 @@ export const T2Recommend = {
         });
 
         const toolInput = extractToolInput(response, TASK_RECOMMEND.toolSchema.name);
-        if (!toolInput) throw new Error(`Tool use 응답 없음. text: ${extractText(response) || '(empty)'}`);
+        if (!toolInput) throw new Error(`No tool use response. text: ${extractText(response) || '(empty)'}`);
         setResult(toolInput);
       } catch (e) {
         setError(e?.message || String(e));
@@ -465,13 +465,13 @@ export const T2Recommend = {
             T2 · Recommend
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 3 } }>
-            { TASK_RECOMMEND.purpose } · 이미지를 보내지 않아 가장 저렴
+            { TASK_RECOMMEND.purpose } · cheapest since no images are sent
           </Typography>
 
           {/* Controls */}
           <Box sx={ { display: 'flex', flexDirection: 'column', gap: 2, mb: 3 } }>
             <TextField
-              label="프로젝트 의도"
+              label="Project Intent"
               value={ intent }
               onChange={ (e) => setIntent(e.target.value) }
               fullWidth
@@ -491,7 +491,7 @@ export const T2Recommend = {
                 </Select>
               </FormControl>
               <Button variant="contained" onClick={ run } disabled={ isLoading || !intent.trim() }>
-                { isLoading ? <><CircularProgress size={ 16 } sx={ { mr: 1 } } /> 추천 중… </> : '추천 실행' }
+                { isLoading ? <><CircularProgress size={ 16 } sx={ { mr: 1 } } /> Recommending… </> : 'Run Recommendation' }
               </Button>
               { elapsed != null && <Typography variant="caption" color="text.secondary">{ elapsed } ms</Typography> }
             </Box>
@@ -499,10 +499,10 @@ export const T2Recommend = {
 
           { error && <Alert severity="error" sx={ { mb: 3 } }>{ error }</Alert> }
 
-          {/* Results — 추천 썸네일 그리드 */}
+          {/* Results: recommended thumbnail grid */}
           { result && (
             <>
-              <SectionTitle title={ `Top ${result.recommendedIds?.length || 0} 추천` } description="ranked best-first" />
+              <SectionTitle title={ `Top ${result.recommendedIds?.length || 0} Recommended` } description="ranked best-first" />
               <Box sx={ { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))', gap: 2, mb: 3 } }>
                 { (result.recommendedIds || []).map((id, rank) => {
                   const ref = references.find((r) => r.id === id);
@@ -542,11 +542,11 @@ export const T2Recommend = {
 };
 
 /* ============================================
- * T3 · Analyze Tokens + Visual Direction (2 tool 패턴)
+ * T3 · Analyze Tokens + Visual Direction (2-tool pattern)
  * ============================================ */
 
 const resizeDataUrl = async (dataUrl, maxDim = 512) => {
-  // T3 입력용 리사이즈. 기본 512px (T1 이 primary signal, 이미지는 verification)
+  // Resize for T3 input. Default 512px (T1 is the primary signal, the image is verification)
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.onload = () => {
@@ -567,10 +567,10 @@ const resizeDataUrl = async (dataUrl, maxDim = 512) => {
 export const T3AnalyzeTokens = {
   name: 'T3 · Analyze Tokens + VD',
   render: () => {
-    const [intent, setIntent] = useState('흑백 대비 매거진 톤, 라지 타이포 중심');
+    const [intent, setIntent] = useState('Black-and-white contrast magazine tone, large typography focused');
     const [model, setModel] = useState(TASK_ANALYZE_TOKENS.model);
     const [selectedIds, setSelectedIds] = useState(new Set([references[0]?.id, references[4]?.id, references[9]?.id]));
-    // Phase 0 검증 — Step 3 활용 노트(L4 userNotes) 효과 측정용
+    // Phase 0 verification: to measure the effect of Step 3 usage notes (L4 userNotes)
     const [userNotes, setUserNotes] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
@@ -583,7 +583,7 @@ export const T3AnalyzeTokens = {
       setSelectedIds((prev) => {
         const next = new Set(prev);
         if (next.has(id)) next.delete(id);
-        else if (next.size < 4) next.add(id); // 최대 4장 제한
+        else if (next.size < 4) next.add(id); // Limit to a maximum of 4 images
         return next;
       });
     };
@@ -598,9 +598,9 @@ export const T3AnalyzeTokens = {
       const start = performance.now();
       try {
         const selectedRefs = references.filter((r) => selectedIds.has(r.id));
-        if (!selectedRefs.length) throw new Error('최소 1장 이상 선택 필요');
+        if (!selectedRefs.length) throw new Error('Select at least 1 image');
 
-        // 이미지 없음 — 사전 추출된 데이터만 전송
+        // No images: send only the pre-extracted data
         const extractedPool = selectedRefs.map((ref) => ({
           id: ref.id,
           title: ref.title || null,
@@ -609,15 +609,15 @@ export const T3AnalyzeTokens = {
           extracted: ref.extracted || {},
         }));
 
-        // Phase 0 검증 — userNotes 가 있으면 Progressive Narrowing 블록 추가 (production system prompt 안 건드리고 user message 끝에만 주입)
+        // Phase 0 verification: if userNotes exist, add a Progressive Narrowing block (do not touch the production system prompt, inject only at the end of the user message)
         const userNotesBlock = userNotes && userNotes.trim().length >= 10
-          ? `\n\n=== USER NOTES (HIGHEST PRIORITY — L4) ===
+          ? `\n\n=== USER NOTES (HIGHEST PRIORITY, L4) ===
 After seeing the actual references, the user added these refinement notes:
 "${userNotes.trim()}"
 
 Treat these as USER REQUIREMENTS, NOT suggestions.
 - When L4 conflicts with the initial intent above, L4 WINS.
-- When L4 explicitly mentions a ref-id (e.g. "ref-002 색을 primary로"), apply directly.
+- When L4 explicitly mentions a ref-id (e.g. "make ref-002 color the primary"), apply directly.
 - For each token influenced by L4, include a "decisionRationale.appliedUserNotes" field
   with the relevant 10-30 char fragment from the user notes (verbatim).
 - For tokens NOT influenced by L4, omit appliedUserNotes (do not echo across all tokens).`
@@ -658,7 +658,7 @@ ${JSON.stringify(extractedPool, null, 2)}
         setVdResult(input?.visualDirection || null);
 
         if (!input) {
-          throw new Error(`Tool use 응답 없음. text: ${extractText(response) || '(empty)'}`);
+          throw new Error(`No tool use response. text: ${extractText(response) || '(empty)'}`);
         }
       } catch (e) {
         setError(e?.message || String(e));
@@ -683,10 +683,10 @@ ${JSON.stringify(extractedPool, null, 2)}
             T3 · Analyze Tokens + VD
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 3 } }>
-            { TASK_ANALYZE_TOKENS.purpose } · 이미지 없음 (T1 extracted 기반) · Haiku · 2 tool 단일 호출
+            { TASK_ANALYZE_TOKENS.purpose } · no images (based on T1 extracted) · Haiku · single call with 2 tools
           </Typography>
 
-          {/* Phase 0 검증 안내 박스 */}
+          {/* Phase 0 verification info box */}
           <Box
             sx={ {
               p: 2,
@@ -698,33 +698,33 @@ ${JSON.stringify(extractedPool, null, 2)}
             } }
           >
             <Typography variant="caption" sx={ { fontWeight: 700, color: 'warning.dark', display: 'block', mb: 1 } }>
-              🧪 Phase 0 검증 — Step 3 (활용 노트) 효과 측정
+              🧪 Phase 0 Verification: measuring the effect of Step 3 (Usage Notes)
             </Typography>
             <Typography variant="body2" sx={ { fontSize: '0.85rem', mb: 1.5 } }>
-              같은 references + 같은 intent로 <strong>userNotes</strong> 만 바꿔서 3회 호출 → 결과 비교:
+              Call 3 times with the same references and same intent, changing only <strong>userNotes</strong>, then compare results:
             </Typography>
             <Box component="ul" sx={ { m: 0, pl: 2.5, fontSize: '0.85rem' } }>
-              <li><strong>case A</strong>: userNotes 빈 칸 (현재 default 동작)</li>
-              <li><strong>case B</strong>: userNotes = "ref-002 색을 primary로"</li>
-              <li><strong>case C</strong>: userNotes = "ref-005 grid 레이아웃 강조, 타이포는 더 가볍게"</li>
+              <li><strong>case A</strong>: userNotes empty (current default behavior)</li>
+              <li><strong>case B</strong>: userNotes = "make ref-002 color the primary"</li>
+              <li><strong>case C</strong>: userNotes = "emphasize ref-005 grid layout, make typography lighter"</li>
             </Box>
             <Typography variant="caption" sx={ { display: 'block', mt: 1, color: 'text.secondary' } }>
-              체크 포인트: tokens.color[primary], tokens.layout, tokens.typography 가 case 별로 다른가? decisionRationale에 appliedUserNotes 필드가 출력되는가?
+              Checkpoints: do tokens.color[primary], tokens.layout, tokens.typography differ per case? Does decisionRationale output an appliedUserNotes field?
             </Typography>
           </Box>
 
           {/* Controls */}
           <Box sx={ { display: 'flex', flexDirection: 'column', gap: 2, mb: 3 } }>
-            <TextField label="프로젝트 의도 (L2)" value={ intent } onChange={ (e) => setIntent(e.target.value) } fullWidth multiline rows={ 2 } />
+            <TextField label="Project Intent (L2)" value={ intent } onChange={ (e) => setIntent(e.target.value) } fullWidth multiline rows={ 2 } />
             <TextField
-              label="🧪 활용 노트 / userNotes (L4) — Phase 0 검증용"
-              placeholder='예: "ref-002 색을 primary로" / "ref-005 grid 강조, 타이포는 가볍게" / 빈 칸으로 두면 case A'
+              label="🧪 Usage Notes / userNotes (L4): for Phase 0 verification"
+              placeholder='e.g. "make ref-002 color the primary" / "emphasize ref-005 grid, lighter typography" / leave empty for case A'
               value={ userNotes }
               onChange={ (e) => setUserNotes(e.target.value) }
               fullWidth
               multiline
               rows={ 3 }
-              helperText={ `${userNotes.length} 자 / 10자 이상이어야 활성화. 빈 칸 = case A (기존 동작 그대로)` }
+              helperText={ `${userNotes.length} chars / must be 10+ chars to activate. Empty = case A (same as existing behavior)` }
               inputProps={ { maxLength: 400 } }
             />
             <Box sx={ { display: 'flex', gap: 2, flexWrap: 'wrap', alignItems: 'center' } }>
@@ -735,14 +735,14 @@ ${JSON.stringify(extractedPool, null, 2)}
                 </Select>
               </FormControl>
               <Button variant="contained" onClick={ run } disabled={ isLoading || selectedIds.size === 0 }>
-                { isLoading ? <><CircularProgress size={ 16 } sx={ { mr: 1 } } /> 분석 중… </> : `분석 실행 · ${selectedIds.size}장` }
+                { isLoading ? <><CircularProgress size={ 16 } sx={ { mr: 1 } } /> Analyzing… </> : `Run Analysis · ${selectedIds.size} images` }
               </Button>
               { elapsed != null && <Typography variant="caption" color="text.secondary">{ elapsed } ms</Typography> }
             </Box>
           </Box>
 
-          {/* Reference picker (최대 4장) */}
-          <SectionTitle title="레퍼런스 선택" description="최대 4장까지 (비용 절감)" />
+          {/* Reference picker (up to 4 images) */}
+          <SectionTitle title="Select References" description="Up to 4 images (to save cost)" />
           <Box sx={ { display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(140px, 1fr))', gap: 1.5, mb: 3, maxHeight: 320, overflow: 'auto', p: 1, border: '1px solid', borderColor: 'divider', borderRadius: 2 } }>
             { references.map((ref) => {
               const isSelected = selectedIds.has(ref.id);
@@ -775,10 +775,10 @@ ${JSON.stringify(extractedPool, null, 2)}
           {/* Results */}
           { (tokensResult || vdResult) && (
             <>
-              {/* Tokens preview — 실제 프리뷰 컴포넌트로 */}
+              {/* Tokens preview: using the real preview components */}
               { tokensResult && (
                 <>
-                  <SectionTitle title="Token Layers (submit_tokens)" description="4 레이어 즉시 프리뷰" />
+                  <SectionTitle title="Token Layers (submit_tokens)" description="Instant preview of 4 layers" />
                   <Box sx={ { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 3 } }>
                     { tokensResult.color?.length > 0 && (
                       <Box>
@@ -811,7 +811,7 @@ ${JSON.stringify(extractedPool, null, 2)}
               {/* Visual Direction MD */}
               { vdResult && (
                 <>
-                  <SectionTitle title="Visual Direction (submit_visual_direction)" description="MD 문서 + 집계 태그" />
+                  <SectionTitle title="Visual Direction (submit_visual_direction)" description="MD document + aggregated tags" />
                   { vdResult.tags && (
                     <Box sx={ { display: 'flex', gap: 1, flexWrap: 'wrap', mb: 2 } }>
                       { Object.entries(vdResult.tags).flatMap(([cat, list]) =>
@@ -836,7 +836,7 @@ ${JSON.stringify(extractedPool, null, 2)}
               {/* Raw debug */}
               { raw && (
                 <>
-                  <SectionTitle title="Raw API Response" description="디버그 — 전체 content blocks" />
+                  <SectionTitle title="Raw API Response" description="Debug: all content blocks" />
                   <CodeBlock tone="dark" maxHeight={ 320 }>{ raw }</CodeBlock>
                 </>
               ) }

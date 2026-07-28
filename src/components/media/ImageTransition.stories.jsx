@@ -25,12 +25,12 @@ export default {
         component: `
 ## ImageTransition
 
-인덱스 기반 이미지 트랜지션 컴포넌트.
+Index-based image Transition Component.
 
-### 용도
-- 이미지 슬라이더/갤러리의 트랜지션
-- Hero 이미지 전환
-- 제품 이미지 변경 효과
+### Use cases
+- Transitions for image sliders/galleries
+- Hero image Transition
+- Product image change effects
         `,
       },
     },
@@ -39,21 +39,21 @@ export default {
     transition: {
       control: 'select',
       options: ['fade', 'slide', 'zoom', 'reveal', 'flip'],
-      description: '트랜지션 효과',
+      description: 'Transition effect',
     },
     duration: {
       control: { type: 'range', min: 200, max: 2000, step: 100 },
-      description: '트랜지션 지속 시간 (ms)',
+      description: 'Transition duration (ms)',
     },
     aspectRatio: {
       control: 'select',
       options: ['16/9', '4/3', '1/1', '21/9'],
-      description: '컨테이너 종횡비',
+      description: 'Container aspect ratio',
     },
   },
 };
 
-// 샘플 이미지
+// Sample images
 const sampleImages = [
   { src: placeholderSvg(1200, 800), alt: 'Mountains' },
   { src: placeholderSvg(1200, 800), alt: 'Forest' },
@@ -61,7 +61,7 @@ const sampleImages = [
   { src: placeholderSvg(1200, 800), alt: 'Night Sky' },
 ];
 
-/** 기본 사용 */
+/** Basic usage */
 export const Default = {
   render: function DefaultStory() {
     const [index, setIndex] = useState(0);
@@ -91,7 +91,7 @@ export const Default = {
   },
 };
 
-/** 문서 및 데모 */
+/** Documentation and demo */
 export const Documentation = {
   render: function DocumentationStory() {
     const [fadeIndex, setFadeIndex] = useState(0);
@@ -123,11 +123,11 @@ export const Documentation = {
             ImageTransition
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-            activeIndex를 변경하면 이전 이미지와 새 이미지 간 트랜지션이 실행됩니다.
-            5가지 트랜지션 효과를 지원합니다.
+            Changing activeIndex runs a Transition between the previous image and the new image.
+            It supports five Transition effects.
           </Typography>
 
-          <SectionTitle title="Props" description="ImageTransition 컴포넌트의 Props입니다." />
+          <SectionTitle title="Props" description="Props for the ImageTransition Component." />
           <TableContainer>
             <Table size="small">
               <TableHead>
@@ -143,49 +143,49 @@ export const Documentation = {
                   <TableCell sx={ { fontFamily: 'monospace' } }>images</TableCell>
                   <TableCell>Array</TableCell>
                   <TableCell>[]</TableCell>
-                  <TableCell>이미지 배열 (string[] 또는 {'{src, alt}'}[])</TableCell>
+                  <TableCell>Array of images (string[] or {'{src, alt}'}[])</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace' } }>activeIndex</TableCell>
                   <TableCell>number</TableCell>
                   <TableCell>0</TableCell>
-                  <TableCell>현재 활성 이미지 인덱스</TableCell>
+                  <TableCell>Index of the currently active image</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace' } }>transition</TableCell>
                   <TableCell>&apos;fade&apos; | &apos;slide&apos; | &apos;zoom&apos; | &apos;reveal&apos; | &apos;flip&apos;</TableCell>
                   <TableCell>&apos;fade&apos;</TableCell>
-                  <TableCell>트랜지션 효과</TableCell>
+                  <TableCell>Transition effect</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace' } }>duration</TableCell>
                   <TableCell>number</TableCell>
                   <TableCell>500</TableCell>
-                  <TableCell>트랜지션 지속 시간 (ms)</TableCell>
+                  <TableCell>Transition duration (ms)</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace' } }>easing</TableCell>
                   <TableCell>string</TableCell>
                   <TableCell>&apos;ease-out&apos;</TableCell>
-                  <TableCell>CSS 이징 함수</TableCell>
+                  <TableCell>CSS easing function</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace' } }>aspectRatio</TableCell>
                   <TableCell>string</TableCell>
                   <TableCell>&apos;16/9&apos;</TableCell>
-                  <TableCell>컨테이너 종횡비</TableCell>
+                  <TableCell>Container aspect ratio</TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell sx={ { fontFamily: 'monospace' } }>onTransitionEnd</TableCell>
                   <TableCell>function</TableCell>
                   <TableCell>-</TableCell>
-                  <TableCell>트랜지션 완료 콜백</TableCell>
+                  <TableCell>Callback when the Transition completes</TableCell>
                 </TableRow>
               </TableBody>
             </Table>
           </TableContainer>
 
-          <SectionTitle title="Transition: Fade" description="기본 크로스페이드 효과입니다." />
+          <SectionTitle title="Transition: Fade" description="Default crossfade effect." />
           <Box sx={ { maxWidth: 700 } }>
             <ImageTransition
               images={ sampleImages }
@@ -206,7 +206,7 @@ export const Documentation = {
             </Stack>
           </Box>
 
-          <SectionTitle title="Transition: Slide" description="좌우 슬라이드 효과입니다." />
+          <SectionTitle title="Transition: Slide" description="Left-right slide effect." />
           <Box sx={ { maxWidth: 700 } }>
             <ImageTransition
               images={ sampleImages }
@@ -227,7 +227,7 @@ export const Documentation = {
             </Stack>
           </Box>
 
-          <SectionTitle title="Transition: Zoom" description="줌 인/아웃 효과입니다." />
+          <SectionTitle title="Transition: Zoom" description="Zoom in/out effect." />
           <Box sx={ { maxWidth: 700 } }>
             <ImageTransition
               images={ sampleImages }
@@ -248,7 +248,7 @@ export const Documentation = {
             </Stack>
           </Box>
 
-          <SectionTitle title="Transition: Reveal" description="마스크 reveal 효과입니다." />
+          <SectionTitle title="Transition: Reveal" description="Mask reveal effect." />
           <Box sx={ { maxWidth: 700 } }>
             <ImageTransition
               images={ sampleImages }
@@ -269,7 +269,7 @@ export const Documentation = {
             </Stack>
           </Box>
 
-          <SectionTitle title="Transition: Flip" description="3D 플립 효과입니다." />
+          <SectionTitle title="Transition: Flip" description="3D flip effect." />
           <Box sx={ { maxWidth: 700 } }>
             <ImageTransition
               images={ sampleImages }
@@ -290,10 +290,10 @@ export const Documentation = {
             </Stack>
           </Box>
 
-          <SectionTitle title="All Transitions Comparison" description="모든 트랜지션 효과 비교입니다." />
+          <SectionTitle title="All Transitions Comparison" description="Comparison of all Transition effects." />
           <TransitionComparison />
 
-          <SectionTitle title="Usage Example" description="코드 사용 예시입니다." />
+          <SectionTitle title="Usage Example" description="Code usage example." />
           <Box
             component="pre"
             sx={ {
@@ -307,7 +307,7 @@ export const Documentation = {
           >
             { `const [activeIndex, setActiveIndex] = useState(0);
 
-// 기본 페이드 트랜지션
+// Default fade Transition
 <ImageTransition
   images={['img1.jpg', 'img2.jpg', 'img3.jpg']}
   activeIndex={activeIndex}
@@ -315,7 +315,7 @@ export const Documentation = {
   duration={500}
 />
 
-// 슬라이드 트랜지션
+// Slide Transition
 <ImageTransition
   images={[
     { src: 'img1.jpg', alt: 'First' },
@@ -334,7 +334,7 @@ export const Documentation = {
   },
 };
 
-/** 트랜지션 비교 컴포넌트 */
+/** Transition comparison component */
 function TransitionComparison() {
   const [indices, setIndices] = useState({
     fade: 0,

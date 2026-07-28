@@ -1,120 +1,120 @@
-# {{PROJECT_NAME}} — Visual Direction
+# {{PROJECT_NAME}} - Visual Direction
 
-> 이 문서는 MUSE 레퍼런스 분석의 산출물 중 **맥락 기반 비주얼 디렉션**입니다.
-> 토큰 수치(palette, typography, spacing, gradient)는 별도 `tokens.json`을 참조하세요.
-
----
-
-## 1. 프로젝트 개요
-
-- **프로젝트명**: {{PROJECT_NAME}}
-- **프로젝트 유형**: {{PROJECT_TYPE}} (랜딩 / 대시보드 / 모바일 / 브랜드)
-- **한 문장 의도**: {{PROJECT_INTENT}}
-- **분석 레퍼런스 수**: {{REFERENCE_COUNT}}장
+> This document is the **context-based visual direction** among the outputs of MUSE reference analysis.
+> For token values (palette, typography, spacing, gradient), see the separate `tokens.json`.
 
 ---
 
-## 2. 전체 방향성
+## 1. Project Overview
+
+- **Project name**: {{PROJECT_NAME}}
+- **Project type**: {{PROJECT_TYPE}} (landing / dashboard / mobile / brand)
+- **One-line intent**: {{PROJECT_INTENT}}
+- **References analyzed**: {{REFERENCE_COUNT}}
+
+---
+
+## 2. Overall Direction
 
 {{OVERALL_DIRECTION}}
 
-_예: "Risograph 인쇄 질감과 Editorial-Collage 구성을 기반으로, 핸드메이드 감성과 편집물의 엄격한 위계를 결합한 브랜드 무드보드."_
+_e.g. "A brand moodboard built on Risograph print texture and Editorial-Collage composition, combining a handmade sensibility with the strict hierarchy of print."_
 
 ---
 
-## 3. Visual Direction 태그
+## 3. Visual Direction Tags
 
-### 장르 (Genre)
+### Genre
 {{GENRE_TAGS}}
 
-_예: Risograph, Retro_
+_e.g. Risograph, Retro_
 
-### 스타일 (Style)
+### Style
 {{STYLE_TAGS}}
 
-_예: Magazine, Swiss_
+_e.g. Magazine, Swiss_
 
-### 비주얼 주인공 (Subject)
+### Visual Subject
 {{SUBJECT_TAGS}}
 
-_예: Hand-Drawn, Typography-Hero_
+_e.g. Hand-Drawn, Typography-Hero_
 
 ---
 
-## 4. 톤 & 무드 서술
+## 4. Tone & Mood
 
 {{TONE_NARRATIVE}}
 
-_예:_
-- _스폿 컬러 2~3색의 어긋난 색판으로 아날로그 인쇄 감성 구현_
-- _거친 종이 노이즈와 낡은 인쇄물 질감을 기본 배경으로 활용_
-- _잘라 붙인 이미지 조각과 타이포의 이질적 병치_
-- _시스템 폰트를 피하고 커스텀 서체 사용_
-- _강한 대비의 편집 위계와 여백 리듬 유지_
+_e.g._
+- _Achieve an analog print feel with 2-3 misregistered spot colors_
+- _Use coarse paper noise and an aged print texture as the base background_
+- _A jarring juxtaposition of cut-and-pasted image fragments and typography_
+- _Avoid system fonts and use a custom typeface_
+- _Maintain a strong-contrast editorial hierarchy and a whitespace rhythm_
 
 ---
 
-## 5. 토큰 레이어 요약
+## 5. Token Layer Summary
 
-토큰의 구체 값은 `tokens.json`을 참조하되, 아래는 각 레이어의 태그 기반 요약.
+For concrete token values see `tokens.json`; below is a tag-based summary of each layer.
 
 ### Color
-- **선택 태그**: {{COLOR_TAGS}}
-- **방향성 요약**: {{COLOR_SUMMARY}}
+- **Selected tags**: {{COLOR_TAGS}}
+- **Direction summary**: {{COLOR_SUMMARY}}
 
-_예: Muted, Earth → 채도를 누른 흙빛 팔레트. 테라코타, 오크, 세이지를 중심으로 낮은 대비 유지._
+_e.g. Muted, Earth -> a desaturated earthy palette. Centered on terracotta, oak, and sage while keeping low contrast._
 
 ### Typography
-- **선택 태그**: {{TYPOGRAPHY_TAGS}}
-- **방향성 요약**: {{TYPOGRAPHY_SUMMARY}}
+- **Selected tags**: {{TYPOGRAPHY_TAGS}}
+- **Direction summary**: {{TYPOGRAPHY_SUMMARY}}
 
-_예: Serif, Editorial → 세리프 디스플레이로 헤드라인 대비를 강조. 본문은 촘촘한 조판과 위계가 뚜렷한 계층 구조._
+_e.g. Serif, Editorial -> emphasize headline contrast with a serif display. Body uses dense typesetting and a clear hierarchical structure._
 
 ### Layout
-- **선택 태그**: {{LAYOUT_TAGS}}
-- **방향성 요약**: {{LAYOUT_SUMMARY}}
+- **Selected tags**: {{LAYOUT_TAGS}}
+- **Direction summary**: {{LAYOUT_SUMMARY}}
 
-_예: Magazine, Asymmetric → 다단 컬럼 기반의 편집 레이아웃, 좌우 비대칭으로 동적 리듬 확보._
+_e.g. Magazine, Asymmetric -> a multi-column editorial layout, using left-right asymmetry to secure a dynamic rhythm._
 
 ### Gradient
-- **선택 태그**: {{GRADIENT_TAGS}}
-- **방향성 요약**: {{GRADIENT_SUMMARY}}
+- **Selected tags**: {{GRADIENT_TAGS}}
+- **Direction summary**: {{GRADIENT_SUMMARY}}
 
-_예: Grainy, Soft-blur → 배경 그라디언트에 필름 노이즈를 얹어 아날로그 질감을 강화._
+_e.g. Grainy, Soft-blur -> lay film noise over the background gradient to strengthen the analog texture._
 
 ---
 
-## 6. 구현 시 가이드라인
+## 6. Implementation Guidelines
 
 {{IMPLEMENTATION_NOTES}}
 
-_예:_
-- _버튼과 카드의 보더는 의도적으로 각지게, 라운딩은 최소화_
-- _그림자는 평평한 오프셋 섀도우만 사용, 부드러운 블러 섀도우 금지_
-- _이미지는 반드시 grain 필터 적용 후 배치_
-- _헤드라인은 항상 두 줄 이상으로 분절하여 편집적 호흡 확보_
+_e.g._
+- _Make button and card borders deliberately angular, minimize rounding_
+- _Use only flat offset shadows, no soft blur shadows_
+- _Always apply a grain filter before placing images_
+- _Always break headlines across two or more lines to secure editorial breathing room_
 
 ---
 
-## 7. 피해야 할 요소
+## 7. Elements to Avoid
 
 {{AVOID_LIST}}
 
-_예:_
-- _네온·비비드 컬러 사용 금지_
-- _3D 렌더링 일러스트 사용 금지_
-- _글래스모피즘, 뉴모피즘 스타일 배제_
-- _둥근 모서리 카드 대신 각진 블록 사용_
+_e.g._
+- _No neon or vivid colors_
+- _No 3D rendered illustrations_
+- _Exclude glassmorphism and neumorphism styles_
+- _Use angular blocks instead of rounded-corner cards_
 
 ---
 
-## 8. 참고 레퍼런스
+## 8. Reference List
 
 {{REFERENCE_LIST}}
 
-_분석에 사용된 레퍼런스 이미지 목록과 각 이미지에서 추출된 주요 태그._
+_A list of the reference images used in the analysis and the key tags extracted from each._
 
-| 이미지 | 주요 태그 | 기여한 레이어 |
+| Image | Key tags | Contributed layers |
 |--------|----------|--------------|
 | ref_001.jpg | Risograph, Muted | color, gradient |
 | ref_002.jpg | Magazine, Serif | layout, typography |

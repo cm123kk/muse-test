@@ -37,10 +37,10 @@ export const Docs = {
           AnalysisResults Dataset
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={ { mb: 4 } }>
-          프로젝트별 5-레이어 토큰 분석 결과 더미. `getAnalysisResult(projectId)`로 조회.
+          Dummy per-project 5-layer token analysis results. Look up with `getAnalysisResult(projectId)`.
         </Typography>
 
-        <SectionTitle title="스키마" />
+        <SectionTitle title="Schema" />
         <TableContainer sx={ { mb: 4 } }>
           <Table size="small">
             <TableHead>
@@ -52,18 +52,18 @@ export const Docs = {
             </TableHead>
             <TableBody>
               <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>id</TableCell><TableCell>string</TableCell><TableCell>analysis-{ '{projectId}' }</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>projectId</TableCell><TableCell>string</TableCell><TableCell>Project.id 참조</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>status</TableCell><TableCell>pending | running | done | error</TableCell><TableCell>분석 상태</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.color</TableCell><TableCell>ColorToken[]</TableCell><TableCell>컬러 토큰 목록</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.typography</TableCell><TableCell>TypographyToken[]</TableCell><TableCell>타이포 토큰 목록</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.layout</TableCell><TableCell>LayoutToken[]</TableCell><TableCell>레이아웃 토큰 (grid/spacing/container)</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.gradient</TableCell><TableCell>GradientToken[]</TableCell><TableCell>그라디언트 토큰</TableCell></TableRow>
-              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.visualDirection</TableCell><TableCell>{ '{ markdown: string, tags: {genre[],style[],subject[]} }' }</TableCell><TableCell>T3 산출물 중 MD 서술 문서 + 집계 태그</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>projectId</TableCell><TableCell>string</TableCell><TableCell>Project.id reference</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>status</TableCell><TableCell>pending | running | done | error</TableCell><TableCell>Analysis status</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.color</TableCell><TableCell>ColorToken[]</TableCell><TableCell>Color token list</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.typography</TableCell><TableCell>TypographyToken[]</TableCell><TableCell>Typography token list</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.layout</TableCell><TableCell>LayoutToken[]</TableCell><TableCell>Layout tokens (grid/spacing/container)</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.gradient</TableCell><TableCell>GradientToken[]</TableCell><TableCell>Gradient tokens</TableCell></TableRow>
+              <TableRow><TableCell sx={ { fontFamily: 'monospace' } }>layers.visualDirection</TableCell><TableCell>{ '{ markdown: string, tags: {genre[],style[],subject[]} }' }</TableCell><TableCell>MD narrative document plus aggregated tags from the T3 output</TableCell></TableRow>
             </TableBody>
           </Table>
         </TableContainer>
 
-        <SectionTitle title="프로젝트별 분석 결과 요약" />
+        <SectionTitle title="Per-project analysis result summary" />
         { projects.map((project) => {
           const analysis = getAnalysisResult(project.id);
           if (!analysis) return null;
@@ -97,7 +97,7 @@ export const Docs = {
 
               {/* Colors row */}
               <Box sx={ { display: 'flex', gap: 1, mb: 1.5, alignItems: 'center', flexWrap: 'wrap' } }>
-                <Typography variant="caption" color="text.secondary" sx={ { minWidth: 80 } }>컬러</Typography>
+                <Typography variant="caption" color="text.secondary" sx={ { minWidth: 80 } }>Color</Typography>
                 { analysis.layers.color.map((c) => (
                   <Box
                     key={ c.id }
@@ -125,7 +125,7 @@ export const Docs = {
               {/* Gradients row */}
               { analysis.layers.gradient.length > 0 && (
                 <Box sx={ { display: 'flex', gap: 1, mb: 1.5, alignItems: 'center', flexWrap: 'wrap' } }>
-                  <Typography variant="caption" color="text.secondary" sx={ { minWidth: 80 } }>그라디언트</Typography>
+                  <Typography variant="caption" color="text.secondary" sx={ { minWidth: 80 } }>Gradient</Typography>
                   { analysis.layers.gradient.map((g) => (
                     <Box
                       key={ g.id }
@@ -144,10 +144,10 @@ export const Docs = {
                 </Box>
               ) }
 
-              {/* Visual Direction row — MD 프리뷰 + 태그 집계 */}
+              {/* Visual Direction row: MD preview + tag aggregation */}
               { vd.markdown && (
                 <Box sx={ { display: 'flex', gap: 1, alignItems: 'flex-start', mt: 1 } }>
-                  <Typography variant="caption" color="text.secondary" sx={ { minWidth: 80, pt: 0.5 } }>비주얼 디렉션</Typography>
+                  <Typography variant="caption" color="text.secondary" sx={ { minWidth: 80, pt: 0.5 } }>Visual Direction</Typography>
                   <Box sx={ { flex: 1 } }>
                     { vd.tags && (
                       <Box sx={ { display: 'flex', gap: 0.5, flexWrap: 'wrap', mb: 1 } }>

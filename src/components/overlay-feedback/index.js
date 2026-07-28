@@ -1,18 +1,18 @@
 /**
  * Overlay & Feedback Components
  *
- * Dialog, Snackbar, Progress 등 오버레이 및 피드백 컴포넌트.
+ * Overlay and feedback components such as Dialog, Snackbar, and Progress.
  */
 
-// AnalysisProgress - 레이어별 단계 상태 + 전체 진행률 집계
+// AnalysisProgress - per-layer step status plus overall progress aggregation
 export { AnalysisProgress } from './AnalysisProgress.jsx';
 
-// ThemeExportDialog - MUI createTheme 코드 export (복사 + 다운로드)
+// ThemeExportDialog - export MUI createTheme code (copy + download)
 export { ThemeExportDialog } from './ThemeExportDialog.jsx';
 
-// ReferenceDetailDialog - 아카이브 카드 클릭 시 레퍼런스 상세 정보 모달
+// ReferenceDetailDialog - reference detail modal shown when an archive card is clicked
 export { ReferenceDetailDialog } from './ReferenceDetailDialog.jsx';
 
-// ReferenceNotesDialog - 프로젝트 상세에서 ref별 자유 텍스트 노트 일괄 편집
+// ReferenceNotesDialog - bulk edit free-text notes per ref from the project detail view
 export { ReferenceNotesDialog } from './ReferenceNotesDialog.jsx';
 

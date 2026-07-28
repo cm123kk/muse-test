@@ -43,7 +43,7 @@ export const Default = {
   },
 };
 
-/** 프로젝트 2 — Fintech Dashboard 샘플 */
+/** Project 2: Fintech Dashboard sample */
 export const DashboardProject = {
   render: () => {
     const project = projectsWithThumbnails[1];
@@ -65,7 +65,7 @@ export const DashboardProject = {
   },
 };
 
-/** 최소 샘플 — 컬러 하나만 */
+/** Minimal sample: a single color only */
 export const Minimal = {
   render: () => {
     const [analysis, setAnalysis] = useState({
@@ -75,12 +75,12 @@ export const Minimal = {
       typography: [],
       layout: [],
       gradient: [],
-      visualDirection: { markdown: '# Minimal Project\n\n(간단한 샘플)', tags: { genre: [], style: [], subject: [] } },
+      visualDirection: { markdown: '# Minimal Project\n\n(A simple sample)', tags: { genre: [], style: [], subject: [] } },
     });
 
     return (
       <ProjectDetailPage
-        project={ { id: 'p-min', name: 'Minimal Project', intent: '단일 컬러만 추출', type: 'brand', referenceIds: [] } }
+        project={ { id: 'p-min', name: 'Minimal Project', intent: 'Extract a single color only', type: 'brand', referenceIds: [] } }
         analysis={ analysis }
         references={ [] }
         onUpdateToken={ (layer, id, patch) =>
