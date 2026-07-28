@@ -6,6 +6,7 @@ import Chip from '@mui/material/Chip';
 import Accordion from '@mui/material/Accordion';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
+import { alpha, useTheme } from '@mui/material/styles';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { SearchBar } from '../input/SearchBar.jsx';
 import { REPRESENTATIVE_COLORS, isSimilarColor } from '../../utils/colorSimilarity';
@@ -165,6 +166,7 @@ export function FilterPanel({
   totalCount,
   sx,
 }) {
+  const theme = useTheme();
   const layeredTags = useMemo(() => buildLayeredTags(references), [references]);
   const hasAnyTag = useMemo(
     () => Object.values(layeredTags).some((arr) => arr.length > 0),
@@ -211,7 +213,7 @@ export function FilterPanel({
                     cursor: activeColors.length > 0 ? 'pointer' : 'default',
                     border: activeColors.length === 0 ? '3px solid' : '1px solid',
                     borderColor: activeColors.length === 0 ? 'primary.main' : 'divider',
-                    boxShadow: activeColors.length === 0 ? '0 0 0 2px rgba(99,102,241,0.25)' : 'none',
+                    boxShadow: activeColors.length === 0 ? `0 0 0 2px ${alpha(theme.palette.info.light, 0.25)}` : 'none',
                     transition: 'border-color 150ms, border-width 150ms, box-shadow 150ms',
                     display: 'flex',
                     alignItems: 'center',
@@ -255,7 +257,7 @@ export function FilterPanel({
                         border: isActive ? '3px solid' : '1px solid',
                         borderColor: isActive ? 'primary.main' : 'divider',
                         boxSizing: 'border-box',
-                        boxShadow: isActive ? '0 0 0 2px rgba(99,102,241,0.25)' : 'none',
+                        boxShadow: isActive ? `0 0 0 2px ${alpha(theme.palette.info.light, 0.25)}` : 'none',
                         transition: 'border-color 150ms, border-width 150ms, box-shadow 150ms',
                         '&:hover': {
                           borderColor: isActive ? 'primary.main' : 'text.secondary',

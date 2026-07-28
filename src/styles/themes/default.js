@@ -179,6 +179,17 @@ const typography = {
     letterSpacing: '0',
   },
 
+  // Shared landing section heading treatment.
+  // Centralizes the weight/tracking that landing sections used to hardcode inline,
+  // so headers stay consistent. Size defaults to the h3 scale; larger/smaller
+  // sections (footer CTA, hero bridge) override only fontSize via sx.
+  sectionHeading: {
+    fontWeight: 800,
+    fontSize: 'clamp(1.875rem, 3.25vw, 2.625rem)', // 30px ~ 42px (matches h3 scale)
+    lineHeight: 1.2,
+    letterSpacing: '-0.02em',
+  },
+
   // Body styles - generous line-height to lower information density
   body1: {
     fontSize: '1rem',        // 16px
@@ -307,6 +318,15 @@ const components = {
     styleOverrides: {
       body: {
         scrollbarWidth: 'thin',
+      },
+    },
+  },
+  // Map the custom sectionHeading variant to a semantic heading element by default.
+  // Usages can still pass `component=` to pick the exact heading level.
+  MuiTypography: {
+    defaultProps: {
+      variantMapping: {
+        sectionHeading: 'h2',
       },
     },
   },

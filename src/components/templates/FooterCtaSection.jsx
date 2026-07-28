@@ -234,11 +234,10 @@ function FooterCtaSection({ onNavigateToSignUp, onNavigateToLogin }) {
       >
         <Box sx={{ textAlign: 'center', px: 3, pointerEvents: 'auto' }}>
           <Typography
-            variant="h2"
+            variant="sectionHeading"
+            component="h2"
             sx={{
               fontSize: { xs: '1.5rem', sm: '2rem', md: '2.75rem' },
-              fontWeight: 900,
-              letterSpacing: '-0.03em',
               lineHeight: 1.15,
               mb: 3,
               color: 'text.primary',

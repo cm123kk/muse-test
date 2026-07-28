@@ -6,6 +6,7 @@ import Typography from '@mui/material/Typography';
 import Chip from '@mui/material/Chip';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
+import { alpha, useTheme } from '@mui/material/styles';
 import CloseIcon from '@mui/icons-material/Close';
 import { ReferenceCard } from '../card/ReferenceCard.jsx';
 import { ReferenceLayerChipRow } from '../card/ReferenceLayerChipRow.jsx';
@@ -58,6 +59,7 @@ export function ReferencePicker({
   mode = 'system',
   sx,
 }) {
+  const theme = useTheme();
   const [tab, setTab] = useState(recommended.length ? 'recommended' : 'archive');
 
   const selectedSet = useMemo(() => new Set(selectedIds), [selectedIds]);
@@ -163,7 +165,7 @@ export function ReferencePicker({
                   right: -6,
                   width: 20,
                   height: 20,
-                  bgcolor: 'rgba(20,19,43,0.85)',
+                  bgcolor: alpha(theme.palette.primary.main, 0.85),
                   color: 'common.white',
                   '&:hover': { bgcolor: 'error.main' },
                 } }

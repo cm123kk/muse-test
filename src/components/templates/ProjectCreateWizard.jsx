@@ -9,6 +9,7 @@ import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
 import IconButton from '@mui/material/IconButton';
 import Tooltip from '@mui/material/Tooltip';
+import { alpha, useTheme } from '@mui/material/styles';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
 import { ReferencePicker } from './ReferencePicker.jsx';
 import { AnalysisProgress } from '../overlay-feedback/AnalysisProgress.jsx';
@@ -141,6 +142,7 @@ export function ProjectCreateWizard({
   sx,
 }) {
   const [state, dispatch] = useReducer(reducer, initialState);
+  const theme = useTheme();
 
   // T2 auto-call (on entering Step 2)
   const [loadedRecommended, setLoadedRecommended] = useState(null);
@@ -467,11 +469,11 @@ export function ProjectCreateWizard({
                                   ? 'refNoteAiPulse 900ms ease-in-out infinite'
                                   : 'none',
                                 filter: suggestingRefIds[ref.id]
-                                  ? 'drop-shadow(0 0 6px rgba(99,102,241,0.6))'
+                                  ? `drop-shadow(0 0 6px ${alpha(theme.palette.info.light, 0.6)})`
                                   : 'none',
                               },
                               '&:hover .MuiSvgIcon-root': {
-                                filter: 'drop-shadow(0 0 4px rgba(99,102,241,0.5))',
+                                filter: `drop-shadow(0 0 4px ${alpha(theme.palette.info.light, 0.5)})`,
                               },
                             } }
                           >

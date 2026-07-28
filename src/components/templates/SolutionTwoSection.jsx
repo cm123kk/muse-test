@@ -282,8 +282,9 @@ function SolutionTwoSection() {
     >
       <Box sx={{ mb: 6 }}>
         <Typography
-          variant="h3"
-          sx={{ fontWeight: 800, letterSpacing: '-0.02em', mb: 2, lineHeight: 1.2 }}
+          variant="sectionHeading"
+          component="h3"
+          sx={{ mb: 2 }}
         >
           Teach AI from references analyzed to match your intent
         </Typography>

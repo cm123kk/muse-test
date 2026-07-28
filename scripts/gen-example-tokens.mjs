@@ -1,14 +1,14 @@
 /**
  * Generate static tokens for hero ScatterGallery.
  *
- * src/assets/example/*.{jpg,jpeg,png} 각 이미지를 Anthropic Vision 으로 분석해
- * { tags, dominantColors, title } 결과를 src/data/exampleTokens.json 에 저장.
+ * Analyzes each image in src/assets/example/*.{jpg,jpeg,png} with Anthropic Vision
+ * and saves the { tags, dominantColors, title } results to src/data/exampleTokens.json.
  *
- * Self-contained — production T1 의 lite 버전 (preset enum 없이 free-form tags).
+ * Self-contained: a lite version of production T1 (free-form tags, no preset enum).
  *
  * Usage:
- *   node scripts/gen-example-tokens.mjs           # 누락된 이미지만 처리
- *   node scripts/gen-example-tokens.mjs --force   # 전체 재생성
+ *   node scripts/gen-example-tokens.mjs           # process only missing images
+ *   node scripts/gen-example-tokens.mjs --force   # regenerate everything
  *
  * Requires .env.local with ANTHROPIC_API_KEY.
  */
@@ -41,7 +41,7 @@ const SYSTEM_PROMPT = `You are MUSE's per-image visual tagger.
 Given a single design reference image, return:
 - tags: 3-6 short single-word descriptors covering visual tone (e.g. editorial, brutalist, pastel, gradient, minimal, cinematic, retro, vivid, dark, mono)
 - dominantColors: 3-5 HEX (#RRGGBB) ordered from most prominent to accent
-- title: 2-5 word English descriptor of the visual mood (NOT literal subject — describe the feel)
+- title: 2-5 word English descriptor of the visual mood (NOT literal subject, describe the feel)
 
 Rules:
 - Tags must be lowercase, single English word, hyphens allowed (e.g. "off-white", "low-contrast")
@@ -74,7 +74,7 @@ const TOOL_SCHEMA = {
 
 const USER_PROMPT = 'Analyze this reference image and submit tags, dominant colors, and a short mood title.';
 
-/* ----- image → base64 + media type ----- */
+/* ----- image -> base64 + media type ----- */
 function readImage(filePath) {
   const buf = fs.readFileSync(filePath);
   const ext = path.extname(filePath).toLowerCase();
@@ -131,7 +131,7 @@ async function main() {
     : {};
 
   const targets = FORCE ? files : files.filter((f) => !existing[f]);
-  console.log(`[gen-example-tokens] ${targets.length} / ${files.length} 이미지 태깅`);
+  console.log(`[gen-example-tokens] tagging ${targets.length} / ${files.length} images`);
 
   let processed = 0;
   for (const filename of targets) {
@@ -145,11 +145,11 @@ async function main() {
       fs.writeFileSync(OUT_PATH, `${JSON.stringify(existing, null, 2)}\n`);
       console.log(`OK · "${result.title}" · tags: ${(result.tags || []).join(', ')}`);
     } catch (e) {
-      console.log(`FAIL — ${e.message}`);
+      console.log(`FAIL: ${e.message}`);
     }
   }
 
-  console.log(`[gen-example-tokens] 완료 → ${OUT_PATH}`);
+  console.log(`[gen-example-tokens] done -> ${OUT_PATH}`);
 }
 
 main().catch((e) => {

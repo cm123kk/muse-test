@@ -354,7 +354,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
             variant="h1"
             sx={{
               fontSize: { xs: '4.5rem', md: '8rem' },
-              fontWeight: 900,
+              fontWeight: 800,
               letterSpacing: '-0.04em',
               lineHeight: 1,
               mb: 3,
@@ -390,11 +390,10 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
         }}
       >
         <Typography
+          variant="sectionHeading"
           sx={{
             textAlign: 'center',
             fontSize: { xs: '1.5rem', md: '2.5rem' },
-            fontWeight: 800,
-            letterSpacing: '-0.02em',
             lineHeight: 1.4,
             color: 'text.primary',
             px: 3,

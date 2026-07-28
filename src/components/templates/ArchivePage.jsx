@@ -3,6 +3,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import Fab from '@mui/material/Fab';
+import { alpha, useTheme } from '@mui/material/styles';
 import Alert from '@mui/material/Alert';
 import CircularProgress from '@mui/material/CircularProgress';
 import IconButton from '@mui/material/IconButton';
@@ -354,6 +355,7 @@ export function ArchivePage({
 
 /** A single card in the archive grid: includes delete on hover and a tagging status overlay */
 function ArchiveCard({ item, useStoreMode, onOpenDetail, onRequestDelete, onRetryTagging }) {
+  const theme = useTheme();
   return (
     <Box
       sx={{
@@ -385,7 +387,7 @@ function ArchiveCard({ item, useStoreMode, onOpenDetail, onRequestDelete, onRetr
             position: 'absolute',
             top: 8,
             left: 8,
-            bgcolor: 'rgba(20,19,43,0.85)',
+            bgcolor: alpha(theme.palette.primary.main, 0.85),
             color: 'common.white',
             opacity: 0,
             transition: 'opacity 150ms',
