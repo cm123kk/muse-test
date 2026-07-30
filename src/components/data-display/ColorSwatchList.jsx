@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import Collapse from '@mui/material/Collapse';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import { TokenListItem } from './TokenListItem.jsx';
 import { TokenDecisionTracePanel } from './TokenDecisionTracePanel.jsx';
 
@@ -59,12 +59,12 @@ export function ColorSwatchList({ tokens, onChange, isGrouped = false, reference
               aria-label={ isExpanded ? 'Hide rationale' : 'Show rationale' }
               onClick={ () => setExpandedId(isExpanded ? null : token.id) }
               sx={ {
-                transform: isExpanded ? 'rotate(180deg)' : 'rotate(0)',
-                transition: 'transform 150ms',
+                color: isExpanded ? 'primary.main' : 'text.secondary',
+                transition: 'color 150ms',
               } }
               title={ `from ${(token.decisionRationale?.whichReferences || token.sourceReferenceIds || []).length} refs` }
             >
-              <ExpandMoreIcon fontSize="small" />
+              <HelpOutlineIcon fontSize="small" />
             </IconButton>
           ) : null }
         />

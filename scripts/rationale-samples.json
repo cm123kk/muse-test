@@ -1,0 +1,54 @@
+{
+  "note": "Real T3 output transcribed from ProjectDetail screenshots (2026-07-29 19:46). Used to score decisionRationale quality against the plan's acceptance criteria.",
+  "intent": "clean minimal editorial landing page, botanical warm earth tones",
+  "inputReferences": ["Botanical Product Grid Editorial", "Experimental Chaos Editorial"],
+  "tokens": [
+    {
+      "layer": "color",
+      "id": "primary-earth",
+      "label": "Primary Earth",
+      "value": "#8B7355",
+      "decisionRationale": {
+        "whichReferences": ["Botanical Product Grid Editorial"],
+        "whichLayers": ["color"],
+        "whyChosen": "Warm earth tone from botanical reference establishes the primary brand anchor for clean minimal aesthetic, supporting product hierarchy and editorial elegance."
+      }
+    },
+    {
+      "layer": "typography",
+      "id": "display-serif",
+      "label": "Display Serif",
+      "value": "Georgia, 'Times New Roman', serif / clamp(2rem, 5vw, 4rem)",
+      "decisionRationale": {
+        "whichReferences": ["Botanical Product Grid Editorial"],
+        "whichLayers": ["typography"],
+        "whyChosen": "Serif display from botanical editorial establishes elegant hierarchy for landing page hero, supporting editorial typography tone with classic proportions."
+      }
+    },
+    {
+      "layer": "layout",
+      "id": "minimal-container",
+      "label": "Minimal Container",
+      "value": "max-width 1200px",
+      "decisionRationale": {
+        "whichReferences": ["Botanical Product Grid Editorial", "Experimental Chaos Editorial"],
+        "whichLayers": ["layout"],
+        "whyChosen": "1200px max-width container balances content breathing room with screen utilization, reflecting clean minimal aesthetic across both editorial references.",
+        "alternativesConsidered": [
+          { "value": "1400px", "reason": "Narrower width better enforces minimal restraint and reading line length for typography-focused content." }
+        ]
+      }
+    },
+    {
+      "layer": "gradient",
+      "id": "earth-cream-fade",
+      "label": "Earth to Cream Fade",
+      "value": "linear-gradient(135deg, #8B7355 0%, #F5F1E8 100%)",
+      "decisionRationale": {
+        "whichReferences": ["Botanical Product Grid Editorial"],
+        "whichLayers": ["color"],
+        "whyChosen": "Subtle earth-to-cream gradient from botanical palette provides sophisticated depth for hero sections while maintaining clean minimal aesthetic with warm harmony."
+      }
+    }
+  ]
+}

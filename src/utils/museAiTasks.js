@@ -365,6 +365,40 @@ visualDirection.markdown must be 200+ chars filling sections 1-6 of the template
     if (!md || md.length < 200) empties.push('visualDirection.markdown');
     return empties;
   };
+  const RATIONALE_TOKEN_REF_RE = /\{[a-z]+\.[^}]+\}/i;
+  const RATIONALE_MARKDOWN_RE = /(\*\*|`|#{1,6}\s|\]\()/;
+  const inputRefIds = new Set((selectedRefs || []).map((r) => r.id).filter(Boolean));
+  /**
+   * TP6 hard gate: every core token must carry decisionRationale grounded in valid input refs,
+   * with a whyChosen sentence that is present, long enough, and free of token-ref / markdown leakage.
+   * Returns an array of short issue strings (empty = pass).
+   */
+  const checkRationaleIssues = (input) => {
+    const t = input?.tokens || {};
+    const issues = [];
+    for (const layer of ['color', 'typography', 'layout', 'gradient']) {
+      const arr = Array.isArray(t[layer]) ? t[layer] : [];
+      arr.forEach((tok, i) => {
+        const id = tok?.id || `${layer}[${i}]`;
+        const dr = tok?.decisionRationale;
+        if (!dr || typeof dr !== 'object') { issues.push(`${id}: missing decisionRationale`); return; }
+        const refs = Array.isArray(dr.whichReferences) ? dr.whichReferences : [];
+        if (refs.length === 0) {
+          issues.push(`${id}: whichReferences empty`);
+        } else if (inputRefIds.size > 0) {
+          const bad = refs.filter((r) => !inputRefIds.has(r));
+          if (bad.length) issues.push(`${id}: refs not in input (${bad.slice(0, 2).join(', ')})`);
+        }
+        const why = typeof dr.whyChosen === 'string' ? dr.whyChosen.trim() : '';
+        if (why.length < 40) issues.push(`${id}: whyChosen missing/too short`);
+        else if (why.length > 260) issues.push(`${id}: whyChosen too long (one sentence, <= ~40 words)`);
+        else if (RATIONALE_TOKEN_REF_RE.test(why) || RATIONALE_MARKDOWN_RE.test(why)) issues.push(`${id}: whyChosen has token-ref/markdown`);
+        const alts = Array.isArray(dr.alternativesConsidered) ? dr.alternativesConsidered : [];
+        if (!alts.some((a) => a && a.value && a.reason)) issues.push(`${id}: alternativesConsidered missing`);
+      });
+    }
+    return issues;
+  };
   const summarizePhase1 = (input) => {
     const t = input?.tokens || {};
     return {
@@ -390,23 +424,34 @@ visualDirection.markdown must be 200+ chars filling sections 1-6 of the template
   console.log('[runAnalyzeTokens] Phase 1 result:', summarizePhase1(phase1));
 
   let p1Empties = checkCoreEmpties(phase1);
-  if (p1Empties.length > 0) {
+  let p1Rationale = checkRationaleIssues(phase1);
+  if (p1Empties.length > 0 || p1Rationale.length > 0) {
     // eslint-disable-next-line no-console
-    console.warn('[runAnalyzeTokens] Phase 1 validation failed -> retrying:', p1Empties);
-    const retry = await callPhase1(
-      `[CRITICAL RETRY] Phase 1 missing/short: ${p1Empties.join(', ')}. Re-emit COMPLETE phase 1: tokens (color 4-6, typography 3-4, layout 2-4, gradient 1-3) + visualDirection (markdown 200+ chars, tags).`
-    );
+    console.warn('[runAnalyzeTokens] Phase 1 validation failed -> retrying:', { empties: p1Empties, rationale: p1Rationale.slice(0, 4) });
+    const parts = ['[CRITICAL RETRY] Re-emit COMPLETE phase 1 in a single tool call.'];
+    if (p1Empties.length > 0) {
+      parts.push(`Missing/short: ${p1Empties.join(', ')}. tokens (color 4-6, typography 3-4, layout 2-4, gradient 1-3) + visualDirection (markdown 200+ chars, tags).`);
+    }
+    if (p1Rationale.length > 0) {
+      parts.push(`TP6 decisionRationale problems on: ${p1Rationale.slice(0, 6).join(' | ')}. EVERY color/typography/layout/gradient token MUST include decisionRationale { whichReferences: [>=1 id that EXISTS in the input references], whyChosen: ONE sentence (~25-40 words) DENSE WITH FACTS naming the SPECIFIC thing observed in a ref (with its value) + the EXACT value you chose (hex/font/px) + how it serves the intent (cut vague filler adjectives, no token-ref {a.b}, no markdown, and do NOT cram the alternative in here), alternativesConsidered: [{ value, reason }] with the strongest rejected candidate }.`);
+    }
+    const retry = await callPhase1(parts.join(' '));
     if (retry.input) {
       phase1 = retry.input;
       p1Res = retry.res;
       p1Empties = checkCoreEmpties(phase1);
+      p1Rationale = checkRationaleIssues(phase1);
     }
     // eslint-disable-next-line no-console
-    console.log('[runAnalyzeTokens] Phase 1 retry result:', summarizePhase1(phase1));
+    console.log('[runAnalyzeTokens] Phase 1 retry result:', summarizePhase1(phase1), { rationaleRemaining: p1Rationale.length });
   }
   if (p1Empties.length > 0) {
     // eslint-disable-next-line no-console
     console.error('[runAnalyzeTokens] Phase 1 still empty after retry:', p1Empties);
+  }
+  if (p1Rationale.length > 0) {
+    // eslint-disable-next-line no-console
+    console.warn('[runAnalyzeTokens] Phase 1 decisionRationale issues persist after retry:', p1Rationale.slice(0, 6));
   }
 
   // Progress state - phase 1 axes done

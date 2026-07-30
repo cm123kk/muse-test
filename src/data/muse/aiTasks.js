@@ -409,6 +409,103 @@ Select the best matches.`,
 /* =========================================================
  * T3. Token analysis + Visual Direction (dual output)
  * ========================================================= */
+/**
+ * TP6 decision-rationale schema. REQUIRED on every core token (color/typography/layout/gradient).
+ * Grounds each token in specific input references AND ties the value to the user intent.
+ */
+const DECISION_RATIONALE_SCHEMA = {
+  type: 'object',
+  description: 'TP6 decision trace shown to the user. REQUIRED. Ground the choice in specific input reference ids AND tie it to the project intent.',
+  properties: {
+    whichReferences: {
+      type: 'array',
+      description: 'Input reference ids that contributed to this token. At least one, and every id MUST exist in the input references.',
+      items: { type: 'string' },
+      minItems: 1,
+    },
+    whichLayers: {
+      type: 'array',
+      description: 'Which layers from those refs informed this token (color/typography/layout/gradient).',
+      items: { type: 'string' },
+    },
+    whyChosen: {
+      type: 'string',
+      description: 'ONE sentence (about 25-40 words) DENSE WITH CONCRETE FACTS, not adjectives, with THREE parts: (1) the SPECIFIC thing observed in a named ref (e.g. "the #14132B ink in the ref-003 masthead" - never just "the reference"); (2) the EXACT value you chose (name the hex / font / px); (3) how it serves the project intent. Spend every word on a fact. Do NOT put the rejected alternative here - that goes in alternativesConsidered. BANNED unless immediately backed by a concrete detail: vague filler adjectives (elegant / sophisticated / clean / modern / balanced / timeless / dynamism / systemic / editorial warmth / breathing). Must fail the paste test: it must NOT read correctly if pasted onto a different token. No token-ref {a.b} syntax, no markdown.',
+      minLength: 40,
+      maxLength: 260,
+    },
+    appliedUserNotes: {
+      type: 'string',
+      description: 'Optional. A verbatim 10-30 char fragment of userNotes, ONLY if it directly drove this token.',
+    },
+    alternativesConsidered: {
+      type: 'array',
+      description: 'REQUIRED. The single strongest rejected candidate and the concrete reason it lost. This forces a real tradeoff instead of one-sided praise.',
+      items: {
+        type: 'object',
+        properties: { value: { type: 'string' }, reason: { type: 'string' } },
+        required: ['value', 'reason'],
+      },
+      minItems: 1,
+    },
+  },
+  required: ['whichReferences', 'whyChosen', 'alternativesConsidered'],
+};
+
+/** Core token item schemas. Each REQUIRES decisionRationale. additionalProperties stays allowed. */
+const COLOR_TOKEN_SCHEMA = {
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    label: { type: 'string' },
+    hex: { type: 'string', pattern: '^#[0-9A-Fa-f]{6}$' },
+    role: { type: 'string', enum: ['primary', 'secondary', 'accent', 'neutral'] },
+    group: { type: 'string', enum: ['Brand', 'Surface', 'Data', 'Neutral'] },
+    isEnabled: { type: 'boolean' },
+    sourceReferenceIds: { type: 'array', items: { type: 'string' } },
+    decisionRationale: DECISION_RATIONALE_SCHEMA,
+  },
+  required: ['id', 'label', 'hex', 'decisionRationale'],
+};
+const TYPOGRAPHY_TOKEN_SCHEMA = {
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    label: { type: 'string' },
+    variant: { type: 'string' },
+    fontFamily: { type: 'string' },
+    fontWeight: { type: 'integer' },
+    fontSize: { type: 'string' },
+    lineHeight: { type: 'number' },
+    letterSpacing: { type: 'string' },
+    isEnabled: { type: 'boolean' },
+    decisionRationale: DECISION_RATIONALE_SCHEMA,
+  },
+  required: ['id', 'label', 'decisionRationale'],
+};
+const LAYOUT_TOKEN_SCHEMA = {
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    label: { type: 'string' },
+    kind: { type: 'string', enum: ['grid', 'container'] },
+    isEnabled: { type: 'boolean' },
+    decisionRationale: DECISION_RATIONALE_SCHEMA,
+  },
+  required: ['id', 'label', 'decisionRationale'],
+};
+const GRADIENT_TOKEN_SCHEMA = {
+  type: 'object',
+  properties: {
+    id: { type: 'string' },
+    label: { type: 'string' },
+    gradient: { type: 'string' },
+    isEnabled: { type: 'boolean' },
+    decisionRationale: DECISION_RATIONALE_SCHEMA,
+  },
+  required: ['id', 'label', 'decisionRationale'],
+};
+
 export const TASK_ANALYZE_TOKENS = {
   id: 't3',
   name: 'Intent-driven composition analysis',
@@ -514,11 +611,17 @@ referencing only the filename lets an external AI match them.
 For EVERY token in tokens.color / typography / layout / gradient, emit decisionRationale with:
   - whichReferences: array of ref IDs that contributed to this token (subset of input)
   - whichLayers: which layers from those refs (per useLayers if set)
-  - whyChosen: ONE LINE in user's intent language explaining why this value
+  - whyChosen: ONE sentence (~25-40 words) DENSE WITH CONCRETE FACTS (not adjectives), in the user's intent language, with THREE parts:
+      (1) the SPECIFIC thing you observed in a named ref (name it: "the #14132B ink in the ref-003 masthead", not "the reference"),
+      (2) the EXACT value you chose (name the hex / font / px),
+      (3) how it serves the project intent.
+    Spend every word on a fact. Keep it to ONE sentence. Do NOT cram the rejected alternative into whyChosen - it goes in alternativesConsidered.
+    BANNED unless immediately backed by a concrete detail: vague filler adjectives (elegant / sophisticated / clean / modern / balanced / timeless / dynamism / systemic / editorial warmth / breathing).
+    Fail the PASTE TEST: the sentence must NOT read correctly if pasted onto a different token.
+  - alternativesConsidered: REQUIRED. The single strongest rejected candidate + the concrete reason it lost (forces a real tradeoff).
   - appliedUserNotes: ONLY emit if userNotes (L4) directly drove this token's value.
     Quote the relevant fragment from userNotes (10-30 chars, verbatim).
     Do NOT echo generic userNotes across all tokens.
-  - alternativesConsidered: optional, array of {value, reason} for top 1-2 rejected candidates
 This is shown to the user in the token detail panel. T1 super-theme: "the reason behind every decision the AI makes must be traceable."
 
 === OUTPUT ===
@@ -555,23 +658,23 @@ Shared rules:
 
 [color] 4-6 tokens.
 - Source: extracted.palette union across refs + dominantColors as fallback
-- Fields: id, label, hex, role (primary|secondary|accent|neutral), group (Brand|Surface|Data|Neutral), isEnabled (true), sourceReferenceIds[]
+- Fields: id, label, hex, role (primary|secondary|accent|neutral), group (Brand|Surface|Data|Neutral), isEnabled (true), sourceReferenceIds[], decisionRationale { whichReferences[] (>=1, valid input ref id), whichLayers[], whyChosen (ONE sentence: source -> value -> intent) }
 - Exactly one primary. Intent decides which hue becomes primary.
 
 [typography] 3-4 tokens.
 - Source: extracted.typography entries across refs, clustered by hierarchy
-- Fields: id, label, variant (h1|h2|h3|body1|body2|caption), fontFamily (CSS stack), fontWeight (100-900), fontSize (CSS; use clamp() for display), lineHeight (number), letterSpacing (em), isEnabled (true)
+- Fields: id, label, variant (h1|h2|h3|body1|body2|caption), fontFamily (CSS stack), fontWeight (100-900), fontSize (CSS; use clamp() for display), lineHeight (number), letterSpacing (em), isEnabled (true), decisionRationale { whichReferences[], whichLayers[], whyChosen (source -> value -> intent) }
 - Build a hierarchical scale (display → body → caption). Override sizes for coherence.
 
 [layout] 2-4 tokens.
 - Source: extracted.layout entries
-- Fields: id, label, kind (grid|container ONLY - spacing is now its own axis below), columns?, gap?, ratio?, maxWidth?, isEnabled
+- Fields: id, label, kind (grid|container ONLY - spacing is now its own axis below), columns?, gap?, ratio?, maxWidth?, isEnabled, decisionRationale { whichReferences[], whichLayers[], whyChosen (source -> value -> intent) }
 - Intent can override (e.g. "dashboard" → columns: 12 regardless)
 - Do NOT emit kind="spacing" here - emit those values in the spacing axis instead.
 
 [gradient] 1-3 tokens.
 - Source: extracted.gradient across refs (or synthesize from palette if needed)
-- Fields: id, label, gradient (CSS string), stops, isEnabled
+- Fields: id, label, gradient (CSS string), stops, isEnabled, decisionRationale { whichReferences[], whichLayers[], whyChosen (source -> value -> intent) }
 
 === Spacing & Rounded scales (NEW, REQUIRED) ===
 
@@ -678,10 +781,10 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
             type: 'object',
             description: '4 CORE axes only.',
             properties: {
-              color: { type: 'array', minItems: 4, maxItems: 6 },
-              typography: { type: 'array', minItems: 3, maxItems: 4 },
-              layout: { type: 'array', minItems: 2, maxItems: 4, description: 'kind: grid|container only - spacing is a separate axis (phase 2).' },
-              gradient: { type: 'array', minItems: 1, maxItems: 3 },
+              color: { type: 'array', minItems: 4, maxItems: 6, items: COLOR_TOKEN_SCHEMA },
+              typography: { type: 'array', minItems: 3, maxItems: 4, items: TYPOGRAPHY_TOKEN_SCHEMA },
+              layout: { type: 'array', minItems: 2, maxItems: 4, description: 'kind: grid|container only - spacing is a separate axis (phase 2).', items: LAYOUT_TOKEN_SCHEMA },
+              gradient: { type: 'array', minItems: 1, maxItems: 3, items: GRADIENT_TOKEN_SCHEMA },
             },
             required: ['color', 'typography', 'layout', 'gradient'],
           },
@@ -742,8 +845,26 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
     inputDescription: 'project "Editorial Minimal", intent="black and white contrast magazine", 6 images',
     expectedOutput: {
       tokens: {
-        color: [{ id: 'col-ink', label: 'Primary Ink', hex: '#14132B', role: 'primary', group: 'Brand', isEnabled: true, sourceReferenceIds: ['ref-001', 'ref-003'] }],
-        // typography/layout/gradient omitted
+        color: [{
+          id: 'col-ink', label: 'Primary Ink', hex: '#14132B', role: 'primary', group: 'Brand', isEnabled: true,
+          sourceReferenceIds: ['ref-001', 'ref-003'],
+          decisionRationale: {
+            whichReferences: ['ref-001', 'ref-003'],
+            whichLayers: ['color'],
+            whyChosen: 'Took the near-black ink (#14132B) from the ref-003 headline masthead so the black-and-white magazine intent keeps maximum text contrast.',
+            alternativesConsidered: [{ value: '#2B2B2B warm charcoal', reason: 'too soft for the hard editorial contrast' }],
+          },
+        }],
+        typography: [{
+          id: 'typ-display', label: 'Display Serif', variant: 'h1', fontFamily: 'Playfair Display, serif', fontWeight: 700, fontSize: 'clamp(2.5rem, 6vw, 4rem)', lineHeight: 1.05, letterSpacing: '-0.01em', isEnabled: true,
+          decisionRationale: {
+            whichReferences: ['ref-002'],
+            whichLayers: ['typography'],
+            whyChosen: 'Matched the thin-stroke Playfair serif from the ref-002 cover title, set with clamp() up to 4rem, so the magazine intent reads boldly at hero sizes.',
+            alternativesConsidered: [{ value: 'a geometric sans display', reason: 'lost the print-magazine character the intent calls for' }],
+          },
+        }],
+        // layout/gradient follow the same shape - EVERY core token REQUIRES decisionRationale (incl. alternativesConsidered)
       },
       visualDirection: {
         markdown: '# Editorial Minimal - Visual Direction\n\n## 1. Project Overview\n...',
