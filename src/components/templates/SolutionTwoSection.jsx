@@ -11,11 +11,11 @@ import { AnalysisLayerTabs } from '../data-display/AnalysisLayerTabs';
  */
 const T3_ANALYSIS = {
   color: [
-    { id: 'col-signal', label: 'Signal Red', hex: '#D91A0A', role: 'primary', group: 'Brand', isEnabled: true, emphasis: 2, sourceReferenceIds: ['img1'] },
-    { id: 'col-ink', label: 'Ink Black', hex: '#0D0D0D', role: 'secondary', group: 'Brand', isEnabled: true, emphasis: 2, sourceReferenceIds: ['img1', 'img2'] },
-    { id: 'col-cream', label: 'Warm Cream', hex: '#F2EDE8', group: 'Surface', isEnabled: true, emphasis: 1, sourceReferenceIds: ['img1', 'img3'] },
-    { id: 'col-mid', label: 'Cool Mid', hex: '#8C8E8C', group: 'Neutral', isEnabled: true, emphasis: 1, sourceReferenceIds: ['img2'] },
-    { id: 'col-earth', label: 'Earth Muted', hex: '#6B6460', group: 'Neutral', isEnabled: false, emphasis: 0, sourceReferenceIds: ['img3'] },
+    { id: 'col-signal', label: 'Signal Red', hex: '#D91A0A', role: 'primary', group: 'Brand', isEnabled: true, emphasis: 2, sourceReferenceIds: ['img1'], decisionRationale: { whichReferences: ['img1'], whichLayers: ['color'], whyChosen: 'Lifted the saturated #D91A0A red from the Brutalist Red Poster masthead to be the primary signal color that drives the composited high-contrast tension.', alternativesConsidered: [{ value: '#B00000', reason: 'read corporate and lost the poster energy' }] } },
+    { id: 'col-ink', label: 'Ink Black', hex: '#0D0D0D', role: 'secondary', group: 'Brand', isEnabled: true, emphasis: 2, sourceReferenceIds: ['img1', 'img2'], decisionRationale: { whichReferences: ['img1', 'img2'], whichLayers: ['color'], whyChosen: 'Took the near-black #0D0D0D ink shared by the Brutalist Poster and Swiss Grid print so type and rules stay maximally legible on cream.', alternativesConsidered: [{ value: '#000000', reason: 'too flat next to the risograph paper texture' }] } },
+    { id: 'col-cream', label: 'Warm Cream', hex: '#F2EDE8', group: 'Surface', isEnabled: true, emphasis: 1, sourceReferenceIds: ['img1', 'img3'], decisionRationale: { whichReferences: ['img1', 'img3'], whichLayers: ['color'], whyChosen: 'Sampled the warm #F2EDE8 paper tone from the Risograph Zine stock as the surface so the system reads printed, not screen-white.', alternativesConsidered: [{ value: '#FFFFFF', reason: 'erased the printed-paper character the intent asks for' }] } },
+    { id: 'col-mid', label: 'Cool Mid', hex: '#8C8E8C', group: 'Neutral', isEnabled: true, emphasis: 1, sourceReferenceIds: ['img2'], decisionRationale: { whichReferences: ['img2'], whichLayers: ['color'], whyChosen: 'Pulled the cool #8C8E8C grey from the Swiss Grid rule lines for secondary text and dividers so it never competes with the red.', alternativesConsidered: [{ value: 'warm taupe', reason: 'muddied the crisp Swiss structure' }] } },
+    { id: 'col-earth', label: 'Earth Muted', hex: '#6B6460', group: 'Neutral', isEnabled: false, emphasis: 0, sourceReferenceIds: ['img3'], decisionRationale: { whichReferences: ['img3'], whichLayers: ['color'], whyChosen: 'Held the muted #6B6460 earth from the Risograph Zine for disabled and tertiary states, kept off by default to protect the minimal palette.', alternativesConsidered: [{ value: 'a cool slate', reason: 'clashed with the warm paper base' }] } },
   ],
   typography: [
     {
@@ -30,6 +30,12 @@ const T3_ANALYSIS = {
       sampleText: 'Aa',
       isEnabled: true,
       emphasis: 2,
+      decisionRationale: {
+        whichReferences: ['img1'],
+        whichLayers: ['typography'],
+        whyChosen: 'Matched the heavy Impact-style face from the Brutalist Red Poster headline at 900 weight and 28px so hero type hits with poster force.',
+        alternativesConsidered: [{ value: 'a geometric sans', reason: 'too clean to carry the brutalist weight' }],
+      },
     },
     {
       id: 'typo-mono',
@@ -43,6 +49,12 @@ const T3_ANALYSIS = {
       sampleText: 'Aa',
       isEnabled: true,
       emphasis: 1,
+      decisionRationale: {
+        whichReferences: ['img2'],
+        whichLayers: ['typography'],
+        whyChosen: 'Borrowed the monospace body from the Swiss Grid print at 13px and 1.6 line height to keep captions on a strict technical grid.',
+        alternativesConsidered: [{ value: 'a neutral sans body', reason: 'lost the Swiss technical signal' }],
+      },
     },
     {
       id: 'typo-serif',
@@ -56,12 +68,18 @@ const T3_ANALYSIS = {
       sampleText: 'Aa',
       isEnabled: true,
       emphasis: 1,
+      decisionRationale: {
+        whichReferences: ['img3'],
+        whichLayers: ['typography'],
+        whyChosen: 'Kept the editorial serif from the Risograph Zine pull-quotes, Georgia 700 at 20px, to add a print-magazine voice between the mono and display.',
+        alternativesConsidered: [{ value: 'a second sans weight', reason: 'flattened the print contrast the mix needs' }],
+      },
     },
   ],
   layout: [
-    { id: 'lay-fullbleed', label: 'Full Bleed Hero', kind: 'container', ratio: 1, maxWidth: '100vw', isEnabled: true, emphasis: 2 },
-    { id: 'lay-grid-12', label: '12 Column Grid', kind: 'grid', columns: 12, gap: 24, isEnabled: true, emphasis: 2 },
-    { id: 'lay-section-gap', label: 'Section Gap', kind: 'spacing', px: 80, isEnabled: true, emphasis: 1 },
+    { id: 'lay-fullbleed', label: 'Full Bleed Hero', kind: 'container', ratio: 1, maxWidth: '100vw', isEnabled: true, emphasis: 2, decisionRationale: { whichReferences: ['img1'], whichLayers: ['layout'], whyChosen: 'Took the edge-to-edge crop from the Brutalist Red poster as a 100vw full-bleed hero so the system opens at maximum impact.', alternativesConsidered: [{ value: 'a contained 1200px hero', reason: 'tamed the poster energy the intent wants' }] } },
+    { id: 'lay-grid-12', label: '12 Column Grid', kind: 'grid', columns: 12, gap: 24, isEnabled: true, emphasis: 2, decisionRationale: { whichReferences: ['img2'], whichLayers: ['layout'], whyChosen: 'Adopted the strict 12-column grid with 24px gaps from the Swiss Grid print to structure content the way the reference organizes its type blocks.', alternativesConsidered: [{ value: 'an 8-column grid', reason: 'too coarse for the Swiss density' }] } },
+    { id: 'lay-section-gap', label: 'Section Gap', kind: 'spacing', px: 80, isEnabled: true, emphasis: 1, decisionRationale: { whichReferences: ['img3'], whichLayers: ['layout'], whyChosen: 'Set an 80px section gap echoing the generous space between blocks in the Risograph Zine so the dense type has room to breathe.', alternativesConsidered: [{ value: '48px gap', reason: 'crowded the asymmetric sections' }] } },
   ],
   gradient: [
     {
@@ -71,6 +89,12 @@ const T3_ANALYSIS = {
       stops: [{ color: '#D91A0A' }, { color: '#0D0D0D' }],
       isEnabled: true,
       emphasis: 2,
+      decisionRationale: {
+        whichReferences: ['img1'],
+        whichLayers: ['gradient'],
+        whyChosen: 'Built the radial #D91A0A to #0D0D0D burst from the red-on-black focal point of the Brutalist Poster to spotlight hero CTAs.',
+        alternativesConsidered: [{ value: 'a flat red fill', reason: 'lost the directional energy of the poster' }],
+      },
     },
     {
       id: 'grad-paper',
@@ -79,6 +103,12 @@ const T3_ANALYSIS = {
       stops: [{ color: '#F2EDE8' }, { color: '#EDE8DF' }],
       isEnabled: true,
       emphasis: 1,
+      decisionRationale: {
+        whichReferences: ['img3'],
+        whichLayers: ['gradient'],
+        whyChosen: 'Faded #F2EDE8 to #EDE8DF as a paper wash from the Risograph Zine stock to give surfaces a subtle printed texture without adding contrast.',
+        alternativesConsidered: [{ value: 'a solid cream', reason: 'read as digital, not printed' }],
+      },
     },
   ],
   visualDirection: {
@@ -96,6 +126,13 @@ const DEMO_PROJECT = {
   intent: 'A design system composited from Brutalist Red, Swiss Grid, and Risograph',
   mode: 'system',
 };
+
+/** Dummy references so the decision-trace panel shows named sources (img1/img2/img3). */
+const DEMO_REFERENCES = [
+  { id: 'img1', title: 'Brutalist Red Poster' },
+  { id: 'img2', title: 'Swiss Grid Print' },
+  { id: 'img3', title: 'Risograph Zine' },
+];
 
 /* Visual direction summary: tag groups + key direction bullets */
 function VisualDirectionSummary({ vd }) {
@@ -303,7 +340,7 @@ function SolutionTwoSection() {
         <AnalysisLayerTabs
           analysis={T3_ANALYSIS}
           project={DEMO_PROJECT}
-          references={[]}
+          references={DEMO_REFERENCES}
           renderOverride={{
             visualDirection: () => <VisualDirectionSummary vd={T3_ANALYSIS.visualDirection} />,
             designMd: () => <DesignMdSummary analysis={T3_ANALYSIS} />,
