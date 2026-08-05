@@ -470,7 +470,7 @@ const T3_UX = {
   steps: [
     'Clicking "Start Analysis" in wizard Step 3 makes `onAnalyze` call `runAnalyzeTokens({intent, type, selectedRefs, onProgress})`.',
     'Only `{id, title, tags, dominantColors, extracted}` are pulled from the selected references, serialized to JSON, and passed as the user message: no image re-call.',
-    'Haiku 4.5 calls two tools: `submit_tokens` (synthesizing the 4 layers color/typography/layout/gradient) + `submit_visual_direction` (genre/style/subject tags + Markdown body).',
+    'Haiku 4.5 uses three tool calls: `submit_design_system_core` (the 4 layers color/typography/layout/gradient) and `submit_visual_direction` (genre/style/subject tags + Markdown body) run in parallel, then `submit_design_system_designmd` (spacing/rounded/elevation/components).',
     'The `onProgress` callback reflects the 5-layer status (running → done) into the AnalysisProgress component in real time.',
     'On completion, `setAnalysis` saves to store/DB, so the project detail page can export via ThemeExportDialog (MUI theme) + ZIP (JSON tokens + VD MD + reference images).',
   ],
@@ -528,7 +528,7 @@ const T3_INPUTS = [
   { category: 'db', item: 'selectedRefs[].id, title', source: 'references metadata', note: 'For tracking' },
   { category: 'system', item: 'TASK_ANALYZE_TOKENS.systemPrompt', source: 'data/muse/aiTasks.js', note: '-' },
   { category: 'system', item: 'TASK_ANALYZE_TOKENS.userMessageTemplate', source: 'data/muse/aiTasks.js', note: '{{intent}}/{{type}}/{{count}}/{{ids}} substitution' },
-  { category: 'system', item: 'two toolSchemas', source: 'submit_tokens + submit_visual_direction', note: 'Both forced to be called' },
+  { category: 'system', item: 'three toolSchemas', source: 'submit_design_system_core + submit_visual_direction (parallel) then submit_design_system_designmd', note: 'Each forced via its own tool_choice' },
   { category: 'model', item: 'model: claude-haiku-4-5, text-only', source: 'hardcoded', note: 'No images, so Haiku is enough' },
   { category: 'callback', item: 'onProgress(layers)', source: 'Injected by ProjectCreateRoute', note: 'For updating the AnalysisProgress UI' },
   { category: 'none', item: 'original images / entire archive (only the selected N)', source: '-', note: 'Synthesizes from only T1 pre-extracted tokens' },

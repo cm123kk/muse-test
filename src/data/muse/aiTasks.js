@@ -4,7 +4,8 @@
  * 2026-04-22 v2: Switched to a 5-layer structure based on muse_tags_preset.json.
  *   - T1: now outputs per-layer nested tags (color/typography/layout/gradient/visualDirection{genre,style,subject})
  *   - T3: keyVisual layer retired, visualDirection (Markdown) layer newly added.
- *          Calls both tools (submit_tokens + submit_visual_direction) in a single call.
+ *   2026-08 v3: T3 (system) split into 3 tool calls: submit_design_system_core (tokens) and
+ *          submit_visual_direction run in parallel, then submit_design_system_designmd (phase 2).
  */
 
 import {
@@ -18,6 +19,7 @@ const TOOL_AUTO_TAG_NAME = 'submit_tagging';
 // system mode: split into 2 phased calls (protects Haiku capacity)
 const TOOL_SUBMIT_DESIGN_SYSTEM_CORE = 'submit_design_system_core';
 const TOOL_SUBMIT_DESIGN_SYSTEM_DESIGNMD = 'submit_design_system_designmd';
+const TOOL_SUBMIT_VISUAL_DIRECTION = 'submit_visual_direction';
 const TOOL_SUBMIT_CONCEPT_PROMPT = 'submit_concept_prompt';
 
 const COMMON_QUALITY = [
@@ -626,7 +628,7 @@ This is shown to the user in the token detail panel. T1 super-theme: "the reason
 
 === OUTPUT ===
 
-Call submit_design_system EXACTLY ONCE with ALL fields populated in a single tool call:
+This task runs as a few tool calls: tokens (${TOOL_SUBMIT_DESIGN_SYSTEM_CORE}) and visual direction (${TOOL_SUBMIT_VISUAL_DIRECTION}) in parallel, then the DESIGN.md axes (${TOOL_SUBMIT_DESIGN_SYSTEM_DESIGNMD}). Each call gives you ONE tool; fill EXACTLY that tool's schema and nothing else. Across all calls you produce:
   - tokens.color (4-6 entries)
   - tokens.typography (3-4 entries)
   - tokens.layout (2-4 entries, kind: grid|container only)
@@ -641,7 +643,7 @@ Call submit_design_system EXACTLY ONCE with ALL fields populated in a single too
 This output is exported as a DESIGN.md file (Google Labs alpha spec). Components
 that reference tokens via {path} syntax become the Components section of DESIGN.md.
 
-DO NOT split into multiple tool calls. DO NOT call the tool more than once.
+Emit ONLY the fields that belong to the tool you are given in the CURRENT call; never add fields outside that tool's schema.
 REQUIRED non-empty: color (4-6), typography (3-4), layout (2-4), gradient (1-3), visualDirection.markdown.
 STRONGLY ENCOURAGED (determines DESIGN.md export quality): spacing, rounded, components.
 OPTIONAL: elevation (empty array allowed).
@@ -761,7 +763,7 @@ markdown: fill this template faithfully, substituting {{PLACEHOLDERS}} with conc
 tags: the preset vocabulary tags used in section 3 (genre[], style[], subject[]).
 
 === Global ===
-Respond via submit_design_system ONLY. No prose outside the tool. Single call with all fields.`,
+Respond via the provided tool ONLY. No prose outside the tool. Fill exactly the schema of the tool you are given in the current call.`,
 
   userMessageTemplate: `Project intent: "{{intent}}"
 Reference count: {{count}} (ids = [{{ids}}])
@@ -773,7 +775,7 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
   toolSchemas: [
     {
       name: TOOL_SUBMIT_DESIGN_SYSTEM_CORE,
-      description: 'PHASE 1 OF 2 - Submit 4 CORE token axes (color/typography/layout/gradient) + visualDirection (markdown + tags). DO NOT include spacing/rounded/elevation/components in this call - those are emitted in phase 2.',
+      description: 'PHASE 1 (tokens) - Submit the 4 CORE token axes (color/typography/layout/gradient) ONLY. Do NOT include visualDirection here (a separate submit_visual_direction call handles it), and do NOT include spacing/rounded/elevation/components (phase 2).',
       input_schema: {
         type: 'object',
         properties: {
@@ -788,25 +790,28 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
             },
             required: ['color', 'typography', 'layout', 'gradient'],
           },
-          visualDirection: {
+        },
+        required: ['tokens'],
+      },
+    },
+    {
+      name: TOOL_SUBMIT_VISUAL_DIRECTION,
+      description: 'VISUAL DIRECTION - Submit the visualDirection markdown narrative + aggregated tags. This is a SEPARATE call from the token axes; it does not depend on the emitted token ids, only on the references and intent.',
+      input_schema: {
+        type: 'object',
+        properties: {
+          markdown: { type: 'string', minLength: 200, description: 'Fill sections 1-6 of the visual-direction template (Project Overview, Overall Direction, Visual Direction Tags, Tone & Mood, Implementation Guidelines, Elements to Avoid). 200+ chars.' },
+          tags: {
             type: 'object',
-            description: 'Markdown narrative + aggregated tags.',
             properties: {
-              markdown: { type: 'string', minLength: 200 },
-              tags: {
-                type: 'object',
-                properties: {
-                  genre: { type: 'array', items: { type: 'string', enum: getVisualDirectionTags('genre') }, minItems: 0, maxItems: 2 },
-                  style: { type: 'array', items: { type: 'string', enum: getVisualDirectionTags('style') }, minItems: 0, maxItems: 3 },
-                  subject: { type: 'array', items: { type: 'string', enum: getVisualDirectionTags('subject') }, minItems: 0, maxItems: 3 },
-                },
-                required: ['genre', 'style', 'subject'],
-              },
+              genre: { type: 'array', items: { type: 'string', enum: getVisualDirectionTags('genre') }, minItems: 0, maxItems: 2 },
+              style: { type: 'array', items: { type: 'string', enum: getVisualDirectionTags('style') }, minItems: 0, maxItems: 3 },
+              subject: { type: 'array', items: { type: 'string', enum: getVisualDirectionTags('subject') }, minItems: 0, maxItems: 3 },
             },
-            required: ['markdown', 'tags'],
+            required: ['genre', 'style', 'subject'],
           },
         },
-        required: ['tokens', 'visualDirection'],
+        required: ['markdown', 'tags'],
       },
     },
     {
@@ -830,7 +835,7 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
     { id: 'primary-unique', label: 'Primary unique', type: 'auto', description: 'color.role==="primary" count = 1' },
     { id: 'vd-template', label: 'MD template compliance', type: 'auto', description: 'All required sections 1-6 included' },
     { id: 'typo-hierarchy', label: 'Typography hierarchy', type: 'auto', description: 'h1 > h2 > body1 order' },
-    { id: 'tool-both', label: 'Both tools called', type: 'auto', description: 'submit_tokens + submit_visual_direction once each' },
+    { id: 'tool-all', label: 'All tools called', type: 'auto', description: 'submit_design_system_core + submit_visual_direction + submit_design_system_designmd each called' },
     { id: 'intent-fit', label: 'Intent reflection', type: 'manual', description: 'Tokens and MD match the intent' },
     { id: 'export-success', label: 'Export suitability', type: 'auto', description: 'Both ThemeExportDialog + MD download are intact' },
     { id: 'rationale-presence', label: 'Decision rationale present', type: 'auto', description: 'TP6: decisionRationale exists on every token (whichReferences + whyChosen required)' },
@@ -876,8 +881,9 @@ narrative from the pre-extracted pool, selecting and combining based on intent.`
   workflow: [
     'Obtain the full data (tags + dominantColors + extracted) for the referenceIds selected in Step 2',
     'No image attachments - all a text payload',
-    'Anthropic messages.create (Haiku 4.5, tools: [submit_tokens, submit_visual_direction])',
-    'Extract both tool inputs from the response, retry if either is missing',
+    'Phase 1: submit_design_system_core (tokens) and submit_visual_direction run in parallel (Haiku 4.5)',
+    'Phase 2: submit_design_system_designmd (spacing/rounded/elevation/components), which depends on phase 1 token ids',
+    'Extract each tool input, retry a call if its result is missing or invalid',
     'Automatic validation (primary unique, MD sections, enum)',
     'Render on ProjectDetailPage once validation passes',
   ],
@@ -1071,7 +1077,7 @@ export const AI_WORKFLOW_DIAGRAM = `flowchart LR
   NewProj[Project creation Step 1] -->|intent+type| T2["T2 · Recommendation<br/>(Haiku, text)"]
   Archive --> T2
   T2 --> Step2[Step 2 reference selection]
-  Step2 --> T3["T3 · Tokens + VD<br/>(Sonnet, 2 tools)"]
+  Step2 --> T3["T3 · Tokens + VD<br/>(Haiku, 3 tool calls)"]
   T3 --> Detail[Project detail]
   Detail --> Export[tokens.js + visual-direction.md]
 `;

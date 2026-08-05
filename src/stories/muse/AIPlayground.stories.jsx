@@ -642,20 +642,32 @@ ${JSON.stringify(extractedPool, null, 2)}
           },
         ];
 
-        const toolName = TASK_ANALYZE_TOKENS.toolSchemas[0].name;
-        const response = await callAnthropic({
-          model,
-          max_tokens: 8192,
-          system: TASK_ANALYZE_TOKENS.systemPrompt,
-          tools: TASK_ANALYZE_TOKENS.toolSchemas,
-          tool_choice: { type: 'tool', name: toolName },
-          messages: [{ role: 'user', content }],
-        });
+        // Tokens and visual direction are now two separate tool calls (run in parallel),
+        // matching runAnalyzeTokens. toolSchemas = [core, visualDirection, designmd].
+        const [coreSchema, vdSchema] = TASK_ANALYZE_TOKENS.toolSchemas;
+        const [response, vdResponse] = await Promise.all([
+          callAnthropic({
+            model,
+            max_tokens: 8192,
+            system: TASK_ANALYZE_TOKENS.systemPrompt,
+            tools: [coreSchema],
+            tool_choice: { type: 'tool', name: coreSchema.name },
+            messages: [{ role: 'user', content }],
+          }),
+          callAnthropic({
+            model,
+            max_tokens: 2048,
+            system: TASK_ANALYZE_TOKENS.systemPrompt,
+            tools: [vdSchema],
+            tool_choice: { type: 'tool', name: vdSchema.name },
+            messages: [{ role: 'user', content }],
+          }),
+        ]);
 
         setRaw(response);
-        const input = extractToolInput(response, toolName);
+        const input = extractToolInput(response, coreSchema.name);
         setTokensResult(input?.tokens || null);
-        setVdResult(input?.visualDirection || null);
+        setVdResult(extractToolInput(vdResponse, vdSchema.name) || null);
 
         if (!input) {
           throw new Error(`No tool use response. text: ${extractText(response) || '(empty)'}`);
@@ -683,7 +695,7 @@ ${JSON.stringify(extractedPool, null, 2)}
             T3 · Analyze Tokens + VD
           </Typography>
           <Typography variant="body1" color="text.secondary" sx={ { mb: 3 } }>
-            { TASK_ANALYZE_TOKENS.purpose } · no images (based on T1 extracted) · Haiku · single call with 2 tools
+            { TASK_ANALYZE_TOKENS.purpose } · no images (based on T1 extracted) · Haiku · tokens + visual direction in parallel calls
           </Typography>
 
           {/* Phase 0 verification info box */}
@@ -778,7 +790,7 @@ ${JSON.stringify(extractedPool, null, 2)}
               {/* Tokens preview: using the real preview components */}
               { tokensResult && (
                 <>
-                  <SectionTitle title="Token Layers (submit_tokens)" description="Instant preview of 4 layers" />
+                  <SectionTitle title="Token Layers (submit_design_system_core)" description="Instant preview of 4 layers" />
                   <Box sx={ { display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 2, mb: 3 } }>
                     { tokensResult.color?.length > 0 && (
                       <Box>

@@ -80,7 +80,7 @@ export function extractText(response) {
  *  - Object fields: shallow merge (later wins)
  *  - Scalars: later wins (assumes the model refines in later calls)
  *
- * When Haiku 4.5 splits submit_tokens per layer under tool_choice='any'
+ * When Haiku 4.5 splits a token tool (e.g. submit_design_system_core) per layer under tool_choice='any'
  * (e.g. color -> typography -> layout -> gradient, one each), keeping only the
  * last input would make the other layers disappear as empty arrays.
  * Merge to prevent this.
