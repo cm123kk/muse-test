@@ -368,7 +368,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
             color="text.secondary"
             sx={{ fontSize: { xs: '1rem', md: '1.25rem' }, mb: 5, maxWidth: 480, mx: 'auto' }}
           >
-            Curate the inspiration behind your vibe design.
+            Turn visual references into explainable design-system tokens.
           </Typography>
           <Button variant="contained" size="large" onClick={onNavigateToSignUp} sx={{ px: 5 }}>
             Get Started
