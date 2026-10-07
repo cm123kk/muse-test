@@ -366,7 +366,7 @@ function HeroSection({ onNavigateToSignUp, scrollProgress = 0 }) {
           <Typography
             variant="body1"
             color="text.secondary"
-            sx={{ fontSize: { xs: '1rem', md: '1.25rem' }, mb: 5, maxWidth: 480, mx: 'auto' }}
+            sx={{ fontSize: { xs: '1rem', md: '1.25rem' }, mb: 5, maxWidth: 360, mx: 'auto' }}
           >
             Turn visual references into explainable design-system tokens.
           </Typography>
