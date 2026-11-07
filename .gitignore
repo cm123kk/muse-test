@@ -32,3 +32,5 @@ CLAUDE.local.md
 *.sln
 *.sw?
 storybook-static
+# Supabase CLI local cache
+supabase/ .temp/
